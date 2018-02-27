@@ -492,6 +492,33 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 	return (get_ambient(scene, BACKCOLOR));
 }
 
+
+__kernel void	bw_shader(	__global	char		*output,
+							__local		char		*frame,
+							__private	int			width)
+{
+	int		id;
+	uint2	pix;
+	pix.x = get_global_id(0);
+	pix.y = get_global_id(1);
+	id = pix.x + (width * pix.y);
+
+	unsigned int	color = ((__global unsigned int *)output)[id];
+	unsigned int	r = (color & 0x00FF0000) >> 16;
+	unsigned int	g = (color & 0x0000FF00) >> 8;
+	unsigned int	b = (color & 0x000000FF);
+	float			average = (r + g + b) / 3;
+	color = ((unsigned int)average << 16) + ((unsigned int)average << 8) + (unsigned int)average;
+	OUTPUTE = color;
+}
+
+    float value = (color.r + color.g + color.b) / 3; 
+    color.r = value;
+    color.g = value;
+    color.b = value;
+ 
+    return color;
+
 __kernel void	ray_trace(	__global	char		*output,
 							__global	t_hit		*target_obj,
 							__global	t_scene		*scene_data,
