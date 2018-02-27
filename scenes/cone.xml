@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<scene	res="1024, 768" ambient="0.1, 0.1, 0.1">
+<cam 	id="0"
+		pos="0, -5, -10"
+		dir="0, 0, 1"
+		fov="30"
+		/>
+<light 	id="0"
+		type="0"
+		pos="0, 5, 0"
+		dir="0, 0, 0"
+		brightness="0.51"
+		shrink="420"
+		color="0, 255, 255, 255"
+		/>
+<cone	id="0"
+		pos="0, -5, 5"
+		dir="0, 1, 0"
+		angle="21"
+		color="0, 0, 0, 255"
+		diff="0.42, 0.42, 0.42"
+		spec="0.42, 0.42, 0.42"
+		reflex="0.42"
+		/>
+<plane 	id="0"
+		pos="0, -8.4, 0"
+		normale="0, 1, 0"
+		color="0, 255, 0, 0"
+		diff="0.42, 0.42, 0.42"
+		spec="0, 0, 0"
+		reflex="0.42"
+		/>
+</scene>
