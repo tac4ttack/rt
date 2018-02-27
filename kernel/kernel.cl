@@ -492,6 +492,31 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 	return (get_ambient(scene, BACKCOLOR));
 }
 
+__kernel void	sepia_shader(	__global	char		*output,
+								__local		char		*frame,
+								__private	int			width)
+{
+	int		id;
+	uint2	pix;
+	pix.x = get_global_id(0);
+	pix.y = get_global_id(1);
+	id = pix.x + (width * pix.y);
+	
+	unsigned int	color = ((__global unsigned int *)output)[id];
+	uint3			tmp = 0;
+	tmp.x = (color & 0x00FF0000) >> 16;
+	tmp.y = (color & 0x0000FF00) >> 8;
+	tmp.z = (color & 0x000000FF);
+	uint3			res = 0;
+	res.x = (tmp.x * 0.393) + (tmp.y * 0.769) + (tmp.z * 0.189);
+	res.y = (tmp.x * 0.349) + (tmp.y * 0.686) + (tmp.z * 0.168);    
+	res.z = (tmp.x * 0.272) + (tmp.y * 0.534) + (tmp.z * 0.131);
+	color = (res.x << 16) + (res.y << 8) + rez.z;
+	OUTPUTE = color;
+}
+
+
+    
 
 __kernel void	bw_shader(	__global	char		*output,
 							__local		char		*frame,
