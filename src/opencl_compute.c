@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/27 17:48:40 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,27 @@ int			get_imgptr(t_env *e)
 	return (0);
 }
 
+void		opencl_sepia(t_env *e)
+{
+	const size_t	g[2] = {WIDTH, HEIGHT};
+
+	printf("SEPIA\n\n");
+	e->err = 0;
+	e->err = clSetKernelArg(e->kernel_sepia, 0, sizeof(cl_mem), &e->frame_buffer);
+	e->err = clSetKernelArg(e->kernel_sepia, 1, sizeof(cl_mem), &e->frame_buffer);
+	e->err = clSetKernelArg(e->kernel_sepia, 1, sizeof(int) * WIDTH * HEIGHT, NULL);
+	e->err = clSetKernelArg(e->kernel_sepia, 3, sizeof(int), &e->scene->win_w);
+	e->err = clSetKernelArg(e->kernel_sepia, 4, sizeof(int), &e->scene->win_h);
+	e->err = clEnqueueNDRangeKernel(e->raytrace_queue, e->kernel_sepia, 2, NULL, \
+			g, NULL, 0, NULL, NULL);
+				if (e->err)
+	if (e->err)
+	{
+		opencl_print_error(e->err);
+		s_error("Error: Failed to execute Sepia kernel!\n", e);
+	}
+}
+
 int			draw(t_env *e)
 {
 	const size_t	g[2] = {WIDTH, HEIGHT};
@@ -80,8 +101,12 @@ int			draw(t_env *e)
 	if (e->err)
 	{
 		opencl_print_error(e->err);
-		s_error("Error: Failed to execute kernel!\n", e);
+		s_error("Error: Failed to execute Ray_trace kernel!\n", e);
 	}
+	if (e->scene->flag & OPTION_SEPIA)
+		opencl_sepia(e);
+//	if (e->scene->flag & OPTION_BW)
+//		opencl_bw();
 	get_imgptr(e);
 	return (0);
 }
