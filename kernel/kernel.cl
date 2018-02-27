@@ -503,20 +503,18 @@ __kernel void	sepia_shader(	__global	char		*output,
 	id = pix.x + (width * pix.y);
 	
 	unsigned int	color = ((__global unsigned int *)output)[id];
-	uint3			tmp = 0;
-	tmp.x = (color & 0x00FF0000) >> 16;
-	tmp.y = (color & 0x0000FF00) >> 8;
-	tmp.z = (color & 0x000000FF);
-	uint3			res = 0;
-	res.x = (tmp.x * 0.393) + (tmp.y * 0.769) + (tmp.z * 0.189);
-	res.y = (tmp.x * 0.349) + (tmp.y * 0.686) + (tmp.z * 0.168);    
-	res.z = (tmp.x * 0.272) + (tmp.y * 0.534) + (tmp.z * 0.131);
-	color = (res.x << 16) + (res.y << 8) + res.z;
+	uint3			ingredients = 0;
+	ingredients.x = (color & 0x00FF0000) >> 16;
+	ingredients.y = (color & 0x0000FF00) >> 8;
+	ingredients.z = (color & 0x000000FF);
+	uint3			cooking_pot = 0;
+	cooking_pot.x = (ingredients.x * 0.393) + (ingredients.y * 0.769) + (ingredients.z * 0.189);
+	cooking_pot.y = (ingredients.x * 0.349) + (ingredients.y * 0.686) + (ingredients.z * 0.168);    
+	cooking_pot.z = (ingredients.x * 0.272) + (ingredients.y * 0.534) + (ingredients.z * 0.131);
+	color = (cooking_pot.x << 16) + (cooking_pot.y << 8) + cooking_pot.z;
 	OUTPUTE = color;
 }
 
-
-    
 
 __kernel void	bw_shader(	__global	char		*output,
 							__local		char		*frame,

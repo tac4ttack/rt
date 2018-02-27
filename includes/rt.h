@@ -68,6 +68,8 @@
 # define SCN					e->scene
 
 # define OPTION_WAVE			(1 << 1)
+# define OPTION_SEPIA			(1 << 2)
+# define OPTION_BW				(1 << 3)
 
 typedef struct			s_fps
 {

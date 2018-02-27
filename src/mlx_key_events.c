@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:47:00 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/27 17:04:38 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,34 @@ void			mlx_keyboard_repeated(t_env *e)
 		else
 			e->scene->flag |= OPTION_WAVE;
 	}
+	if (KP_2)
+	{
+		if (e->scene->flag & OPTION_SEPIA)
+			e->scene->flag ^= OPTION_SEPIA;
+		else
+			e->scene->flag |= OPTION_SEPIA;
+	}
+	if (KP_3)
+	{
+		if (e->scene->flag & OPTION_BW)
+			e->scene->flag ^= OPTION_BW;
+		else
+			e->scene->flag |= OPTION_BW;
+	}
+/*	if (KP_1 || KP_2 || KP_3)
+	{
+		int n = e->scene->flag;
+		while (n)
+		{
+    		if (n & 1)
+	        	printf("1");
+    		else
+		        printf("0");
+	    	n >>= 1;
+		}
+		printf("\n");
+	}
+*/
+
 	opencl_allocate_scene_memory(e);
 }
