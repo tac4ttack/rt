@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/26 20:04:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/27 16:17:05 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void		opencl_close(t_env *e)
 	clReleaseMemObject(e->target_obj_buf);
 	clReleaseProgram(e->program);
 	clReleaseKernel(KRT);
+	clReleaseKernel(e->kernel_sepia);
+	clReleaseKernel(e->kernel_bw);
 	clReleaseCommandQueue(e->raytrace_queue);
 	clReleaseContext(e->context);
 }

@@ -511,7 +511,7 @@ __kernel void	sepia_shader(	__global	char		*output,
 	res.x = (tmp.x * 0.393) + (tmp.y * 0.769) + (tmp.z * 0.189);
 	res.y = (tmp.x * 0.349) + (tmp.y * 0.686) + (tmp.z * 0.168);    
 	res.z = (tmp.x * 0.272) + (tmp.y * 0.534) + (tmp.z * 0.131);
-	color = (res.x << 16) + (res.y << 8) + rez.z;
+	color = (res.x << 16) + (res.y << 8) + res.z;
 	OUTPUTE = color;
 }
 
@@ -536,13 +536,6 @@ __kernel void	bw_shader(	__global	char		*output,
 	color = ((unsigned int)average << 16) + ((unsigned int)average << 8) + (unsigned int)average;
 	OUTPUTE = color;
 }
-
-    float value = (color.r + color.g + color.b) / 3; 
-    color.r = value;
-    color.g = value;
-    color.b = value;
- 
-    return color;
 
 __kernel void	ray_trace(	__global	char		*output,
 							__global	t_hit		*target_obj,

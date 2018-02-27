@@ -294,6 +294,8 @@ typedef	struct			s_env
 	cl_command_queue	raytrace_queue;
 	cl_program			program;
 	cl_kernel			kernel_rt;
+	cl_kernel			kernel_sepia;
+	cl_kernel			kernel_bw;
 	cl_mem				frame_buffer;
 	cl_mem				target_obj_buf;
 	t_hit				target_obj;
