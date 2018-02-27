@@ -1,5 +1,5 @@
-#ifndef RTV1_H
-# define RTV1_H
+#ifndef RT_H
+# define RT_H
 
 # include <stdlib.h>
 # include <unistd.h>

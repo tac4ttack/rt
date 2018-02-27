@@ -6,11 +6,11 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 18:22:21 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/02/25 13:20:03 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
+#include "rt.h"
 
 void		update_fps(t_fps *fps)
 {

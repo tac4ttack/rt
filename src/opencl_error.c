@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   opencl_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:43 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/26 19:31:44 by adalenco         ###   ########.fr       */
+/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
+#include "rt.h"
 
 static void		opencl_print_error_part_four(const int err)
 {

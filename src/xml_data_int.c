@@ -6,11 +6,11 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 12:32:12 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/24 16:46:26 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
+#include "rt.h"
 
 void		xml_data_type(t_env *e, char **attributes, int *i, t_node *node)
 {

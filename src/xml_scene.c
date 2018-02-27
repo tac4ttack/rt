@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   xml_scene.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 17:11:29 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/26 17:11:31 by adalenco         ###   ########.fr       */
+/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
+#include "rt.h"
 
 static void	xml_scene_res(t_env *e, char **att, int *i)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   opencl_memalloc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:18:16 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/26 19:18:17 by adalenco         ###   ########.fr       */
+/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
+#include "rt.h"
 
 int			opencl_allocate_obj_memory(t_env *e)
 {

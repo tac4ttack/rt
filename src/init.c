@@ -6,11 +6,11 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 14:54:46 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/27 16:19:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
+#include "rt.h"
 
 void		load_obj(t_env *e)
 {
@@ -103,7 +103,7 @@ void		init(t_env *e, int ac, char *av)
 	env_init(e);
 	if (!(e->mlx = mlx_init()))
 		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m", e);
-	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RTv1")))
+	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RT")))
 		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
 	frame_init(e);
 	if (opencl_init(e, e->count * 4) != 0)

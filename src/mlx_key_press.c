@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_key_press.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:37:50 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/26 19:37:51 by adalenco         ###   ########.fr       */
+/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
+#include "rt.h"
 
 static	void	mlx_key_press_1(int key, t_env *e)
 {
