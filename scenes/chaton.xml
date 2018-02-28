@@ -81,7 +81,7 @@
 			color="0, 80, 100, 180"
 			diff="1, 1, 1"
 			spec="1, 1, 1"
-			reflex="0.42"
+			reflex="0"
 			/>
 
 <light		id="0"
@@ -92,7 +92,7 @@
 			shrink="420"
 			color="0, 255, 255, 255"
 			/>
-
+<!--
 <light		id="1"
 			type="1"
 			pos="0, 0, -20"
@@ -100,7 +100,7 @@
 			brightness="0.51"
 			shrink="1000"
 			color="0, 255, 255, 255"
-			/>
+			/>-->
 
 <cone		id="0"
 			pos="5, 0, 0"
