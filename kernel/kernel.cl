@@ -445,25 +445,27 @@ unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3
 	return (res_color);
 } */
 
-static unsigned int		bounce(const __local t_scene *scene, const float3 ray, const t_hit old_hit, const int depth)
+static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hit old_hit, int depth)
 {
-	int				i = depth;
 	unsigned int	color = 0;
-	float3			reflex = 0;
+	float3			reflex = ray;
 	t_hit			new_hit;
-	while (i > 0)
+	while (depth > 0)
 	{
-		reflex = fast_normalize(ray - (2 * (float)dot(old_hit.normale, ray) * old_hit.normale));
+		reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normale, reflex) * old_hit.normale));
 		new_hit.dist = MAX_DIST;
 		new_hit = ray_hit(scene, old_hit.pos, reflex);
 		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 		{
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
-			new_hit.normale = get_hit_normale(scene, ray, new_hit);
+			new_hit.normale = get_hit_normale(scene, reflex, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-			color += 0.1 * phong(scene, new_hit, reflex);
+			color = blend_factor(blend_add(color, phong(scene, new_hit, reflex)), 0.2);
 		}
-		i--;
+		if (new_hit.type != 4)
+			return (color);
+		old_hit = new_hit;
+		--depth;
 	}
 	return (color);
 }
