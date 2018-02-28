@@ -58,6 +58,8 @@ int			xml_check_attr(char **att)
 	i = 1;
 	while (att[i])
 	{
+		if (ft_strcmp(att[0], "!--") == 0)
+			return (0);
 		j = 0;
 		if (att[i][j] >= 97 && att[i][j] <= 122)
 			while (att[i][j] && att[i][j] != '=')
