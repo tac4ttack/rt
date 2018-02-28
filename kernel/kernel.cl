@@ -453,7 +453,9 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hi
 	float			reflex_coef = 0;
 	while (depth > 0)
 	{
+		// PREMIÈRE LOI DE SNELL-DESCARTES ///////////////////////////////////////////////////////////
 		reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normale, reflex) * old_hit.normale));
+		//////////////////////////////////////////////////////////////////////////////////////////////
 		new_hit.dist = MAX_DIST;
 		new_hit = ray_hit(scene, old_hit.pos, reflex);
 		reflex_coef = get_obj_reflex(scene, old_hit);
