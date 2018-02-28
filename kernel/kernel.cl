@@ -456,15 +456,15 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hi
 		reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normale, reflex) * old_hit.normale));
 		new_hit.dist = MAX_DIST;
 		new_hit = ray_hit(scene, old_hit.pos, reflex);
+		reflex_coef = get_obj_reflex(scene, old_hit);
 		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 		{
-			reflex_coef = get_obj_reflex(scene, old_hit);
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
 			new_hit.normale = get_hit_normale(scene, reflex, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-			color = blend_factor(blend_add(color, phong(scene, new_hit, reflex)), 0.2/*reflex_coef*/);
+			color = blend_factor(blend_add(color, phong(scene, new_hit, reflex)), reflex_coef);
 		}
-		if (new_hit.type != 4)
+		if (get_obj_reflex(scene, new_hit) == 0)
 			return (color);
 		old_hit = new_hit;
 		--depth;
@@ -488,9 +488,8 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
 
 		color = phong(scene, hit, ray);
-		if (depth > 0)
+		if (depth > 0 && (get_obj_reflex(scene, hit) > 0))
 			bounce_color = bounce(scene, ray, hit, depth);
-//		return (color + bounce_color);
 		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));

@@ -69,21 +69,19 @@ unsigned int	blend_factor(const unsigned int c1, const float factor)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int			get_obj_reflex(const __local t_scene *scene, const t_hit hit)
+float			get_obj_reflex(const __local t_scene *scene, const t_hit hit)
 {
-	unsigned int		color = 0;
+	float		coef = 0;
 
 	if (hit.type == 1)
-		color = CONES[hit.id].reflex;
+		coef = CONES[hit.id].reflex;
 	if (hit.type == 2)
-		color = CYLIND[hit.id].reflex;
-//	if (hit.type == 3)
-//		color = LIGHT[hit.id].reflex;
+		coef = CYLIND[hit.id].reflex;
 	if (hit.type == 4)
-		color = PLANE[hit.id].reflex;
+		coef = PLANE[hit.id].reflex;
 	if (hit.type == 5)
-		color = SPHERE[hit.id].reflex;
-	return (color);
+		coef = SPHERE[hit.id].reflex;
+	return (coef);
 }
 
 unsigned int			get_obj_hue(const __local t_scene *scene, const t_hit hit)
