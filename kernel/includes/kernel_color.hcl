@@ -1,12 +1,25 @@
-/* unsigned int	sepiarize(const unsigned int color)
+unsigned int	sepiarize(const unsigned int color)
 {
-
+	uint3	rgb = 0;
+	rgb.x = (color & 0x00FF0000) >> 16;
+	rgb.y = (color & 0x0000FF00) >> 8;
+	rgb.z = (color & 0x000000FF);
+	return (((int)((rgb.x * 0.393) + (rgb.y * 0.769) + (rgb.z * 0.189)) << 16) \
+	 + ((int)((rgb.x * 0.349) + (rgb.y * 0.686) + (rgb.z * 0.168)) << 8) \
+	 + (int)((rgb.x * 0.272) + (rgb.y * 0.534) + (rgb.z * 0.131)));
 }
 
 unsigned int	desaturate(const unsigned int color)
 {
-	
-} */
+	uint3	rgb = 0;
+	rgb.x = (color & 0x00FF0000) >> 16;
+	rgb.y = (color & 0x0000FF00) >> 8;
+	rgb.z = (color & 0x000000FF);
+	float 	average = (rgb.x + rgb.y + rgb.z) / 3;
+	return (((unsigned int)average << 16) \
+			+ ((unsigned int)average << 8) \
+			+ (unsigned int)average);
+}
 
 unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
 {

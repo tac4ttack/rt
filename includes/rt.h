@@ -48,8 +48,6 @@
 # define DEPTH					e->scene->depth
 
 # define KRT					e->kernel_rt
-# define KSP					e->kernel_sepia
-# define KBW					e->kernel_bw
 # define NCAM					e->scene->n_cams
 # define NCON					e->scene->n_cones
 # define NCYL					e->scene->n_cylinders
@@ -299,8 +297,6 @@ typedef	struct			s_env
 	cl_command_queue	queue;
 	cl_program			program;
 	cl_kernel			kernel_rt;
-	cl_kernel			kernel_sepia;
-	cl_kernel			kernel_bw;
 	cl_mem				frame_buffer;
 	cl_mem				target_obj_buf;
 	t_hit				target_obj;

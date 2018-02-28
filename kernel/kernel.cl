@@ -85,7 +85,7 @@ float3			get_hit_normale(const __local t_scene *scene, float3 ray, t_hit hit)
 	{
 		/*						VAGUELETTE							*/
 		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
-		save.z = save.z + 0.8 * sin(save.x * 10 + scene->u_time);
+		save.z = res.z + 0.8 * sin(save.x * 10 + scene->u_time);
 		save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
 	}
 
@@ -492,50 +492,6 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 	return (get_ambient(scene, BACKCOLOR));
 }
 
-__kernel void	sepia_shader(	__global	char		*output,
-								__private	int			width,
-								__private	int			height)
-{
-	int		id;
-	uint2	pix;
-	pix.x = get_global_id(0);
-	pix.y = get_global_id(1);
-	id = pix.x + (width * pix.y);
-
-
-	unsigned int	color = ((__global unsigned int *)output)[id];
-	uint3			ingredients = 0;
-	ingredients.x = (color & 0x00FF0000) >> 16;
-	ingredients.y = (color & 0x0000FF00) >> 8;
-	ingredients.z = (color & 0x000000FF);
-	uint3			cooking_pot = 0;
-	cooking_pot.x = (ingredients.x * 0.393) + (ingredients.y * 0.769) + (ingredients.z * 0.189);
-	cooking_pot.y = (ingredients.x * 0.349) + (ingredients.y * 0.686) + (ingredients.z * 0.168);    
-	cooking_pot.z = (ingredients.x * 0.272) + (ingredients.y * 0.534) + (ingredients.z * 0.131);
-	color = (cooking_pot.x << 16) + (cooking_pot.y << 8) + cooking_pot.z;
-	OUTPUTE = color;
-}
-
-
-__kernel void	bw_shader(	__global	char		*output,
-							__private	int			width,
-							__private	int			height)
-{
-	int		id;
-	uint2	pix;
-	pix.x = get_global_id(0);
-	pix.y = get_global_id(1);
-	id = pix.x + (width * pix.y);
-
-	unsigned int	color = ((__global unsigned int *)output)[id];  // FAUX
-	unsigned int	r = (color & 0x00FF0000) >> 16;
-	unsigned int	g = (color & 0x0000FF00) >> 8;
-	unsigned int	b = (color & 0x000000FF);
-	float			average = (r + g + b) / 3;
-	color = ((unsigned int)average << 16) + ((unsigned int)average << 8) + (unsigned int)average;
-	OUTPUTE = color;
-}
-
 __kernel void	ray_trace(	__global	char		*output,
 							__global	t_hit		*target_obj,
 							__global	t_scene		*scene_data,
@@ -601,10 +557,16 @@ __kernel void	ray_trace(	__global	char		*output,
 
 	int			id = pix.x + (scene->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 
+	unsigned int final_color = 0;
+
 	float3	prim_ray = get_ray_cam(scene, pix);
 
 	if (pix.x == scene->mou_x && pix.y == scene->mou_y)
 		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);
-
-	OUTPUTE = get_pixel_color(scene, prim_ray);
+	final_color = get_pixel_color(scene, prim_ray);
+	if (scene->flag & OPTION_SEPIA)
+		final_color = sepiarize(final_color);
+	if (scene->flag & OPTION_BW)
+		final_color = desaturate(final_color);
+	OUTPUTE = final_color;
 }
