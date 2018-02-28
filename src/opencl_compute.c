@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/28 13:27:00 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/28 15:55:03 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,60 +63,6 @@ int			get_imgptr(t_env *e)
 	return (0);
 }
 
-void		opencl_sepia(t_env *e)
-{
-	const size_t	g[2] = {WIDTH, HEIGHT};
-
-	e->err = 0;
-	e->err = clEnqueueReadBuffer(e->queue, e->frame_buffer, CL_TRUE, 0, \
-			(e->count * 4), e->frame->pix, 1, &e->events[0], &e->events[3]);
-	(e->err != 0 ? opencl_print_error(e->err) : 0);
-	if (!(e->frame_buffer = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY | \
-	CL_MEM_COPY_HOST_PTR, e->count * 4, e->frame->pix, &e->err)))
-		opencl_builderrors(e, 7, e->err);
-	e->err |= clSetKernelArg(KSP, 0, sizeof(cl_mem), &e->frame_buffer);
-	(e->err != 0 ? opencl_print_error(e->err) : 0);
-	e->err |= clSetKernelArg(KSP, 1, sizeof(int), &e->scene->win_w);
-	(e->err != 0 ? opencl_print_error(e->err) : 0);
-	e->err |= clSetKernelArg(KSP, 2, sizeof(int), &e->scene->win_h);
-	(e->err != 0 ? opencl_print_error(e->err) : 0);
-	e->err |= clEnqueueNDRangeKernel(e->queue, KSP, 2, NULL, g, NULL, 1, \
-									&e->events[3], &e->events[1]);
-	if (e->err)
-	{
-		opencl_print_error(e->err);
-		s_error("Error: Failed to execute Sepia kernel!\n", e);
-	}
-	get_imgptr(e);
-}
-
-void		opencl_black_and_white(t_env *e)
-{
-	const size_t	g[2] = {WIDTH, HEIGHT};
-
-	e->err = 0;
-	e->err = clEnqueueReadBuffer(e->queue, e->frame_buffer, CL_TRUE, 0, \
-			(e->count * 4), e->frame->pix, 1, &e->events[0], &e->events[3]);
-	(e->err != 0 ? opencl_print_error(e->err) : 0);
-	if (!(e->frame_buffer = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY | \
-	CL_MEM_COPY_HOST_PTR, e->count * 4, e->frame->pix, &e->err)))
-		opencl_builderrors(e, 7, e->err);
-	e->err |= clSetKernelArg(KBW, 0, sizeof(cl_mem), &e->frame_buffer);
-	(e->err != 0 ? opencl_print_error(e->err) : 0);
-	e->err |= clSetKernelArg(KBW, 1, sizeof(int), &e->scene->win_w);
-	(e->err != 0 ? opencl_print_error(e->err) : 0);
-	e->err |= clSetKernelArg(KBW, 2, sizeof(int), &e->scene->win_h);
-	(e->err != 0 ? opencl_print_error(e->err) : 0);
-	e->err |= clEnqueueNDRangeKernel(e->queue, KBW, 2, NULL, g, NULL, 1, \
-									&e->events[3], &e->events[2]);
-	if (e->err)
-	{
-		opencl_print_error(e->err);
-		s_error("Error: Failed to execute Black & White kernel!\n", e);
-	}
-	get_imgptr(e);
-}
-
 int			draw(t_env *e)
 {
 	const size_t	g[2] = {WIDTH, HEIGHT};
@@ -136,10 +82,6 @@ int			draw(t_env *e)
 		opencl_print_error(e->err);
 		s_error("Error: Failed to execute Ray_trace kernel!\n", e);
 	}
-	if (e->scene->flag & OPTION_SEPIA)
-		opencl_sepia(e);
-	if (e->scene->flag & OPTION_BW)
-		opencl_black_and_white(e);
 	get_imgptr(e);
 	return (0);
 }
@@ -150,8 +92,6 @@ void		opencl_close(t_env *e)
 	clReleaseMemObject(e->target_obj_buf);
 	clReleaseProgram(e->program);
 	clReleaseKernel(KRT);
-	clReleaseKernel(KSP);
-	clReleaseKernel(KBW);
 	clReleaseCommandQueue(e->queue);
 	clReleaseContext(e->context);
 }

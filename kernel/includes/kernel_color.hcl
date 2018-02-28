@@ -1,12 +1,27 @@
-/* unsigned int	sepiarize(const unsigned int color)
+unsigned int	sepiarize(const unsigned int color)
 {
-
+	uint3	base, cooking_pot = 0;
+	base.x = (color & 0x00FF0000) >> 16;
+	base.y = (color & 0x0000FF00) >> 8;
+	base.z = (color & 0x000000FF);
+	cooking_pot.x = (base.x * 0.393) + (base.y * 0.769) + (base.z * 0.189);
+	cooking_pot.y = (base.x * 0.349) + (base.y * 0.686) + (base.z * 0.168);
+	cooking_pot.z = (base.x * 0.272) + (base.y * 0.534) + (base.z * 0.131);
+	(cooking_pot.x > 255 ? cooking_pot.x = 255 : 0);
+	(cooking_pot.y > 255 ? cooking_pot.y = 255 : 0);
+	(cooking_pot.z > 255 ? cooking_pot.z = 255 : 0);
+	return (((uint)cooking_pot.x << 16) + ((uint)cooking_pot.y << 8) + (uint)cooking_pot.z);
 }
 
 unsigned int	desaturate(const unsigned int color)
 {
-	
-} */
+	uint3	rgb = 0;
+	rgb.x = (color & 0x00FF0000) >> 16;
+	rgb.y = (color & 0x0000FF00) >> 8;
+	rgb.z = (color & 0x000000FF);
+	float 	average = (rgb.x + rgb.y + rgb.z) / 3;
+	return (((uint)average << 16) + ((uint)average << 8) + (uint)average);
+}
 
 unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
 {
@@ -18,12 +33,10 @@ unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
 	unsigned int g2 = (c2 & 0x0000FF00) >> 8;
 	unsigned int b2 = (c2 & 0x000000FF);
 
-	if ((r = r1 * r2) > 255)
-		r = 255;
-	if ((g = g1 * g2) > 255)
-		g = 255;
-	if ((b = b1 * b2) > 255)
-		b = 255;
+	r = (r1 * r2 > 255 ? 255 : r1 * r2);
+	g = (g1 * g2 > 255 ? 255 : g1 * g2);
+	b = (b1 * b2 > 255 ? 255 : b1 * b2);
+	
 	return ((r << 16) + (g << 8) + b);
 }
 
@@ -37,12 +50,9 @@ unsigned int	blend_add(const unsigned int c1, const unsigned int c2)
 	unsigned int g2 = (c2 & 0x0000FF00) >> 8;
 	unsigned int b2 = (c2 & 0x000000FF);
 
-	if ((r = r1 + r2) > 255)
-		r = 255;
-	if ((g = g1 + g2) > 255)
-		g = 255;
-	if ((b = b1 + b2) > 255)
-		b = 255;
+	r = (r1 + r2 > 255 ? 255 : r1 + r2);
+	g = (g1 + g2 > 255 ? 255 : g1 + g2);
+	b = (b1 + b2 > 255 ? 255 : b1 + b2);
 	return ((r << 16) + (g << 8) + b);
 }
 
@@ -57,6 +67,21 @@ unsigned int	blend_factor(const unsigned int c1, const float factor)
 	g = g1 * factor;
 	b = b1 * factor;
 	return ((r << 16) + (g << 8) + b);
+}
+
+float			get_obj_reflex(const __local t_scene *scene, const t_hit hit)
+{
+	float		coef = 0;
+
+	if (hit.type == 1)
+		coef = CONES[hit.id].reflex;
+	if (hit.type == 2)
+		coef = CYLIND[hit.id].reflex;
+	if (hit.type == 4)
+		coef = PLANE[hit.id].reflex;
+	if (hit.type == 5)
+		coef = SPHERE[hit.id].reflex;
+	return (coef);
 }
 
 unsigned int			get_obj_hue(const __local t_scene *scene, const t_hit hit)

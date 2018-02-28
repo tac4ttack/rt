@@ -13,8 +13,10 @@
 
 #define OUTPUTE ((__global unsigned int *)output)[id]
 
-#define OPTION_WAVE (1 << 1)
-#define FLAG_DEBUG (1 << 2)
+#define OPTION_WAVE 	(1 << 1)
+#define OPTION_SEPIA	(1 << 2)
+#define OPTION_BW		(1 << 3)
+#define FLAG_DEBUG		(1 << 2)
 
 typedef struct			s_light_ray
 {

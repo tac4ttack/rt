@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 18:50:02 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/28 13:23:08 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/28 15:54:49 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int			opencl_builderrors(t_env *e, int err, int errorcode)
 		ft_putendl("Error: Failed to create compute program!");
 	else if (err == 5)
 	{
-		ft_putendl("Error: Failed to build program executable!\n");
+		ft_putendl("\nError: Failed to build program executable!\n");
 		clGetProgramBuildInfo(e->program, e->device_id, \
 				CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, &len);
 		ft_putendl(buffer);
@@ -44,16 +44,10 @@ int			opencl_builderrors(t_env *e, int err, int errorcode)
 
 int			opencl_build(t_env *e, unsigned int count)
 {
-	if ((e->err = clBuildProgram(e->program, 0, NULL, "-g -I ./kernel/includes/ ", \
+	if ((e->err = clBuildProgram(e->program, 0, NULL, "-I ./kernel/includes/ ", \
 				NULL, NULL)) != CL_SUCCESS)
 		return (opencl_builderrors(e, 5, e->err));
 	if (!(KRT = clCreateKernel(e->program, "ray_trace", &e->err)) \
-		|| e->err != CL_SUCCESS)
-		return (opencl_builderrors(e, 6, e->err));
-	if (!(KSP = clCreateKernel(e->program, "sepia_shader", &e->err)) \
-		|| e->err != CL_SUCCESS)
-		return (opencl_builderrors(e, 6, e->err));
-	if (!(KBW = clCreateKernel(e->program, "bw_shader", &e->err)) \
 		|| e->err != CL_SUCCESS)
 		return (opencl_builderrors(e, 6, e->err));
 	if (!(e->frame_buffer = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \

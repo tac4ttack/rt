@@ -85,7 +85,7 @@ float3			get_hit_normale(const __local t_scene *scene, float3 ray, t_hit hit)
 	{
 		/*						VAGUELETTE							*/
 		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
-		save.z = save.z + 0.8 * sin(save.x * 10 + scene->u_time);
+		save.z = res.z + 0.8 * sin(save.x * 10 + scene->u_time);
 		save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
 	}
 
@@ -450,18 +450,22 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hi
 	unsigned int	color = 0;
 	float3			reflex = ray;
 	t_hit			new_hit;
+	float			reflex_coef = 0;
 	while (depth > 0)
 	{
 		reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normale, reflex) * old_hit.normale));
 		new_hit.dist = MAX_DIST;
 		new_hit = ray_hit(scene, old_hit.pos, reflex);
+		reflex_coef = get_obj_reflex(scene, old_hit);
 		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 		{
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
 			new_hit.normale = get_hit_normale(scene, reflex, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-			color = blend_factor(blend_add(color, phong(scene, new_hit, reflex)), 0.2);
+			color = blend_factor(blend_add(color, phong(scene, new_hit, reflex)), reflex_coef);
 		}
+		if (get_obj_reflex(scene, new_hit) == 0)
+			return (color);
 		old_hit = new_hit;
 		--depth;
 	}
@@ -484,56 +488,11 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
 
 		color = phong(scene, hit, ray);
-		if (depth > 0)
+		if (depth > 0 && (get_obj_reflex(scene, hit) > 0))
 			bounce_color = bounce(scene, ray, hit, depth);
-		return (color + bounce_color);
-//		return (blend_add(color, 0.8*bounce_color));
+		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
-}
-
-__kernel void	sepia_shader(	__global	char		*output,
-								__private	int			width,
-								__private	int			height)
-{
-	int		id;
-	uint2	pix;
-	pix.x = get_global_id(0);
-	pix.y = get_global_id(1);
-	id = pix.x + (width * pix.y);
-
-
-	unsigned int	color = ((__global unsigned int *)output)[id];
-	uint3			ingredients = 0;
-	ingredients.x = (color & 0x00FF0000) >> 16;
-	ingredients.y = (color & 0x0000FF00) >> 8;
-	ingredients.z = (color & 0x000000FF);
-	uint3			cooking_pot = 0;
-	cooking_pot.x = (ingredients.x * 0.393) + (ingredients.y * 0.769) + (ingredients.z * 0.189);
-	cooking_pot.y = (ingredients.x * 0.349) + (ingredients.y * 0.686) + (ingredients.z * 0.168);    
-	cooking_pot.z = (ingredients.x * 0.272) + (ingredients.y * 0.534) + (ingredients.z * 0.131);
-	color = (cooking_pot.x << 16) + (cooking_pot.y << 8) + cooking_pot.z;
-	OUTPUTE = color;
-}
-
-
-__kernel void	bw_shader(	__global	char		*output,
-							__private	int			width,
-							__private	int			height)
-{
-	int		id;
-	uint2	pix;
-	pix.x = get_global_id(0);
-	pix.y = get_global_id(1);
-	id = pix.x + (width * pix.y);
-
-	unsigned int	color = ((__global unsigned int *)output)[id];  // FAUX
-	unsigned int	r = (color & 0x00FF0000) >> 16;
-	unsigned int	g = (color & 0x0000FF00) >> 8;
-	unsigned int	b = (color & 0x000000FF);
-	float			average = (r + g + b) / 3;
-	color = ((unsigned int)average << 16) + ((unsigned int)average << 8) + (unsigned int)average;
-	OUTPUTE = color;
 }
 
 __kernel void	ray_trace(	__global	char		*output,
@@ -601,10 +560,16 @@ __kernel void	ray_trace(	__global	char		*output,
 
 	int			id = pix.x + (scene->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 
+	unsigned int final_color = 0;
+
 	float3	prim_ray = get_ray_cam(scene, pix);
 
 	if (pix.x == scene->mou_x && pix.y == scene->mou_y)
 		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);
-
-	OUTPUTE = get_pixel_color(scene, prim_ray);
+	final_color = get_pixel_color(scene, prim_ray);
+	if (scene->flag & OPTION_SEPIA)
+		final_color = sepiarize(final_color);
+	if (scene->flag & OPTION_BW)
+		final_color = desaturate(final_color);
+	OUTPUTE = final_color;
 }
