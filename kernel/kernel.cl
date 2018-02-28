@@ -462,8 +462,6 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hi
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
 			color = blend_factor(blend_add(color, phong(scene, new_hit, reflex)), 0.2);
 		}
-		if (new_hit.type != 4)
-			return (color);
 		old_hit = new_hit;
 		--depth;
 	}
