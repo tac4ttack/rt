@@ -33,12 +33,10 @@ unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
 	unsigned int g2 = (c2 & 0x0000FF00) >> 8;
 	unsigned int b2 = (c2 & 0x000000FF);
 
-	if ((r = r1 * r2) > 255)
-		r = 255;
-	if ((g = g1 * g2) > 255)
-		g = 255;
-	if ((b = b1 * b2) > 255)
-		b = 255;
+	r = (r1 * r2 > 255 ? 255 : r1 * r2);
+	g = (g1 * g2 > 255 ? 255 : g1 * g2);
+	b = (b1 * b2 > 255 ? 255 : b1 * b2);
+	
 	return ((r << 16) + (g << 8) + b);
 }
 
@@ -52,12 +50,9 @@ unsigned int	blend_add(const unsigned int c1, const unsigned int c2)
 	unsigned int g2 = (c2 & 0x0000FF00) >> 8;
 	unsigned int b2 = (c2 & 0x000000FF);
 
-	if ((r = r1 + r2) > 255)
-		r = 255;
-	if ((g = g1 + g2) > 255)
-		g = 255;
-	if ((b = b1 + b2) > 255)
-		b = 255;
+	r = (r1 + r2 > 255 ? 255 : r1 + r2);
+	g = (g1 + g2 > 255 ? 255 : g1 + g2);
+	b = (b1 + b2 > 255 ? 255 : b1 + b2);
 	return ((r << 16) + (g << 8) + b);
 }
 

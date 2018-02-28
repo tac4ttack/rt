@@ -490,8 +490,8 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 		color = phong(scene, hit, ray);
 		if (depth > 0)
 			bounce_color = bounce(scene, ray, hit, depth);
-		return (color + bounce_color);
-//		return (blend_add(color, 0.8*bounce_color));
+//		return (color + bounce_color);
+		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
 }
