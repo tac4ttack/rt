@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 17:48:40 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/28 13:27:00 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void		opencl_set_args(t_env *e)
 
 int			get_imgptr(t_env *e)
 {
-	clFinish(e->raytrace_queue);
-	e->err = clEnqueueReadBuffer(e->raytrace_queue, e->frame_buffer, CL_TRUE, 0, \
-			(e->count * 4), e->frame->pix, 0, NULL, NULL);
+	clFinish(e->queue);
+	e->err = clEnqueueReadBuffer(e->queue, e->frame_buffer, CL_TRUE, 0, \
+			(e->count * 4), e->frame->pix, 0, NULL, &e->events[3]);
 	if (e->run == 1)
 	{
-		e->err = clEnqueueReadBuffer(e->raytrace_queue, e->target_obj_buf, \
-		CL_FALSE, 0, sizeof(t_hit), &e->target_obj, 0, NULL, NULL);
+		e->err = clEnqueueReadBuffer(e->queue, e->target_obj_buf, \
+		CL_FALSE, 0, sizeof(t_hit), &e->target_obj, 0, NULL, &e->events[4]);
 		e->run = 0;
 	}
 	if (e->err != CL_SUCCESS)
@@ -67,21 +67,54 @@ void		opencl_sepia(t_env *e)
 {
 	const size_t	g[2] = {WIDTH, HEIGHT};
 
-	printf("SEPIA\n\n");
 	e->err = 0;
-	e->err = clSetKernelArg(e->kernel_sepia, 0, sizeof(cl_mem), &e->frame_buffer);
-	e->err = clSetKernelArg(e->kernel_sepia, 1, sizeof(cl_mem), &e->frame_buffer);
-	e->err = clSetKernelArg(e->kernel_sepia, 1, sizeof(int) * WIDTH * HEIGHT, NULL);
-	e->err = clSetKernelArg(e->kernel_sepia, 3, sizeof(int), &e->scene->win_w);
-	e->err = clSetKernelArg(e->kernel_sepia, 4, sizeof(int), &e->scene->win_h);
-	e->err = clEnqueueNDRangeKernel(e->raytrace_queue, e->kernel_sepia, 2, NULL, \
-			g, NULL, 0, NULL, NULL);
-				if (e->err)
+	e->err = clEnqueueReadBuffer(e->queue, e->frame_buffer, CL_TRUE, 0, \
+			(e->count * 4), e->frame->pix, 1, &e->events[0], &e->events[3]);
+	(e->err != 0 ? opencl_print_error(e->err) : 0);
+	if (!(e->frame_buffer = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY | \
+	CL_MEM_COPY_HOST_PTR, e->count * 4, e->frame->pix, &e->err)))
+		opencl_builderrors(e, 7, e->err);
+	e->err |= clSetKernelArg(KSP, 0, sizeof(cl_mem), &e->frame_buffer);
+	(e->err != 0 ? opencl_print_error(e->err) : 0);
+	e->err |= clSetKernelArg(KSP, 1, sizeof(int), &e->scene->win_w);
+	(e->err != 0 ? opencl_print_error(e->err) : 0);
+	e->err |= clSetKernelArg(KSP, 2, sizeof(int), &e->scene->win_h);
+	(e->err != 0 ? opencl_print_error(e->err) : 0);
+	e->err |= clEnqueueNDRangeKernel(e->queue, KSP, 2, NULL, g, NULL, 1, \
+									&e->events[3], &e->events[1]);
 	if (e->err)
 	{
 		opencl_print_error(e->err);
 		s_error("Error: Failed to execute Sepia kernel!\n", e);
 	}
+	get_imgptr(e);
+}
+
+void		opencl_black_and_white(t_env *e)
+{
+	const size_t	g[2] = {WIDTH, HEIGHT};
+
+	e->err = 0;
+	e->err = clEnqueueReadBuffer(e->queue, e->frame_buffer, CL_TRUE, 0, \
+			(e->count * 4), e->frame->pix, 1, &e->events[0], &e->events[3]);
+	(e->err != 0 ? opencl_print_error(e->err) : 0);
+	if (!(e->frame_buffer = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY | \
+	CL_MEM_COPY_HOST_PTR, e->count * 4, e->frame->pix, &e->err)))
+		opencl_builderrors(e, 7, e->err);
+	e->err |= clSetKernelArg(KBW, 0, sizeof(cl_mem), &e->frame_buffer);
+	(e->err != 0 ? opencl_print_error(e->err) : 0);
+	e->err |= clSetKernelArg(KBW, 1, sizeof(int), &e->scene->win_w);
+	(e->err != 0 ? opencl_print_error(e->err) : 0);
+	e->err |= clSetKernelArg(KBW, 2, sizeof(int), &e->scene->win_h);
+	(e->err != 0 ? opencl_print_error(e->err) : 0);
+	e->err |= clEnqueueNDRangeKernel(e->queue, KBW, 2, NULL, g, NULL, 1, \
+									&e->events[3], &e->events[2]);
+	if (e->err)
+	{
+		opencl_print_error(e->err);
+		s_error("Error: Failed to execute Black & White kernel!\n", e);
+	}
+	get_imgptr(e);
 }
 
 int			draw(t_env *e)
@@ -96,8 +129,8 @@ int			draw(t_env *e)
 		opencl_print_error(e->err);
 		s_error("Error: Failed to retrieve kernel work group info!", e);
 	}
-	e->err = clEnqueueNDRangeKernel(e->raytrace_queue, KRT, 2, NULL, \
-			g, NULL, 0, NULL, NULL);
+	e->err = clEnqueueNDRangeKernel(e->queue, KRT, 2, NULL, \
+			g, NULL, 0, NULL, &e->events[0]);
 	if (e->err)
 	{
 		opencl_print_error(e->err);
@@ -105,8 +138,8 @@ int			draw(t_env *e)
 	}
 	if (e->scene->flag & OPTION_SEPIA)
 		opencl_sepia(e);
-//	if (e->scene->flag & OPTION_BW)
-//		opencl_bw();
+	if (e->scene->flag & OPTION_BW)
+		opencl_black_and_white(e);
 	get_imgptr(e);
 	return (0);
 }
@@ -117,8 +150,8 @@ void		opencl_close(t_env *e)
 	clReleaseMemObject(e->target_obj_buf);
 	clReleaseProgram(e->program);
 	clReleaseKernel(KRT);
-	clReleaseKernel(e->kernel_sepia);
-	clReleaseKernel(e->kernel_bw);
-	clReleaseCommandQueue(e->raytrace_queue);
+	clReleaseKernel(KSP);
+	clReleaseKernel(KBW);
+	clReleaseCommandQueue(e->queue);
 	clReleaseContext(e->context);
 }

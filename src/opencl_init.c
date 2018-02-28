@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 18:50:02 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/28 13:23:08 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ int			opencl_build(t_env *e, unsigned int count)
 	if (!(KRT = clCreateKernel(e->program, "ray_trace", &e->err)) \
 		|| e->err != CL_SUCCESS)
 		return (opencl_builderrors(e, 6, e->err));
-	if (!(e->kernel_sepia = clCreateKernel(e->program, "sepia_shader", &e->err)) \
+	if (!(KSP = clCreateKernel(e->program, "sepia_shader", &e->err)) \
 		|| e->err != CL_SUCCESS)
 		return (opencl_builderrors(e, 6, e->err));
-	if (!(e->kernel_bw = clCreateKernel(e->program, "bw_shader", &e->err)) \
+	if (!(KBW = clCreateKernel(e->program, "bw_shader", &e->err)) \
 		|| e->err != CL_SUCCESS)
 		return (opencl_builderrors(e, 6, e->err));
 	if (!(e->frame_buffer = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
@@ -98,7 +98,7 @@ int			opencl_init(t_env *e, unsigned int count)
 	if (!(e->context = clCreateContext(0, 1, &e->device_id, \
 				NULL, NULL, &e->err)))
 		return (opencl_builderrors(e, 2, e->err));
-	if (!(e->raytrace_queue = clCreateCommandQueue(e->context, \
+	if (!(e->queue = clCreateCommandQueue(e->context, \
 				e->device_id, 0, &e->err)))
 		return (opencl_builderrors(e, 3, e->err));
 	if (!(e->program = clCreateProgramWithSource(e->context, 1, \

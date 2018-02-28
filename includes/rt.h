@@ -48,6 +48,8 @@
 # define DEPTH					e->scene->depth
 
 # define KRT					e->kernel_rt
+# define KSP					e->kernel_sepia
+# define KBW					e->kernel_bw
 # define NCAM					e->scene->n_cams
 # define NCON					e->scene->n_cones
 # define NCYL					e->scene->n_cylinders
@@ -293,7 +295,8 @@ typedef	struct			s_env
 	cl_int				err;
 	cl_device_id		device_id;
 	cl_context			context;
-	cl_command_queue	raytrace_queue;
+	cl_event			events[5];
+	cl_command_queue	queue;
 	cl_program			program;
 	cl_kernel			kernel_rt;
 	cl_kernel			kernel_sepia;

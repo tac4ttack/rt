@@ -493,8 +493,6 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 }
 
 __kernel void	sepia_shader(	__global	char		*output,
-								__global	char		*frame_data,
-								__local		char		*frame,
 								__private	int			width,
 								__private	int			height)
 {
@@ -503,14 +501,9 @@ __kernel void	sepia_shader(	__global	char		*output,
 	pix.x = get_global_id(0);
 	pix.y = get_global_id(1);
 	id = pix.x + (width * pix.y);
-	
-	event_t	ev;
-	ev = async_work_group_copy((__local char *)frame, (__global char *)frame_data, sizeof(int) * width * height, 0);
-	wait_group_events(1, &ev);
-	
-//	printf("im in sepia kernel\n");
 
-	unsigned int	color = ((__global unsigned int *)frame_data)[id]; // FAUX
+
+	unsigned int	color = ((__global unsigned int *)output)[id];
 	uint3			ingredients = 0;
 	ingredients.x = (color & 0x00FF0000) >> 16;
 	ingredients.y = (color & 0x0000FF00) >> 8;
@@ -525,8 +518,6 @@ __kernel void	sepia_shader(	__global	char		*output,
 
 
 __kernel void	bw_shader(	__global	char		*output,
-							__global	char		*frame_data,
-							__local		char		*frame,
 							__private	int			width,
 							__private	int			height)
 {
