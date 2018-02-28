@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:47:00 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 17:04:38 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/28 13:43:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void			mlx_keyboard_repeated(t_env *e)
 			(e->scene->depth > 0 ? e->scene->depth-- : 0);
 		e->scene->tor_count = pow(2, e->scene->depth + 1) - 1;
 	}
-	if (KP_1)
+/*	if (KP_1)
 	{
 		if (e->scene->flag & OPTION_WAVE)
 			e->scene->flag ^= OPTION_WAVE;
@@ -40,6 +40,8 @@ void			mlx_keyboard_repeated(t_env *e)
 	}
 	if (KP_2)
 	{
+		if (e->scene->flag & OPTION_BW)
+			e->scene->flag ^= OPTION_BW;
 		if (e->scene->flag & OPTION_SEPIA)
 			e->scene->flag ^= OPTION_SEPIA;
 		else
@@ -47,25 +49,12 @@ void			mlx_keyboard_repeated(t_env *e)
 	}
 	if (KP_3)
 	{
+		if (e->scene->flag & OPTION_SEPIA)
+			e->scene->flag ^= OPTION_SEPIA;
 		if (e->scene->flag & OPTION_BW)
 			e->scene->flag ^= OPTION_BW;
 		else
 			e->scene->flag |= OPTION_BW;
-	}
-/*	if (KP_1 || KP_2 || KP_3)
-	{
-		int n = e->scene->flag;
-		while (n)
-		{
-    		if (n & 1)
-	        	printf("1");
-    		else
-		        printf("0");
-	    	n >>= 1;
-		}
-		printf("\n");
-	}
-*/
-
+	}*/
 	opencl_allocate_scene_memory(e);
 }

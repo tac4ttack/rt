@@ -341,6 +341,7 @@ void					init(t_env *e, int ac, char *av);
 void					mlx_img_line(t_frame *sce, t_p2i p1, t_p2i p2, int c);
 int						mlx_img_pix_put(t_frame *sce, int x, int y, int color);
 void					mlx_keyboard_repeated(t_env *e);
+void					mlx_key_no_repeat_event(t_env *e, const int key);
 int						mlx_key_press(int key, t_env *e);
 int						mlx_key_release(int key, t_env *e);
 int						mlx_key_simple(int key, t_env *e);

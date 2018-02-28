@@ -57,6 +57,7 @@ SRC_NAME =  			init.c \
 						mlx_image_draw.c \
 						mlx_key_press.c \
 						mlx_key_release.c \
+						mlx_key_norepeat.c \
 						mlx_key_events.c \
 						mlx_main_loop.c \
 						mlx_mouse.c \

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 18:50:30 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/28 13:45:55 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,5 +148,6 @@ int				mlx_key_release(int key, t_env *e)
 	mlx_key_release_2(key, e);
 	mlx_key_release_3(key, e);
 	mlx_key_release_4(key, e);
+	mlx_key_no_repeat_event(e, key);
 	return (0);
 }
