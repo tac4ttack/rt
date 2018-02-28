@@ -13,6 +13,21 @@ unsigned int	sepiarize(const unsigned int color)
 	return (((uint)cooking_pot.x << 16) + ((uint)cooking_pot.y << 8) + (uint)cooking_pot.z);
 }
 
+unsigned int	cartoonize(const unsigned int color)
+{
+	uint3	base, cooking_pot = 0;
+	base.x = (color & 0x00FF0000) >> 16;
+	base.y = (color & 0x0000FF00) >> 8;
+	base.z = (color & 0x000000FF);
+	if ((base.x = base.x - base.x % 30) < 0)
+		base.x = 0;
+	if ((base.y = base.y - base.y % 30) < 0)
+		base.y = 0;
+	if ((base.z = base.z - base.z % 30) < 0)
+		base.z = 0;
+	return (((uint)base.x << 16) + ((uint)base.y << 8) + (uint)base.z);
+}
+
 unsigned int	desaturate(const unsigned int color)
 {
 	uint3	rgb = 0;

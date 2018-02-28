@@ -478,6 +478,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 	int				depth = scene->depth;
 	unsigned int	color  = 0;
 	unsigned int	bounce_color = 0;
+	int tt = (int)scene->u_time;
 
 	hit.dist = MAX_DIST;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray);
@@ -486,7 +487,6 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normale = get_hit_normale(scene, ray, hit);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
-
 		color = phong(scene, hit, ray);
 		if (depth > 0 && (get_obj_reflex(scene, hit) > 0))
 			bounce_color = bounce(scene, ray, hit, depth);
