@@ -7,12 +7,9 @@ unsigned int	sepiarize(const unsigned int color)
 	cooking_pot.x = (base.x * 0.393) + (base.y * 0.769) + (base.z * 0.189);
 	cooking_pot.y = (base.x * 0.349) + (base.y * 0.686) + (base.z * 0.168);
 	cooking_pot.z = (base.x * 0.272) + (base.y * 0.534) + (base.z * 0.131);
-	if (cooking_pot.x > 255)
-		cooking_pot.x = 255;
-	if (cooking_pot.y > 255)
-		cooking_pot.y = 255;
-	if (cooking_pot.z > 255)
-		cooking_pot.z = 255;
+	(cooking_pot.x > 255 ? cooking_pot.x = 255 : 0);
+	(cooking_pot.y > 255 ? cooking_pot.y = 255 : 0);
+	(cooking_pot.z > 255 ? cooking_pot.z = 255 : 0);
 	return (((uint)cooking_pot.x << 16) + ((uint)cooking_pot.y << 8) + (uint)cooking_pot.z);
 }
 
@@ -23,9 +20,7 @@ unsigned int	desaturate(const unsigned int color)
 	rgb.y = (color & 0x0000FF00) >> 8;
 	rgb.z = (color & 0x000000FF);
 	float 	average = (rgb.x + rgb.y + rgb.z) / 3;
-	return (((unsigned int)average << 16) \
-			+ ((unsigned int)average << 8) \
-			+ (unsigned int)average);
+	return (((uint)average << 16) + ((uint)average << 8) + (uint)average);
 }
 
 unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
