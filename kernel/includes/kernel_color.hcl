@@ -1,4 +1,4 @@
-unsigned int	sepiarize(const unsigned int color)
+/* unsigned int	sepiarize(const unsigned int color)
 {
 
 }
@@ -6,7 +6,7 @@ unsigned int	sepiarize(const unsigned int color)
 unsigned int	desaturate(const unsigned int color)
 {
 	
-}
+} */
 
 unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
 {
