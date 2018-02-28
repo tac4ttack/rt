@@ -1,0 +1,21 @@
+{
+	"files.associations": {
+		"iterator": "c",
+		"*.cl": "c",
+		"*.hcl": "c",
+		"__functional_base": "c",
+		"algorithm": "cpp",
+		"rtv1.h": "c",
+		"__functional_base_03": "c",
+		"__tuple": "c",
+		"limits": "c",
+		"memory": "c",
+		"tuple": "c",
+		"type_traits": "c",
+		"utility": "c",
+		"__bit_reference": "c",
+		"*.hl": "c",
+		"ios": "c"
+	}
+}
+
