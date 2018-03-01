@@ -1,3 +1,6 @@
+#ifndef KERNEL_CONE_HCL
+# define KERNEL_CONE_HCL
+
 static float3	get_cone_abc(const t_cone cone, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
@@ -48,3 +51,5 @@ float3			get_cone_normale(const __local t_scene *scene, const t_hit hit)
 	res = v - project;
 	return (fast_normalize(res));
 }
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef KERNEL_HEADER_HCL
+# define KERNEL_HEADER_HCL
+
 #define BACKCOLOR 0x00999999
 
 #define MAX_DIST 10000000.0 // epsilon 0.00000001 ?
@@ -16,7 +19,7 @@
 #define OPTION_WAVE 	(1 << 1)
 #define OPTION_SEPIA	(1 << 2)
 #define OPTION_BW		(1 << 3)
-#define FLAG_DEBUG		(1 << 2)
+//#define FLAG_DEBUG		(1 << 2)
 
 typedef struct			s_light_ray
 {
@@ -146,3 +149,5 @@ typedef struct			s_scene
 	int					flag;
 	int					tor_count;
 }						t_scene;
+
+#endif

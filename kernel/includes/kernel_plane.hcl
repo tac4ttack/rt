@@ -1,3 +1,6 @@
+#ifndef KERNEL_PLANE_HCL
+# define KERNEL_PLANE_HCL
+
 float		inter_plan(const __local t_scene *scene, const int id, const float3 ray, const float3 origin)
 {
 	float	t;
@@ -10,3 +13,5 @@ float		inter_plan(const __local t_scene *scene, const int id, const float3 ray, 
 		return (0);
 	return (t);
 }
+
+#endif

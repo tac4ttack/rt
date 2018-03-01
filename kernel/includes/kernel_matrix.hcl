@@ -1,3 +1,6 @@
+#ifndef KERNEL_MATRIX_HCL
+# define KERNEL_MATRIX_HCL
+
 float3						rotat_zyx(const float3 vect, const float pitch, const float yaw, const float roll)
 {
 	float3					res;
@@ -56,3 +59,5 @@ float3						rotat_z(const float3 vect, const float angle)
 	res.z = (vect.x * 0) + (vect.y * 0) + (vect.z * 1);
 	return (res);
 }
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef KERNEL_SPHERE_HCL
+# define KERNEL_SPHERE_HCL
+
 static float3	get_sphere_abc(const float radius, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
@@ -30,3 +33,5 @@ float			inter_sphere(const __local t_scene *scene, const int id, const float3 ra
 		return (res1);
 	return (res2);
 }
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef KERNEL_DATA_HCL
+# define KERNEL_DATA_HCL
+
 t_hit			hit_init(void)
 {
 	t_hit		hit;
@@ -22,3 +25,5 @@ int				get_max_obj(const __local t_scene *scene)
 		res = scene->n_spheres;
 	return (res);
 }
+
+#endif

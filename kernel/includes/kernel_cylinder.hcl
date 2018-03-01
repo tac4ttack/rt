@@ -1,3 +1,6 @@
+#ifndef KERNEL_CYLINDER_HCL
+# define KERNEL_CYLINDER_HCL
+
 static float3	get_cylinder_abc(const float radius, const float3 dir, const float3 ray, const float3 origin)
 {
 	float3		abc;
@@ -61,3 +64,5 @@ float3			get_cylinder_normal(const __local t_scene *scene, t_hit hit)
 	res = v - project;
 	return (fast_normalize(res));
 }
+
+#endif

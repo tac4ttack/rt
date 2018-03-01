@@ -1,3 +1,6 @@
+#ifndef KERNEL_COLOR_HCL
+# define KERNEL_COLOR_HCL
+
 unsigned int	sepiarize(const unsigned int color)
 {
 	uint3	base, cooking_pot = 0;
@@ -202,3 +205,5 @@ unsigned int			color_specular(const __local t_scene *scene, const t_hit hit, \
 	(col_b > 255 ? col_b = 255 : 0);
 	return ((col_r << 16) + (col_g << 8) + col_b);
 }
+
+#endif

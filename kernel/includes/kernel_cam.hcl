@@ -1,4 +1,5 @@
-
+#ifndef KERNEL_CAM_HCL
+# define KERNEL_CAM_HCL
 
 float3						get_ray_cam(__local t_scene *scene, const uint2 pix)
 {
@@ -39,3 +40,5 @@ float3						old_get_ray_cam(const t_cam cam, const t_scene scene, const int x, c
 	return(fast_normalize(cam_ray));
 }
 */
+
+#endif
