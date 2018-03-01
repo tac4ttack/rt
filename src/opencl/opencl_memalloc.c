@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opencl_memalloc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:18:16 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 21:18:27 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 int			opencl_allocate_obj_memory(t_env *e)
 {
 	if (NCON > 0)
+	{
 		if (!(e->cones_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
 		CL_MEM_COPY_HOST_PTR, sizeof(t_cone) * NCON, e->cones, &e->err)))
 			return (opencl_builderrors(e, 7, e->err));
+	}
 	if (NCYL > 0)
 		if (!(e->cylinders_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
 		CL_MEM_COPY_HOST_PTR, sizeof(t_cylinder) * NCYL, e->cylinders, &e->err)))
@@ -29,6 +31,11 @@ int			opencl_allocate_obj_memory(t_env *e)
 	if (NSPH > 0)
 		if (!(e->spheres_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
 		CL_MEM_COPY_HOST_PTR, sizeof(t_sphere) * NSPH, e->spheres, &e->err)))
+			return (opencl_builderrors(e, 7, e->err));
+			if (NSPH > 0)
+	if (e->gen->unit_size)
+		if (!(e->gen_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
+		CL_MEM_COPY_HOST_PTR, e->gen->mem_size, e->gen->mem, &e->err)))
 			return (opencl_builderrors(e, 7, e->err));
 	return (0);
 }

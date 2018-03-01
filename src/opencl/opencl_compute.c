@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opencl_compute.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/28 15:55:03 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 21:17:19 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ void		opencl_set_args(t_env *e)
 	e->err |= clSetKernelArg(KRT, 14, sizeof(t_plane) * NPLA + 4, NULL);
 	e->err |= clSetKernelArg(KRT, 15, sizeof(t_sphere) * NSPH + 4, NULL);
 	e->err |= clSetKernelArg(KRT, 16, sizeof(float), &(e->fps.u_time));
+	e->err |= clSetKernelArg(KRT, 17, sizeof(cl_mem), &e->gen_mem);
+	e->err |= clSetKernelArg(KRT, 18, e->gen->mem_size, NULL);
+	e->err |= clSetKernelArg(KRT, 19, sizeof(size_t), &e->gen->mem_size);
+
 	if (e->err != CL_SUCCESS)
 	{
 		opencl_print_error(e->err);
@@ -68,6 +72,7 @@ int			draw(t_env *e)
 	const size_t	g[2] = {WIDTH, HEIGHT};
 
 	opencl_set_args(e);
+
 	e->err = clGetKernelWorkGroupInfo(KRT, e->device_id, \
 			CL_KERNEL_WORK_GROUP_SIZE, sizeof(e->local), &e->local, NULL);
 	if (e->err != CL_SUCCESS)

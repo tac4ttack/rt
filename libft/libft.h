@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 19:26:13 by fmessina          #+#    #+#             */
-/*   Updated: 2017/12/06 16:02:51 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/28 23:52:06 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ typedef struct		s_list
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
+void				*ft_memrealloc(void *ptr, size_t size_old, size_t size_new);
 
 int					ft_ahtoi(char const *str);
 int					ft_atoi(char const *str);

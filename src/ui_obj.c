@@ -6,12 +6,12 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 21:40:32 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
+/*
 cl_float3		*get_target_dir(t_env *e)
 {
 	cl_float3	*res;
@@ -49,9 +49,12 @@ cl_float3		*get_target_pos(t_env *e)
 	}
 	return (res);
 }
-
+*/
 void			ui_obj(t_env *e)
 {
+	(void)e;
+	return ;
+	/*
 	cl_float3	*target;
 
 	target = NULL;
@@ -74,4 +77,5 @@ void			ui_obj(t_env *e)
 		(KP_N7 ? target->z -= 0.1 : 0);
 		(KP_N9 ? target->z += 0.1 : 0);
 	}
+	*/
 }

@@ -18,6 +18,23 @@
 #define OPTION_BW		(1 << 3)
 #define FLAG_DEBUG		(1 << 2)
 
+# define OBJ_CONE			1
+# define OBJ_CYLINDER		2
+# define OBJ_PLANE			3
+# define OBJ_SPHERE			4
+
+typedef struct			s_object
+{
+	int					size;
+	int					id;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+}						t_object;
+
 typedef struct			s_light_ray
 {
 	float3				dir;
@@ -27,10 +44,9 @@ typedef struct			s_light_ray
 typedef struct			s_hit
 {
 	float				dist;
-	int					type;
-	int					id;
-	float3				pos;
+	//void				*void;
 	float3				normale;
+	t_object __local	*obj;
 }						t_hit;
 
 typedef struct			s_cam
@@ -43,33 +59,6 @@ typedef struct			s_cam
 	float				roll;
 }						t_cam;
 
-typedef struct			s_cone
-{
-	float3				pos;
-	float3				dir;
-	float				angle;
-	int					color;
-	float3				diff;
-	float3				spec;
-	float				reflex;
-}						t_cone;
-
-typedef struct			s_cylinder
-{
-	float3				pos;
-	float3				dir;
-	float3				base_dir;
-	float				radius;
-	int					color;
-	float				height;
-	float3				diff;
-	float3				spec;
-	float				pitch;
-	float				yaw;
-	float				roll;
-	float				reflex;
-}						t_cylinder;
-
 typedef struct			s_light
 {
 	int					type;
@@ -80,25 +69,61 @@ typedef struct			s_light
 	int					color;
 }						t_light;
 
-typedef struct			s_plane
+typedef struct			s_cone
 {
+	int					size;
+	int					id;
 	float3				pos;
-	float3				normale;
-	int					color;
+	float3				dir;
 	float3				diff;
 	float3				spec;
+	int					color;
+	float				reflex;
+
+	float				angle;
+
+}						t_cone;
+
+typedef struct			s_cylinder
+{
+	int					size;
+	int					id;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+
+	float				height;
+	float3				base_dir;
+	float				radius;
+}						t_cylinder;
+
+typedef struct			s_plane
+{
+	int					size;
+	int					id;
+	float3				pos;
+	float3				normale;
+	float3				diff;
+	float3				spec;
+	int					color;
 	float				reflex;
 }						t_plane;
 
 typedef struct			s_sphere
 {
+	int					size;
+	int					id;
 	float3				pos;
 	float3				dir;
-	float				radius;
-	int					color;
 	float3				diff;
 	float3				spec;
+	int					color;
 	float				reflex;
+
+	float				radius;
 }						t_sphere;
 
 typedef	struct			s_tor
@@ -129,6 +154,8 @@ typedef struct			s_scene
 	//void				*void5;
 	t_sphere			__local *spheres;
 	//void				*void6;
+	void				__local *mem_obj;
+	//void				*void7;
 	unsigned int		n_cams;
 	unsigned int		n_cones;
 	unsigned int		n_cylinders;
@@ -145,4 +172,5 @@ typedef struct			s_scene
 	float				u_time;
 	int					flag;
 	int					tor_count;
+	size_t				mem_size_obj;
 }						t_scene;

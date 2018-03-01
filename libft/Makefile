@@ -6,7 +6,7 @@
 #    By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/05 23:18:40 by fmessina          #+#    #+#              #
-#    Updated: 2017/11/23 16:07:51 by fmessina         ###   ########.fr        #
+#    Updated: 2018/03/01 21:04:24 by ntoniolo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC =		ft_abs.c \
 			ft_cos.c \
 			ft_dtoa.c \
 			ft_error.c \
+			ft_memrealloc.c \
 			ft_error_if.c \
 			ft_fabs.c \
 			ft_facti.c \

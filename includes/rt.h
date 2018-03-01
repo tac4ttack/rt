@@ -67,9 +67,27 @@
 # define XML					e->xml
 # define SCN					e->scene
 
+# define RESERVED				(1 << 0)
 # define OPTION_WAVE			(1 << 1)
 # define OPTION_SEPIA			(1 << 2)
 # define OPTION_BW				(1 << 3)
+
+# define OBJ_CONE			1
+# define OBJ_CYLINDER		2
+# define OBJ_PLANE			3
+# define OBJ_SPHERE			4
+
+typedef struct			s_object
+{
+	cl_int				size;
+	cl_int				id;
+	cl_float3			pos;
+	cl_float3			dir;
+	cl_float3			diff;
+	cl_float3			spec;
+	cl_int				color;
+	cl_float			reflex;
+}						t_object;
 
 typedef struct			s_fps
 {
@@ -91,10 +109,8 @@ typedef struct			s_p2i
 typedef struct			s_hit
 {
 	float				dist;
-	int					type;
-	int					id;
-	cl_float3			pos;
 	cl_float3			normale;
+	t_object			*obj;
 }						t_hit;
 
 typedef struct			s_cam
@@ -107,33 +123,6 @@ typedef struct			s_cam
 	cl_float			roll;
 }						t_cam;
 
-typedef struct			s_cone
-{
-	cl_float3			pos;
-	cl_float3			dir;
-	cl_float			angle;
-	cl_int				color;
-	cl_float3			diff;
-	cl_float3			spec;
-	cl_float			reflex;
-}						t_cone;
-
-typedef struct			s_cylinder
-{
-	cl_float3			pos;
-	cl_float3			dir;
-	cl_float3			base_dir;
-	cl_float			radius;
-	cl_int				color;
-	cl_float			height;
-	cl_float3			diff;
-	cl_float3			spec;
-	cl_float			pitch;
-	cl_float			yaw;
-	cl_float			roll;
-	cl_float			reflex;
-}						t_cylinder;
-
 typedef struct			s_light
 {
 	cl_int				type;
@@ -144,25 +133,67 @@ typedef struct			s_light
 	cl_int				color;
 }						t_light;
 
-typedef struct			s_plane
+/*							*\
+**|							**|
+**|			OBJECT			**|
+**|							**!
+*/
+
+typedef struct			s_cone
 {
+	cl_int				size;
+	cl_int				id;
 	cl_float3			pos;
-	cl_float3			normale;
-	cl_int				color;
+	cl_float3			dir;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_int				color;
+	cl_float			reflex;
+
+	cl_float			angle;
+
+}						t_cone;
+
+typedef struct			s_cylinder
+{
+	cl_int				size;
+	cl_int				id;
+	cl_float3			pos;
+	cl_float3			dir;
+	cl_float3			diff;
+	cl_float3			spec;
+	cl_int				color;
+	cl_float			reflex;
+
+	cl_float			height;
+	cl_float3			base_dir;
+	cl_float			radius;
+}						t_cylinder;
+
+typedef struct			s_plane
+{
+	cl_int				size;
+	cl_int				id;
+	cl_float3			pos;
+	cl_float3			normale;
+	cl_float3			diff;
+	cl_float3			spec;
+	cl_int				color;
 	cl_float			reflex;
 }						t_plane;
 
 typedef struct			s_sphere
 {
+	cl_int				size;
+	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
-	cl_float			radius;
-	cl_int				color;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_int				color;
 	cl_float			reflex;
+
+	cl_float			radius;
 }						t_sphere;
 
 typedef struct			s_param
@@ -257,6 +288,7 @@ typedef struct			s_scene
 	t_light				*lights;
 	t_plane				*planes;
 	t_sphere			*spheres;
+	void				*mem_obj;
 	unsigned int		n_cams;
 	unsigned int		n_cones;
 	unsigned int		n_cylinders;
@@ -273,7 +305,19 @@ typedef struct			s_scene
 	float				u_time;
 	int					flag;
 	int					tor_count;
+	size_t				mem_size_obj;
 }						t_scene;
+
+typedef struct			s_gen
+{
+	bool				(*add)(struct s_gen *, void *);
+	size_t				mem_size;
+	size_t				unit_size;
+	void				*mem;
+}						t_gen;
+void		*construct_gen();
+bool		gen_add(t_gen *gen, void *elem);
+void		*destruct_gen(t_gen **gen);
 
 typedef	struct			s_env
 {
@@ -304,7 +348,7 @@ typedef	struct			s_env
 	size_t				global;
 	size_t				local;
 	unsigned int		count;
-	
+
 	t_cam				*cameras;
 	cl_mem				cameras_mem;
 	t_cone				*cones;
@@ -325,6 +369,9 @@ typedef	struct			s_env
 	char				run;
 	t_tor				*tree;
 	int					node_count;
+
+	cl_mem				gen_mem;
+	t_gen				*gen;
 }						t_env;
 
 cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);

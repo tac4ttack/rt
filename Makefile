@@ -55,16 +55,7 @@ SRC_NAME =  			init.c \
 						hud.c \
 						main.c \
 						mlx_image_draw.c \
-						mlx_key_press.c \
-						mlx_key_release.c \
-						mlx_key_norepeat.c \
-						mlx_key_events.c \
 						mlx_main_loop.c \
-						mlx_mouse.c \
-						opencl_compute.c \
-						opencl_error.c \
-						opencl_init.c \
-						opencl_memalloc.c \
 						rotations.c \
 						tools.c \
 						tree_of_ray.c \
@@ -72,23 +63,36 @@ SRC_NAME =  			init.c \
 						ui_cam.c \
 						update_fps.c \
 						vectors.c \
-						xml.c \
-						xml_check_attr.c \
-						xml_cameras.c \
-						xml_cones.c \
-						xml_cylinders.c \
-						xml_data_float.c \
-						xml_data_float3.c \
-						xml_data_int.c \
-						xml_data_vector.c \
-						xml_lights.c \
-						xml_list.c \
-						xml_nodes.c \
-						xml_planes.c \
-						xml_scene.c \
-						xml_spheres.c \
 						hooks.c \
-						xml_tools.c	
+						gen/construct_gen.c \
+						gen/gen_add.c \
+						gen/destruct_gen.c \
+						event/mlx_mouse.c \
+						event/mlx_key_press.c \
+						event/mlx_key_release.c \
+						event/mlx_key_norepeat.c \
+						event/mlx_key_events.c \
+						opencl/opencl_construct.c \
+						opencl/opencl_compute.c \
+						opencl/opencl_error.c \
+						opencl/opencl_init.c \
+						opencl/opencl_memalloc.c \
+						xml/xml.c \
+						xml/xml_check_attr.c \
+						xml/xml_cameras.c \
+						xml/xml_cones.c \
+						xml/xml_cylinders.c \
+						xml/xml_data_float.c \
+						xml/xml_data_float3.c \
+						xml/xml_data_int.c \
+						xml/xml_data_vector.c \
+						xml/xml_lights.c \
+						xml/xml_list.c \
+						xml/xml_nodes.c \
+						xml/xml_planes.c \
+						xml/xml_scene.c \
+						xml/xml_spheres.c \
+						xml/xml_tools.c
 
 default: gpu
 
@@ -104,6 +108,10 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
 $(OBJ_PATH):
 	@echo "$(GREEN)Creating ./obj path and making binaries from source files$(EOC)"
 	@mkdir $(OBJ_PATH)
+	@mkdir $(OBJ_PATH)/opencl
+	@mkdir $(OBJ_PATH)/xml
+	@mkdir $(OBJ_PATH)/gen
+	@mkdir $(OBJ_PATH)/event
 
 CPU: all
 cpu: CPU
@@ -122,13 +130,13 @@ debug_flag:
 debuglibft:
 	@echo "Compiling Libft library with ASan"
 	make -C $(LIBFT_PATH)/ debug all
-	
+
 clean:
 	@echo "$(GREEN)Cleaning...$(EOC)"
 	@echo "$(GREEN)Deleting .obj files$(EOC)"
 	@rm -rf $(OBJ_PATH)
 
-fclean: clean 
+fclean: clean
 	@echo "$(GREEN)Full cleaning...$(EOC)"
 	@echo "$(GREEN)Deleting $(NAME) executable and config file$(EOC)"
 	@rm -rf $(NAME) ./config

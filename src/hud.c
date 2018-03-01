@@ -6,12 +6,12 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 13:48:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 21:40:13 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
+/*
 static void		display_hud_cam(t_env *e)
 {
 	char		*mvt;
@@ -95,10 +95,13 @@ static void		display_hud_obj_dir(t_env *e)
 		mlx_string_put(e->mlx, e->win, 10, HEIGHT - 25, 0x00ffffff, dir);
 		free(dir);
 	}
-}
+}*/
 
 void			display_hud(t_env *e)
 {
+		(void)e;
+		return ;
+	/*
 	char		*refl;
 	char		*fps;
 
@@ -111,4 +114,5 @@ void			display_hud(t_env *e)
 	fps = ft_itoa(e->fps.ret_fps);
 	mlx_string_put(e->mlx, e->win, e->win_w - 40, 10, 0x00ffffff, fps);
 	free(fps);
+	*/
 }

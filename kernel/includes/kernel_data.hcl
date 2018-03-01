@@ -3,10 +3,8 @@ t_hit			hit_init(void)
 	t_hit		hit;
 
 	hit.dist = 0.0;
-	hit.type = 0;
-	hit.id = 0;
-	hit.pos = 0.0;
 	hit.normale = 0.0;
+	hit.obj = 0;
 	return (hit);
 }
 

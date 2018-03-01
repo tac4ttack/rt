@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 21:08:31 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,13 @@ void		xml_allocate_plane(t_env *e)
 
 void		xml_push_plane(t_env *e, t_node *list)
 {
+	e->planes[list->id].size = sizeof(t_plane);
+	e->planes[list->id].id = OBJ_PLANE;
 	e->planes[list->id].pos = list->pos;
 	e->planes[list->id].normale = list->normale;
 	e->planes[list->id].color = list->color;
 	e->planes[list->id].diff = list->diff;
 	e->planes[list->id].spec = list->spec;
 	e->planes[list->id].reflex = list->reflex;
+	e->gen->add(e->gen, (void*)&e->planes[list->id]);
 }
