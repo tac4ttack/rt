@@ -372,7 +372,7 @@ void					xml_allocate_cyl(t_env *e);
 void					xml_allocate_light(t_env *e);
 void					xml_allocate_plane(t_env *e);
 void					xml_allocate_sphere(t_env *e);
-int						xml_check_attr(char **att);
+int						xml_check_attr(t_env *e, char **att);
 int						check_float(cl_float3 *clf, float f, int mod);
 int						xml_check_char(char c);
 char					*xml_check_line(t_env *e, char *buf);

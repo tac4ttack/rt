@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 23:46:06 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void				xml_node_generic(t_env *e, char *node, char mod)
 
 void				xml_process_node(t_env *e, char *node)
 {
-	if (!(XMLSUB = ft_strsplit(node, ' ')) || xml_check_attr(XMLSUB) != 0)
+	if (!(XMLSUB = ft_strsplit(node, ' ')) || xml_check_attr(e, XMLSUB) != 0)
 		s_error("\x1b[2;31mInput file is not valid\x1b[0m", e);
 	if (ft_strcmp(XMLSUB[0], "!--") == 0 || XML->is_comm == 1)
 		xml_node_generic(e, node, 1);
