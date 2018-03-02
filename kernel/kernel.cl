@@ -169,6 +169,7 @@ unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3
 				if (hit.type == 5)
 					hue = (int __private)SPHERE[hit.id].color;
 
+			/*
 				if (hit.type == 1)
 					hue_light = (int __private)CONES[light_hit.id].color;
 				if (hit.type == 2)
@@ -179,6 +180,9 @@ unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3
 					hue_light = (int __private)PLANE[light_hit.id].color;
 				if (hit.type == 5)
 					hue_light = (int __private)SPHERE[light_hit.id].color;
+			*/
+				hue_light = LIGHT[i].color;
+
 				col_r = (res_color & 0xFF0000) >> 16;
 				col_g = (res_color & 0x00FF00) >> 8;
 				col_b = (res_color & 0x0000FF);
@@ -263,6 +267,7 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 	else if (hit.type == 5)
 		hue = (int __private)SPHERE[hit.id].color;
 
+	/*
 	if (hit.type == 1)
 		hue_light = (int __private)CONES[0].color;
 	else if (hit.type == 2)
@@ -273,6 +278,8 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 		hue_light = (int __private)PLANE[0].color;
 	else if (hit.type == 5)
 		hue_light = (int __private)SPHERE[0].color;
+	*/
+	hue_light = LIGHT[i].color;
 
 	if (hit.type == 1)
 		speculos = (float3 __private)CONES[hit.id].spec;
