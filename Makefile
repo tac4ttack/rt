@@ -2,7 +2,7 @@ NAME = 					rt
 
 CC = 					clang
 CFLAGS +=				-Wall -Wextra -Werror
-OFLAGS := 				-O3 -Ofast
+OFLAGS := 				-O3
 RM := 					rm -rf
 
 INC = 					$(addprefix $(INC_PATH)/,$(INC_NAMES))
@@ -92,7 +92,9 @@ SRC_NAME =  			init.c \
 
 default: gpu
 
-all: libft mlx $(NAME)
+all: libft mlx
+	@echo "$(GREEN)Checking for RT$(EOC)"
+	@make -j $(NAME)
 
 $(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
 	@echo "$(GREEN)Compiling $(NAME) with $(OS_NAME) MLX version$(EOC)"
@@ -120,9 +122,9 @@ debug_flag:
 	$(eval ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer)
 
 debuglibft:
-	@echo "Compiling Libft library with ASan"
-	make -C $(LIBFT_PATH)/ debug all
-	
+	@echo "$(GREEN)Checking for Libft library with ASan$(EOC)"
+	make -C $(LIBFT_PATH)/ debug libft.a
+
 clean:
 	@echo "$(GREEN)Cleaning...$(EOC)"
 	@echo "$(GREEN)Deleting .obj files$(EOC)"
@@ -134,8 +136,8 @@ fclean: clean
 	@rm -rf $(NAME) ./config
 
 libft:
-	@echo "$(GREEN)Compiling Libft library$(EOC)"
-	make -C $(LIBFT_PATH)/ all
+	@echo "$(GREEN)Checking for Libft library$(EOC)"
+	make -C $(LIBFT_PATH)/ libft.a
 
 cleanlibft:
 	@echo "$(GREEN)Cleaning Libft folder$(EOC)"
@@ -146,8 +148,8 @@ fcleanlibft: cleanlibft
 	make -C $(LIBFT_PATH)/ fclean
 
 mlx:
-	@echo "$(GREEN)Compiling MLX library$(EOC)"
-	make -C $(MLX_PATH)/ all
+	@echo "$(GREEN)Checking for MLX library$(EOC)"
+	make -C $(MLX_PATH)/ libmlx.a
 
 cleanmlx:
 	@echo "$(GREEN)Cleaning Minilibx folder$(EOC)"
@@ -155,7 +157,7 @@ cleanmlx:
 	@make -C ./mlx/mlx_sierra/ clean
 	@make -C ./mlx/mlx_x11/ clean
 
-re: fclean default
+re: fclean fcleanlibft cleanmlx default
 
 norme:
 	norminette $(SRC_PATH)

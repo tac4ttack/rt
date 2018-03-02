@@ -6,7 +6,7 @@
 #    By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/05 23:18:40 by fmessina          #+#    #+#              #
-#    Updated: 2017/11/23 16:07:51 by fmessina         ###   ########.fr        #
+#    Updated: 2018/03/02 19:10:18 by fmessina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,7 +111,8 @@ SRC =		ft_abs.c \
 
 OFILES =	$(SRC:.c=.o)
 
-all: Makefile $(NAME)
+all: Makefile
+	@make -j $(NAME)
 
 $(NAME): libft.h get_next_line.h $(SRC) $(OFILES)
 	@echo "Object files successfully created"
