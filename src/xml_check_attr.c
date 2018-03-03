@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/25 16:28:15 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/01 23:50:25 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/03 20:15:21 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-int			check_float(cl_float3 *clf, float f, int mod)
+int			xml_check_float(cl_float3 *clf, float f, int mod)
 {
 	if (mod == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/03 16:34:11 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/03 21:23:23 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void		frame_init(t_env *e)
 	e->frame->bpp = bpp;
 	e->frame->row = row;
 	e->frame->endian = endian;
-	load_scene(e);
 }
 
 void		env_init(t_env *e)
@@ -80,7 +79,6 @@ void		env_init(t_env *e)
 	e->cen_y = e->win_h / 2;
 	e->gpu = IS_GPU;
 	e->run = 0;
-	e->tree = tor_create(e);
 	//printf("t_light_ray			: %-20lu\n", sizeof(t_light_ray));
 	printf("t_cam 				: %-20lu\n", sizeof(t_cam));
 	printf("t_cone 				: %-20lu\n", sizeof(t_cone));
@@ -88,26 +86,34 @@ void		env_init(t_env *e)
 	printf("t_light 			: %-20lu\n", sizeof(t_light));
 	printf("t_plane 			: %-20lu\n", sizeof(t_plane));
 	printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
-	printf("t_tor 				: %-20lu\n", sizeof(t_tor));
+//	printf("t_tor 				: %-20lu\n", sizeof(t_tor)); // TOR IS NO MORE!
 	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
 }
 
-void		init(t_env *e, int ac, char *av)
+void		init(t_env *e, char *av)
 {
 //	ft_bzero(&e->target_obj, sizeof(t_hit));	// useless car bzero de env dans le main
 	if (!(e->scene = malloc(sizeof(t_scene))))
 		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
 	ft_bzero(e->scene, sizeof(t_scene));
-	xml_init(e, ac, av);
+	xml_init(e, av);
 	env_init(e);
-	if (!(e->mlx = mlx_init()))
-		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m", e);
-	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RT")))
-		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
-	frame_init(e);
-	if (opencl_init(e, e->count * 4) != 0)
-	{
-		e->gpu = 0;
-		opencl_init(e, e->count * 4);
-	}
+	
+	e->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title ((GtkWindow*) e->window, "la bite a dudule");
+	gtk_window_set_resizable((GtkWindow *)e->window, TRUE);
+	gtk_widget_show(e->window);
+	
+	  
+//	if (!(e->mlx = mlx_init()))
+//		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m", e);
+//	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RT")))
+//		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
+//	frame_init(e);
+//	load_scene(e);
+//	if (opencl_init(e, e->count * 4) != 0)
+//	{
+//		e->gpu = 0;
+//		opencl_init(e, e->count * 4);
+//	}
 }

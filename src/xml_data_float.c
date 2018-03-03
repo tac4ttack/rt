@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 18:27:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/03 20:15:41 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	xml_data_reflex(t_env *e, char **attributes, int *i, t_node *node)
 		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
 			s_error("\x1b[2;31mError in REFLEX from scene\x1b[0m", e);
 		node->reflex = ft_atof(attributes[(*i)++] + 8);
-		if (check_float(NULL, node->reflex, 1))
+		if (xml_check_float(NULL, node->reflex, 1))
 			s_error("\x1b[2;31mError REFLEX must be 0 <= n <= 1\x1b[0m", e);
 	}
 	else
@@ -37,7 +37,7 @@ void	xml_data_brightness(t_env *e, char **attributes, int *i, t_node *node)
 		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
 			s_error("\x1b[2;31mError in BRIGHT from scene\x1b[0m", e);
 		node->brightness = ft_atof(attributes[(*i)++] + 12);
-		if (check_float(NULL, node->brightness, 1))
+		if (xml_check_float(NULL, node->brightness, 1))
 			s_error("\x1b[2;31mError BRIGHTNESS must be 0 <= n <= 1\x1b[0m", e);
 	}
 	else

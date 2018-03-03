@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:33:45 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/03 20:36:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@ void		xml_read_file(t_env *e)
 	close(XML->scene_fd);
 }
 
-void		xml_get_file(t_env *e, int ac, char *av)
+void		xml_get_file(t_env *e, char *av)
 {
-	if (ac > 2)
-		s_error("\x1b[2;31mError, too many arguments\x1b[0m", e);
-	else if (ac == 2)
+//	if (ac > 2)
+//		s_error("\x1b[2;31mError, too many arguments\x1b[0m", e);
+//	else if (ac == 2)
 		XML->scene = ft_strdup(av);
-	else
-	{
-		ft_putendl("\x1b[2;33mNo scene file specified, loading default\x1b[0m");
-		XML->scene = ft_strdup("./scenes/default.xml");
-	}
+//	else
+//	{
+//		ft_putendl("\x1b[2;33mNo scene file specified, loading default\x1b[0m");
+//		XML->scene = ft_strdup("./scenes/default.xml");
+//	}
 	if ((XML->scene_fd = open(XML->scene, O_RDONLY)) < 0)
 		p_error("\x1b[2;31mCan't open scene file\x1b[0m", e);
 	ft_bzero((void*)XML->scene, ft_strlen(XML->scene));
@@ -52,11 +52,11 @@ void		xml_get_file(t_env *e, int ac, char *av)
 	xml_parse_nodes(e);
 }
 
-void		xml_init(t_env *e, int ac, char *av)
+void		xml_init(t_env *e, char *av)
 {
 	if (!(XML = malloc(sizeof(t_xml))))
 		s_error("\x1b[2;31mCan't initialize the xml buffer\x1b[0m", e);
 	ft_bzero(XML, sizeof(t_xml));
 	XML->node_lst = NULL;
-	xml_get_file(e, ac, av);
+	xml_get_file(e, av);
 }

@@ -7,7 +7,7 @@
 # include <sys/time.h>
 # include "libft.h"
 # include "mlx.h"
-//#include <gtk/gtk.h>
+#include <gtk/gtk.h>
 # include <sys/time.h>
 
 # ifdef MAC_KEYS
@@ -236,20 +236,6 @@ typedef struct			s_frame
 	int					endian;
 }						t_frame;
 
-typedef	struct			s_tor
-{
-	cl_float3			prim;
-//	cl_float3			refl;
-//	cl_float3			refr;
-	unsigned int		hit_type;
-	unsigned int		hit_id;
-//	float				coef_refl;
-//	float				coef_refr;
-	unsigned int		color;
-	char				check_g;
-	char				check_d;
-}						t_tor;
-
 typedef struct			s_scene
 {
 	t_cam				*cameras;
@@ -278,8 +264,9 @@ typedef struct			s_scene
 
 typedef	struct			s_env
 {
-	void				*mlx;
-	void				*win;
+	void				*mlx; // TO BE DELETED
+	void				*win; // TO BE DELETED
+	GtkWidget			*window;
 	t_frame				*frame;
 	t_key				keys;
 	int					win_w;
@@ -294,7 +281,7 @@ typedef	struct			s_env
 	cl_int				err;
 	cl_device_id		device_id;
 	cl_context			context;
-	cl_event			events[5];
+	cl_event			events[3];
 	cl_command_queue	queue;
 	cl_program			program;
 	cl_kernel			kernel_rt;
@@ -324,7 +311,6 @@ typedef	struct			s_env
 	t_fps				fps;
 
 	char				run;
-	t_tor				*tree;
 	int					node_count;
 }						t_env;
 
@@ -334,7 +320,7 @@ int						draw(t_env *e);
 void					error(void);
 cl_float3				*get_target_dir(t_env *e);
 cl_float3				*get_target_pos(t_env *e);
-void					init(t_env *e, int ac, char *av);
+void					init(t_env *e, char *av);
 void					mlx_img_line(t_frame *sce, t_p2i p1, t_p2i p2, int c);
 int						mlx_img_pix_put(t_frame *sce, int x, int y, int color);
 void					mlx_keyboard_repeated(t_env *e);
@@ -362,8 +348,6 @@ cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
 void					s_error(char *str, t_env *e);
 void					set_hooks(t_env *e);
 cl_float3				sub_cl_float(cl_float3 v1, cl_float3 v2);
-t_tor					*tor_create(t_env *e);
-int						tor_flush(t_env *e);
 void					ui_cam(t_env *e);
 void					ui_obj(t_env *e);
 void					update_fps(t_fps *fps);
@@ -374,7 +358,7 @@ void					xml_allocate_light(t_env *e);
 void					xml_allocate_plane(t_env *e);
 void					xml_allocate_sphere(t_env *e);
 int						xml_check_attr(t_env *e, char **att);
-int						check_float(cl_float3 *clf, float f, int mod);
+int						xml_check_float(cl_float3 *clf, float f, int mod);
 int						xml_check_char(char c);
 char					*xml_check_line(t_env *e, char *buf);
 int						xml_check_node_format(char **node, int mod);
@@ -404,8 +388,8 @@ void					xml_data_speculos(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_type(t_env *e, char **attributes, \
 										int *i, t_node *node);
-void					xml_init(t_env *e, int ac, char *av);
-void					xml_get_file(t_env *e, int ac, char *av);
+void					xml_init(t_env *e, char *av);
+void					xml_get_file(t_env *e, char *av);
 void					xml_list_add_first(t_node **begin, t_node *node);
 void					xml_list_clean(t_env *e, t_node **list);
 t_node					*xml_list_new(char type);

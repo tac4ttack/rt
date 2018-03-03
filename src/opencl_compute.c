@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/28 15:55:03 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/03 20:14:07 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ int			get_imgptr(t_env *e)
 {
 	clFinish(e->queue);
 	e->err = clEnqueueReadBuffer(e->queue, e->frame_buffer, CL_TRUE, 0, \
-			(e->count * 4), e->frame->pix, 0, NULL, &e->events[3]);
+			(e->count * 4), e->frame->pix, 0, NULL, &e->events[1]);
 	if (e->run == 1)
 	{
 		e->err = clEnqueueReadBuffer(e->queue, e->target_obj_buf, \
-		CL_FALSE, 0, sizeof(t_hit), &e->target_obj, 0, NULL, &e->events[4]);
+		CL_FALSE, 0, sizeof(t_hit), &e->target_obj, 0, NULL, &e->events[2]);
 		e->run = 0;
 	}
 	if (e->err != CL_SUCCESS)
