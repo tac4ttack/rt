@@ -16,11 +16,11 @@
 #  include "linux_keys.h"
 # endif
 
-# ifdef GPU
+# ifdef CPU
 #  define MAX_SOURCE_SIZE	(0x100000)
-#  define IS_GPU			1
-# else
 #  define IS_GPU			0
+# else
+#  define IS_GPU			1
 # endif
 
 # ifdef __APPLE__

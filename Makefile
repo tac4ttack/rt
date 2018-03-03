@@ -1,6 +1,6 @@
 NAME = 					rt
 
-CC = 					gcc -fdiagnostics-color=auto
+CC = 					clang
 CFLAGS +=				-Wall -Wextra -Werror
 OFLAGS := 				-O3
 RM := 					rm -rf
@@ -99,25 +99,43 @@ all: libft mlx
 
 $(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
 	@echo "$(GREEN)Compiling $(NAME) with $(OS_NAME) MLX version$(EOC)"
-	$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(MLX) $(MLXFLAGS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
+	$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(GTK_CLIBS) $(MLX) $(MLXFLAGS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
-	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) -I $(MLX_PATH)  $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) -I $(MLX_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_PATH):
 	@echo "$(GREEN)Creating ./obj path and making binaries from source files$(EOC)"
 	@mkdir $(OBJ_PATH)
 
-CPU: all
-cpu: CPU
+CPU:
+	@echo "$(GREEN)Checking for CPU ONLY RT$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
+	@make -j cpu_flags $(NAME)
 
-GPU: gpu_flags all
-gpu: GPU
+cpu: libft mlx CPU
+cpu_flags:
+$(eval GPU_MACRO = )
+
+GPU:
+	@echo "$(GREEN)Checking for GPU accelerated RT$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
+	@make -j gpu_flags $(NAME)
+
+gpu: libft mlx GPU
 gpu_flags:
 	$(eval GPU_MACRO = -DGPU)
 
-debuggpu: clean cleanlibft debuglibft debug_flag gpu
-debugcpu: clean cleanlibft debuglibft debug_flag cpu
+debuggpu: fclean debuglibft
+	@echo "$(GREEN)Checking for GPU accelerated RT with ASAN debug flags enabled$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
+	@make -j debug_flag gpu_flags $(NAME)
+
+debugcpu: fclean debuglibft
+	@echo "$(GREEN)Checking for CPU ONLY RT with ASAN debug flags enabled$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
+	@make -j debug_flag cpu_flags $(NAME)
+
 debug_flag:
 	$(eval DEBUG_MACRO = -DDEBUG -g)
 	$(eval ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer)
@@ -131,14 +149,15 @@ clean:
 	@echo "$(GREEN)Deleting .obj files$(EOC)"
 	@rm -rf $(OBJ_PATH)
 
-fclean: clean 
+fclean: fcleanlibft cleanmlx clean 
 	@echo "$(GREEN)Full cleaning...$(EOC)"
-	@echo "$(GREEN)Deleting $(NAME) executable and config file$(EOC)"
-	@rm -rf $(NAME) ./config
+	@echo "$(GREEN)Deleting $(NAME) binary$(EOC)"
+	@rm -rf $(NAME)
 
 libft:
 	@echo "$(GREEN)Checking for Libft library$(EOC)"
 	make -C $(LIBFT_PATH)/ libft.a
+	@echo "\n"
 
 cleanlibft:
 	@echo "$(GREEN)Cleaning Libft folder$(EOC)"
@@ -151,6 +170,7 @@ fcleanlibft: cleanlibft
 mlx:
 	@echo "$(GREEN)Checking for MLX library$(EOC)"
 	make -C $(MLX_PATH)/ libmlx.a
+	@echo "\n"
 
 cleanmlx:
 	@echo "$(GREEN)Cleaning Minilibx folder$(EOC)"
