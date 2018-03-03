@@ -1,4 +1,4 @@
-float		inter_plan(const __local t_scene *scene, const int id, const float3 ray, const float3 origin)
+float		inter_plan(const __local t_scene *scene, const int id, const float4 ray, const float4 origin)
 {
 	float	t;
 

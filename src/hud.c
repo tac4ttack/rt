@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 13:48:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/01 21:40:13 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/02 22:02:11 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static	char	*hud_get_obj_type(t_env *e)
 
 static void		display_hud_obj_pos(t_env *e)
 {
-	cl_float3	*obj_pos;
+	cl_float4	*obj_pos;
 	char		*pos;
 	char		*obj;
 
@@ -79,7 +79,7 @@ static void		display_hud_obj_pos(t_env *e)
 
 static void		display_hud_obj_dir(t_env *e)
 {
-	cl_float3	*obj_dir;
+	cl_float4	*obj_dir;
 	char		*dir;
 
 	obj_dir = get_target_dir(e);

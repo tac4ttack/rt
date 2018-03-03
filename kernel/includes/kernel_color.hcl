@@ -129,9 +129,9 @@ unsigned int	get_ambient(const __local t_scene *scene, const unsigned int obj_co
 	return ((r << 16) + (g << 8) + b);
 }
 
-float3			get_obj_speculos(const __local t_scene *scene, const t_hit hit)
+float4			get_obj_speculos(const __local t_scene *scene, const t_hit hit)
 {
-	float3	speculos = 0;
+	float4	speculos = 0;
 
 	if (hit.type == 1)
 		speculos = CONES[hit.id].spec;
@@ -144,9 +144,9 @@ float3			get_obj_speculos(const __local t_scene *scene, const t_hit hit)
 	return (speculos);
 }
 
-float3			get_obj_diffuse(const __local t_scene *scene, const t_hit hit)
+float4			get_obj_diffuse(const __local t_scene *scene, const t_hit hit)
 {
-	float3	diffuse = 0;
+	float4	diffuse = 0;
 
 	if (hit.type == 1)
 		diffuse = CONES[hit.id].diff;
@@ -162,7 +162,7 @@ float3			get_obj_diffuse(const __local t_scene *scene, const t_hit hit)
 unsigned int			color_diffuse(const __local t_scene *scene, const t_hit hit, \
 										const t_hit light_hit, const unsigned int color, const float coef)
 {
-	float3			diffuse = get_obj_diffuse(scene, hit);
+	float4			diffuse = get_obj_diffuse(scene, hit);
 	float			brightness = LIGHT[light_hit.id].brightness;
 
 
@@ -188,7 +188,7 @@ unsigned int			color_diffuse(const __local t_scene *scene, const t_hit hit, \
 unsigned int			color_specular(const __local t_scene *scene, const t_hit hit, \
 										const t_hit light_hit, const unsigned int color, const float coef)
 {
-	float3			speculos = get_obj_speculos(scene, hit);
+	float4			speculos = get_obj_speculos(scene, hit);
 	float			old_coef = coef;
 	unsigned int	col_r = (color & 0x00FF0000) >> 16;
 	unsigned int	col_g = (color & 0x0000FF00) >> 8;

@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/28 23:59:14 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/02 23:47:52 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	init_print_structure_memory_size()
 	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
 	printf("cl_int				: %-20lu\n", sizeof(cl_int));
 	printf("cl_float			: %-20lu\n", sizeof(cl_float));
-	printf("cl_float3			: %-20lu\n", sizeof(cl_float3));
+	printf("cl_float4			: %-20lu\n", sizeof(cl_float4));
 }
 
 void		load_obj(t_env *e)
@@ -114,11 +114,15 @@ void		init(t_env *e, int ac, char *av)
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RT")))
 		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
 	frame_init(e);
-	if (opencl_init(e, e->count * 4) != 0)
-	{
-		e->gpu = 0;
-		opencl_init(e, e->count * 4);
-	}
+	cl_init(&e->cl, "./kernel/kernel.cl", "ray_trace", 1024*720);
 	//if (e->debug)
 		init_print_structure_memory_size();
+
+	cl_create_buffer(&e->cl, 720*1024 * 4);
+	cl_create_buffer(&e->cl, e->gen->mem_size);
+	cl_create_buffer(&e->cl, sizeof(t_scene));
+	cl_create_buffer(&e->cl, sizeof(t_cam) * NCAM);
+	cl_create_buffer(&e->cl, sizeof(t_light) * NLIG);
+	//cl_create_buffer(&e->cl, e->scene.mem_size_light);
+
 }

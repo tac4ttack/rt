@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_key_events.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:47:00 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/28 13:43:19 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/03 13:25:10 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,5 @@ void			mlx_keyboard_repeated(t_env *e)
 		else
 			e->scene->flag |= OPTION_BW;
 	}*/
-	opencl_allocate_scene_memory(e);
+	//opencl_allocate_scene_memory(e);
 }

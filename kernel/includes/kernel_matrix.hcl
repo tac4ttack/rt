@@ -1,6 +1,6 @@
-float3						rotat_zyx(const float3 vect, const float pitch, const float yaw, const float roll)
+float4						rotat_zyx(const float4 vect, const float pitch, const float yaw, const float roll)
 {
-	float3					res;
+	float4					res;
 	float					rad_pitch = radians(pitch);
 	float					rad_yaw = radians(yaw);
 	float					rad_roll = radians(roll);
@@ -11,9 +11,9 @@ float3						rotat_zyx(const float3 vect, const float pitch, const float yaw, con
 	return (res);
 }
 
-float3						rotat_xyz(const float3 vect, const float pitch, const float yaw, const float roll)
+float4						rotat_xyz(const float4 vect, const float pitch, const float yaw, const float roll)
 {
-	float3					res;
+	float4					res;
 	float					rad_pitch = radians(pitch);
 	float					rad_yaw = radians(yaw);
 	float					rad_roll = radians(roll);
@@ -24,9 +24,9 @@ float3						rotat_xyz(const float3 vect, const float pitch, const float yaw, con
 	return (res);
 }
 
-float3						rotat_x(const float3 vect, const float angle)
+float4						rotat_x(const float4 vect, const float angle)
 {
-	float3 					res = 0;
+	float4 					res = 0;
 	float					teta = radians(angle);
 
 	res.x = (vect.x * 1) + (vect.y * 0) + (vect.z * 0);
@@ -35,9 +35,9 @@ float3						rotat_x(const float3 vect, const float angle)
 	return (res);
 }
 
-float3						rotat_y(const float3 vect, const float angle)
+float4						rotat_y(const float4 vect, const float angle)
 {
-	float3 					res = 0;
+	float4 					res = 0;
 	float					teta = radians(angle);
 
 	res.x = (vect.x * cos(teta)) + (vect.y * 0) + (vect.z * sin(teta));
@@ -46,9 +46,9 @@ float3						rotat_y(const float3 vect, const float angle)
 	return (res);
 }
 
-float3						rotat_z(const float3 vect, const float angle)
+float4						rotat_z(const float4 vect, const float angle)
 {
-	float3 					res = 0;
+	float4 					res = 0;
 	float					teta = radians(angle);
 
 	res.x = (vect.x * cos(teta)) + (vect.y * -sin(teta)) + (vect.z * 0);

@@ -1,5 +1,7 @@
 #define BACKCOLOR 0x00999999
 
+# define EPSILON 0.000005f
+
 #define MAX_DIST 10000000.0 // epsilon 0.00000001 ?
 #define SHADOW_BIAS 1000
 
@@ -27,32 +29,32 @@ typedef struct			s_object
 {
 	int					size;
 	int					id;
-	float3				pos;
-	float3				dir;
-	float3				diff;
-	float3				spec;
+	float4				pos;
+	float4				dir;
+	float4				diff;
+	float4				spec;
 	int					color;
 	float				reflex;
 }						t_object;
 
 typedef struct			s_light_ray
 {
-	float3				dir;
+	float4				dir;
 	float				dist;
 }						t_light_ray;
 
 typedef struct			s_hit
 {
 	float				dist;
-	//void				*void;
-	float3				normale;
+	float4				normale;
+	float4				pos;
 	t_object __local	*obj;
 }						t_hit;
 
 typedef struct			s_cam
 {
-	float3				pos;
-	float3				dir;
+	float4				pos;
+	float4				dir;
 	float				fov;
 	float				pitch;
 	float				yaw;
@@ -62,8 +64,8 @@ typedef struct			s_cam
 typedef struct			s_light
 {
 	int					type;
-	float3				pos;
-	float3				dir;
+	float4				pos;
+	float4				dir;
 	int					shrink;
 	float				brightness;
 	int					color;
@@ -73,10 +75,10 @@ typedef struct			s_cone
 {
 	int					size;
 	int					id;
-	float3				pos;
-	float3				dir;
-	float3				diff;
-	float3				spec;
+	float4				pos;
+	float4				dir;
+	float4				diff;
+	float4				spec;
 	int					color;
 	float				reflex;
 
@@ -88,15 +90,15 @@ typedef struct			s_cylinder
 {
 	int					size;
 	int					id;
-	float3				pos;
-	float3				dir;
-	float3				diff;
-	float3				spec;
+	float4				pos;
+	float4				dir;
+	float4				diff;
+	float4				spec;
 	int					color;
 	float				reflex;
 
 	float				height;
-	float3				base_dir;
+	float4				base_dir;
 	float				radius;
 }						t_cylinder;
 
@@ -104,10 +106,10 @@ typedef struct			s_plane
 {
 	int					size;
 	int					id;
-	float3				pos;
-	float3				normale;
-	float3				diff;
-	float3				spec;
+	float4				pos;
+	float4				normale;
+	float4				diff;
+	float4				spec;
 	int					color;
 	float				reflex;
 }						t_plane;
@@ -116,10 +118,10 @@ typedef struct			s_sphere
 {
 	int					size;
 	int					id;
-	float3				pos;
-	float3				dir;
-	float3				diff;
-	float3				spec;
+	float4				pos;
+	float4				dir;
+	float4				diff;
+	float4				spec;
 	int					color;
 	float				reflex;
 
@@ -128,9 +130,9 @@ typedef struct			s_sphere
 
 typedef	struct			s_tor
 {
-	float3				prim;
-//	float3				refl;
-//	float3				refr;
+	float4				prim;
+//	float4				refl;
+//	float4				refr;
 	unsigned int		hit_type;
 	unsigned int		hit_id;
 //	float				coef_refl;
@@ -165,7 +167,7 @@ typedef struct			s_scene
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
-	float3				ambient;
+	float4				ambient;
 	int					mou_x;
 	int					mou_y;
 	int					depth;

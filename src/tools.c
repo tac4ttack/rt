@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/28 23:59:42 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/02 23:26:53 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void	print_usage(void)
 void	flush(t_env *e)
 {
 	destruct_gen(&e->gen);
-	if (e->kernel_src)
-		free(e->kernel_src);
 	if (XML)
 		free(XML);
 	if (e->frame && e->frame->ptr)

@@ -6,15 +6,15 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/01 21:40:32 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/03 13:12:18 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 /*
-cl_float3		*get_target_dir(t_env *e)
+cl_float4		*get_target_dir(t_env *e)
 {
-	cl_float3	*res;
+	cl_float4	*res;
 
 	res = NULL;
 	if (ACTIVEOBJ.type != 0)
@@ -31,9 +31,9 @@ cl_float3		*get_target_dir(t_env *e)
 	return (res);
 }
 
-cl_float3		*get_target_pos(t_env *e)
+cl_float4		*get_target_pos(t_env *e)
 {
-	cl_float3	*res;
+	cl_float4	*res;
 
 	res = NULL;
 	if (ACTIVEOBJ.type != 0)
@@ -55,7 +55,7 @@ void			ui_obj(t_env *e)
 	(void)e;
 	return ;
 	/*
-	cl_float3	*target;
+	cl_float4	*target;
 
 	target = NULL;
 	if (KP_I || KP_J || KP_K || KP_L || KP_U || KP_O)
@@ -77,5 +77,5 @@ void			ui_obj(t_env *e)
 		(KP_N7 ? target->z -= 0.1 : 0);
 		(KP_N9 ? target->z += 0.1 : 0);
 	}
-	*/
+*/
 }

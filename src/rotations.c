@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   rotations.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:24:52 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/02 22:02:05 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-cl_float3			rotx(cl_float3 dir, const float pitch)
+cl_float4			rotx(cl_float4 dir, const float pitch)
 {
-	cl_float3		newdir;
+	cl_float4		newdir;
 
 	if (dir.x == 0 && dir.y == 0 && dir.z == 0)
 	{
@@ -29,9 +29,9 @@ cl_float3			rotx(cl_float3 dir, const float pitch)
 	return (normalize_vect(newdir));
 }
 
-cl_float3			roty(cl_float3 dir, const float yaw)
+cl_float4			roty(cl_float4 dir, const float yaw)
 {
-	cl_float3		newdir;
+	cl_float4		newdir;
 
 	if (dir.x == 0 && dir.y == 0 && dir.z == 0)
 	{
@@ -46,9 +46,9 @@ cl_float3			roty(cl_float3 dir, const float yaw)
 	return (normalize_vect(newdir));
 }
 
-cl_float3			rotz(cl_float3 dir, const float roll)
+cl_float4			rotz(cl_float4 dir, const float roll)
 {
-	cl_float3		newdir;
+	cl_float4		newdir;
 
 	if (dir.x == 0 && dir.y == 0 && dir.z == 0)
 	{
@@ -63,9 +63,9 @@ cl_float3			rotz(cl_float3 dir, const float roll)
 	return (normalize_vect(newdir));
 }
 
-cl_float3			rotcam(cl_float3 vect, float rad_pitch, float rad_yaw)
+cl_float4			rotcam(cl_float4 vect, float rad_pitch, float rad_yaw)
 {
-	cl_float3		res;
+	cl_float4		res;
 	float			rad_roll;
 
 	rad_roll = 0;

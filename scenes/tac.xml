@@ -5,6 +5,7 @@
 				dir="1, 0, 0"
 				fov="30"
 				/>
+<!--
 	<plane		id="0"
 				pos="0, -10, 0"
 				normale="0, 1, 0"
@@ -14,22 +15,23 @@
 				reflex="0"
 				/>
 
+-->
+	<light		id="0"
+				type="1"
+				pos="20, 20, 0"
+				dir="0, 0, 0"
+				brightness="0.51"
+				shrink="420"
+				color="0, 255, 250, 250"
+				/>
 	<sphere		id="0"
-				pos="-10, -5, 10"
+				pos="0, 0, 0"
 				dir="0, 0, 0"
 				radius="2"
 				color="0, 0, 255, 0"
 				diff="0.62, 0.6, 0.62"
 				spec="0.42, 0.42, 0.42"
 				reflex="0.42"
-				/>
-	<light		id="0"
-				type="1"
-				pos="-5, -5, -5"
-				dir="0, 0, 0"
-				brightness="0.51"
-				shrink="420"
-				color="0, 255, 250, 250"
 				/>
 	<cylinder	id="0"
 				pos="5, 0, 5"
@@ -41,6 +43,7 @@
 				spec="0.82, 0.82, 0.82"
 				reflex="0.42"
 				/>
+				<!--
 	<cone		id="0"
 				pos="-5, 0, 5"
 				dir="0.786, 0, 0.617"
@@ -51,7 +54,6 @@
 				reflex="0.42"
 				/>
 
-<!--
 	<cylinder	id="1"
 				pos="0, 5, 0"
 				dir="0, 0, 1"

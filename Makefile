@@ -72,11 +72,11 @@ SRC_NAME =  			init.c \
 						event/mlx_key_release.c \
 						event/mlx_key_norepeat.c \
 						event/mlx_key_events.c \
-						opencl/opencl_construct.c \
+						opencl/cl_init.c \
+						opencl/cl_end.c \
+						opencl/cl_create_buffer.c \
+						opencl/cl_check_err.c \
 						opencl/opencl_compute.c \
-						opencl/opencl_error.c \
-						opencl/opencl_init.c \
-						opencl/opencl_memalloc.c \
 						xml/xml.c \
 						xml/xml_check_attr.c \
 						xml/xml_cameras.c \

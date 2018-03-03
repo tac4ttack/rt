@@ -1,6 +1,6 @@
-float3	get_sphere_abc(const __local t_sphere *sphere, const float3 ray, const float3 origin)
+float4	get_sphere_abc(const __local t_sphere *sphere, const float4 ray, const float4 origin)
 {
-	float3		abc = 0;
+	float4		abc = 0;
 
 	abc.x = dot(ray, ray);
 	abc.y = 2 * dot(ray, origin);
@@ -8,13 +8,13 @@ float3	get_sphere_abc(const __local t_sphere *sphere, const float3 ray, const fl
 	return (abc);
 }
 
-float			inter_sphere(const __local t_sphere *sphere, const float3 ray, const float3 origin)
+float			inter_sphere(const __local t_sphere *sphere, const float4 ray, const float4 origin)
 {
-	float3		abc = 0;
+	float4		abc = 0;
 	float		d = 0;
 	float		res1 = 0;
 	float		res2 = 0;
-	float3		pos = 0;
+	float4		pos = 0;
 
 	pos = origin - sphere->pos;
 	abc = get_sphere_abc(sphere, ray, origin);
