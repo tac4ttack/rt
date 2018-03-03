@@ -7,6 +7,7 @@
 # include <sys/time.h>
 # include "libft.h"
 # include "mlx.h"
+//#include <gtk/gtk.h>
 # include <sys/time.h>
 
 # ifdef MAC_KEYS

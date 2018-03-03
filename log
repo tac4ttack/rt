@@ -1,54 +1,48 @@
-[2;33mNo scene file specified, loading default[0m
-FPS [0]
-SCENE
-width = 1024 | height = 768
-a.r = 0.100000 | a.g = 0.100000 | a.b = 0.100000
-
-CAMERA id = 0
-pos x = 0.000000 | y = -5.000000 | z = -20.000000
-dir x = 0.000000 | y = 0.000000 | z = 1.000000
-fov = 30.000000
-
-CONE id = 0
-pos x = -5.000000 | y = 0.000000 | z = 5.000000
-dir x = 0.786000 | y = 0.000000 | z = 0.617000
-angle = 6.000000
-color = ffwd
-diff.x = 0.420000 | diff.y = 0.420000 | diff.z = 0.420000
-spec.x = 0.420000 | spec.y = 0.420000 | spec.z = 0.420000
-reflex = 0.420000
-
-CYLINDER id = 0
-pos x = 5.000000 | y = 0.000000 | z = 5.000000
-dir x = 0.000000 | y = 0.000000 | z = 1.000000
-radius = 3.000000
-color= ffd
-height= 0.000000
-diff.x = 0.420000 | diff.y = 0.420000 | diff.z = 0.420000
-spec.x = 0.820000 | spec.y = 0.820000 | spec.z = 0.820000
-reflex = 0.420000
-
-LIGHT id = 0
-type = 0
-pos x = -5.000000 | y = -5.000000 | z = -5.000000
-dir x = 0.000000 | y = 0.000000 | z = 0.000000
-brightness = 0.510000
-shrink = 20.000000
-color = fffafad
-
-PLANE id = 0
-pos x = 0.000000 | y = -10.000000 | z = 0.000000
-normale x = 0.000000 | y = 1.000000 | z = 0.000000
-color = ff0000d
-diff.x = 0.420000 | diff.y = 0.420000 | diff.z = 0.420000
-spec.x = 0.000000 | spec.y = 0.000000 | spec.z = 0.000000
-reflex = 0.000000
-
-SPHERE id = 0
-pos x = 0.000000 | y = -5.000000 | z = 10.000000
-dir x = 0.000000 | y = 0.000000 | z = 0.000000
-radius = 2.000000
-color = ff00d
-diff.x = 0.620000 | diff.y = 0.600000 | diff.z = 0.620000
-spec.x = 0.420000 | spec.y = 0.420000 | spec.z = 0.420000
-reflex = 0.420000
+[2;32mChecking for Libft library[0m
+make -C ./libft/ libft.a
+make[1]: `libft.a' is up to date.
+[2;32mChecking for MLX library[0m
+make -C ./mlx/mlx_sierra/ libmlx.a
+make[1]: `libmlx.a' is up to date.
+[2;32mChecking for RT[0m
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/init.c -o obj/init.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/hud.c -o obj/hud.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/main.c -o obj/main.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+[2;32mCreating ./obj path and making binaries from source files[0m
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_image_draw.c -o obj/mlx_image_draw.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_key_press.c -o obj/mlx_key_press.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_key_release.c -o obj/mlx_key_release.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_key_norepeat.c -o obj/mlx_key_norepeat.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_key_events.c -o obj/mlx_key_events.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_main_loop.c -o obj/mlx_main_loop.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_mouse.c -o obj/mlx_mouse.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/opencl_compute.c -o obj/opencl_compute.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/opencl_error.c -o obj/opencl_error.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/opencl_init.c -o obj/opencl_init.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/opencl_memalloc.c -o obj/opencl_memalloc.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/rotations.c -o obj/rotations.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/tools.c -o obj/tools.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/tree_of_ray.c -o obj/tree_of_ray.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/ui_obj.c -o obj/ui_obj.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/ui_cam.c -o obj/ui_cam.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/update_fps.c -o obj/update_fps.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/vectors.c -o obj/vectors.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml.c -o obj/xml.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_check_attr.c -o obj/xml_check_attr.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_cameras.c -o obj/xml_cameras.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_cones.c -o obj/xml_cones.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_cylinders.c -o obj/xml_cylinders.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_data_float.c -o obj/xml_data_float.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_data_float3.c -o obj/xml_data_float3.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_data_int.c -o obj/xml_data_int.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_data_vector.c -o obj/xml_data_vector.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_lights.c -o obj/xml_lights.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_list.c -o obj/xml_list.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_nodes.c -o obj/xml_nodes.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_planes.c -o obj/xml_planes.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_scene.c -o obj/xml_scene.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_spheres.c -o obj/xml_spheres.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/hooks.c -o obj/hooks.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_tools.c -o obj/xml_tools.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
+[2;32mCompiling rt with Sierra MLX version[0m
+gcc -fdiagnostics-color=auto -o rt ./obj/init.o ./obj/hud.o ./obj/main.o ./obj/mlx_image_draw.o ./obj/mlx_key_press.o ./obj/mlx_key_release.o ./obj/mlx_key_norepeat.o ./obj/mlx_key_events.o ./obj/mlx_main_loop.o ./obj/mlx_mouse.o ./obj/opencl_compute.o ./obj/opencl_error.o ./obj/opencl_init.o ./obj/opencl_memalloc.o ./obj/rotations.o ./obj/tools.o ./obj/tree_of_ray.o ./obj/ui_obj.o ./obj/ui_cam.o ./obj/update_fps.o ./obj/vectors.o ./obj/xml.o ./obj/xml_check_attr.o ./obj/xml_cameras.o ./obj/xml_cones.o ./obj/xml_cylinders.o ./obj/xml_data_float.o ./obj/xml_data_float3.o ./obj/xml_data_int.o ./obj/xml_data_vector.o ./obj/xml_lights.o ./obj/xml_list.o ./obj/xml_nodes.o ./obj/xml_planes.o ./obj/xml_scene.o ./obj/xml_spheres.o ./obj/hooks.o ./obj/xml_tools.o -L./libft -lft ./mlx/mlx_sierra/libmlx.a -framework OpenGL -framework AppKit -lm -framework OpenCL 

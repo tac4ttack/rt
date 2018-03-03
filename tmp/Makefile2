@@ -1,8 +1,8 @@
-NAME = 					rt
+NAME = 					rtv1
 
-CC = 					gcc -fdiagnostics-color=auto
+CC = 					clang
 CFLAGS +=				-Wall -Wextra -Werror
-OFLAGS := 				-O3
+OFLAGS := 				-O3 -Ofast
 RM := 					rm -rf
 
 INC = 					$(addprefix $(INC_PATH)/,$(INC_NAMES))
@@ -14,9 +14,6 @@ LIBFT_INC_PATH :=		./libft
 LIBFTFLAGS :=			-lft
 
 LIBMATHFLAGS :=			-lm
-
-GTK_CFLAGS	=	$(shell pkg-config --cflags gtk+-3.0)
-GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 
 OPENCL :=				-framework OpenCL
 
@@ -53,33 +50,21 @@ OBJ_NAME =				$(SRC_NAME:.c=.o)
 SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 SRC_PATH =				./src
 SRC_NAME =  			init.c \
-						hud.c \
 						main.c \
 						mlx_image_draw.c \
 						mlx_key_press.c \
 						mlx_key_release.c \
-						mlx_key_norepeat.c \
 						mlx_key_events.c \
 						mlx_main_loop.c \
 						mlx_mouse.c \
 						opencl_compute.c \
-						opencl_error.c \
 						opencl_init.c \
-						opencl_memalloc.c \
-						rotations.c \
 						tools.c \
-						tree_of_ray.c \
-						ui_obj.c \
-						ui_cam.c \
-						update_fps.c \
-						vectors.c \
 						xml.c \
-						xml_check_attr.c \
 						xml_cameras.c \
 						xml_cones.c \
 						xml_cylinders.c \
 						xml_data_float.c \
-						xml_data_float3.c \
 						xml_data_int.c \
 						xml_data_vector.c \
 						xml_lights.c \
@@ -88,21 +73,20 @@ SRC_NAME =  			init.c \
 						xml_planes.c \
 						xml_scene.c \
 						xml_spheres.c \
-						hooks.c \
-						xml_tools.c	
+						xml_tools.c \
+						rotations.c \
+						vectors.c
 
 default: gpu
 
-all: libft mlx
-	@echo "$(GREEN)Checking for RT$(EOC)"
-	@make -j $(NAME)
+all: $(NAME)
 
-$(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
+$(NAME): libft mlx $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
 	@echo "$(GREEN)Compiling $(NAME) with $(OS_NAME) MLX version$(EOC)"
 	$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(MLX) $(MLXFLAGS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
-	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) -I $(MLX_PATH)  $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) -I $(MLX_PATH) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_PATH):
 	@echo "$(GREEN)Creating ./obj path and making binaries from source files$(EOC)"
@@ -116,16 +100,15 @@ gpu: GPU
 gpu_flags:
 	$(eval GPU_MACRO = -DGPU)
 
-debuggpu: clean cleanlibft debuglibft debug_flag gpu
-debugcpu: clean cleanlibft debuglibft debug_flag cpu
+debug: clean cleanlibft debuglibft debug_flag gpu
 debug_flag:
 	$(eval DEBUG_MACRO = -DDEBUG -g)
 	$(eval ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer)
 
 debuglibft:
-	@echo "$(GREEN)Checking for Libft library with ASan$(EOC)"
-	make -C $(LIBFT_PATH)/ debug libft.a
-
+	@echo "Compiling Libft library with ASan"
+	make -C $(LIBFT_PATH)/ debug all
+	
 clean:
 	@echo "$(GREEN)Cleaning...$(EOC)"
 	@echo "$(GREEN)Deleting .obj files$(EOC)"
@@ -137,8 +120,8 @@ fclean: clean
 	@rm -rf $(NAME) ./config
 
 libft:
-	@echo "$(GREEN)Checking for Libft library$(EOC)"
-	make -C $(LIBFT_PATH)/ libft.a
+	@echo "$(GREEN)Compiling Libft library$(EOC)"
+	make -C $(LIBFT_PATH)/ all
 
 cleanlibft:
 	@echo "$(GREEN)Cleaning Libft folder$(EOC)"
@@ -149,8 +132,8 @@ fcleanlibft: cleanlibft
 	make -C $(LIBFT_PATH)/ fclean
 
 mlx:
-	@echo "$(GREEN)Checking for MLX library$(EOC)"
-	make -C $(MLX_PATH)/ libmlx.a
+	@echo "$(GREEN)Compiling MLX library$(EOC)"
+	make -C $(MLX_PATH)/ all
 
 cleanmlx:
 	@echo "$(GREEN)Cleaning Minilibx folder$(EOC)"
@@ -158,7 +141,7 @@ cleanmlx:
 	@make -C ./mlx/mlx_sierra/ clean
 	@make -C ./mlx/mlx_x11/ clean
 
-re: fclean fcleanlibft cleanmlx default
+re: fclean default
 
 norme:
 	norminette $(SRC_PATH)

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:19:19 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/03 16:34:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,7 @@ void		env_init(t_env *e)
 
 void		init(t_env *e, int ac, char *av)
 {
-	ft_bzero(e, sizeof(t_env));
-	ft_bzero(&e->target_obj, sizeof(t_hit));
+//	ft_bzero(&e->target_obj, sizeof(t_hit));	// useless car bzero de env dans le main
 	if (!(e->scene = malloc(sizeof(t_scene))))
 		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
 	ft_bzero(e->scene, sizeof(t_scene));
