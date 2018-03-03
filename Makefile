@@ -126,12 +126,16 @@ gpu: libft mlx GPU
 gpu_flags:
 	$(eval GPU_MACRO = -DGPU)
 
-debuggpu: fclean debuglibft
+debuggpu: fclean debuglibft mlx
+	@echo "$(GREEN)So you want to compile RT with GPU and DEBUG enabled hu?$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
 	@echo "$(GREEN)Checking for GPU accelerated RT with ASAN debug flags enabled$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
 	@make -j debug_flag gpu_flags $(NAME)
 
-debugcpu: fclean debuglibft
+debugcpu: fclean debuglibft mlx
+	@echo "$(GREEN)So you want to compile RT with CPU mode forced and DEBUG enabled hu?$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
 	@echo "$(GREEN)Checking for CPU ONLY RT with ASAN debug flags enabled$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
 	@make -j debug_flag cpu_flags $(NAME)
@@ -157,7 +161,9 @@ fclean: fcleanlibft cleanmlx clean
 libft:
 	@echo "$(GREEN)Checking for Libft library$(EOC)"
 	make -C $(LIBFT_PATH)/ libft.a
-	@echo "\n"
+	@echo ""
+	@read -p "Please press enter to continue..."
+	@echo ""
 
 cleanlibft:
 	@echo "$(GREEN)Cleaning Libft folder$(EOC)"
@@ -170,7 +176,9 @@ fcleanlibft: cleanlibft
 mlx:
 	@echo "$(GREEN)Checking for MLX library$(EOC)"
 	make -C $(MLX_PATH)/ libmlx.a
-	@echo "\n"
+	@echo ""
+	@read -p "Please press enter to continue..."
+	@echo ""
 
 cleanmlx:
 	@echo "$(GREEN)Cleaning Minilibx folder$(EOC)"
