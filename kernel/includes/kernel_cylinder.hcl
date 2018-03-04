@@ -1,9 +1,6 @@
-#ifndef KERNEL_CYLINDER_HCL
-# define KERNEL_CYLINDER_HCL
-
-static float3	get_cylinder_abc(const float radius, const float3 dir, const float3 ray, const float3 origin)
+static float4	get_cylinder_abc(const float radius, const float4 dir, const float4 ray, const float4 origin)
 {
-	float3		abc;
+	float4		abc;
 
 	// SEMBLE OK
 	abc.x = dot(ray, ray) - (dot(ray, dir) * dot(ray, dir));
@@ -12,10 +9,10 @@ static float3	get_cylinder_abc(const float radius, const float3 dir, const float
 	return (abc);
 }
 
-float					inter_cylinder(const __local t_scene *scene, const int id, const float3 ray, const float3 origin)
+float					inter_cylinder(const __local t_scene *scene, const int id, const float4 ray, const float4 origin)
 {
-	float3				abc;
-	float3				pos;
+	float4				abc;
+	float4				pos;
 	float				d;
 	float				res1 = 0;
 	float				res2 = 0;
@@ -50,11 +47,11 @@ float					inter_cylinder(const __local t_scene *scene, const int id, const float
 		return (0);
 }
 
-float3			get_cylinder_normal(const __local t_scene *scene, t_hit hit)
+float4			get_cylinder_normal(const __local t_scene *scene, t_hit hit)
 {
-	float3 res = 0;
-	float3 v = 0;
-	float3 project = 0;
+	float4 res = 0;
+	float4 v = 0;
+	float4 project = 0;
 	float doty = 0;
 
 	v = hit.pos - CYLIND[hit.id].pos;

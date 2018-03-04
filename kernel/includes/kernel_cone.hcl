@@ -1,9 +1,6 @@
-#ifndef KERNEL_CONE_HCL
-# define KERNEL_CONE_HCL
-
-static float3	get_cone_abc(const t_cone cone, const float3 ray, const float3 origin)
+static float4	get_cone_abc(const t_cone cone, const float4 ray, const float4 origin)
 {
-	float3		abc = 0;
+	float4		abc = 0;
 	float		k = radians(cone.angle);
 
 	k = tan(k);
@@ -16,13 +13,13 @@ static float3	get_cone_abc(const t_cone cone, const float3 ray, const float3 ori
 	return (abc);
 }
 
-float			inter_cone(const __local t_scene *scene, const int id, const float3 ray, const float3 origin)
+float			inter_cone(const __local t_scene *scene, const int id, const float4 ray, const float4 origin)
 {
-	float3		abc = 0;
+	float4		abc = 0;
 	float		d = 0;
 	float		res1 = 0;
 	float		res2 = 0;
-	float3		pos = 0;
+	float4		pos = 0;
 
 	pos = origin - CONES[id].pos;
 	abc = get_cone_abc(CONES[id], ray, pos);
@@ -38,11 +35,11 @@ float			inter_cone(const __local t_scene *scene, const int id, const float3 ray,
 	return (res2);
 }
 
-float3			get_cone_normale(const __local t_scene *scene, const t_hit hit)
+float4			get_cone_normale(const __local t_scene *scene, const t_hit hit)
 {
-	float3 res = 0;
-	float3 v = 0;
-	float3 project = 0;
+	float4 res = 0;
+	float4 v = 0;
+	float4 project = 0;
 	float doty = 0;
 
 	v = hit.pos - CONES[hit.id].pos;

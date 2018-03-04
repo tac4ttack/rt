@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/04 21:23:49 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ void		xml_allocate_sphere(t_env *e)
 
 void		xml_push_sphere(t_env *e, t_node *list)
 {
+	e->spheres[list->id].size = sizeof(t_sphere);
+	e->spheres[list->id].id = OBJ_SPHERE;
 	e->spheres[list->id].pos = list->pos;
 	e->spheres[list->id].dir = list->dir;
 	e->spheres[list->id].radius = list->radius;
@@ -105,4 +107,5 @@ void		xml_push_sphere(t_env *e, t_node *list)
 	e->spheres[list->id].diff = list->diff;
 	e->spheres[list->id].spec = list->spec;
 	e->spheres[list->id].reflex = list->reflex;
+	e->gen_objects->add(e->gen_objects, (void*)&e->spheres[list->id]);
 }

@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx_mouse.c                                        :+:      :+:    :+:   */
+/*   cl_check_err.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/26 18:50:17 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Created: 2017/06/08 03:02:35 by ntoniolo          #+#    #+#             */
+/*   Updated: 2018/03/02 23:28:37 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-int		mlx_mouse_events(int btn, int x, int y, t_env *e)
+void	cl_check_err(cl_int err, const char *name)
 {
-	if (btn == 1)
+	if (err != CL_SUCCESS)
 	{
-		e->run = 1;
-		e->scene->mou_x = x;
-		e->scene->mou_y = y;
+		dprintf(2, "Error : %s (%i)\n", name, err);
+		exit(EXIT_FAILURE);
 	}
-	return (0);
 }

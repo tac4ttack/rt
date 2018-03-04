@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/04 21:23:38 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ void		xml_allocate_cyl(t_env *e)
 
 void		xml_push_cyl(t_env *e, t_node *list)
 {
+	e->cylinders[list->id].size = sizeof(t_cylinder);
+	e->cylinders[list->id].id = OBJ_CYLINDER;
 	e->cylinders[list->id].pos = list->pos;
 	e->cylinders[list->id].base_dir = normalize_vect(list->dir);
 	e->cylinders[list->id].dir = normalize_vect(list->dir);
@@ -113,7 +115,5 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	e->cylinders[list->id].diff = list->diff;
 	e->cylinders[list->id].spec = list->spec;
 	e->cylinders[list->id].reflex = list->reflex;
-	e->cylinders[list->id].pitch = 0;
-	e->cylinders[list->id].yaw = 0;
-	e->cylinders[list->id].roll = 0;
+	e->gen_objects->add(e->gen_objects, (void*)&e->cylinders[list->id]);
 }

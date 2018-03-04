@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/04 21:25:39 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	print_usage(void)
 
 void	flush(t_env *e)
 {
-	if (e->kernel_src)
-		free(e->kernel_src);
+	destruct_gen(&e->gen_objects);
+	destruct_gen(&e->gen_lights);
 	if (XML)
 		free(XML);
 	if (e->frame && e->frame->ptr)

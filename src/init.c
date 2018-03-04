@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:19:19 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/04 23:38:13 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+static void	init_print_structure_memory_size()
+{
+	printf("t_cam 				: %-20lu\n", sizeof(t_cam));
+	printf("t_cone 				: %-20lu\n", sizeof(t_cone));
+	printf("t_cylinder 			: %-20lu\n", sizeof(t_cylinder));
+	printf("t_light 			: %-20lu\n", sizeof(t_light));
+	printf("t_plane 			: %-20lu\n", sizeof(t_plane));
+	printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
+	printf("t_tor 				: %-20lu\n", sizeof(t_tor));
+	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
+	printf("cl_int				: %-20lu\n", sizeof(cl_int));
+	printf("cl_float			: %-20lu\n", sizeof(cl_float));
+	printf("cl_float4			: %-20lu\n", sizeof(cl_float4));
+}
 
 void		load_obj(t_env *e)
 {
@@ -79,17 +94,7 @@ void		env_init(t_env *e)
 	e->cen_x = e->win_w / 2;
 	e->cen_y = e->win_h / 2;
 	e->gpu = IS_GPU;
-	e->run = 0;
 	e->tree = tor_create(e);
-	//printf("t_light_ray			: %-20lu\n", sizeof(t_light_ray));
-	printf("t_cam 				: %-20lu\n", sizeof(t_cam));
-	printf("t_cone 				: %-20lu\n", sizeof(t_cone));
-	printf("t_cylinder 			: %-20lu\n", sizeof(t_cylinder));
-	printf("t_light 			: %-20lu\n", sizeof(t_light));
-	printf("t_plane 			: %-20lu\n", sizeof(t_plane));
-	printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
-	printf("t_tor 				: %-20lu\n", sizeof(t_tor));
-	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
 }
 
 void		init(t_env *e, int ac, char *av)
@@ -98,6 +103,10 @@ void		init(t_env *e, int ac, char *av)
 	ft_bzero(&e->target_obj, sizeof(t_hit));
 	if (!(e->scene = malloc(sizeof(t_scene))))
 		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
+	if (!(e->gen_objects = construct_gen()))
+		s_error("\x1b[2;31mCan't initialize t_gen\x1b[0m", e);
+	if (!(e->gen_lights = construct_gen()))
+		s_error("\x1b[2;31mCan't initialize t_gen\x1b[0m", e);
 	ft_bzero(e->scene, sizeof(t_scene));
 	xml_init(e, ac, av);
 	env_init(e);
@@ -106,9 +115,15 @@ void		init(t_env *e, int ac, char *av)
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RT")))
 		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
 	frame_init(e);
-	if (opencl_init(e, e->count * 4) != 0)
-	{
-		e->gpu = 0;
-		opencl_init(e, e->count * 4);
-	}
+	cl_init(&e->cl, "./kernel/kernel.cl", "ray_trace", 1024*720);
+	//if (e->debug)
+		init_print_structure_memory_size();
+
+	cl_create_buffer(&e->cl, 720*1024 * 4);
+	cl_create_buffer(&e->cl, e->gen_objects->mem_size);
+	cl_create_buffer(&e->cl, sizeof(t_scene));
+	cl_create_buffer(&e->cl, sizeof(t_cam) * NCAM);
+	cl_create_buffer(&e->cl, e->gen_lights->mem_size);
+	cl_create_buffer(&e->cl, sizeof(t_hit));
+
 }
