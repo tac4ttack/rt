@@ -84,38 +84,6 @@ unsigned int	blend_factor(const unsigned int c1, const float factor)
 	return ((r << 16) + (g << 8) + b);
 }
 
-float			get_obj_reflex(const __local t_scene *scene, const t_hit hit)
-{
-	float		coef = 0;
-
-	if (hit.type == 1)
-		coef = CONES[hit.id].reflex;
-	if (hit.type == 2)
-		coef = CYLIND[hit.id].reflex;
-	if (hit.type == 4)
-		coef = PLANE[hit.id].reflex;
-	if (hit.type == 5)
-		coef = SPHERE[hit.id].reflex;
-	return (coef);
-}
-
-unsigned int			get_obj_hue(const __local t_scene *scene, const t_hit hit)
-{
-	unsigned int		color = 0;
-
-	if (hit.type == 1)
-		color = CONES[hit.id].color;
-	if (hit.type == 2)
-		color = CYLIND[hit.id].color;
-	if (hit.type == 3)
-		color = LIGHT[hit.id].color;
-	if (hit.type == 4)
-		color = PLANE[hit.id].color;
-	if (hit.type == 5)
-		color = SPHERE[hit.id].color;
-	return (color);
-}
-
 unsigned int	get_ambient(const __local t_scene *scene, const unsigned int obj_color)
 {
 	unsigned int r, g, b;
@@ -127,36 +95,6 @@ unsigned int	get_ambient(const __local t_scene *scene, const unsigned int obj_co
 	g = (0.01 + g * scene->ambient.y > 255 ? 255 : 0.01 + g * scene->ambient.y);
 	b = (0.01 + b * scene->ambient.z > 255 ? 255 : 0.01 + b * scene->ambient.z);
 	return ((r << 16) + (g << 8) + b);
-}
-
-float4			get_obj_speculos(const __local t_scene *scene, const t_hit hit)
-{
-	float4	speculos = 0;
-
-	if (hit.type == 1)
-		speculos = CONES[hit.id].spec;
-	if (hit.type == 2)
-		speculos = CYLIND[hit.id].spec;
-	if (hit.type == 4)
-		speculos = PLANE[hit.id].spec;
-	if (hit.type == 5)
-		speculos = SPHERE[hit.id].spec;
-	return (speculos);
-}
-
-float4			get_obj_diffuse(const __local t_scene *scene, const t_hit hit)
-{
-	float4	diffuse = 0;
-
-	if (hit.type == 1)
-		diffuse = CONES[hit.id].diff;
-	if (hit.type == 2)
-		diffuse = CYLIND[hit.id].diff;
-	if (hit.type == 4)
-		diffuse = PLANE[hit.id].diff;
-	if (hit.type == 5)
-		diffuse = SPHERE[hit.id].diff;
-	return (diffuse);
 }
 
 unsigned int			color_diffuse(const __local t_scene *scene, const t_hit hit, \

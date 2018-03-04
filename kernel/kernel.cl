@@ -171,6 +171,106 @@ typedef struct			s_scene
 	size_t				mem_size_lights;
 }						t_scene;
 
+unsigned int	sepiarize(const unsigned int color)
+{
+	uint3	base, cooking_pot = 0;
+	base.x = (color & 0x00FF0000) >> 16;
+	base.y = (color & 0x0000FF00) >> 8;
+	base.z = (color & 0x000000FF);
+	cooking_pot.x = (base.x * 0.393) + (base.y * 0.769) + (base.z * 0.189);
+	cooking_pot.y = (base.x * 0.349) + (base.y * 0.686) + (base.z * 0.168);
+	cooking_pot.z = (base.x * 0.272) + (base.y * 0.534) + (base.z * 0.131);
+	(cooking_pot.x > 255 ? cooking_pot.x = 255 : 0);
+	(cooking_pot.y > 255 ? cooking_pot.y = 255 : 0);
+	(cooking_pot.z > 255 ? cooking_pot.z = 255 : 0);
+	return (((uint)cooking_pot.x << 16) + ((uint)cooking_pot.y << 8) + (uint)cooking_pot.z);
+}
+
+static unsigned int	cartoonize(const unsigned int color)
+{
+	uint3	base, cooking_pot = 0;
+	base.x = (color & 0x00FF0000) >> 16;
+	base.y = (color & 0x0000FF00) >> 8;
+	base.z = (color & 0x000000FF);
+	if ((base.x = base.x - base.x % 30) < 0)
+		base.x = 0;
+	if ((base.y = base.y - base.y % 30) < 0)
+		base.y = 0;
+	if ((base.z = base.z - base.z % 30) < 0)
+		base.z = 0;
+	return (((uint)base.x << 16) + ((uint)base.y << 8) + (uint)base.z);
+}
+
+static unsigned int	desaturate(const unsigned int color)
+{
+	uint3	rgb = 0;
+	rgb.x = (color & 0x00FF0000) >> 16;
+	rgb.y = (color & 0x0000FF00) >> 8;
+	rgb.z = (color & 0x000000FF);
+	float 	average = (rgb.x + rgb.y + rgb.z) / 3;
+	return (((uint)average << 16) + ((uint)average << 8) + (uint)average);
+}
+
+static unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
+{
+	unsigned int r, g, b;
+	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
+	unsigned int g1 = (c1 & 0x0000FF00) >> 8;
+	unsigned int b1 = (c1 & 0x000000FF);
+	unsigned int r2 = (c2 & 0x00FF0000) >> 16;
+	unsigned int g2 = (c2 & 0x0000FF00) >> 8;
+	unsigned int b2 = (c2 & 0x000000FF);
+
+	r = (r1 * r2 > 255 ? 255 : r1 * r2);
+	g = (g1 * g2 > 255 ? 255 : g1 * g2);
+	b = (b1 * b2 > 255 ? 255 : b1 * b2);
+
+	return ((r << 16) + (g << 8) + b);
+}
+
+static unsigned int	blend_add(const unsigned int c1, const unsigned int c2)
+{
+	unsigned int r, g, b;
+	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
+	unsigned int g1 = (c1 & 0x0000FF00) >> 8;
+	unsigned int b1 = (c1 & 0x000000FF);
+	unsigned int r2 = (c2 & 0x00FF0000) >> 16;
+	unsigned int g2 = (c2 & 0x0000FF00) >> 8;
+	unsigned int b2 = (c2 & 0x000000FF);
+
+	r = (r1 + r2 > 255 ? 255 : r1 + r2);
+	g = (g1 + g2 > 255 ? 255 : g1 + g2);
+	b = (b1 + b2 > 255 ? 255 : b1 + b2);
+	return ((r << 16) + (g << 8) + b);
+}
+
+static unsigned int	blend_factor(const unsigned int c1, const float factor)
+{
+	unsigned int r, g, b;
+	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
+	unsigned int g1 = (c1 & 0x0000FF00) >> 8;
+	unsigned int b1 = (c1 & 0x000000FF);
+
+	r = r1 * factor;
+	g = g1 * factor;
+	b = b1 * factor;
+	return ((r << 16) + (g << 8) + b);
+}
+
+static unsigned int	get_ambient(const __local t_scene *scene, const unsigned int obj_color)
+{
+	unsigned int r, g, b;
+
+	r = (obj_color & 0x00FF0000) >> 16;
+	g = (obj_color & 0x0000FF00) >> 8;
+	b = (obj_color & 0x000000FF);
+	r = (0.01 + r * scene->ambient.x > 255 ? 255 : 0.01 + r * scene->ambient.x);
+	g = (0.01 + g * scene->ambient.y > 255 ? 255 : 0.01 + g * scene->ambient.y);
+	b = (0.01 + b * scene->ambient.z > 255 ? 255 : 0.01 + b * scene->ambient.z);
+	return ((r << 16) + (g << 8) + b);
+}
+
+
 static float4						rotat_zyx(const float4 vect, const float pitch, const float yaw, const float roll)
 {
 	float4					res;
@@ -405,7 +505,7 @@ static float			inter_sphere(const __local t_sphere *sphere, const float4 ray, co
 
 
 
-static t_hit			ray_hit(const __local t_scene *scene, const float4 origin, const float4 ray, int x, int y)
+static t_hit			ray_hit(const __local t_scene *scene, const float4 origin, const float4 ray)
 {
 	t_hit						hit;
 	float						dist;
@@ -464,11 +564,18 @@ static float4			get_hit_normal(const __local t_scene *scene, float4 ray, t_hit h
 		}
 	}
 	save = res;
+	if (scene->flag & OPTION_WAVE)
+	{
+		/*						VAGUELETTE							*/
+		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
+		save.z = res.z + 0.8 * sin(res.x * 10 + scene->u_time);
+		save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
+	}
 
 	return (fast_normalize(save));
 }
 
-static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float4 ray, int x, int y)
+static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float4 ray)
 {
 	t_object __local		*obj;
 	t_light __local		*light;
@@ -526,7 +633,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		light_ray.dir = light->pos - hit.pos;
 		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
-		light_hit = ray_hit(scene, hit.pos, light_ray.dir, x, y);
+		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
 		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON))
 		{
 			tmp = (dot(hit.normal, light_ray.dir));
@@ -565,7 +672,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				col_g = (res_color & 0x0000FF00) >> 8;
 				col_b = (res_color & 0x000000FF);
 
-				pow_of_spec = pow(tmp, (light->shrink));
+				pow_of_spec = native_powr(tmp, (light->shrink));
 				light_color = light->color;
 				col_r += (((light_color & 0xFF0000) >> 16) * pow_of_spec) * speculos.x;
 				col_g += ((light_color & 0x00FF00) >> 8) * pow_of_spec * speculos.y;
@@ -581,7 +688,41 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	return (res_color);
 }
 
-static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray, int x, int y)
+static unsigned int		bounce(const __local t_scene *scene, const float4 ray, t_hit old_hit, int depth)
+{
+	unsigned int	color;
+	float4			reflex;
+	t_hit			new_hit;
+	float			reflex_coef;
+
+	reflex = ray;
+	new_hit = hit_init();
+	color = 0;
+	reflex_coef = 0;
+	while (depth > 0)
+	{
+		// PREMIÈRE LOI DE SNELL-DESCARTES ///////////////////////////////////////////////////////////
+		reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normal, reflex) * old_hit.normal));
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		new_hit.dist = MAX_DIST;
+		new_hit = ray_hit(scene, old_hit.pos, reflex);
+		reflex_coef = old_hit.obj->reflex;
+		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
+		{
+			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
+			new_hit.normal = get_hit_normal(scene, reflex, new_hit);
+			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normal);
+			color = blend_factor(blend_add(color, phong(scene, new_hit, reflex)), reflex_coef);
+		}
+		if (new_hit.obj->reflex == 0)
+			return (color);
+		old_hit = new_hit;
+		--depth;
+	}
+	return (color);
+}
+
+static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray)
 {
 	t_hit			hit;
 	int				depth;
@@ -594,21 +735,18 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray, in
 	color = 0;
 	bounce_color = 0;
 	hit.dist = MAX_DIST;
-	hit = ray_hit(scene, (ACTIVECAM.pos), ray, x, y);
+	hit = ray_hit(scene, (ACTIVECAM.pos), ray);
 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normal = get_hit_normal(scene, ray, hit);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
-		color = phong(scene, hit, ray, x, y);
-	//	if (depth > 0 && (get_obj_reflex(scene, hit) > 0))
-	//		bounce_color = bounce(scene, ray, hit, depth);
-	//	return (blend_add(color, bounce_color));
-		return (color);
+		color = phong(scene, hit, ray);
+		if (depth > 0 && hit.obj->reflex > 0)
+			bounce_color = bounce(scene, ray, hit, depth);
+		return (blend_add(color, bounce_color));
 	}
-//	printf("Return\n");
-	return (0xFF0078);
-	//return (get_ambient(scene, BACKCOLOR));
+	return (get_ambient(scene, BACKCOLOR));
 }
 
 __kernel void	ray_trace(	__global	char		*output,
@@ -665,11 +803,11 @@ __kernel void	ray_trace(	__global	char		*output,
 	prim_ray = fast_normalize(cam_ray);
 	/*if (pix.x == scene->mou_x && pix.y == scene->mou_y)
 		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);*/
-	final_color = get_pixel_color(scene, prim_ray,  pix.x, pix.y);
-	/*if (scene->flag & OPTION_SEPIA)
+	final_color = get_pixel_color(scene, prim_ray);
+	if (scene->flag & OPTION_SEPIA)
 		final_color = sepiarize(final_color);
 	if (scene->flag & OPTION_BW)
-		final_color = desaturate(final_color);*/
+		final_color = desaturate(final_color);
 	((__global unsigned int *)output)[id] = final_color;
 
 }
