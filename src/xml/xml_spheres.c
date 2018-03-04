@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/01 00:00:30 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/04 21:23:49 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,5 @@ void		xml_push_sphere(t_env *e, t_node *list)
 	e->spheres[list->id].diff = list->diff;
 	e->spheres[list->id].spec = list->spec;
 	e->spheres[list->id].reflex = list->reflex;
-	e->gen->add(e->gen, (void*)&e->spheres[list->id]);
+	e->gen_objects->add(e->gen_objects, (void*)&e->spheres[list->id]);
 }

@@ -394,7 +394,8 @@ typedef	struct			s_env
 	int					node_count;
 
 	cl_mem				gen_mem;
-	t_gen				*gen;
+	t_gen				*gen_objects;
+	t_gen				*gen_lights;
 }						t_env;
 
 cl_float4				add_cl_float(cl_float4 v1, cl_float4 v2);

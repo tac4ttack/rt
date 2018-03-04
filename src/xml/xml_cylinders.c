@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/01 21:08:43 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/04 21:23:38 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,5 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	e->cylinders[list->id].diff = list->diff;
 	e->cylinders[list->id].spec = list->spec;
 	e->cylinders[list->id].reflex = list->reflex;
-	e->gen->add(e->gen, (void*)&e->cylinders[list->id]);
+	e->gen_objects->add(e->gen_objects, (void*)&e->cylinders[list->id]);
 }

@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 19:04:03 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/04 21:23:23 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static void		cl_write_buffer(t_env *e, t_cl *cl)
 {
 	cl->err = clEnqueueWriteBuffer(cl->cq, cl->mem[1], CL_TRUE, 0,
-							e->gen->mem_size,
-							e->gen->mem, 0, NULL, NULL);
+							e->gen_objects->mem_size,
+							e->gen_objects->mem, 0, NULL, NULL);
 	cl_check_err(cl->err, "clEnqueueWriteBuffer mem_obj");
 	cl->err = clEnqueueWriteBuffer(cl->cq, cl->mem[2], CL_TRUE, 0,
 							sizeof(t_scene),
@@ -45,8 +45,8 @@ void		opencl_set_args(t_env *e)
 	e->cl.err = 0;
 	e->cl.err = clSetKernelArg(KRT, 0, sizeof(cl_mem), &e->cl.mem[0]);
 	e->cl.err |= clSetKernelArg(KRT, 1, sizeof(cl_mem), &e->cl.mem[1]);
-	e->cl.err |= clSetKernelArg(KRT, 2, e->gen->mem_size, NULL);
-	e->cl.err |= clSetKernelArg(KRT, 3, sizeof(size_t), &e->gen->mem_size);
+	e->cl.err |= clSetKernelArg(KRT, 2, e->gen_objects->mem_size, NULL);
+	e->cl.err |= clSetKernelArg(KRT, 3, sizeof(size_t), &e->gen_objects->mem_size);
 	e->cl.err |= clSetKernelArg(KRT, 4, sizeof(float), &(e->fps.u_time));
 	e->cl.err |= clSetKernelArg(KRT, 5, sizeof(cl_mem), &e->cl.mem[2]);
 
@@ -70,7 +70,7 @@ void		opencl_set_args(t_env *e)
 /*
 int			get_imgptr(t_env *e)
 {
-	printf("Nb %zu\n", e->gen->unit_size);
+	printf("Nb %zu\n", e->gen_objects->unit_size);
 	clFinish(e->queue);
 	e->cl.err = clEnqueueReadBuffer(e->queue, e->frame_buffer, CL_TRUE, 0, \
 			(e->count * 4), e->frame->pix, 0, NULL, &e->events[3]);
@@ -93,7 +93,7 @@ int			draw(t_env *e)
 	t_cl *cl = &e->cl;
 
 	opencl_set_args(e);
-	/*t_cylinder *obj = e->gen->mem;
+	/*t_cylinder *obj = e->gen_objects->mem;
 
 	printf("--------------------------------CPU:\n");
 	printf("t_cylinder:	%zu\n", sizeof(t_cylinder));

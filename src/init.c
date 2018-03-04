@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/02 23:47:52 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/04 21:22:55 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void		init(t_env *e, int ac, char *av)
 	ft_bzero(&e->target_obj, sizeof(t_hit));
 	if (!(e->scene = malloc(sizeof(t_scene))))
 		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
-	if (!(e->gen = construct_gen()))
+	if (!(e->gen_objects = construct_gen()))
 		s_error("\x1b[2;31mCan't initialize t_gen\x1b[0m", e);
 	ft_bzero(e->scene, sizeof(t_scene));
 	xml_init(e, ac, av);
@@ -119,7 +119,7 @@ void		init(t_env *e, int ac, char *av)
 		init_print_structure_memory_size();
 
 	cl_create_buffer(&e->cl, 720*1024 * 4);
-	cl_create_buffer(&e->cl, e->gen->mem_size);
+	cl_create_buffer(&e->cl, e->gen_objects->mem_size);
 	cl_create_buffer(&e->cl, sizeof(t_scene));
 	cl_create_buffer(&e->cl, sizeof(t_cam) * NCAM);
 	cl_create_buffer(&e->cl, sizeof(t_light) * NLIG);

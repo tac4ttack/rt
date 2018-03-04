@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/01 21:08:31 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/04 21:23:46 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,5 @@ void		xml_push_plane(t_env *e, t_node *list)
 	e->planes[list->id].diff = list->diff;
 	e->planes[list->id].spec = list->spec;
 	e->planes[list->id].reflex = list->reflex;
-	e->gen->add(e->gen, (void*)&e->planes[list->id]);
+	e->gen_objects->add(e->gen_objects, (void*)&e->planes[list->id]);
 }

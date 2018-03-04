@@ -46,7 +46,7 @@ typedef struct			s_light_ray
 typedef struct			s_hit
 {
 	float				dist;
-	float4				normale;
+	float4				normal;
 	float4				pos;
 	t_object __local	*obj;
 }						t_hit;
@@ -107,7 +107,7 @@ typedef struct			s_plane
 	int					size;
 	int					id;
 	float4				pos;
-	float4				normale;
+	float4				normal;
 	float4				diff;
 	float4				spec;
 	int					color;
@@ -235,48 +235,40 @@ static float4						rotat_z(const float4 vect, const float angle)
 	res.z = (vect.x * 0) + (vect.y * 0) + (vect.z * 1);
 	return (res);
 }
-//#include "kernel_cam.hcl"
-//#include "kernel_color.hcl"
-//#include "kernel_cone.hcl"
-//#include "kernel_cylinder.hcl"
+
 static t_hit			hit_init(void)
 {
 	t_hit		hit;
 
 	hit.dist = 0.f;
-	hit.normale = 0.f;
+	hit.normal = 0.f;
 	hit.obj = 0;
 	hit.pos = 0.f;
 	return (hit);
 }
 
-//#include "kernel_debug.hcl"
-//#include "kernel_plane.hcl"
-//#include "kernel_sphere.hcl"
+static float		inter_plan(const __local t_plane *plane, const float4 ray, const float4 origin)
+{
+	float	t;
+
+	t = dot(fast_normalize(ray), fast_normalize(plane->normal));
+	if (fabs(t) < 0.0005)
+		return (0);
+	t = (dot(plane->pos - origin, fast_normalize(plane->normal))) / t;
+		if (t < 0.001)
+		return (0);
+	return (t);
+}
 
 static float4	get_cylinder_abc(const float radius, const float4 dir, const float4 ray, const float4 origin)
 {
 	float4		abc;
 
+	// SEMBLE OK
 	abc.x = dot(ray, ray) - (dot(ray, dir) * dot(ray, dir));
 	abc.y = 2 * (dot(ray, origin) - (dot(ray, dir) * dot(origin, dir)));
 	abc.z = dot(origin, origin) - (dot(origin, dir) * dot(origin, dir)) - (radius * radius);
 	return (abc);
-}
-
-static float4			get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
-{
-	float4 res = 0;
-	float4 v = 0;
-	float4 project = 0;
-	float doty = 0;
-
-	v = hit.pos - cylinder->pos;
-	doty = dot(v, fast_normalize(cylinder->dir));
-
-	project = doty * fast_normalize(cylinder->dir);
-	res = v - project;
-	return (fast_normalize(res));
 }
 
 static float					inter_cylinder(const __local t_cylinder *cylinder, const float4 ray, const float4 origin)
@@ -303,19 +295,96 @@ static float					inter_cylinder(const __local t_cylinder *cylinder, const float4
 	if (res1 < 0 && res2 < 0)
 		return (0);
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+	{
+		if (cylinder->height == 0 || (dot(ray, fast_normalize(cylinder->dir) * res1 +
+			dot(origin, fast_normalize(cylinder->dir))) < cylinder->height && dot(ray, fast_normalize(cylinder->dir) * res1 +
+			dot(origin, fast_normalize(cylinder->dir))) > 0))
+			return (res1);
+	}
+	if (cylinder->height ==  0 || (dot(ray, fast_normalize(cylinder->dir) * res2 +
+			dot(origin, fast_normalize(cylinder->dir))) < cylinder->height && dot(ray, fast_normalize(cylinder->dir) * res2 +
+			dot(origin, fast_normalize(cylinder->dir))) > 0))
 		return (res2);
-	return (res1);
+	else
+		return (0);
 }
 
-static float4	get_sphere_abc(const __local t_sphere *sphere, const float4 ray, const float4 origin)
+static float4			get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
+{
+	float4 res = 0;
+	float4 v = 0;
+	float4 project = 0;
+	float doty = 0;
+
+	v = hit.pos - cylinder->pos;
+	doty = dot(v, fast_normalize(cylinder->dir));
+
+	project = doty * fast_normalize(cylinder->dir);
+	res = v - project;
+	return (fast_normalize(res));
+}
+
+static float4	get_sphere_abc(const float radius, const float4 ray, const float4 origin)
 {
 	float4		abc = 0;
 
 	abc.x = dot(ray, ray);
 	abc.y = 2 * dot(ray, origin);
-	abc.z = dot(origin, origin) - (sphere->radius * sphere->radius);
+	abc.z = dot(origin, origin) - (radius * radius);
 	return (abc);
 }
+
+static float4	get_cone_abc(const __local t_cone *cone, const float4 ray, const float4 origin)
+{
+	float4		abc = 0;
+	float		k = radians(cone->angle);
+
+	k = tan(k);
+	k = 1 + k * k;
+	abc.x = dot(ray, ray) - (k * (dot(ray, cone->dir) * dot(ray, cone->dir)));
+	abc.y = 2 * (dot(ray, origin) - (k * \
+			(dot(ray, cone->dir) * dot(origin, cone->dir))));
+	abc.z = (dot(origin, origin) - \
+			(k * (dot(origin, cone->dir) * dot(origin, cone->dir))));
+	return (abc);
+}
+
+static float			inter_cone(const __local t_cone *cone, const float4 ray, const float4 origin)
+{
+	float4		abc = 0;
+	float		d = 0;
+	float		res1 = 0;
+	float		res2 = 0;
+	float4		pos = 0;
+
+	pos = origin - cone->pos;
+	abc = get_cone_abc(cone, ray, pos);
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	if (d < 0)
+		return (0);
+	if (d == 0)
+		return (-abc[1]) / (2 * abc[0]);
+	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		return (res1);
+	return (res2);
+}
+
+static float4			get_cone_normal(const __local t_cone *cone, const t_hit hit)
+{
+	float4 res = 0;
+	float4 v = 0;
+	float4 project = 0;
+	float doty = 0;
+
+	v = hit.pos - cone->pos;
+	doty = dot(v, cone->dir);
+	project = doty * fast_normalize(cone->dir);
+	res = v - project;
+	return (fast_normalize(res));
+}
+
 
 static float			inter_sphere(const __local t_sphere *sphere, const float4 ray, const float4 origin)
 {
@@ -326,7 +395,7 @@ static float			inter_sphere(const __local t_sphere *sphere, const float4 ray, co
 	float4		pos = 0;
 
 	pos = origin - sphere->pos;
-	abc = get_sphere_abc(sphere, ray, origin);
+	abc = get_sphere_abc(sphere->radius, ray, pos);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
 		return (0);
@@ -339,9 +408,15 @@ static float			inter_sphere(const __local t_sphere *sphere, const float4 ray, co
 	return (res2);
 }
 
+
+
+
+
+
+
+
 static t_hit			ray_hit(const __local t_scene *scene, const float4 origin, const float4 ray, int x, int y)
 {
-//	printf("Enter: Rayhit\n");
 	t_hit						hit;
 	float						dist;
 	t_object 		__local		*obj;
@@ -351,12 +426,7 @@ static t_hit			ray_hit(const __local t_scene *scene, const float4 origin, const 
 	hit = hit_init();
 	mem_index_obj = 0;
 	obj = 0;
-	if (!x && !y)
-	{
-		printf("0 0\n");
-		printf("Origin:  %.2f %.2f %.2f\n", origin.x, origin.y, origin.z);
-		printf("Ray   :  %.2f %.2f %.2f\n", ray.x, ray.y, ray.z);
-	}
+
 	while (mem_index_obj < scene->mem_size_obj)
 	{
 		obj = scene->mem_obj + mem_index_obj;
@@ -364,6 +434,10 @@ static t_hit			ray_hit(const __local t_scene *scene, const float4 origin, const 
 			dist = inter_sphere(obj, ray, origin);
 		else if (obj->id == OBJ_CYLINDER)
 			dist = inter_cylinder(obj, ray, origin);
+		else if (obj->id == OBJ_PLANE)
+			dist = inter_plan(obj, ray, origin);
+		else if (obj->id == OBJ_CONE)
+			dist = inter_cone(obj, ray, origin);
 		if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
 		{
 			hit.dist = dist;
@@ -373,81 +447,62 @@ static t_hit			ray_hit(const __local t_scene *scene, const float4 origin, const 
 	}
 	return (hit);
 }
-static t_hit			ray_hit_shad(const __local t_scene *scene, const float4 origin, const float4 ray, const t_object __local *obj2, int x, int y)
+
+static float4			get_hit_normal(const __local t_scene *scene, float4 ray, t_hit hit)
 {
-	//printf("Enter: Rayhit\n");
-	t_hit						hit;
-	float						dist;
-	t_object 		__local		*obj;
-	size_t						mem_index_obj;
-
-	dist = 0;
-	hit = hit_init();
-	mem_index_obj = 0;
-	obj = 0;
-	if (!x && !y)
-	{
-		printf("1 1\n");
-		printf("Origin:  %.2f %.2f %.2f\n", origin.x, origin.y, origin.z);
-		printf("Ray   :  %.2f %.2f %.2f\n", ray.x, ray.y, ray.z);
-	}
-	while (mem_index_obj < scene->mem_size_obj)
-	{
-		obj = scene->mem_obj + mem_index_obj;
-		if (obj != obj2)
-		{
-			if (obj->id == OBJ_SPHERE)
-				dist = inter_sphere(obj, ray, origin);
-			else if (obj->id == OBJ_CYLINDER)
-				dist = inter_cylinder(obj, ray, origin);
-			if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
-			{
-				hit.dist = dist;
-				hit.obj = obj;
-			}
-		}
-		mem_index_obj += obj->size;
-	}
-	return (hit);
-}
-
-
-static float4			get_hit_normale(const __local t_scene *scene, float4 ray, t_hit hit)
-{
-	float4		res;
+	float4		res, save;
 
 	if (hit.obj->id == OBJ_SPHERE)
 		res = hit.pos - hit.obj->pos;
 	else if (hit.obj->id == OBJ_CYLINDER)
 		res = get_cylinder_normal(hit.obj, hit);
+	else if (hit.obj->id == OBJ_CONE)
+		res = get_cone_normal(hit.obj, hit);
+	else if (hit.obj->id == OBJ_PLANE)
+	{
+		if (dot(hit.obj->dir, -ray) < 0)
+			res = -hit.obj->dir;
+		else
+			res = hit.obj->dir;
 
-	return (fast_normalize(res));
+		if (scene->flag & OPTION_WAVE)
+		{
+			/*					VAGUELETTE						*/
+			save = res;
+			save.y = res.y + 0.8 * sin((hit.pos.x + scene->u_time));
+			return (fast_normalize(save));
+		}
+	}
+	save = res;
+
+	return (fast_normalize(save));
 }
 
 static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float4 ray, int x, int y)
 {
 	int					i;
-	i = 0;
 	unsigned int		res_color;
 	float				tmp;
-	tmp = 0;
 	float4				reflect;
-	reflect = 0;
 	float4 __private	diffuse;
-	diffuse = 0;
 	float __private	brightness;
-	brightness = 0;
 	int __private hue;
-	hue = 0;
 	int __private hue_light;
-	hue_light = 0;
 	unsigned int __private col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g;
 	t_light_ray			light_ray;
-	t_object __local *obj;
-	t_hit				light_hit;
+	t_object __local		*obj;
+	t_hit					light_hit;
 	float __private pow_of_spec;
 	int __private light_color;
 	float4 __private speculos;
+
+	tmp = 0;
+	i = 0;
+	reflect = 0;
+	diffuse = 0;
+	brightness = 0;
+	hue = 0;
+	hue_light = 0;
 
 	obj = hit.obj;
 	hue = obj->color;
@@ -477,20 +532,10 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		light_ray.dir = LIGHT[i].pos - hit.pos;
 		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
-		light_hit = ray_hit_shad(scene, hit.pos, light_ray.dir, hit.obj, x, y);
-		if (light_hit.dist < light_ray.dist && light_hit.dist > EPSILON)
+		light_hit = ray_hit(scene, hit.pos, light_ray.dir, x, y);
+		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON))
 		{
-			if (!x && !y)
-			{
-				printf("LightDist: %.2f\n", light_hit.dist);
-				printf("LightRay:  %.2f\n", light_ray.dist);
-			}
-		}
-		else
-		{
-			tmp = (dot(hit.normale, light_ray.dir));
-				if (!x && !y)
-					printf("Dot: %.2f\n", tmp);
+			tmp = (dot(hit.normal, light_ray.dir));
 			if (tmp > EPSILON)
 			{
 				brightness = (float __private)LIGHT[i].brightness;
@@ -516,28 +561,18 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				(col_b > 255 ? col_b = 255 : 0);
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
-			/*
-			reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
+
+			reflect = fast_normalize(((float)(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
 			tmp = dot(reflect, -ray);
-			if (tmp > 0.f)
+			if (tmp > EPSILON)
 			{
-				speculos = 0.f;
-				if (hit.type == 1)
-					speculos = (float3 __private)CONES[hit.id].spec;
-				else if (hit.type == 2)
-					speculos = (float3 __private)CYLIND[hit.id].spec;
-				else if (hit.type == 4)
-					speculos = (float3 __private)PLANE[hit.id].spec;
-				else if (hit.type == 5)
-					speculos = (float3 __private)SPHERE[hit.id].spec;
-				else
-					speculos = 0.f;
+				speculos = obj->spec;
 				col_r = (res_color & 0x00FF0000) >> 16;
 				col_g = (res_color & 0x0000FF00) >> 8;
 				col_b = (res_color & 0x000000FF);
 
-				pow_of_spec = native_powr(tmp, (LIGHT[light_hit.id].shrink));
-				light_color = LIGHT[light_hit.id].color;
+				pow_of_spec = pow(tmp, (LIGHT[i].shrink));
+				light_color = LIGHT[i].color;
 				col_r += (((light_color & 0xFF0000) >> 16) * pow_of_spec) * speculos.x;
 				col_g += ((light_color & 0x00FF00) >> 8) * pow_of_spec * speculos.y;
 				col_b += (light_color & 0x0000FF) * pow_of_spec * speculos.z;
@@ -545,137 +580,12 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				(col_g > 255 ? col_g = 255 : 0);
 				(col_b > 255 ? col_b = 255 : 0);
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
-			}*/
-		}
-		i++;
-	}
-	return (res_color);
-}
-/*
-unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float4 ray, int x, int y)
-{
-	const __local 		t_object *obj;
-
-	int __private 		hue_light;
-	unsigned int __private col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g;
-	int __private 		modx, mody, modz;
-	int __private 		hue;
-	float __private		brightness;
-	float4 __private	diffuse;
-	float4				reflect;
-	float				tmp;
-	unsigned int		res_color;
-	int					i;
-	int __private 		light_color;
-	float4 __private 	speculos;
-	float __private		 pow_of_spec;
-	t_light_ray			light_ray;
-	t_hit				light_hit;
-
-	i = 0;
-	obj = hit.obj;
-	hue = obj->color;
-	speculos = obj->spec;
-
-	col_r = (hue & 0x00FF0000) >> 16;
-	col_g = (hue & 0x0000FF00) >> 8;
-	col_b = (hue & 0x000000FF);
-	col_r = (0.01 + col_r * scene->ambient.x > 255 ? 255 : 0.01 + col_r * scene->ambient.x);
-	col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
-	col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
-	res_color = ((col_r << 16) + (col_g << 8) + col_b);
-
-	light_ray.dir = LIGHT[i].pos - hit.pos;
-	light_ray.dist = fast_length(light_ray.dir);
-	light_ray.dir = fast_normalize(light_ray.dir);
-//	printf("GOOOOO\n");
-	light_hit = ray_hit(scene, hit.pos, light_ray.dir, x, y);
-
-	hue_light = LIGHT[i].color;
-
-	reflect = 0;
-	diffuse = 0;
-	brightness = 0;
-	modx = 0;
-	mody = 0;
-	modz = 0;
-	col_r = 0;
-	col_g = 0;
-	col_b = 0;
-	obj_r = 0;
-	obj_g = 0;
-	obj_b = 0;
-	l_r = 0;
-	l_g = 0;
-	l_b = 0;
-	pow_of_spec = 0;
-	light_color = 0;
-	tmp = 0;
-
-		if (!(light_hit.dist < light_ray.dist && light_hit.dist > 0))
-		{
-			tmp = dot(hit.normale, light_ray.dir);
-			if (tmp > 0.f)
-			{
-				brightness = (float __private)LIGHT[i].brightness;
-
-				diffuse = obj->diff;
-
-				col_r = (res_color & 0xFF0000) >> 16;
-				col_g = (res_color & 0x00FF00) >> 8;
-				col_b = (res_color & 0x0000FF);
-				obj_r = (hue & 0xFF0000) >> 16;
-				obj_g = (hue & 0x00FF00) >> 8;
-				obj_b = (hue & 0x00000FF);
-				l_r = (hue_light & 0xFF0000) >> 16;
-				l_g = (hue_light & 0x00FF00) >> 8;
-				l_b = (hue_light & 0x0000FF);
-
-				col_r += ((l_r * brightness) + obj_r) * tmp * diffuse.x;
-				col_g += ((l_g * brightness) + obj_g) * tmp * diffuse.y;
-				col_b += ((l_b * brightness) + obj_b) * tmp * diffuse.z;
-				(col_r > 255 ? col_r = 255 : 0);
-				(col_g > 255 ? col_g = 255 : 0);
-				(col_b > 255 ? col_b = 255 : 0);
-				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 		}
 		i++;
-
+	}
 	return (res_color);
 }
-*/
-/*
-static unsigned int		bounce(const __local t_scene *scene, const float4 ray, t_hit old_hit, int depth)
-{
-	unsigned int	color = 0;
-	float4			reflex = ray;
-	t_hit			new_hit;
-	float			reflex_coef = 0;
-	while (depth > 0)
-	{
-		// PREMIÈRE LOI DE SNELL-DESCARTES ///////////////////////////////////////////////////////////
-		reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normale, reflex) * old_hit.normale));
-		//////////////////////////////////////////////////////////////////////////////////////////////
-		new_hit.dist = MAX_DIST;
-		new_hit = ray_hit(scene, old_hit.obj->pos, reflex);
-		//reflex_coef = get_obj_reflex(scene, old_hit);
-		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
-		{
-			new_hit.obj->pos = (new_hit.dist * reflex) + old_hit.obj->pos;
-			//new_hit.normale = get_hit_normale(scene, reflex, new_hit);
-			new_hit.obj->pos = new_hit.obj->pos + ((new_hit.dist / 100) * new_hit.normale);
-			color = 0xFFFFFF;
-			//color = blend_factor(blend_add(color, phong(scene, new_hit, reflex)), reflex_coef);
-		}
-		//	if (get_obj_reflex(scene, new_hit) == 0)
-			return (color);
-		old_hit = new_hit;
-		--depth;
-	}
-	return (color);
-}
-*/
 
 static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray, int x, int y)
 {
@@ -685,20 +595,17 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray, in
 	unsigned int	bounce_color;
 
 	hit = hit_init();
+	hit.dist = MAX_DIST;
 	depth = scene->depth;
 	color = 0;
 	bounce_color = 0;
 	hit.dist = MAX_DIST;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, x, y);
-//	printf("Exit1st ray\n");
 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
-//		printf("Is Hit\n");
-		if (!x && !y)
-			printf("1st: Len [%.2f]\n", hit.dist);
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
-		hit.normale = get_hit_normale(scene, ray, hit);
-		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
+		hit.normal = get_hit_normal(scene, ray, hit);
+		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 		color = phong(scene, hit, ray, x, y);
 	//	if (depth > 0 && (get_obj_reflex(scene, hit) > 0))
 	//		bounce_color = bounce(scene, ray, hit, depth);
@@ -721,10 +628,10 @@ __kernel void	ray_trace(	__global	char		*output,
 							__local		t_scene		*scene,
 							__local		t_cam		*cameras,
 							__local		t_light		*lights
+
 							)
 {
 	/*
-	__global	t_hit		*target_obj,
 	*/
  	event_t			ev;
 	int				id;
@@ -739,7 +646,6 @@ __kernel void	ray_trace(	__global	char		*output,
 	pix.y = get_global_id(0) / 1024.f;
 	id = pix.x + (1024 * pix.y);
 
-
 	ev = async_work_group_copy((__local char *)mem_obj, (__global char *)global_mem_obj, mem_size_obj, 0);
 	ev = async_work_group_copy((__local char *)scene, (__global char *)scene_data, sizeof(t_scene), 0);
 	ev = async_work_group_copy((__local char *)cameras, (__global char *)cameras_data, sizeof(t_cam) * scene->n_cams, 0);
@@ -747,14 +653,6 @@ __kernel void	ray_trace(	__global	char		*output,
 	wait_group_events(1, &ev);
 
 
-/*
-	if(!pix.x && !pix.y)
-	{
-		printf("NB CAM: %i\n", scene->n_cams);
-		printf("%.2f %.2f %.2f\n", cameras->pitch, cameras->yaw, cameras->roll);
-		printf("%.2f %.2f %.2f\n", cameras->pos.x, cameras->pos.y, cameras->pos.z);
-	}
-*/
 	scene->cameras = cameras;
 	scene->lights = lights;
 	scene->u_time = u_time;
