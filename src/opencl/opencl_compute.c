@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/03 14:19:42 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/04 19:04:03 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ static void		cl_write_buffer(t_env *e, t_cl *cl)
 							sizeof(t_cam) * NCAM,
 							e->cameras, 0, NULL, NULL);
 	cl_check_err(cl->err, "clEnqueueWriteBuffer mem_obj");
+	/*printf("Light:\n%.2f %.2f %.2f\nColor %x\n",
+						e->lights->pos.x,
+						e->lights->pos.y,
+						e->lights->pos.z,
+						e->lights->color
+					);*/
 	cl->err = clEnqueueWriteBuffer(cl->cq, cl->mem[4], CL_TRUE, 0,
 							sizeof(t_light) * NLIG,
 							e->lights, 0, NULL, NULL);
