@@ -63,6 +63,7 @@ typedef struct			s_cam
 
 typedef struct			s_light
 {
+	int					size;
 	int					type;
 	float4				pos;
 	float4				dir;

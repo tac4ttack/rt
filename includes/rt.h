@@ -126,6 +126,7 @@ typedef struct			s_cam
 
 typedef struct			s_light
 {
+	cl_int				size;
 	cl_int				type;
 	cl_float4			pos;
 	cl_float4			dir;
@@ -284,11 +285,7 @@ typedef	struct			s_tor
 typedef struct			s_scene
 {
 	t_cam				*cameras;
-	t_cone				*cones;
-	t_cylinder			*cylinders;
-	t_light				*lights;
-	t_plane				*planes;
-	t_sphere			*spheres;
+	void				*mem_lights;
 	void				*mem_obj;
 	unsigned int		n_cams;
 	unsigned int		n_cones;
@@ -307,6 +304,7 @@ typedef struct			s_scene
 	int					flag;
 	int					tor_count;
 	size_t				mem_size_obj;
+	size_t				mem_size_lights;
 }						t_scene;
 
 typedef struct			s_gen

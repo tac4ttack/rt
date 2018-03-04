@@ -63,6 +63,7 @@ typedef struct			s_cam
 
 typedef struct			s_light
 {
+	int					size;
 	int					type;
 	float4				pos;
 	float4				dir;
@@ -146,16 +147,8 @@ typedef struct			s_scene
 {
 	t_cam				__local *cameras;
 	//void				*void1;
-	t_cone				__local *cones;
-	//void				*void2;
-	t_cylinder			__local *cylinders;
-	//void				*void3;
-	t_light				__local *lights;
+	void				__local *mem_lights;
 	//void				*void4;
-	t_plane				__local *planes;
-	//void				*void5;
-	t_sphere			__local *spheres;
-	//void				*void6;
 	void				__local *mem_obj;
 	//void				*void7;
 	unsigned int		n_cams;
@@ -175,6 +168,7 @@ typedef struct			s_scene
 	int					flag;
 	int					tor_count;
 	size_t				mem_size_obj;
+	size_t				mem_size_lights;
 }						t_scene;
 
 static float4						rotat_zyx(const float4 vect, const float pitch, const float yaw, const float roll)
@@ -411,10 +405,6 @@ static float			inter_sphere(const __local t_sphere *sphere, const float4 ray, co
 
 
 
-
-
-
-
 static t_hit			ray_hit(const __local t_scene *scene, const float4 origin, const float4 ray, int x, int y)
 {
 	t_hit						hit;
@@ -480,7 +470,10 @@ static float4			get_hit_normal(const __local t_scene *scene, float4 ray, t_hit h
 
 static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float4 ray, int x, int y)
 {
-	int					i;
+	t_object __local		*obj;
+	t_light __local		*light;
+	size_t				mem_index_lights;
+
 	unsigned int		res_color;
 	float				tmp;
 	float4				reflect;
@@ -490,14 +483,12 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	int __private hue_light;
 	unsigned int __private col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g;
 	t_light_ray			light_ray;
-	t_object __local		*obj;
 	t_hit					light_hit;
 	float __private pow_of_spec;
 	int __private light_color;
 	float4 __private speculos;
 
 	tmp = 0;
-	i = 0;
 	reflect = 0;
 	diffuse = 0;
 	brightness = 0;
@@ -526,10 +517,13 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	pow_of_spec = 0;
 	light_color = 0;
 	speculos = 0;
-	while (i < scene->n_lights)
+	mem_index_lights = 0;
+	while (mem_index_lights < scene->mem_size_lights)
 	{
+		light = scene->mem_lights + mem_index_lights;
+
 		tmp = 0;
-		light_ray.dir = LIGHT[i].pos - hit.pos;
+		light_ray.dir = light->pos - hit.pos;
 		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir, x, y);
@@ -538,10 +532,10 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			tmp = (dot(hit.normal, light_ray.dir));
 			if (tmp > EPSILON)
 			{
-				brightness = (float __private)LIGHT[i].brightness;
+				brightness = (float __private)light->brightness;
 				diffuse = (float4 __private)obj->diff;
 				hue = (int __private)obj->color;
-				hue_light = LIGHT[i].color;
+				hue_light = light->color;
 
 				col_r = (res_color & 0xFF0000) >> 16;
 				col_g = (res_color & 0x00FF00) >> 8;
@@ -571,8 +565,8 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				col_g = (res_color & 0x0000FF00) >> 8;
 				col_b = (res_color & 0x000000FF);
 
-				pow_of_spec = pow(tmp, (LIGHT[i].shrink));
-				light_color = LIGHT[i].color;
+				pow_of_spec = pow(tmp, (light->shrink));
+				light_color = light->color;
 				col_r += (((light_color & 0xFF0000) >> 16) * pow_of_spec) * speculos.x;
 				col_g += ((light_color & 0x00FF00) >> 8) * pow_of_spec * speculos.y;
 				col_b += (light_color & 0x0000FF) * pow_of_spec * speculos.z;
@@ -582,7 +576,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 		}
-		i++;
+		mem_index_lights += light->size;
 	}
 	return (res_color);
 }
@@ -618,17 +612,19 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray, in
 }
 
 __kernel void	ray_trace(	__global	char		*output,
-							__global	char		*global_mem_obj,
-							__local		char		*mem_obj,
-							__private	size_t		mem_size_obj,
+							__global	char		*global_mem_objects,
+							__local		char		*mem_objects,
+							__private	size_t		mem_size_objects,
 							__private	float		u_time,
 							__global	t_scene		*scene_data,
 							__global	t_cam		*cameras_data,
 							__global	t_light		*lights_data,
 							__local		t_scene		*scene,
 							__local		t_cam		*cameras,
-							__local		t_light		*lights
-
+							__local		t_light		*lights,
+							__global	char		*global_mem_lights,
+							__local		char		*mem_lights,
+							__private	size_t		mem_size_lights
 							)
 {
 	/*
@@ -646,18 +642,19 @@ __kernel void	ray_trace(	__global	char		*output,
 	pix.y = get_global_id(0) / 1024.f;
 	id = pix.x + (1024 * pix.y);
 
-	ev = async_work_group_copy((__local char *)mem_obj, (__global char *)global_mem_obj, mem_size_obj, 0);
+	ev = async_work_group_copy((__local char *)mem_objects, (__global char *)global_mem_objects, mem_size_objects, 0);
 	ev = async_work_group_copy((__local char *)scene, (__global char *)scene_data, sizeof(t_scene), 0);
 	ev = async_work_group_copy((__local char *)cameras, (__global char *)cameras_data, sizeof(t_cam) * scene->n_cams, 0);
 	ev = async_work_group_copy((__local char *)lights, (__global char *)lights_data, sizeof(t_light) * scene->n_lights, 0);
+	ev = async_work_group_copy((__local char *)mem_lights, (__global char *)global_mem_lights, mem_size_lights, 0);
 	wait_group_events(1, &ev);
 
-
 	scene->cameras = cameras;
-	scene->lights = lights;
+	scene->mem_lights = mem_lights;
 	scene->u_time = u_time;
-	scene->mem_obj = mem_obj;
-	scene->mem_size_obj = mem_size_obj;
+	scene->mem_obj = mem_objects;
+	scene->mem_size_obj = mem_size_objects;
+	scene->mem_size_lights = mem_size_lights;
 
 	cam_ray = 0;
 	ratio = 1024.f / 720.f;

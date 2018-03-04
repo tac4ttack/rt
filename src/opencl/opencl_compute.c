@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 21:23:23 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/04 21:43:20 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ static void		cl_write_buffer(t_env *e, t_cl *cl)
 							sizeof(t_light) * NLIG,
 							e->lights, 0, NULL, NULL);
 	cl_check_err(cl->err, "clEnqueueWriteBuffer mem_obj");
+	cl->err = clEnqueueWriteBuffer(cl->cq, cl->mem[5], CL_TRUE, 0,
+							e->gen_lights->mem_size,
+							e->gen_lights->mem, 0, NULL, NULL);
+	cl_check_err(cl->err, "clEnqueueWriteBuffer mem_obj");
 }
 
 
@@ -56,6 +60,10 @@ void		opencl_set_args(t_env *e)
 	e->cl.err |= clSetKernelArg(KRT, 8, sizeof(t_scene), NULL);
 	e->cl.err |= clSetKernelArg(KRT, 9, sizeof(t_cam) * NCAM, NULL);
 	e->cl.err |= clSetKernelArg(KRT, 10, sizeof(t_light) * NLIG, NULL);
+	e->cl.err |= clSetKernelArg(KRT, 11, sizeof(cl_mem), &e->cl.mem[5]);
+	e->cl.err |= clSetKernelArg(KRT, 12, e->gen_lights->mem_size, NULL);
+	e->cl.err |= clSetKernelArg(KRT, 13, sizeof(size_t), &e->gen_lights->mem_size);
+
 	if (e->cl.err != CL_SUCCESS)
 	{
 		//opencl_print_error(e->cl.err);
