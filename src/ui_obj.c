@@ -6,62 +6,23 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/03 13:12:18 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/04 23:10:44 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-/*
-cl_float4		*get_target_dir(t_env *e)
-{
-	cl_float4	*res;
 
-	res = NULL;
-	if (ACTIVEOBJ.type != 0)
-	{
-		if (ACTIVEOBJ.type == 1)
-			res = &CONES[ACTIVEOBJ.id].dir;
-		else if (ACTIVEOBJ.type == 2)
-			res = &CYLIND[ACTIVEOBJ.id].dir;
-		else if (ACTIVEOBJ.type == 4)
-			res = &PLANE[ACTIVEOBJ.id].normale;
-		else
-			res = &SPHERE[ACTIVEOBJ.id].dir;
-	}
-	return (res);
-}
-
-cl_float4		*get_target_pos(t_env *e)
-{
-	cl_float4	*res;
-
-	res = NULL;
-	if (ACTIVEOBJ.type != 0)
-	{
-		if (ACTIVEOBJ.type == 1)
-			res = &CONES[ACTIVEOBJ.id].pos;
-		else if (ACTIVEOBJ.type == 2)
-			res = &CYLIND[ACTIVEOBJ.id].pos;
-		else if (ACTIVEOBJ.type == 4)
-			res = &PLANE[ACTIVEOBJ.id].pos;
-		else
-			res = &SPHERE[ACTIVEOBJ.id].pos;
-	}
-	return (res);
-}
-*/
 void			ui_obj(t_env *e)
 {
-	(void)e;
-	return ;
-	/*
+	t_object	*obj;
 	cl_float4	*target;
 
+	obj = e->gen_objects->mem + e->target_obj.mem_index;
 	target = NULL;
 	if (KP_I || KP_J || KP_K || KP_L || KP_U || KP_O)
-		target = get_target_dir(e);
+		target = &obj->dir;
 	else
-		target = get_target_pos(e);
+		target = &obj->pos;
 	if (target)
 	{
 		(KP_I ? *target = rotx(*target, 1 * DEG2RAD) : *target);
@@ -77,5 +38,4 @@ void			ui_obj(t_env *e)
 		(KP_N7 ? target->z -= 0.1 : 0);
 		(KP_N9 ? target->z += 0.1 : 0);
 	}
-*/
 }

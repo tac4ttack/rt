@@ -71,6 +71,7 @@
 # define OPTION_WAVE			(1 << 1)
 # define OPTION_SEPIA			(1 << 2)
 # define OPTION_BW				(1 << 3)
+# define OPTION_RUN				(1 << 4)
 
 # define OBJ_CONE			1
 # define OBJ_CYLINDER		2
@@ -108,10 +109,11 @@ typedef struct			s_p2i
 
 typedef struct			s_hit
 {
-	float				dist;
+	cl_float			dist;
 	cl_float4			normale;
 	cl_float4			pos;
 	t_object			*obj;
+	cl_int				mem_index;
 }						t_hit;
 
 typedef struct			s_cam
@@ -387,7 +389,6 @@ typedef	struct			s_env
 	cl_mem				scene_mem;
 	t_fps				fps;
 
-	char				run;
 	t_tor				*tree;
 	int					node_count;
 

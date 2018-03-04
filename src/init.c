@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 21:32:00 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/04 23:21:46 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void		env_init(t_env *e)
 	e->cen_x = e->win_w / 2;
 	e->cen_y = e->win_h / 2;
 	e->gpu = IS_GPU;
-	e->run = 0;
 	e->tree = tor_create(e);
 }
 
@@ -125,7 +124,7 @@ void		init(t_env *e, int ac, char *av)
 	cl_create_buffer(&e->cl, sizeof(t_scene));
 	cl_create_buffer(&e->cl, sizeof(t_cam) * NCAM);
 	cl_create_buffer(&e->cl, sizeof(t_light) * NLIG);
-	printf("%zu\n", e->gen_lights->mem_size);
 	cl_create_buffer(&e->cl, e->gen_lights->mem_size);
+	cl_create_buffer(&e->cl, sizeof(t_hit));
 
 }

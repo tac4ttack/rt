@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 21:43:20 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/04 23:21:59 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@ static void		cl_write_buffer(t_env *e, t_cl *cl)
 							sizeof(t_cam) * NCAM,
 							e->cameras, 0, NULL, NULL);
 	cl_check_err(cl->err, "clEnqueueWriteBuffer mem_obj");
-	/*printf("Light:\n%.2f %.2f %.2f\nColor %x\n",
-						e->lights->pos.x,
-						e->lights->pos.y,
-						e->lights->pos.z,
-						e->lights->color
-					);*/
 	cl->err = clEnqueueWriteBuffer(cl->cq, cl->mem[4], CL_TRUE, 0,
 							sizeof(t_light) * NLIG,
 							e->lights, 0, NULL, NULL);
@@ -63,77 +57,20 @@ void		opencl_set_args(t_env *e)
 	e->cl.err |= clSetKernelArg(KRT, 11, sizeof(cl_mem), &e->cl.mem[5]);
 	e->cl.err |= clSetKernelArg(KRT, 12, e->gen_lights->mem_size, NULL);
 	e->cl.err |= clSetKernelArg(KRT, 13, sizeof(size_t), &e->gen_lights->mem_size);
+	e->cl.err |= clSetKernelArg(KRT, 14, sizeof(cl_mem), &e->cl.mem[6]);
+
 
 	if (e->cl.err != CL_SUCCESS)
-	{
-		//opencl_print_error(e->cl.err);
 		s_error("Error: Failed to send arguments to kernel!", e);
-	}
 }
-
-/*
-** the "CL_TRUE" flag blocks the read operation until
-** 	all work items have finished their computation
-*/
-/*
-int			get_imgptr(t_env *e)
-{
-	printf("Nb %zu\n", e->gen_objects->unit_size);
-	clFinish(e->queue);
-	e->cl.err = clEnqueueReadBuffer(e->queue, e->frame_buffer, CL_TRUE, 0, \
-			(e->count * 4), e->frame->pix, 0, NULL, &e->events[3]);
-	if (e->run == 1)
-	{
-		e->cl.err = clEnqueueReadBuffer(e->queue, e->target_obj_buf, \
-		CL_FALSE, 0, sizeof(t_hit), &e->target_obj, 0, NULL, &e->events[4]);
-		e->run = 0;
-	}
-	if (e->cl.err != CL_SUCCESS)
-	{
-		opencl_print_error(e->cl.err);
-		s_error("Error: Failed to read output array!", e);
-	}
-	return (0);
-}*/
 
 int			draw(t_env *e)
 {
 	t_cl *cl = &e->cl;
 
 	opencl_set_args(e);
-	/*t_cylinder *obj = e->gen_objects->mem;
-
-	printf("--------------------------------CPU:\n");
-	printf("t_cylinder:	%zu\n", sizeof(t_cylinder));
-	printf("Size:		%i\n", obj->size);
-	printf("Id:			%i\n", obj->id);
-	printf("Pos:		%.2f %.2f %.2f\n", obj->pos.x, obj->pos.y, obj->pos.z);
-	printf("Dir:		%.2f %.2f %.2f\n", obj->dir.x, obj->dir.y, obj->dir.z);
-	printf("Diff:		%.2f %.2f %.2f\n", obj->diff.x, obj->diff.y, obj->diff.z);
-	printf("Spec:		%.2f %.2f %.2f\n", obj->spec.x, obj->spec.y, obj->spec.z);
-	printf("Color:		%i\n", obj->color);
-	printf("Spec:		%.2f\n", obj->reflex);
-	printf("*---------------------------------*\n");
-	printf("Height:		%.2f\n", obj->height);
-	printf("Base_dir:	%.2f %.2f %.2f\n", obj->base_dir.x, obj->base_dir.y, obj->base_dir.z);
-	printf("Radius:		%.2f\n", obj->radius);
-	printf("\n\n");*/
-
-	//e->cl.err = clGetKernelWorkGroupInfo(KRT, e->device_id, \
-	//		CL_KERNEL_WORK_GROUP_SIZE, sizeof(e->local), &e->local, NULL);
-
 	cl_event event;
-
 	event = 0;
-	size_t newLo;
-	size_t newGo;
-	newGo = 1024;
-	newLo = 1;
-
-	/*cl->err = clEnqueueNDRangeKernel(cl->cq, cl->kernel, 1, NULL,
-										&newGo,
-										&newLo,
-										0, NULL, &event);*/
 	cl->err = clEnqueueNDRangeKernel(cl->cq, cl->kernel, 1, NULL,
 										&cl->global_item_size,
 										&cl->local_item_size,
@@ -148,6 +85,12 @@ int			draw(t_env *e)
 	cl->err = clEnqueueReadBuffer(cl->cq, cl->mem[0], CL_TRUE, 0,
 			4 * 1024 * 720,
 			e->frame->pix, 0, NULL, NULL);
-	//get_imgptr(e);
+	if (e->scene->flag & OPTION_RUN)
+	{
+		cl->err = clEnqueueReadBuffer(cl->cq, cl->mem[6], CL_FALSE, 0,
+			sizeof(t_hit),
+			&e->target_obj, 0, NULL, NULL);
+		e->scene->flag ^= OPTION_RUN;
+	}
 	return (0);
 }

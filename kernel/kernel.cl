@@ -18,6 +18,8 @@
 #define OPTION_WAVE 	(1 << 1)
 #define OPTION_SEPIA	(1 << 2)
 #define OPTION_BW		(1 << 3)
+#define OPTION_RUN		(1 << 4)
+
 #define FLAG_DEBUG		(1 << 2)
 
 # define OBJ_CONE			1
@@ -49,6 +51,7 @@ typedef struct			s_hit
 	float4				normal;
 	float4				pos;
 	t_object __local	*obj;
+	int					mem_index;
 }						t_hit;
 
 typedef struct			s_cam
@@ -338,6 +341,7 @@ static t_hit			hit_init(void)
 	hit.normal = 0.f;
 	hit.obj = 0;
 	hit.pos = 0.f;
+	hit.mem_index = 0;
 	return (hit);
 }
 
@@ -532,6 +536,7 @@ static t_hit			ray_hit(const __local t_scene *scene, const float4 origin, const 
 		{
 			hit.dist = dist;
 			hit.obj = obj;
+			hit.mem_index = mem_index_obj;
 		}
 		mem_index_obj += obj->size;
 	}
@@ -762,11 +767,11 @@ __kernel void	ray_trace(	__global	char		*output,
 							__local		t_light		*lights,
 							__global	char		*global_mem_lights,
 							__local		char		*mem_lights,
-							__private	size_t		mem_size_lights
+							__private	size_t		mem_size_lights,
+							__global	t_hit		*target_obj
 							)
 {
-	/*
-	*/
+
  	event_t			ev;
 	int				id;
 	uint2			pix;
@@ -801,8 +806,11 @@ __kernel void	ray_trace(	__global	char		*output,
 	cam_ray.z = 1.f;
 	cam_ray = rotat_zyx(cam_ray, ACTIVECAM.pitch, ACTIVECAM.yaw, 0);
 	prim_ray = fast_normalize(cam_ray);
-	/*if (pix.x == scene->mou_x && pix.y == scene->mou_y)
-		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);*/
+	if (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y)
+	{
+		printf("%i %i\n", pix.x, pix.y);
+		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);
+	}
 	final_color = get_pixel_color(scene, prim_ray);
 	if (scene->flag & OPTION_SEPIA)
 		final_color = sepiarize(final_color);
