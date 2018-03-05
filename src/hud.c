@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 13:48:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/04 23:15:32 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/05 22:16:48 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static	char	*hud_get_obj_type(t_env *e)
 {
 	t_object *object;
 
-	object = e->gen_objects->mem + e->target_obj.mem_index;
+	object = e->gen_objects->mem + e->target;
 	if (object->id == 0)
 		return ("CAM #");
 	if (object->id == OBJ_CONE)
@@ -62,7 +62,7 @@ static void		display_hud_obj_pos(t_env *e)
 	char		*pos;
 	char		*obj;
 
-	obj_pos = &((t_object *)(e->gen_objects->mem + e->target_obj.mem_index))->pos;
+	obj_pos = &((t_object *)(e->gen_objects->mem + e->target))->pos;
 	if (obj_pos)
 	{
 		obj = ft_strdup(hud_get_obj_type(e));
@@ -85,7 +85,7 @@ static void		display_hud_obj_dir(t_env *e)
 	cl_float4	*obj_dir;
 	char		*dir;
 
-	obj_dir = &((t_object *)(e->gen_objects->mem + e->target_obj.mem_index))->pos;
+	obj_dir = &((t_object *)(e->gen_objects->mem + e->target))->pos;
 	if (obj_dir)
 	{
 		dir = ft_strjoin_frs2("DIR.X = ", ft_ftoa(obj_dir->x));

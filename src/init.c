@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 23:42:17 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/05 22:17:15 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void		env_init(t_env *e)
 void		init(t_env *e, int ac, char *av)
 {
 	ft_bzero(e, sizeof(t_env));
-	ft_bzero(&e->target_obj, sizeof(t_hit));
 	if (!(e->scene = malloc(sizeof(t_scene))))
 		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
 	if (!(e->gen_objects = construct_gen()))
@@ -125,6 +124,6 @@ void		init(t_env *e, int ac, char *av)
 	cl_create_buffer(&e->cl, sizeof(t_scene));
 	cl_create_buffer(&e->cl, sizeof(t_cam) * NCAM);
 	cl_create_buffer(&e->cl, e->gen_lights->mem_size);
-	cl_create_buffer(&e->cl, sizeof(t_hit));
+	cl_create_buffer(&e->cl, sizeof(int));
 
 }

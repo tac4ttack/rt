@@ -726,7 +726,7 @@ static unsigned int		bounce(const __local t_scene *scene, const float4 ray, t_hi
 	return (color);
 }
 
-static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray)
+static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray, __global int *target, bool isHim)
 {
 	t_hit			hit;
 	int				depth;
@@ -740,6 +740,8 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray)
 	bounce_color = 0;
 	hit.dist = MAX_DIST;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray);
+	if (isHim)
+		*target = hit.mem_index;
 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
@@ -766,19 +768,25 @@ static float4						get_ray_cam(__local t_scene *scene, const uint2 pix)
 }
 
 __kernel void	ray_trace(	__global	char		*output,
+
 							__global	char		*global_mem_objects,
 							__local		char		*mem_objects,
 							__private	size_t		mem_size_objects,
+
 							__private	float		u_time,
+
 							__global	t_scene		*scene_data,
 							__global	t_cam		*cameras_data,
+
 							__local		t_scene		*scene,
 							__local		t_cam		*cameras,
+
 							__global	char		*global_mem_lights,
 							__local		char		*mem_lights,
 							__private	size_t		mem_size_lights,
-							__global	t_hit		*target_obj
-							)
+
+							__global	int		*target
+									)
 {
 
  	event_t			ev;
@@ -811,16 +819,10 @@ __kernel void	ray_trace(	__global	char		*output,
 	scene->mem_size_lights = mem_size_lights;
 
 	prim_ray = get_ray_cam(scene, pix);
-	final_color = get_pixel_color(scene, prim_ray);
+	final_color = get_pixel_color(scene, prim_ray, target, (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y));
 	if (scene->flag & OPTION_SEPIA)
 		final_color = sepiarize(final_color);
 	if (scene->flag & OPTION_BW)
 		final_color = desaturate(final_color);
 	((__global unsigned int *)output)[id] = final_color;
-	if (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y)
-	{
-		//printf("%i %i\n", pix.x, pix.y);
-		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);
-	}
-	barrier(CLK_LOCAL_MEM_FENCE | CLK_GLOBAL_MEM_FENCE);
 }

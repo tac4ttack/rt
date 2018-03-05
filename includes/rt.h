@@ -365,8 +365,7 @@ typedef	struct			s_env
 	t_xml				*xml;
 
 	char				*frame_buffer;
-	cl_mem				target_obj_buf;
-	t_hit				target_obj;
+	int					target;
 	int					gpu;
 	size_t				global;
 	size_t				local;

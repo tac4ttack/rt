@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/04 23:10:44 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/05 22:17:39 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void			ui_obj(t_env *e)
 	t_object	*obj;
 	cl_float4	*target;
 
-	obj = e->gen_objects->mem + e->target_obj.mem_index;
+	obj = e->gen_objects->mem + e->target;
 	target = NULL;
 	if (KP_I || KP_J || KP_K || KP_L || KP_U || KP_O)
 		target = &obj->dir;

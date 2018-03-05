@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/05 20:44:36 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/05 22:16:56 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void		cl_write_buffer(t_env *e, t_cl *cl)
 							sizeof(t_cam) * NCAM,
 							e->cameras, 0, NULL, NULL);
 	cl_check_err(cl->err, "clEnqueueWriteBuffer mem_obj");
-	cl->err = clEnqueueWriteBuffer(cl->cq, cl->mem[5], CL_TRUE, 0,
+	cl->err = clEnqueueWriteBuffer(cl->cq, cl->mem[4], CL_TRUE, 0,
 							e->gen_lights->mem_size,
 							e->gen_lights->mem, 0, NULL, NULL);
 	cl_check_err(cl->err, "clEnqueueWriteBuffer mem_obj");
@@ -41,16 +41,19 @@ void		opencl_set_args(t_env *e)
 	e->cl.err |= clSetKernelArg(KRT, 1, sizeof(cl_mem), &e->cl.mem[1]);
 	e->cl.err |= clSetKernelArg(KRT, 2, e->gen_objects->mem_size, NULL);
 	e->cl.err |= clSetKernelArg(KRT, 3, sizeof(size_t), &e->gen_objects->mem_size);
-	e->cl.err |= clSetKernelArg(KRT, 4, sizeof(float), &(e->fps.u_time));
-	e->cl.err |= clSetKernelArg(KRT, 5, sizeof(cl_mem), &e->cl.mem[2]);
 
+	e->cl.err |= clSetKernelArg(KRT, 4, sizeof(float), &(e->fps.u_time));
+
+	e->cl.err |= clSetKernelArg(KRT, 5, sizeof(cl_mem), &e->cl.mem[2]);
 	e->cl.err |= clSetKernelArg(KRT, 6, sizeof(cl_mem), &e->cl.mem[3]);
 
 	e->cl.err |= clSetKernelArg(KRT, 7, sizeof(t_scene), NULL);
 	e->cl.err |= clSetKernelArg(KRT, 8, sizeof(t_cam) * NCAM, NULL);
-	e->cl.err |= clSetKernelArg(KRT, 9, sizeof(cl_mem), &e->cl.mem[5]);
+
+	e->cl.err |= clSetKernelArg(KRT, 9, sizeof(cl_mem), &e->cl.mem[4]);
 	e->cl.err |= clSetKernelArg(KRT, 10, e->gen_lights->mem_size, NULL);
 	e->cl.err |= clSetKernelArg(KRT, 11, sizeof(size_t), &e->gen_lights->mem_size);
+
 	e->cl.err |= clSetKernelArg(KRT, 12, sizeof(cl_mem), &e->cl.mem[5]);
 
 
@@ -82,8 +85,8 @@ int			draw(t_env *e)
 	if (e->scene->flag & OPTION_RUN)
 	{
 		cl->err = clEnqueueReadBuffer(cl->cq, cl->mem[5], CL_FALSE, 0,
-			sizeof(t_hit),
-			&e->target_obj, 0, NULL, NULL);
+			sizeof(int),
+			&e->target, 0, NULL, NULL);
 		e->scene->flag ^= OPTION_RUN;
 	}
 	return (0);
@@ -94,6 +97,9 @@ void		opencl_close(t_env *e)
 	clReleaseMemObject(e->cl.mem[0]);
 	clReleaseMemObject(e->cl.mem[1]);
 	clReleaseMemObject(e->cl.mem[2]);
+	clReleaseMemObject(e->cl.mem[3]);
+	clReleaseMemObject(e->cl.mem[4]);
+	clReleaseMemObject(e->cl.mem[5]);
 	clReleaseProgram(e->cl.program);
 	clReleaseKernel(e->cl.kernel);
 	clReleaseCommandQueue(e->cl.cq);
