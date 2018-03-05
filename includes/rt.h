@@ -333,9 +333,9 @@ cl_float3				*get_target_pos(t_env *e);
 
 int						gtk_main_loop(t_env *e);
 int						gtk_quit(GtkApplication *app, gpointer data);
-void					init_gtk(GtkApplication* app, gpointer data);
+void					init_gtk(GtkApplication *app, t_env *e);
 
-void					init(t_env *e);
+void					init(GtkApplication *app, gpointer data);
 
 void					mlx_img_line(t_frame *sce, t_p2i p1, t_p2i p2, int c);
 int						mlx_img_pix_put(t_frame *sce, int x, int y, int color);

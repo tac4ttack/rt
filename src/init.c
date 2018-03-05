@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/05 22:34:24 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/05 22:59:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void		load_scene(t_env *e)
 {
 	t_node	*list;
 
-	ft_putendl("\n\n\x1b[1;32m/\\ Loading scene /\\\x1b[0m\n");
+	ft_putendl("\n\x1b[1;32m/\\ Loading scene /\\\x1b[0m\n");
 	load_obj(e);
 	list = XML->node_lst;
 	while (list != NULL)
@@ -98,8 +98,12 @@ void		env_init(t_env *e)
 //	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
 }
 
-void		init(t_env *e)
+void		init(GtkApplication *app, gpointer data)
 {
+	t_env *e;
+
+	(void)app;
+	e = data;
 	if (!(e->scene = malloc(sizeof(t_scene))))
 		s_error("\x1b[1;31mCan't initialize scene buffer\x1b[0m", e);
 	ft_bzero(e->scene, sizeof(t_scene));
@@ -120,12 +124,7 @@ void		init(t_env *e)
 		e->gpu = 0;
 		opencl_init(e, e->count * 4);
 	}
-
-	e->gtk_app = gtk_application_new("ray.tracing", G_APPLICATION_FLAGS_NONE);
-	g_signal_connect(e->gtk_app, "activate", G_CALLBACK(init_gtk), (gpointer)e);
-	
-	e->gtk_status = g_application_run(G_APPLICATION(e->gtk_app), 0, NULL);
-
-//	gtk_window_set_title (GTK_WINDOW(e->window), "RT - Initialized!");
+	init_gtk(app, e);
+	gtk_window_set_title (GTK_WINDOW(e->window), "RT - Initialized!");
 //	gtk_main_loop(e);
 }
