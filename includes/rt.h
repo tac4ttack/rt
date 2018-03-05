@@ -266,8 +266,17 @@ typedef	struct			s_env
 {
 	void				*mlx; // TO BE DELETED
 	void				*win; // TO BE DELETED
+	t_frame				*frame; // TO BE DELETED
+	
+	int					gtk_status;
+	GtkApplication		*gtk_app;
 	GtkWidget			*window;
-	t_frame				*frame;
+	GdkPixbuf			*icon;
+	GdkPixbuf			*frame_pixel_buffer;
+	GtkWidget			*frame_placeholder;
+	char				*frame_pixel_data;
+
+	
 	t_key				keys;
 	int					win_w;
 	int					win_h;
@@ -316,11 +325,18 @@ typedef	struct			s_env
 
 cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);
 void					display_hud(t_env *e);
-int						draw(t_env *e);
+int						opencl_draw(t_env *e);
 void					error(void);
+
 cl_float3				*get_target_dir(t_env *e);
 cl_float3				*get_target_pos(t_env *e);
+
+int						gtk_main_loop(t_env *e);
+int						gtk_quit(GtkApplication *app, gpointer data);
+void					init_gtk(GtkApplication* app, gpointer data);
+
 void					init(t_env *e, char *av);
+
 void					mlx_img_line(t_frame *sce, t_p2i p1, t_p2i p2, int c);
 int						mlx_img_pix_put(t_frame *sce, int x, int y, int color);
 void					mlx_keyboard_repeated(t_env *e);

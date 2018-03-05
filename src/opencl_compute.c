@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/03 20:14:07 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/05 19:36:05 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			get_imgptr(t_env *e)
 {
 	clFinish(e->queue);
 	e->err = clEnqueueReadBuffer(e->queue, e->frame_buffer, CL_TRUE, 0, \
-			(e->count * 4), e->frame->pix, 0, NULL, &e->events[1]);
+			(e->count * 4), e->frame_pixel_data, 0, NULL, &e->events[1]);
 	if (e->run == 1)
 	{
 		e->err = clEnqueueReadBuffer(e->queue, e->target_obj_buf, \
@@ -63,7 +63,7 @@ int			get_imgptr(t_env *e)
 	return (0);
 }
 
-int			draw(t_env *e)
+int			opencl_draw(t_env *e)
 {
 	const size_t	g[2] = {WIDTH, HEIGHT};
 

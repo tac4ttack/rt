@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/05 16:37:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void				xml_parse_nodes(t_env *e)
 {
 	int				i;
 
+	ft_putendl("\x1b[1;32mParsing the scene...\x1b[0m");
 	i = 0;
 	if ((XML->nodes = ft_strsplit(XML->scene, '<')) == NULL)
 		s_error("\x1b[1;31mError getting nodes\x1b[0m", e);
@@ -112,5 +113,5 @@ void				xml_parse_nodes(t_env *e)
 			xml_process_node(e, XML->nodes[i]);
 		i++;
 	}
-	ft_putendl("\n\x1b[1;32mFinished reading the scene!\x1b[0m\n");
+	ft_putendl("\n\x1b[1;32mFinished processing the scene!\x1b[0m\n");
 }

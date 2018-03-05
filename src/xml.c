@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:33:45 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/05 16:32:16 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void		xml_read_file(t_env *e)
 	int		status;
 	char	*buf;
 
+	ft_putendl("\x1b[1;32mReading scene file...\x1b[0m");
 	status = 1;
 	while (status == 1)
 	{
@@ -31,11 +32,13 @@ void		xml_read_file(t_env *e)
 			XML->scene = ft_strjoin_free(XML->scene, ft_strjoin_frs1(buf, " "));
 		}
 	}
+	ft_putendl("\x1b[1;32mScene read\n\x1b[0m");
 	close(XML->scene_fd);
 }
 
 void		xml_get_file(t_env *e, char *av)
 {
+	ft_putendl("\x1b[1;32mOpening scene file...\x1b[0m");
 //	if (ac > 2)
 //		s_error("\x1b[1;31mError, too many arguments\x1b[0m", e);
 //	else if (ac == 2)
@@ -48,13 +51,14 @@ void		xml_get_file(t_env *e, char *av)
 	if ((XML->scene_fd = open(XML->scene, O_RDONLY)) < 0)
 		p_error("\x1b[1;31mCan't open scene file\x1b[0m", e);
 	ft_bzero((void*)XML->scene, ft_strlen(XML->scene));
+	ft_putendl("\x1b[1;32mScene file opened\n\x1b[0m");
 	xml_read_file(e);
 	xml_parse_nodes(e);
 }
 
 void		xml_init(t_env *e, char *av)
 {
-	ft_putendl("\n\x1b[1;32mReading the scene...\x1b[0m");
+	ft_putendl("\n\x1b[1;32m/\\ Processing XML scene file /\\\n\x1b[0m");
 	if (!(XML = malloc(sizeof(t_xml))))
 		s_error("\x1b[1;31mCan't initialize the xml buffer\x1b[0m", e);
 	ft_bzero(XML, sizeof(t_xml));
