@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/05 20:34:57 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/05 22:34:24 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,12 @@ void		env_init(t_env *e)
 //	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
 }
 
-void		init(t_env *e, char *av)
+void		init(t_env *e)
 {
 	if (!(e->scene = malloc(sizeof(t_scene))))
 		s_error("\x1b[1;31mCan't initialize scene buffer\x1b[0m", e);
 	ft_bzero(e->scene, sizeof(t_scene));
-	xml_init(e, av);
+	xml_init(e);
 	env_init(e);
 	if (!(e->frame_pixel_data = malloc(sizeof(char) * e->win_w * e->win_h * 4)))
 		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);

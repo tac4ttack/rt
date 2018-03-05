@@ -207,8 +207,6 @@ typedef struct			s_node
 
 typedef	struct			s_xml
 {
-	char				*scene;
-	int					scene_fd;
 	char				**nodes;
 	char				**sub_node;
 	t_node				*node_lst;
@@ -276,7 +274,9 @@ typedef	struct			s_env
 	GtkWidget			*frame_placeholder;
 	char				*frame_pixel_data;
 
-	
+	char				*scene_file;
+	int					scene_fd;
+
 	t_key				keys;
 	int					win_w;
 	int					win_h;
@@ -335,7 +335,7 @@ int						gtk_main_loop(t_env *e);
 int						gtk_quit(GtkApplication *app, gpointer data);
 void					init_gtk(GtkApplication* app, gpointer data);
 
-void					init(t_env *e, char *av);
+void					init(t_env *e);
 
 void					mlx_img_line(t_frame *sce, t_p2i p1, t_p2i p2, int c);
 int						mlx_img_pix_put(t_frame *sce, int x, int y, int color);
@@ -404,8 +404,8 @@ void					xml_data_speculos(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_type(t_env *e, char **attributes, \
 										int *i, t_node *node);
-void					xml_init(t_env *e, char *av);
-void					xml_get_file(t_env *e, char *av);
+void					xml_init(t_env *e);
+void					xml_get_file(t_env *e);
 void					xml_list_add_first(t_node **begin, t_node *node);
 void					xml_list_clean(t_env *e, t_node **list);
 t_node					*xml_list_new(char type);
