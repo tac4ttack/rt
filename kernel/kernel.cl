@@ -753,6 +753,18 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray)
 	return (get_ambient(scene, BACKCOLOR));
 }
 
+static float4						get_ray_cam(__local t_scene *scene, const uint2 pix)
+{
+	float4					cam_ray = 0;
+	float					ratio = (float)scene->win_w / (float)scene->win_h;
+
+	cam_ray.x = ((2 * ((pix.x + 0.5) / scene->win_w)) - 1) * ratio * (tan(radians(ACTIVECAM.fov / 2)));
+	cam_ray.y = ((1 - (2 * ((pix.y + 0.5) / scene->win_h))) * tan(radians(ACTIVECAM.fov / 2)));
+	cam_ray.z = 1;
+	cam_ray = rotat_zyx(cam_ray, ACTIVECAM.pitch, ACTIVECAM.yaw, 0);
+	return(fast_normalize(cam_ray));
+}
+
 __kernel void	ray_trace(	__global	char		*output,
 							__global	char		*global_mem_objects,
 							__local		char		*mem_objects,
@@ -778,13 +790,16 @@ __kernel void	ray_trace(	__global	char		*output,
 	float4			cam_ray;
 
 	final_color = 0;
-	pix.x = get_global_id(0) % 1024;
-	pix.y = get_global_id(0) / 1024.f;
-	id = pix.x + (1024 * pix.y);
+	pix.x = get_global_id(0) % scene->win_w;
+	pix.y = get_global_id(0) / scene->win_w;
+	id = pix.x + (scene->win_w * pix.y);
 
 	ev = async_work_group_copy((__local char *)mem_objects, (__global char *)global_mem_objects, mem_size_objects, 0);
+	wait_group_events(1, &ev);
 	ev = async_work_group_copy((__local char *)scene, (__global char *)scene_data, sizeof(t_scene), 0);
+	wait_group_events(1, &ev);
 	ev = async_work_group_copy((__local char *)cameras, (__global char *)cameras_data, sizeof(t_cam) * scene->n_cams, 0);
+	wait_group_events(1, &ev);
 	ev = async_work_group_copy((__local char *)mem_lights, (__global char *)global_mem_lights, mem_size_lights, 0);
 	wait_group_events(1, &ev);
 
@@ -795,23 +810,17 @@ __kernel void	ray_trace(	__global	char		*output,
 	scene->mem_size_obj = mem_size_objects;
 	scene->mem_size_lights = mem_size_lights;
 
-	cam_ray = 0;
-	ratio = 1024.f / 720.f;
-	cam_ray.x = ((2.f * ((pix.x + 0.5) / scene->win_w)) - 1.f) * ratio * (tan(radians(ACTIVECAM.fov / 2.f)));
-	cam_ray.y = ((1.f - (2.f * ((pix.y + 0.5) / scene->win_h))) * tan(radians(ACTIVECAM.fov / 2.f)));
-	cam_ray.z = 1.f;
-	cam_ray = rotat_zyx(cam_ray, ACTIVECAM.pitch, ACTIVECAM.yaw, 0);
-	prim_ray = fast_normalize(cam_ray);
-	if (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y)
-	{
-		printf("%i %i\n", pix.x, pix.y);
-		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);
-	}
+	prim_ray = get_ray_cam(scene, pix);
 	final_color = get_pixel_color(scene, prim_ray);
 	if (scene->flag & OPTION_SEPIA)
 		final_color = sepiarize(final_color);
 	if (scene->flag & OPTION_BW)
 		final_color = desaturate(final_color);
 	((__global unsigned int *)output)[id] = final_color;
-
+	if (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y)
+	{
+		//printf("%i %i\n", pix.x, pix.y);
+		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);
+	}
+	barrier(CLK_LOCAL_MEM_FENCE | CLK_GLOBAL_MEM_FENCE);
 }

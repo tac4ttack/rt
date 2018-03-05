@@ -397,6 +397,9 @@ typedef	struct			s_env
 	t_gen				*gen_lights;
 }						t_env;
 
+void		opencl_close(t_env *e);
+
+
 cl_float4				add_cl_float(cl_float4 v1, cl_float4 v2);
 void					display_hud(t_env *e);
 int						draw(t_env *e);

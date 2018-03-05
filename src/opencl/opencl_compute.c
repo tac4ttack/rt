@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 23:38:45 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/05 20:44:36 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int			draw(t_env *e)
 	clReleaseEvent(event);
 
 	cl->err = clEnqueueReadBuffer(cl->cq, cl->mem[0], CL_TRUE, 0,
-			4 * 1024 * 720,
+			e->scene->win_w * e->scene->win_h * 4,
 			e->frame->pix, 0, NULL, NULL);
 	if (e->scene->flag & OPTION_RUN)
 	{
@@ -87,4 +87,15 @@ int			draw(t_env *e)
 		e->scene->flag ^= OPTION_RUN;
 	}
 	return (0);
+}
+
+void		opencl_close(t_env *e)
+{
+	clReleaseMemObject(e->cl.mem[0]);
+	clReleaseMemObject(e->cl.mem[1]);
+	clReleaseMemObject(e->cl.mem[2]);
+	clReleaseProgram(e->cl.program);
+	clReleaseKernel(e->cl.kernel);
+	clReleaseCommandQueue(e->cl.cq);
+	clReleaseContext(e->cl.context);
 }

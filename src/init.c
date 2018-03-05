@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 23:38:13 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/04 23:42:17 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,12 @@ void		init(t_env *e, int ac, char *av)
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RT")))
 		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
 	frame_init(e);
-	cl_init(&e->cl, "./kernel/kernel.cl", "ray_trace", 1024*720);
+	printf("%i %i\n", e->scene->win_w, e->scene->win_h);
+	cl_init(&e->cl, "./kernel/kernel.cl", "ray_trace", e->scene->win_w * e->scene->win_h);
 	//if (e->debug)
 		init_print_structure_memory_size();
 
-	cl_create_buffer(&e->cl, 720*1024 * 4);
+	cl_create_buffer(&e->cl, e->scene->win_w * e->scene->win_h * 4);
 	cl_create_buffer(&e->cl, e->gen_objects->mem_size);
 	cl_create_buffer(&e->cl, sizeof(t_scene));
 	cl_create_buffer(&e->cl, sizeof(t_cam) * NCAM);
