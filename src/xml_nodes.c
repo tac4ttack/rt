@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/01 23:46:06 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void				xml_node_generic(t_env *e, char *node, char mod)
 	if (mod == 0)
 	{
 		if (ft_strcmp(tmp, "?xml version=\"1.0\"?>") != 0)
-			s_error("\x1b[2;31mError XML header is invalid\x1b[0m", e);
+			s_error("\x1b[1;31mError XML header is invalid\x1b[0m", e);
 	}
 	else if (mod == 1)
 	{
@@ -57,9 +57,9 @@ void				xml_node_generic(t_env *e, char *node, char mod)
 			XML->is_comm = 0;
 			if (ft_strlen(node) != 3)
 			{
-				ft_putstr("\x1b[2;31mWRONG NODE = \x1b[0m");
+				ft_putstr("\x1b[1;31mWRONG NODE = \x1b[0m");
 				ft_putstr(node);
-				s_error("\x1b[2;31mError in XML syntax\x1b[0m", e);
+				s_error("\x1b[1;31mError in XML syntax\x1b[0m", e);
 			}
 		}
 		else
@@ -71,11 +71,11 @@ void				xml_node_generic(t_env *e, char *node, char mod)
 void				xml_process_node(t_env *e, char *node)
 {
 	if (!(XMLSUB = ft_strsplit(node, ' ')) || xml_check_attr(e, XMLSUB) != 0)
-		s_error("\x1b[2;31mInput file is not valid\x1b[0m", e);
+		s_error("\x1b[1;31mInput file is not valid\x1b[0m", e);
 	if (ft_strcmp(XMLSUB[0], "!--") == 0 || XML->is_comm == 1)
 		xml_node_generic(e, node, 1);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "?xml") == 0)
-		s_error("\x1b[2;31mError double XML header\x1b[0m", e);
+		s_error("\x1b[1;31mError double XML header\x1b[0m", e);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "scene") == 0)
 		xml_node_scene(e, node, 0);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "/scene>") == 0)
@@ -93,7 +93,7 @@ void				xml_process_node(t_env *e, char *node)
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "sphere") == 0)
 		xml_node_sphere(e, node);
 	else
-		s_error("\x1b[2;31mError wrong node type\x1b[0m", e);
+		s_error("\x1b[1;31mError wrong node type\x1b[0m", e);
 	xml_node_clean(XMLSUB);
 }
 
@@ -103,7 +103,7 @@ void				xml_parse_nodes(t_env *e)
 
 	i = 0;
 	if ((XML->nodes = ft_strsplit(XML->scene, '<')) == NULL)
-		s_error("\x1b[2;31mError getting nodes\x1b[0m", e);
+		s_error("\x1b[1;31mError getting nodes\x1b[0m", e);
 	while (XML->nodes[i])
 	{
 		if (i == 0)
@@ -112,4 +112,5 @@ void				xml_parse_nodes(t_env *e)
 			xml_process_node(e, XML->nodes[i]);
 		i++;
 	}
+	ft_putendl("\n\x1b[1;32mFinished reading the scene!\x1b[0m\n");
 }

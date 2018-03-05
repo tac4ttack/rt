@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:46:52 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,5 @@ void		xml_list_clean(t_env *e, t_node **list)
 		}
 	}
 	else
-		s_error("\x1b[2;31mError while cleaning scene linked list\x1b[0m", e);
+		s_error("\x1b[1;31mError while cleaning scene linked list\x1b[0m", e);
 }

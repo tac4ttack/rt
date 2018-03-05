@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/03 20:27:14 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/05 15:08:48 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	flush(t_env *e)
 
 void	s_error(char *str, t_env *e)
 {
-	ft_putendl("\n\x1b[2;31mOh no I just crashed!\x1b[0m");
+	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
 	ft_putendl(str);
 	flush(e);
 	exit(EXIT_FAILURE);
@@ -38,7 +38,7 @@ void	s_error(char *str, t_env *e)
 
 void	p_error(char *str, t_env *e)
 {
-	ft_putendl("\n\x1b[2;31mOh no I just crashed!\x1b[0m");
+	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
 	ft_putendl(str);
 	perror(NULL);
 	flush(e);
