@@ -773,9 +773,9 @@ static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_h
 			new_hit.pos = (new_hit.dist * refract) + old_hit.pos;
 			new_hit.normal = get_hit_normal(scene, refract, new_hit);
 			if (new_hit.mem_index != old_hit.mem_index && new_hit.obj->refract != 0)
-				new_hit.pos = new_hit.pos + ((new_hit.dist / 100000) * -new_hit.normal);//pour refract en chaine, inverser la normale pour le decalage de la position
+				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000) * -new_hit.normal);//pour refract en chaine, inverser la normale pour le decalage de la position
 			else
-				new_hit.pos = new_hit.pos + ((new_hit.dist / 100000) * new_hit.normal);
+				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000) * new_hit.normal);
 			if (new_hit.obj->refract == 0)
 				return (phong(scene, new_hit, refract));
 		}
