@@ -2,7 +2,7 @@ NAME = 					rt
 
 CC = 					clang
 CFLAGS +=				-Wall -Wextra -Werror
-OFLAGS := 				-O3
+OFLAGS := 				-O2
 RM := 					rm -rf
 
 INC = 					$(addprefix $(INC_PATH)/,$(INC_NAMES))

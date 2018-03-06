@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 18:50:02 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/05 18:20:30 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/06 19:08:51 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int			opencl_builderrors(t_env *e, int err, int errorcode)
 	return (EXIT_FAILURE);
 }
 
-int			opencl_build(t_env *e, unsigned int count)
+int			opencl_build(t_env *e)
 {
 	if ((e->err = clBuildProgram(e->program, 0, NULL, "-I ./kernel/includes/ ", \
 				NULL, NULL)) != CL_SUCCESS)
@@ -53,7 +53,7 @@ int			opencl_build(t_env *e, unsigned int count)
 		return (opencl_builderrors(e, 6, e->err));
 	ft_putendl("\x1b[1;32mOpenCL RAYTRACE kernel built!\n\x1b[0m");
 	if (!(e->frame_buffer = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
-		count, NULL, NULL)))
+		e->count * sizeof(int), NULL, NULL)))
 		return (opencl_builderrors(e, 7, e->err));
 	ft_putendl("\x1b[1;32mOpenCL frame buffer allocated!\x1b[0m");
 	if (!(e->target_obj_buf = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
@@ -89,7 +89,7 @@ void		load_kernel(t_env *e)
 	ft_putendl("\x1b[1;32mOpenCL kernel sources successfully read!\n\x1b[0m");
 }
 
-int			opencl_init(t_env *e, unsigned int count)
+int			opencl_init(t_env *e)
 {
 	ft_putendl("\n\x1b[1;32m/\\ Initializing OpenCL /\\\x1b[0m\n");
 	load_kernel(e);
@@ -109,6 +109,6 @@ int			opencl_init(t_env *e, unsigned int count)
 				(const char **)&e->kernel_src, NULL, &e->err)))
 		return (opencl_builderrors(e, 4, e->err));
 	ft_putendl("\x1b[1;32mOpenCL program compiled!\x1b[0m");
-	opencl_build(e, count);
+	opencl_build(e);
 	return (0);
 }

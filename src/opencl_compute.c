@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/05 19:36:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/06 19:29:06 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			get_imgptr(t_env *e)
 {
 	clFinish(e->queue);
 	e->err = clEnqueueReadBuffer(e->queue, e->frame_buffer, CL_TRUE, 0, \
-			(e->count * 4), e->frame_pixel_data, 0, NULL, &e->events[1]);
+			e->count  * sizeof(int), e->frame_pixel_data, 0, NULL, &e->events[1]);
 	if (e->run == 1)
 	{
 		e->err = clEnqueueReadBuffer(e->queue, e->target_obj_buf, \
@@ -66,7 +66,7 @@ int			get_imgptr(t_env *e)
 int			opencl_draw(t_env *e)
 {
 	const size_t	g[2] = {WIDTH, HEIGHT};
-
+	
 	opencl_set_args(e);
 	e->err = clGetKernelWorkGroupInfo(KRT, e->device_id, \
 			CL_KERNEL_WORK_GROUP_SIZE, sizeof(e->local), &e->local, NULL);

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:32:13 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/05 22:57:03 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/06 19:49:23 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,8 @@ int			main(int ac, char **av)
 	
 	e->gtk_app = gtk_application_new("ray.tracing", G_APPLICATION_FLAGS_NONE);
 	g_signal_connect(e->gtk_app, "activate", G_CALLBACK(init), (gpointer)e);
-
-//	init(e);
+	e->gtk_status = g_application_run(G_APPLICATION(e->gtk_app), ac++ , av + 1);
 	
-	e->gtk_status = g_application_run(G_APPLICATION(e->gtk_app), ac++ , av + 1);	
 //	set_hooks(e);
 	return (0);
 }

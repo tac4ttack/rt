@@ -271,8 +271,10 @@ typedef	struct			s_env
 	GtkWidget			*window;
 	GdkPixbuf			*icon;
 	GdkPixbuf			*frame_pixel_buffer;
+	GtkWidget			*frame_box;
 	GtkWidget			*frame_placeholder;
-	char				*frame_pixel_data;
+	int					*frame_pixel_data;
+	int					redraw;
 
 	char				*scene_file;
 	int					scene_fd;
@@ -349,7 +351,7 @@ int						mlx_mouse_events(int btn, int x, int y, t_env *e);
 cl_float3				normalize_vect(cl_float3 v);
 int						opencl_allocate_scene_memory(t_env *e);
 void					opencl_close(t_env *e);
-int						opencl_init(t_env *e, unsigned int count);
+int						opencl_init(t_env *e);
 void					opencl_print_error(int error);
 void					opencl_set_args(t_env *e);
 int						opencl_builderrors(t_env *e, int err, int errorcode);

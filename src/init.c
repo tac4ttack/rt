@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/05 22:59:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/06 19:52:45 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void		env_init(t_env *e)
 	e->cen_y = e->win_h / 2;
 	e->gpu = IS_GPU;
 	e->run = 0;
+	e->redraw = 1;
 	e->window = NULL;
 	e->icon = NULL;
 	ft_putendl("\x1b[1;32mRT environnement initialized!\n\x1b[0m");
@@ -109,8 +110,11 @@ void		init(GtkApplication *app, gpointer data)
 	ft_bzero(e->scene, sizeof(t_scene));
 	xml_init(e);
 	env_init(e);
-	if (!(e->frame_pixel_data = malloc(sizeof(char) * e->win_w * e->win_h * 4)))
+	if (!(e->frame_pixel_data = malloc(sizeof(int) * e->win_w * e->win_h)))
 		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
+	ft_bzero(e->frame_pixel_data, sizeof(int) * e->win_w * e->win_h);
+	
+//	printf("test1 = %x\n", ((int*)e->frame_pixel_data)[461312]);
 
 //	if (!(e->mlx = mlx_init()))
 //		s_error("\x1b[1;31mError can't initialize minilibx\x1b[0m", e);
@@ -119,12 +123,13 @@ void		init(GtkApplication *app, gpointer data)
 //	frame_init(e);
 
 	load_scene(e);
-	if (opencl_init(e, e->count * 4) != 0)
+	if (opencl_init(e) != 0)
 	{
 		e->gpu = 0;
-		opencl_init(e, e->count * 4);
+		opencl_init(e);
 	}
 	init_gtk(app, e);
 	gtk_window_set_title (GTK_WINDOW(e->window), "RT - Initialized!");
+	
 //	gtk_main_loop(e);
 }
