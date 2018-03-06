@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/06 22:05:00 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/06 23:39:46 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	flush(t_env *e)
 //		mlx_destroy_window(e->mlx, e->win);
 
 		// GTK SHIT
-		if (e->ui.icon)
-			g_object_unref(e->ui.icon);
+		if (e->ui->icon)
+			g_object_unref(e->ui->icon);
 		ft_putendl("\x1b[1;29mFreed the GTK Icon\x1b[0m");
 		if (e)
 			free(e);

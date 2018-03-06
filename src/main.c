@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:32:13 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/06 22:03:22 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 00:09:44 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,13 @@ int			main(int ac, char **av)
 	if (!(e = malloc(sizeof(t_env))))
 		s_error("\x1b[1;31mCan't initialize RT\x1b[0m", NULL);
 	ft_bzero(e, sizeof(t_env));
+	if (!(e->ui = malloc(sizeof(t_ui))))
+		s_error("\x1b[1;31mCan't initialize UI data structure\x1b[0m", e);
 	e->scene_file = ft_strdup(av[1]);
 	
-	e->ui.gtk_app = gtk_application_new("ray.tracing", G_APPLICATION_FLAGS_NONE);
-	g_signal_connect(e->ui.gtk_app, "activate", G_CALLBACK(init), (gpointer)e);
-	e->ui.gtk_status = g_application_run(G_APPLICATION(e->ui.gtk_app), ac++ , av + 1);
+	e->ui->gtk_app = gtk_application_new("ray.tracing", G_APPLICATION_FLAGS_NONE);
+	g_signal_connect(e->ui->gtk_app, "activate", G_CALLBACK(init), (gpointer)e);
+	e->ui->gtk_status = g_application_run(G_APPLICATION(e->ui->gtk_app), ac++ , av + 1);
 	
 //	set_hooks(e);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/06 22:02:55 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/06 23:39:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void		env_init(t_env *e)
 	e->debug = DBUG;
 	e->gpu = IS_GPU;
 	e->run = 0;
-	e->ui.redraw = 1;
+	e->ui->redraw = 1;
 	ft_putendl("\x1b[1;29mRT environnement initialized!\n\x1b[0m");
 //	printf("t_light_ray			: %-20lu\n", sizeof(t_light_ray));
 //	printf("t_cam 				: %-20lu\n", sizeof(t_cam));
@@ -125,7 +125,7 @@ void		init(GtkApplication *app, gpointer data)
 		opencl_init(e);
 	}
 	init_gtk(app, e);
-	gtk_window_set_title (GTK_WINDOW(e->ui.window), "RT - Initialized!");
+	gtk_window_set_title (GTK_WINDOW(e->ui->window), "RT - Initialized!");
 	
 //	gtk_main_loop(e);
 }

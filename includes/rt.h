@@ -35,6 +35,8 @@
 #  define DBUG					0
 # endif
 
+#define G_BYTE_ORDER G_LITTLE_ENDIAN
+
 # define DESTROYNOTIFY			17
 # define KEYPRESSMASK			(1L<<0)
 # define KEYRELEASEMASK			(1L<<1)
@@ -269,9 +271,10 @@ typedef	struct			s_ui
 
 	GdkPixbuf			*icon;
 
-	GtkWidget			*frame_box;
-	GdkPixbuf			*frame_pixel_buffer;
-	GtkWidget			*frame_placeholder;
+	GtkWidget			*frame_box; // box containing frame_placeholder
+	GdkPixbuf			*frame_pixel_buffer; // rendered scene gdkpixbuf
+	GtkWidget			*frame_placeholder; // gtkimage widget
+	guchar				*frame_ptr; // pointer to pixel data of pixbuf
 	
 	
 	int					redraw;
@@ -284,9 +287,9 @@ typedef	struct			s_env
 	t_frame				*frame; // TO BE DELETED
 	t_key				keys;	// TO BE DELETED?
 
-	t_ui				ui;
+	t_ui				*ui;
 
-	int					*frame_pixel_data;
+	int					*frame_pixel_data; // raw pixel image
 	int					win_w;
 	int					win_h;
 
@@ -337,7 +340,6 @@ typedef	struct			s_env
 cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);
 void					display_hud(t_env *e);
 int						opencl_draw(t_env *e);
-void					error(void);
 
 cl_float3				*get_target_dir(t_env *e);
 cl_float3				*get_target_pos(t_env *e);

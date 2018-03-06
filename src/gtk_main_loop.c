@@ -7,7 +7,7 @@ int		gtk_main_loop(t_env *e)
 	fps = NULL;
 	if (e)
 	{
-		while (e->ui.redraw > 0)
+		while (e->ui->redraw > 0)
 		{
 			ft_putendl("im in gtk main loop");
 
@@ -15,9 +15,9 @@ int		gtk_main_loop(t_env *e)
 			fps = ft_itoa(e->fps.ret_fps);
 			fps = ft_strjoin_frs2("RT - ", fps);
 			fps = ft_strjoin_frs1(fps, " ips");
-			ft_putendl(fps); // Controle semble ok
+		//	ft_putendl(fps); // Controle semble ok
+			gtk_window_set_title(GTK_WINDOW(e->ui->window), fps);
 
-			gtk_window_set_title(GTK_WINDOW(e->ui.window), fps);
 //			mlx_keyboard_repeated(e); /// TO REPLACE
 //			mlx_clear_window(e->mlx, e->win); /// TO REPLACE
 
