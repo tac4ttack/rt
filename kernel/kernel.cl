@@ -446,12 +446,12 @@ static float3	get_cone_abc(const __local t_cone *cone, const float3 ray, const f
 	return (abc);
 }
 
-void			print_mem(__local t_cone *cone)
+static void			print_mem(__local t_cone *cone)
 {
 	printf("dir : x = %f, y = %f, z = %f\npos : x = %f, y = %f, z = %f\nangle = %f\n\n", cone->dir.x, cone->dir.y, cone->dir.z, cone->pos.x, cone->pos.y, cone->pos.z, cone->angle);
 }
 
-void			print_vect(float3 v)
+static void			print_vect(float3 v)
 {
 	printf("ray : x = %f, y = %f, z = %f\n\n", v.x, v.y, v.z);
 }
