@@ -22,11 +22,11 @@ int					xml_check_node_format(char **node, int mod)
 	{
 		i.y = (mod == 0 ? 6 : i.y);
 		i.y = (mod == 1 ? 10 : i.y);
-		i.y = (mod == 2 ? 21 : i.y);
-		i.y = (mod == 3 ? 22 : i.y);
+		i.y = (mod == 2 ? 22 : i.y);
+		i.y = (mod == 3 ? 23 : i.y);
 		i.y = (mod == 4 ? 16 : i.y);
-		i.y = (mod == 5 ? 20 : i.y);
-		i.y = (mod == 6 ? 21 : i.y);
+		i.y = (mod == 5 ? 21 : i.y);
+		i.y = (mod == 6 ? 22 : i.y);
 		while (i.x <= i.y)
 		{
 			if (i.x == i.y && node[i.x] != NULL)
