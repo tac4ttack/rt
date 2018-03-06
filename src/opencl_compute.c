@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/06 20:22:46 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/06 22:13:18 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 static void		cl_write_buffer(t_env *e, t_cl *cl)
 {
-	cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[1], CL_TRUE, 0,
+	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[1], CL_TRUE, 0,
 							e->gen_objects->mem_size,
-							e->gen_objects->mem, 0, NULL, NULL);
-	cl_check_err(cl->err, "clEnqueueWriteBuffer mem_obj");
-	cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[2], CL_TRUE, 0,
+							e->gen_objects->mem, 0, NULL, NULL)))
+		s_error("Error: Failed to send arguments to kernel!", e);
+	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[2], CL_TRUE, 0,
 							sizeof(t_scene),
-							e->scene, 0, NULL, NULL);
-	cl_check_err(cl->err, "clEnqueueWriteBuffer mem_obj");
-	cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[3], CL_TRUE, 0,
+							e->scene, 0, NULL, NULL)))
+		s_error("Error: Failed to send arguments to kernel!", e);
+	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[3], CL_TRUE, 0,
 							sizeof(t_cam) * NCAM,
-							e->cameras, 0, NULL, NULL);
-	cl_check_err(cl->err, "clEnqueueWriteBuffer mem_obj");
-	cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[4], CL_TRUE, 0,
+							e->cameras, 0, NULL, NULL)))
+		s_error("Error: Failed to send arguments to kernel!", e);
+	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[4], CL_TRUE, 0,
 							e->gen_lights->mem_size,
-							e->gen_lights->mem, 0, NULL, NULL);
-	cl_check_err(cl->err, "clEnqueueWriteBuffer mem_obj");
+							e->gen_lights->mem, 0, NULL, NULL)))
+		s_error("Error: Failed to send arguments to kernel!", e);
 }
 
 

@@ -1,22 +1,6 @@
-#include "rt.h"
+#include "cl.h"
 
-bool		cl_compute(t_cl *cl)
-{
-	cl->event = 0;
-	cl->err = clEnqueueNDRangeKernel(cl->queue, cl->kernel, 2, NULL,
-										cl->dimension,
-										NULL,
-										0, NULL, &cl->event);
-	//clWaitForEvents(1, &cl->event);
-	cl->err |= clFlush(cl->queue);
-	clReleaseEvent(cl->event);
-	if (cl->err)
-		return (cl_builderrors(cl, 0, cl->err));
-	return (true);
-}
-
-
-bool			cl_builderrors(t_cl *cl, int err, int errorcode)
+static bool			cl_builderrors(t_cl *cl, int err, int errorcode)
 {
 	size_t	len;
 	char	buffer[50000];
@@ -105,6 +89,5 @@ t_cl				*construct_cl(const char *path, const char *name,
 	cl->dimension[1] = height;
 	cl_ulong size;
 	clGetDeviceInfo(cl->device_id, CL_DEVICE_LOCAL_MEM_SIZE, sizeof(cl_ulong), &size, 0);
-	printf("SIZE: %lu\n", (size_t)size);
 	return (cl);
 }
