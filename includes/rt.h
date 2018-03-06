@@ -72,6 +72,7 @@
 # define OPTION_SEPIA			(1 << 2)
 # define OPTION_BW				(1 << 3)
 # define OPTION_RUN				(1 << 4)
+# define OPTION_GPU				(1 << 4)
 
 # define OBJ_CONE			1
 # define OBJ_CYLINDER		2
@@ -326,30 +327,36 @@ typedef struct			s_cl
 {
 	cl_device_id		device_id;
 	cl_context			context;
-	cl_command_queue	cq;
+	cl_command_queue	queue;
 	size_t				nb_mem;
 	cl_mem				*mem;
 	cl_program			program;
 	cl_kernel			kernel;
 	cl_platform_id		platform_id;
-	cl_uint				ret_num_devices;
-	cl_uint				ret_num_platforms;
 	cl_int				err;
 	size_t				global_item_size;
 	size_t				local_item_size;
-
-	char				*path;
+	size_t				dimension[2];
+	char				*kernel_src;
+	size_t				src_size;
+	cl_event			event;
+	bool				(*add_buffer)(struct s_cl *, size_t);
+	bool				(*compute)(struct s_cl *);
 }						t_cl;
 
 void					cl_check_err(cl_int err, const char *name);
 void					cl_end(t_cl *cl);
-int						cl_init(t_cl *cl, const char *path, const char *name,
-								const size_t global_item_size);
-bool					cl_create_buffer(t_cl *cl, size_t size);
+t_cl					*construct_cl(const char *path, const char *name,
+								const size_t width, const size_t height, int type);
+bool					cl_add_buffer(t_cl *cl, size_t size);
+bool					cl_builderrors(t_cl *cl, int err, int errorcode);
+void					cl_print_error(int err);
+void					*destruct_cl(t_cl **ptr_cl);
+void					cl_print_error(int err);
 
 typedef	struct			s_env
 {
-	t_cl			cl;
+	t_cl				*cl;
 
 	void				*mlx;
 	void				*win;
@@ -366,7 +373,6 @@ typedef	struct			s_env
 
 	char				*frame_buffer;
 	int					target;
-	int					gpu;
 	size_t				global;
 	size_t				local;
 	unsigned int		count;
@@ -395,9 +401,6 @@ typedef	struct			s_env
 	t_gen				*gen_objects;
 	t_gen				*gen_lights;
 }						t_env;
-
-void		opencl_close(t_env *e);
-
 
 cl_float4				add_cl_float(cl_float4 v1, cl_float4 v2);
 void					display_hud(t_env *e);

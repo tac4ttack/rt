@@ -6,12 +6,12 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 17:08:30 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/03/04 23:31:06 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/05 22:48:07 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
+/*
 static void		cl_load_src(t_cl *cl, const char *path, char *k_src,
 													size_t *src_size)
 {
@@ -97,3 +97,4 @@ int				cl_init(t_cl *cl, const char *path, const char *name,
 	cl_check_err(cl->err, "clGetKernelWorkGroup");
 	return (1);
 }
+*/

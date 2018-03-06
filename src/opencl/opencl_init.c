@@ -3,44 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   opencl_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 18:50:02 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/28 15:54:49 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/05 22:43:01 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-int			opencl_builderrors(t_env *e, int err, int errorcode)
-{
-	size_t	len;
-	char	buffer[50000];
-
-	opencl_print_error(errorcode);
-	if (err == 1)
-		ft_putendl("Error: Failed to create device group!");
-	else if (err == 2)
-		ft_putendl("Error: Failed to create compute context!");
-	else if (err == 3)
-		ft_putendl("Error: Failed to create commands queue!");
-	else if (err == 4)
-		ft_putendl("Error: Failed to create compute program!");
-	else if (err == 5)
-	{
-		ft_putendl("\nError: Failed to build program executable!\n");
-		clGetProgramBuildInfo(e->program, e->device_id, \
-				CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, &len);
-		ft_putendl(buffer);
-	}
-	else if (err == 6)
-		ft_putendl("Error: Failed to create compute kernel!\n");
-	else if (err == 7)
-		ft_putendl("Error: Failed to allocate device memory!\n");
-	if (err >= 5)
-		exit(1);
-	return (EXIT_FAILURE);
-}
+/*
 
 int			opencl_build(t_env *e, unsigned int count)
 {
@@ -101,3 +73,4 @@ int			opencl_init(t_env *e, unsigned int count)
 	opencl_build(e, count);
 	return (0);
 }
+*/

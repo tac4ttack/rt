@@ -73,7 +73,9 @@ SRC_NAME =  			init.c \
 						event/mlx_key_norepeat.c \
 						event/mlx_key_events.c \
 						opencl/cl_init.c \
-						opencl/cl_end.c \
+						opencl/destruct_cl.c \
+						opencl/construct_cl.c \
+						opencl/cl_print_error.c \
 						opencl/cl_create_buffer.c \
 						opencl/cl_check_err.c \
 						opencl/opencl_compute.c \

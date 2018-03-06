@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opencl_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:43 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/05 22:44:37 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ static void		opencl_print_error_part_one(const int err)
 	(err == -16 ? ft_putstr("\x1b[2;31m\nCL_LINKER_NOT_AVAILABLE\x1b[0m") : 0);
 }
 
-void			opencl_print_error(int err)
+void			cl_print_error(int err)
 {
 	if (err <= -0 && err >= -16)
 		opencl_print_error_part_one(err);

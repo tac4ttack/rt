@@ -798,9 +798,6 @@ __kernel void	ray_trace(	__global	char		*output,
 	float4			cam_ray;
 
 	final_color = 0;
-	pix.x = get_global_id(0) % scene->win_w;
-	pix.y = get_global_id(0) / scene->win_w;
-	id = pix.x + (scene->win_w * pix.y);
 
 	ev = async_work_group_copy((__local char *)mem_objects, (__global char *)global_mem_objects, mem_size_objects, 0);
 	wait_group_events(1, &ev);
@@ -810,6 +807,10 @@ __kernel void	ray_trace(	__global	char		*output,
 	wait_group_events(1, &ev);
 	ev = async_work_group_copy((__local char *)mem_lights, (__global char *)global_mem_lights, mem_size_lights, 0);
 	wait_group_events(1, &ev);
+
+	pix.x = get_global_id(0);// % scene->win_w;
+	pix.y = get_global_id(1);// / scene->win_w;
+	id = pix.x + (scene->win_w * pix.y);
 
 	scene->cameras = cameras;
 	scene->mem_lights = mem_lights;
