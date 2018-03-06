@@ -807,8 +807,8 @@ __kernel void	ray_trace(	__global	char		*output,
 	float3			cam_ray;
 
 	final_color = 0;
-	pix.x = get_global_id(0);
-	pix.y = get_global_id(1);
+	pix.x = get_global_id(0) % scene->win_w;
+	pix.y = get_global_id(0) / scene->win_w;
 	id = pix.x + (scene->win_w * pix.y);
 
 	ev = async_work_group_copy((__local char *)mem_objects, (__global char *)global_mem_objects, mem_size_objects, 0);
