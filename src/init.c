@@ -24,7 +24,7 @@ static void	init_print_structure_memory_size()
 	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
 	printf("cl_int				: %-20lu\n", sizeof(cl_int));
 	printf("cl_float			: %-20lu\n", sizeof(cl_float));
-	printf("cl_float4			: %-20lu\n", sizeof(cl_float4));
+	printf("cl_float3			: %-20lu\n", sizeof(cl_float3));
 }
 
 void		load_obj(t_env *e)

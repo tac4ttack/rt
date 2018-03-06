@@ -15,7 +15,7 @@
 void			ui_obj(t_env *e)
 {
 	t_object	*obj;
-	cl_float4	*target;
+	cl_float3	*target;
 
 	obj = e->gen_objects->mem + e->target;
 	target = NULL;
