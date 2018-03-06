@@ -58,7 +58,7 @@ static	char	*hud_get_obj_type(t_env *e)
 
 static void		display_hud_obj_pos(t_env *e)
 {
-	cl_float4	*obj_pos;
+	cl_float3	*obj_pos;
 	char		*pos;
 	char		*obj;
 
@@ -82,7 +82,7 @@ static void		display_hud_obj_pos(t_env *e)
 
 static void		display_hud_obj_dir(t_env *e)
 {
-	cl_float4	*obj_dir;
+	cl_float3	*obj_dir;
 	char		*dir;
 
 	obj_dir = &((t_object *)(e->gen_objects->mem + e->target))->pos;

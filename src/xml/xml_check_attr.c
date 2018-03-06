@@ -12,7 +12,7 @@
 
 #include "rt.h"
 
-int			check_float(cl_float4 *clf, float f, int mod)
+int			check_float(cl_float3 *clf, float f, int mod)
 {
 	if (mod == 0)
 	{

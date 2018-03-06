@@ -30,33 +30,33 @@ typedef struct			s_object
 {
 	int					size;
 	int					id;
-	float4				pos;
-	float4				dir;
-	float4				diff;
-	float4				spec;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
 	int					color;
 	float				reflex;
 }						t_object;
 
 typedef struct			s_light_ray
 {
-	float4				dir;
+	float3				dir;
 	float				dist;
 }						t_light_ray;
 
 typedef struct			s_hit
 {
 	float				dist;
-	float4				normal;
-	float4				pos;
+	float3				normal;
+	float3				pos;
 	t_object __local	*obj;
 	int					mem_index;
 }						t_hit;
 
 typedef struct			s_cam
 {
-	float4				pos;
-	float4				dir;
+	float3				pos;
+	float3				dir;
 	float				fov;
 	float				pitch;
 	float				yaw;
@@ -67,8 +67,8 @@ typedef struct			s_light
 {
 	int					size;
 	int					type;
-	float4				pos;
-	float4				dir;
+	float3				pos;
+	float3				dir;
 	int					shrink;
 	float				brightness;
 	int					color;
@@ -78,10 +78,10 @@ typedef struct			s_cone
 {
 	int					size;
 	int					id;
-	float4				pos;
-	float4				dir;
-	float4				diff;
-	float4				spec;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
 	int					color;
 	float				reflex;
 
@@ -93,15 +93,15 @@ typedef struct			s_cylinder
 {
 	int					size;
 	int					id;
-	float4				pos;
-	float4				dir;
-	float4				diff;
-	float4				spec;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
 	int					color;
 	float				reflex;
 
 	float				height;
-	float4				base_dir;
+	float3				base_dir;
 	float				radius;
 }						t_cylinder;
 
@@ -109,10 +109,10 @@ typedef struct			s_plane
 {
 	int					size;
 	int					id;
-	float4				pos;
-	float4				normal;
-	float4				diff;
-	float4				spec;
+	float3				pos;
+	float3				normal;
+	float3				diff;
+	float3				spec;
 	int					color;
 	float				reflex;
 }						t_plane;
@@ -121,10 +121,10 @@ typedef struct			s_sphere
 {
 	int					size;
 	int					id;
-	float4				pos;
-	float4				dir;
-	float4				diff;
-	float4				spec;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
 	int					color;
 	float				reflex;
 
@@ -133,9 +133,9 @@ typedef struct			s_sphere
 
 typedef	struct			s_tor
 {
-	float4				prim;
-	//float4				refl;
-	//float4				refr;
+	float3				prim;
+	//float3				refl;
+	//float3				refr;
 	unsigned int		hit_type;
 	unsigned int		hit_id;
 	//float				coef_refl;
@@ -162,7 +162,7 @@ typedef struct			s_scene
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
-	float4				ambient;
+	float3				ambient;
 	int					mou_x;
 	int					mou_y;
 	int					depth;
@@ -273,9 +273,9 @@ static unsigned int	get_ambient(const __local t_scene *scene, const unsigned int
 }
 
 
-static float4						rotat_zyx(const float4 vect, const float pitch, const float yaw, const float roll)
+static float3						rotat_zyx(const float3 vect, const float pitch, const float yaw, const float roll)
 {
-	float4					res;
+	float3					res;
 	float					rad_pitch = radians(pitch);
 	float					rad_yaw = radians(yaw);
 	float					rad_roll = radians(roll);
@@ -286,9 +286,9 @@ static float4						rotat_zyx(const float4 vect, const float pitch, const float y
 	return (res);
 }
 
-static float4						rotat_xyz(const float4 vect, const float pitch, const float yaw, const float roll)
+static float3						rotat_xyz(const float3 vect, const float pitch, const float yaw, const float roll)
 {
-	float4					res;
+	float3					res;
 	float					rad_pitch = radians(pitch);
 	float					rad_yaw = radians(yaw);
 	float					rad_roll = radians(roll);
@@ -299,9 +299,9 @@ static float4						rotat_xyz(const float4 vect, const float pitch, const float y
 	return (res);
 }
 
-static float4						rotat_x(const float4 vect, const float angle)
+static float3						rotat_x(const float3 vect, const float angle)
 {
-	float4 					res = 0;
+	float3 					res = 0;
 	float					teta = radians(angle);
 
 	res.x = (vect.x * 1) + (vect.y * 0) + (vect.z * 0);
@@ -310,9 +310,9 @@ static float4						rotat_x(const float4 vect, const float angle)
 	return (res);
 }
 
-static float4						rotat_y(const float4 vect, const float angle)
+static float3						rotat_y(const float3 vect, const float angle)
 {
-	float4 					res = 0;
+	float3 					res = 0;
 	float					teta = radians(angle);
 
 	res.x = (vect.x * cos(teta)) + (vect.y * 0) + (vect.z * sin(teta));
@@ -321,9 +321,9 @@ static float4						rotat_y(const float4 vect, const float angle)
 	return (res);
 }
 
-static float4						rotat_z(const float4 vect, const float angle)
+static float3						rotat_z(const float3 vect, const float angle)
 {
-	float4 					res = 0;
+	float3 					res = 0;
 	float					teta = radians(angle);
 
 	res.x = (vect.x * cos(teta)) + (vect.y * -sin(teta)) + (vect.z * 0);
@@ -344,7 +344,7 @@ static t_hit			hit_init(void)
 	return (hit);
 }
 
-static float		inter_plan(const __local t_plane *plane, const float4 ray, const float4 origin)
+static float		inter_plan(const __local t_plane *plane, const float3 ray, const float3 origin)
 {
 	float	t;
 
@@ -357,9 +357,9 @@ static float		inter_plan(const __local t_plane *plane, const float4 ray, const f
 	return (t);
 }
 
-static float4	get_cylinder_abc(const float radius, const float4 dir, const float4 ray, const float4 origin)
+static float3	get_cylinder_abc(const float radius, const float3 dir, const float3 ray, const float3 origin)
 {
-	float4		abc;
+	float3		abc;
 
 	// SEMBLE OK
 	abc.x = dot(ray, ray) - (dot(ray, dir) * dot(ray, dir));
@@ -368,10 +368,10 @@ static float4	get_cylinder_abc(const float radius, const float4 dir, const float
 	return (abc);
 }
 
-static float					inter_cylinder(const __local t_cylinder *cylinder, const float4 ray, const float4 origin)
+static float					inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin)
 {
-	float4				abc;
-	float4				pos;
+	float3				abc;
+	float3				pos;
 	float				d;
 	float				res1 = 0;
 	float				res2 = 0;
@@ -406,11 +406,11 @@ static float					inter_cylinder(const __local t_cylinder *cylinder, const float4
 		return (0);
 }
 
-static float4			get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
+static float3			get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
 {
-	float4 res = 0;
-	float4 v = 0;
-	float4 project = 0;
+	float3 res = 0;
+	float3 v = 0;
+	float3 project = 0;
 	float doty = 0;
 
 	v = hit.pos - cylinder->pos;
@@ -421,9 +421,9 @@ static float4			get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hi
 	return (fast_normalize(res));
 }
 
-static float4	get_sphere_abc(const float radius, const float4 ray, const float4 origin)
+static float3	get_sphere_abc(const float radius, const float3 ray, const float3 origin)
 {
-	float4		abc = 0;
+	float3		abc = 0;
 
 	abc.x = dot(ray, ray);
 	abc.y = 2 * dot(ray, origin);
@@ -431,9 +431,9 @@ static float4	get_sphere_abc(const float radius, const float4 ray, const float4 
 	return (abc);
 }
 
-static float4	get_cone_abc(const __local t_cone *cone, const float4 ray, const float4 origin)
+static float3	get_cone_abc(const __local t_cone *cone, const float3 ray, const float3 origin)
 {
-	float4		abc = 0;
+	float3		abc = 0;
 	float		k = radians(cone->angle);
 
 	k = tan(k);
@@ -446,13 +446,23 @@ static float4	get_cone_abc(const __local t_cone *cone, const float4 ray, const f
 	return (abc);
 }
 
-static float			inter_cone(const __local t_cone *cone, const float4 ray, const float4 origin)
+void			print_mem(__local t_cone *cone)
 {
-	float4		abc = 0;
+	printf("dir : x = %f, y = %f, z = %f\npos : x = %f, y = %f, z = %f\nangle = %f\n\n", cone->dir.x, cone->dir.y, cone->dir.z, cone->pos.x, cone->pos.y, cone->pos.z, cone->angle);
+}
+
+void			print_vect(float3 v)
+{
+	printf("ray : x = %f, y = %f, z = %f\n\n", v.x, v.y, v.z);
+}
+
+static float			inter_cone(const __local t_cone *cone, const float3 ray, const float3 origin)
+{
+	float3		abc = 0;
 	float		d = 0;
 	float		res1 = 0;
 	float		res2 = 0;
-	float4		pos = 0;
+	float3		pos = 0;
 
 	pos = origin - cone->pos;
 	abc = get_cone_abc(cone, ray, pos);
@@ -468,11 +478,11 @@ static float			inter_cone(const __local t_cone *cone, const float4 ray, const fl
 	return (res2);
 }
 
-static float4			get_cone_normal(const __local t_cone *cone, const t_hit hit)
+static float3			get_cone_normal(const __local t_cone *cone, const t_hit hit)
 {
-	float4 res = 0;
-	float4 v = 0;
-	float4 project = 0;
+	float3 res = 0;
+	float3 v = 0;
+	float3 project = 0;
 	float doty = 0;
 
 	v = hit.pos - cone->pos;
@@ -483,13 +493,13 @@ static float4			get_cone_normal(const __local t_cone *cone, const t_hit hit)
 }
 
 
-static float			inter_sphere(const __local t_sphere *sphere, const float4 ray, const float4 origin)
+static float			inter_sphere(const __local t_sphere *sphere, const float3 ray, const float3 origin)
 {
-	float4		abc = 0;
+	float3		abc = 0;
 	float		d = 0;
 	float		res1 = 0;
 	float		res2 = 0;
-	float4		pos = 0;
+	float3		pos = 0;
 
 	pos = origin - sphere->pos;
 	abc = get_sphere_abc(sphere->radius, ray, pos);
@@ -507,8 +517,7 @@ static float			inter_sphere(const __local t_sphere *sphere, const float4 ray, co
 
 
 
-
-static t_hit			ray_hit(const __local t_scene *scene, const float4 origin, const float4 ray)
+static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const float3 ray)
 {
 	t_hit						hit;
 	float						dist;
@@ -542,9 +551,9 @@ static t_hit			ray_hit(const __local t_scene *scene, const float4 origin, const 
 	return (hit);
 }
 
-static float4			get_hit_normal(const __local t_scene *scene, float4 ray, t_hit hit)
+static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit hit)
 {
-	float4		res, save;
+	float3		res, save;
 
 	if (hit.obj->id == OBJ_SPHERE)
 		res = hit.pos - hit.obj->pos;
@@ -579,7 +588,7 @@ static float4			get_hit_normal(const __local t_scene *scene, float4 ray, t_hit h
 	return (fast_normalize(save));
 }
 
-static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float4 ray)
+static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3 ray)
 {
 	t_object __local		*obj;
 	t_light __local		*light;
@@ -587,8 +596,8 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 
 	unsigned int		res_color;
 	float				tmp;
-	float4				reflect;
-	float4 __private	diffuse;
+	float3				reflect;
+	float3 __private	diffuse;
 	float __private	brightness;
 	int __private hue;
 	int __private hue_light;
@@ -597,7 +606,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	t_hit					light_hit;
 	float __private pow_of_spec;
 	int __private light_color;
-	float4 __private speculos;
+	float3 __private speculos;
 
 	tmp = 0;
 	reflect = 0;
@@ -644,7 +653,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			if (tmp > EPSILON)
 			{
 				brightness = (float __private)light->brightness;
-				diffuse = (float4 __private)obj->diff;
+				diffuse = (float3 __private)obj->diff;
 				hue = (int __private)obj->color;
 				hue_light = light->color;
 
@@ -692,10 +701,10 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	return (res_color);
 }
 
-static unsigned int		bounce(const __local t_scene *scene, const float4 ray, t_hit old_hit, int depth)
+static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hit old_hit, int depth)
 {
 	unsigned int	color;
-	float4			reflex;
+	float3			reflex;
 	t_hit			new_hit;
 	float			reflex_coef;
 
@@ -726,7 +735,7 @@ static unsigned int		bounce(const __local t_scene *scene, const float4 ray, t_hi
 	return (color);
 }
 
-static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray, __global int *target, bool isHim)
+static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __global int *target, bool isHim)
 {
 	t_hit			hit;
 	int				depth;
@@ -755,9 +764,9 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float4 ray, __
 	return (get_ambient(scene, BACKCOLOR));
 }
 
-static float4						get_ray_cam(__local t_scene *scene, const uint2 pix)
+static float3						get_ray_cam(__local t_scene *scene, const uint2 pix)
 {
-	float4					cam_ray = 0;
+	float3					cam_ray = 0;
 	float					ratio = (float)scene->win_w / (float)scene->win_h;
 
 	cam_ray.x = ((2 * ((pix.x + 0.5) / scene->win_w)) - 1) * ratio * (tan(radians(ACTIVECAM.fov / 2)));
@@ -792,14 +801,14 @@ __kernel void	ray_trace(	__global	char		*output,
  	event_t			ev;
 	int				id;
 	uint2			pix;
-	float4			prim_ray;
+	float3			prim_ray;
 	unsigned int	final_color;
 	float			ratio;
-	float4			cam_ray;
+	float3			cam_ray;
 
 	final_color = 0;
-	pix.x = get_global_id(0) % scene->win_w;
-	pix.y = get_global_id(0) / scene->win_w;
+	pix.x = get_global_id(0);
+	pix.y = get_global_id(1);
 	id = pix.x + (scene->win_w * pix.y);
 
 	ev = async_work_group_copy((__local char *)mem_objects, (__global char *)global_mem_objects, mem_size_objects, 0);
