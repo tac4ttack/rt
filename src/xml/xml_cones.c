@@ -30,6 +30,10 @@ static void	xml_cone_data_n(t_env *e, char **att, t_node *cone_node, int *i)
 		s_error("\x1b[2;31mError in cone, REFLEX expected in #7\x1b[0m", e);
 	else
 		xml_data_reflex(e, att, i, cone_node);
+	if (ft_strncmp(att[*i], "refract=\"", 6) != 0)
+		s_error("\x1b[2;31mError in cone, REFRACT expected in #7\x1b[0m", e);
+	else
+		xml_data_refract(e, att, i, cone_node);
 }
 
 static void	xml_cone_data(t_env *e, char **att, t_node *cone_node, int *i)
@@ -107,5 +111,6 @@ void		xml_push_cone(t_env *e, t_node *list)
 	e->cones[list->id].diff = list->diff;
 	e->cones[list->id].spec = list->spec;
 	e->cones[list->id].reflex = list->reflex;
+	e->cones[list->id].refract = list->refract;
 	e->gen_objects->add(e->gen_objects, (void*)&e->cones[list->id]);
 }

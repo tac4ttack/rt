@@ -36,6 +36,7 @@ typedef struct			s_object
 	float3				spec;
 	int					color;
 	float				reflex;
+	float				refract;
 }						t_object;
 
 typedef struct			s_light_ray
@@ -84,6 +85,7 @@ typedef struct			s_cone
 	float3				spec;
 	int					color;
 	float				reflex;
+	float				refract;
 
 	float				angle;
 
@@ -99,6 +101,7 @@ typedef struct			s_cylinder
 	float3				spec;
 	int					color;
 	float				reflex;
+	float				refract;
 
 	float				height;
 	float3				base_dir;
@@ -115,6 +118,7 @@ typedef struct			s_plane
 	float3				spec;
 	int					color;
 	float				reflex;
+	float				refract;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -127,6 +131,7 @@ typedef struct			s_sphere
 	float3				spec;
 	int					color;
 	float				reflex;
+	float				refract;
 
 	float				radius;
 }						t_sphere;
@@ -735,6 +740,50 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hi
 	return (color);
 }
 
+static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_hit old_hit) // pour le plan, indice de refraction (pour tout objet non plein)
+{
+	float3			refract = ray;
+	t_hit			new_hit;
+	float			c1 = 0;
+	float			c2 = 0;
+	float			eta = 0;
+	float			base = 1;
+	int				i = 0;
+	while (old_hit.obj->refract != 0 && ++i < 50)
+	{
+		c1 = dot(old_hit.normal, refract);
+		eta = base / old_hit.obj->refract;
+		if (c1 < 0)
+			c1 = -c1;
+		else
+		{
+			old_hit.normal = -old_hit.normal;
+			eta = old_hit.obj->refract / base;
+		}
+		c2 = sqrt(1 - ((eta * eta) * (1 - (c1 * c1))));
+		// DEUXIEME LOIS DE SNELL-DECARTES /////////////////////////////////////////////
+		refract = fast_normalize((eta * refract) + ((eta * c1) - c2) * old_hit.normal);
+		////////////////////////////////////////////////////////////////////////////////
+		new_hit.dist = MAX_DIST;
+		new_hit = ray_hit(scene, old_hit.pos, refract);
+		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
+		{
+			new_hit.pos = (new_hit.dist * refract) + old_hit.pos;
+			new_hit.normal = get_hit_normal(scene, refract, new_hit);
+			if (new_hit.mem_index != old_hit.mem_index && new_hit.obj->refract != 0)
+				new_hit.pos = new_hit.pos + ((new_hit.dist / 100000) * -new_hit.normal);//pour refract en chaine, inverser la normale pour le decalage de la position
+			else
+				new_hit.pos = new_hit.pos + ((new_hit.dist / 100000) * new_hit.normal);
+			if (new_hit.obj->refract == 0)
+				return (phong(scene, new_hit, refract));
+		}
+		else
+			return (0);
+		old_hit = new_hit;
+	}
+	return (phong(scene, new_hit, refract));
+}
+
 static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __global int *target, bool isHim)
 {
 	t_hit			hit;
@@ -755,10 +804,15 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	{
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normal = get_hit_normal(scene, ray, hit);
-		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
+		if (hit.obj->refract != 0)
+			hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * -hit.normal); //pour refract, inverser le decalage de la position
+		else
+			hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 		color = phong(scene, hit, ray);
 		if (depth > 0 && hit.obj->reflex > 0)
 			bounce_color = bounce(scene, ray, hit, depth);
+		if (hit.obj->refract != 0)
+			return (bounce_color = refract(scene, ray, hit));
 		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
