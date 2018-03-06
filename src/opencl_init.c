@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 18:50:02 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/06 19:08:51 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/06 22:03:54 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,19 @@ int			opencl_build(t_env *e)
 	if ((e->err = clBuildProgram(e->program, 0, NULL, "-I ./kernel/includes/ ", \
 				NULL, NULL)) != CL_SUCCESS)
 		return (opencl_builderrors(e, 5, e->err));
-	ft_putendl("\x1b[1;32mOpenCL program built!\x1b[0m");
+	ft_putendl("\x1b[1;29mOpenCL program built!\x1b[0m");
 	if (!(KRT = clCreateKernel(e->program, "ray_trace", &e->err)) \
 		|| e->err != CL_SUCCESS)
 		return (opencl_builderrors(e, 6, e->err));
-	ft_putendl("\x1b[1;32mOpenCL RAYTRACE kernel built!\n\x1b[0m");
+	ft_putendl("\x1b[1;29mOpenCL RAYTRACE kernel built!\n\x1b[0m");
 	if (!(e->frame_buffer = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
 		e->count * sizeof(int), NULL, NULL)))
 		return (opencl_builderrors(e, 7, e->err));
-	ft_putendl("\x1b[1;32mOpenCL frame buffer allocated!\x1b[0m");
+	ft_putendl("\x1b[1;29mOpenCL frame buffer allocated!\x1b[0m");
 	if (!(e->target_obj_buf = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
 		sizeof(t_hit), NULL, NULL)))
 		return (opencl_builderrors(e, 7, e->err));
-	ft_putendl("\x1b[1;32mOpenCL target object buffer allocated!\n\x1b[0m");
+	ft_putendl("\x1b[1;29mOpenCL target object buffer allocated!\n\x1b[0m");
 	opencl_allocate_scene_memory(e);
 	return (0);
 }
@@ -70,7 +70,7 @@ void		load_kernel(t_env *e)
 	int		ret;
 	char	*line;
 
-	ft_putendl("\x1b[1;32mReading OpenCL kernel sources...\x1b[0m");
+	ft_putendl("\x1b[1;29mReading OpenCL kernel sources...\x1b[0m");
 	if ((e->kernel_src = ft_strdup("#define FROM_KERNEL\n")) == NULL)
 	{
 		s_error("Error during allocating memory for kernel source code", e);
@@ -86,7 +86,7 @@ void		load_kernel(t_env *e)
 	(ret == -1 ? s_error("GNL read error", e) : 0);
 	e->kernel_src = ft_strjoin_frs1(e->kernel_src, "\n");
 	close(fd);
-	ft_putendl("\x1b[1;32mOpenCL kernel sources successfully read!\n\x1b[0m");
+	ft_putendl("\x1b[1;29mOpenCL kernel sources successfully read!\n\x1b[0m");
 }
 
 int			opencl_init(t_env *e)
@@ -96,19 +96,19 @@ int			opencl_init(t_env *e)
 	if ((e->err = clGetDeviceIDs(NULL, e->gpu ? CL_DEVICE_TYPE_GPU : \
 				CL_DEVICE_TYPE_CPU, 1, &e->device_id, NULL)) != CL_SUCCESS)
 		return (opencl_builderrors(e, 1, e->err));
-	ft_putendl("\x1b[1;32mOpenCL devices found!\x1b[0m");
+	ft_putendl("\x1b[1;29mOpenCL devices found!\x1b[0m");
 	if (!(e->context = clCreateContext(0, 1, &e->device_id, \
 				NULL, NULL, &e->err)))
 		return (opencl_builderrors(e, 2, e->err));
-	ft_putendl("\x1b[1;32mOpenCL context created!\x1b[0m");
+	ft_putendl("\x1b[1;29mOpenCL context created!\x1b[0m");
 	if (!(e->queue = clCreateCommandQueue(e->context, \
 				e->device_id, 0, &e->err)))
 		return (opencl_builderrors(e, 3, e->err));
-	ft_putendl("\x1b[1;32mOpenCL command queue created!\x1b[0m");
+	ft_putendl("\x1b[1;29mOpenCL command queue created!\x1b[0m");
 	if (!(e->program = clCreateProgramWithSource(e->context, 1, \
 				(const char **)&e->kernel_src, NULL, &e->err)))
 		return (opencl_builderrors(e, 4, e->err));
-	ft_putendl("\x1b[1;32mOpenCL program compiled!\x1b[0m");
+	ft_putendl("\x1b[1;29mOpenCL program compiled!\x1b[0m");
 	opencl_build(e);
 	return (0);
 }

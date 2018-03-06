@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 13:48:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/05 16:38:36 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/06 21:42:15 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,6 @@ void			display_hud(t_env *e)
 	display_hud_obj_pos(e);
 	display_hud_obj_dir(e);
 	fps = ft_itoa(e->fps.ret_fps);
-	
-	fps = ft_strjoin_frs2("RT - ", fps);
-	fps = ft_strjoin_frs1(fps, " ips");
-	gtk_window_set_title (GTK_WINDOW(e->window), fps);
 	mlx_string_put(e->mlx, e->win, e->win_w - 40, 10, 0x00ffffff, fps);
-	
 	free(fps);
 }

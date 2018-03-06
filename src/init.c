@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/06 19:52:45 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/06 22:02:55 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void		load_obj(t_env *e)
 {
-	ft_putendl("\x1b[1;32mFetching scene objects...\x1b[0m");
+	ft_putendl("\x1b[1;29mFetching scene objects...\x1b[0m");
 	xml_allocate_cam(e);
 	xml_allocate_cone(e);
 	xml_allocate_cyl(e);
 	xml_allocate_light(e);
 	xml_allocate_plane(e);
 	xml_allocate_sphere(e);
-	ft_putendl("\x1b[1;32mScene objects fetched!\x1b[0m");
+	ft_putendl("\x1b[1;29mScene objects fetched!\x1b[0m");
 }
 
 void		load_scene(t_env *e)
@@ -48,7 +48,7 @@ void		load_scene(t_env *e)
 		list = list->next;
 	}
 	xml_list_clean(e, &XML->node_lst);
-	ft_putendl("\x1b[1;32mSuccessfully loaded the scene!\n\x1b[0m");
+	ft_putendl("\x1b[1;29mSuccessfully loaded the scene!\n\x1b[0m");
 }
 
 void		frame_init(t_env *e)
@@ -80,14 +80,10 @@ void		env_init(t_env *e)
 	e->win_h = e->scene->win_h;
 	e->count = e->win_h * e->win_w;
 	e->debug = DBUG;
-	e->cen_x = e->win_w / 2;
-	e->cen_y = e->win_h / 2;
 	e->gpu = IS_GPU;
 	e->run = 0;
-	e->redraw = 1;
-	e->window = NULL;
-	e->icon = NULL;
-	ft_putendl("\x1b[1;32mRT environnement initialized!\n\x1b[0m");
+	e->ui.redraw = 1;
+	ft_putendl("\x1b[1;29mRT environnement initialized!\n\x1b[0m");
 //	printf("t_light_ray			: %-20lu\n", sizeof(t_light_ray));
 //	printf("t_cam 				: %-20lu\n", sizeof(t_cam));
 //	printf("t_cone 				: %-20lu\n", sizeof(t_cone));
@@ -129,7 +125,7 @@ void		init(GtkApplication *app, gpointer data)
 		opencl_init(e);
 	}
 	init_gtk(app, e);
-	gtk_window_set_title (GTK_WINDOW(e->window), "RT - Initialized!");
+	gtk_window_set_title (GTK_WINDOW(e->ui.window), "RT - Initialized!");
 	
 //	gtk_main_loop(e);
 }

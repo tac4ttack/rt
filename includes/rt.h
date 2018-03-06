@@ -260,35 +260,44 @@ typedef struct			s_scene
 	int					tor_count;
 }						t_scene;
 
+typedef	struct			s_ui
+{
+	int					gtk_status;
+	GtkApplication		*gtk_app;
+	GtkWidget			*window;
+	GtkWidget			*mainbox;
+
+	GdkPixbuf			*icon;
+
+	GtkWidget			*frame_box;
+	GdkPixbuf			*frame_pixel_buffer;
+	GtkWidget			*frame_placeholder;
+	
+	
+	int					redraw;
+}						t_ui;
+
 typedef	struct			s_env
 {
 	void				*mlx; // TO BE DELETED
 	void				*win; // TO BE DELETED
 	t_frame				*frame; // TO BE DELETED
-	
-	int					gtk_status;
-	GtkApplication		*gtk_app;
-	GtkWidget			*window;
-	GdkPixbuf			*icon;
-	GdkPixbuf			*frame_pixel_buffer;
-	GtkWidget			*frame_box;
-	GtkWidget			*frame_placeholder;
+	t_key				keys;	// TO BE DELETED?
+
+	t_ui				ui;
+
 	int					*frame_pixel_data;
-	int					redraw;
-
-	char				*scene_file;
-	int					scene_fd;
-
-	t_key				keys;
 	int					win_w;
 	int					win_h;
-	int					sce_w;
-	int					sce_h;
-	int					cen_x;
-	int					cen_y;
+
 	int					debug;
+	int					gpu;
+	
+	char				*scene_file;
+	int					scene_fd;
 	t_xml				*xml;
 	char				*kernel_src;
+	
 	cl_int				err;
 	cl_device_id		device_id;
 	cl_context			context;
@@ -298,8 +307,7 @@ typedef	struct			s_env
 	cl_kernel			kernel_rt;
 	cl_mem				frame_buffer;
 	cl_mem				target_obj_buf;
-	t_hit				target_obj;
-	int					gpu;
+	t_hit				target_obj;	
 	size_t				global;
 	size_t				local;
 	unsigned int		count;
@@ -319,6 +327,7 @@ typedef	struct			s_env
 
 	t_scene				*scene;
 	cl_mem				scene_mem;
+	
 	t_fps				fps;
 
 	char				run;

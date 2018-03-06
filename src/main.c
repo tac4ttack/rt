@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:32:13 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/06 19:49:23 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/06 22:03:22 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void		check_arguments(int ac, char **av)
 			else
 				i++;
 		}
-	ft_putendl("\n\x1b[1;32mArguments are OK!\x1b[0m");
-	ft_putendl("\x1b[1;32mGTK will check if options are valid...\x1b[0m\n");
+	ft_putendl("\n\x1b[1;29mArguments are OK!\x1b[0m");
+	ft_putendl("\x1b[1;29mGTK will check if options are valid...\x1b[0m\n");
 }
 
 void		print_usage()
@@ -76,9 +76,9 @@ int			main(int ac, char **av)
 	ft_bzero(e, sizeof(t_env));
 	e->scene_file = ft_strdup(av[1]);
 	
-	e->gtk_app = gtk_application_new("ray.tracing", G_APPLICATION_FLAGS_NONE);
-	g_signal_connect(e->gtk_app, "activate", G_CALLBACK(init), (gpointer)e);
-	e->gtk_status = g_application_run(G_APPLICATION(e->gtk_app), ac++ , av + 1);
+	e->ui.gtk_app = gtk_application_new("ray.tracing", G_APPLICATION_FLAGS_NONE);
+	g_signal_connect(e->ui.gtk_app, "activate", G_CALLBACK(init), (gpointer)e);
+	e->ui.gtk_status = g_application_run(G_APPLICATION(e->ui.gtk_app), ac++ , av + 1);
 	
 //	set_hooks(e);
 	return (0);
