@@ -78,7 +78,7 @@
 			diff="0.42, 0.42, 0.42"
 			spec="0.50, 0.50, 0.50"
 			reflex="0"
-			refract="1.2"
+			refract="0"
 			/>
 
 <sphere		id="1"
@@ -141,6 +141,6 @@
 			diff="0.42, 0.42, 0.42"
 			spec="0.42, 0.42, 0.42"
 			reflex="0.42"
-			refract="0"
+			refract="1.3"
 			/>
 </scene>

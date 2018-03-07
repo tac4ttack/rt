@@ -93,18 +93,13 @@ void		env_init(t_env *e)
 	e->debug = DBUG;
 	e->cen_x = e->win_w / 2;
 	e->cen_y = e->win_h / 2;
-<<<<<<< HEAD
-	e->gpu = 1;
-=======
 	//if (IS_GPU)
 		e->scene->flag |= OPTION_GPU;
->>>>>>> 3afeadce2ce771bf5010a28d4f1b7eac8cf5fafe
 	e->tree = tor_create(e);
 }
 
 void		init(t_env *e, int ac, char *av)
 {
-	ft_bzero(e, sizeof(t_env));
 	if (!(e->scene = ft_memalloc(sizeof(t_scene))))
 		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
 	if (!(e->gen_objects = construct_gen()))
