@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 19:36:09 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 19:50:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void		env_init(t_env *e)
 	e->scene->tor_count = pow(2, e->scene->depth + 1) - 1;
 	e->win_w = e->scene->win_w;
 	e->win_h = e->scene->win_h;
-	e->count = e->win_h * e->win_w;
+//	e->count = e->win_h * e->win_w; // DELETE
 	e->debug = DBUG;
 	e->gpu = IS_GPU;
 	if (e->gpu == 1)
@@ -104,9 +104,9 @@ void		init(GtkApplication *app, gpointer data)
 	e = data;
 	if (!(e->scene = ft_memalloc(sizeof(t_scene))))
 		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
-	if (!(e->gen_objects = construct_gen()))
+	if (!(e->gen_objects = gen_construct()))
 		s_error("\x1b[2;31mCan't initialize objects t_gen\x1b[0m", e);
-	if (!(e->gen_lights = construct_gen()))
+	if (!(e->gen_lights = gen_construct()))
 		s_error("\x1b[2;31mCan't initialize lights t_gen\x1b[0m", e);
 	ft_bzero(e->scene, sizeof(t_scene));
 	xml_init(e);
