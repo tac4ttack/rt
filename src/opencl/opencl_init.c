@@ -86,6 +86,7 @@ void		load_kernel(t_env *e)
 int			opencl_init(t_env *e, unsigned int count)
 {
 	load_kernel(e);
+
 	if ((e->err = clGetDeviceIDs(NULL, e->gpu ? CL_DEVICE_TYPE_GPU : \
 				CL_DEVICE_TYPE_CPU, 1, &e->device_id, NULL)) != CL_SUCCESS)
 		return (opencl_builderrors(e, 1, e->err));

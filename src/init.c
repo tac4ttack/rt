@@ -93,7 +93,7 @@ void		env_init(t_env *e)
 	e->debug = DBUG;
 	e->cen_x = e->win_w / 2;
 	e->cen_y = e->win_h / 2;
-	e->gpu = IS_GPU;
+	e->gpu = 1;
 	e->tree = tor_create(e);
 }
 
