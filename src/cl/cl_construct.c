@@ -78,7 +78,7 @@ t_cl				*cl_construct(const char *path, const char *name,
 	if (!(cl = ft_memalloc(sizeof(t_cl))))
 		return (NULL);
 	if (!(cl->kernel_src = (char *)ft_memalloc(MAX_SOURCE_SIZE)))
-		return (destruct_cl(&cl));
+		return (cl_destruct(&cl));
 	if (!cl_load_src(cl, path) ||
 		!cl_create_base(cl, type) ||
 		!cl_build(cl, name))

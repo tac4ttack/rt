@@ -73,6 +73,7 @@ SRC_NAME =  			gtk.c \
 						cl/cl_print_error.c \
 						cl/cl_compute.c \
 						cl/cl_create_buffer.c \
+						opencl_compute.c \
 						xml/xml.c \
 						xml/xml_check_attr.c \
 						xml/xml_cameras.c \

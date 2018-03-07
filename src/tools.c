@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 19:52:09 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 20:37:38 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,9 @@ void	flush(t_env *e)
 {
 	if (e)
 	{
-		destruct_cl(&e->cl);
+		cl_destruct(&e->cl);
 		gen_destruct(&e->gen_objects);
-		gen_destruct(&e->gen_lights);
-		if (e->cl->kernel_src)
-			free(e->cl->kernel_src);
-		ft_putendl("\x1b[1;29mFreed Kernel sources\x1b[0m");
+		gen_destruct(&e->gen_lights);	
 		if (XML)
 			free(XML);
 		ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
