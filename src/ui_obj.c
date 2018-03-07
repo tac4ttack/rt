@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/05 22:17:39 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/07 19:14:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void			ui_obj(t_env *e)
+/*void			ui_obj(t_env *e)
 {
 	t_object	*obj;
 	cl_float3	*target;
@@ -39,3 +39,4 @@ void			ui_obj(t_env *e)
 		(KP_N9 ? target->z += 0.1 : 0);
 	}
 }
+*/

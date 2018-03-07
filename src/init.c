@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 22:39:42 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/07 23:58:08 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,26 +66,6 @@ void		load_scene(t_env *e)
 	ft_putendl("\x1b[1;29mSuccessfully loaded the scene!\n\x1b[0m");
 }
 
-void		frame_init(t_env *e)
-{
-	int		bpp;
-	int		row;
-	int		endian;
-
-	if (!(e->frame = malloc(sizeof(t_frame))))
-		s_error("\x1b[1;31mCan't initialize the frame\x1b[0m", e);
-	e->frame->w = e->win_w;
-	e->frame->h = e->win_h;
-	if (!(e->frame->ptr = mlx_new_image(e->mlx, e->frame->w, e->frame->h)))
-		s_error("\x1b[1;31mCan't create new mlx image\x1b[0m", e);
-	if (!(e->frame->pix = mlx_get_data_addr(e->frame->ptr, \
-							&(bpp), &(row), &(endian))))
-		s_error("\x1b[1;31mCan't create image address\x1b[0m", e);
-	e->frame->bpp = bpp;
-	e->frame->row = row;
-	e->frame->endian = endian;
-}
-
 void		env_init(t_env *e)
 {
 	ft_putendl("\n\x1b[1;32m/\\ Initializing RT environnement /\\\x1b[0m\n");
@@ -93,7 +73,7 @@ void		env_init(t_env *e)
 	e->scene->tor_count = pow(2, e->scene->depth + 1) - 1;
 	e->win_w = e->scene->win_w;
 	e->win_h = e->scene->win_h;
-	e->count = e->win_h * e->win_w;
+//	e->count = e->win_h * e->win_w; // DELETE
 	e->debug = DBUG;
 	e->gpu = IS_GPU;
 	if (e->gpu == 1)
@@ -124,9 +104,9 @@ void		init(GtkApplication *app, gpointer data)
 	e = data;
 	if (!(e->scene = ft_memalloc(sizeof(t_scene))))
 		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
-	if (!(e->gen_objects = construct_gen()))
+	if (!(e->gen_objects = gen_construct()))
 		s_error("\x1b[2;31mCan't initialize objects t_gen\x1b[0m", e);
-	if (!(e->gen_lights = construct_gen()))
+	if (!(e->gen_lights = gen_construct()))
 		s_error("\x1b[2;31mCan't initialize lights t_gen\x1b[0m", e);
 	ft_bzero(e->scene, sizeof(t_scene));
 	xml_init(e);
@@ -155,7 +135,7 @@ void		init(GtkApplication *app, gpointer data)
 
 //	gtk_main_loop(e);
 	printf("%i %i %i\n", e->scene->win_w, e->scene->win_h, (e->scene->flag & OPTION_GPU));
-	if (!(e->cl = construct_cl("./kernel/kernel.cl", "ray_trace", e->scene->win_w, e->scene->win_h,
+	if (!(e->cl = cl_construct("./kernel/kernel.cl", "ray_trace", e->scene->win_w, e->scene->win_h,
 			(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
 		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
 

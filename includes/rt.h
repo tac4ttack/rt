@@ -31,12 +31,7 @@
 #  define DBUG					0
 # endif
 
-// MLX SHIT TO BE DESTROYED
-# define DESTROYNOTIFY			17
-# define KEYPRESSMASK			(1L<<0)
-# define KEYRELEASEMASK			(1L<<1)
-# define KEYPRESS				2
-# define KEYRELEASE				3
+
 
 # define DEG2RAD				(M_PI / 180)
 # define RAD2DEG				(180 / M_PI)
@@ -52,7 +47,7 @@
 # define NLIG					e->scene->n_lights
 # define NPLA					e->scene->n_planes
 # define NSPH					e->scene->n_spheres
-# define ACTIVEOBJ				e->target_obj
+//# define ACTIVEOBJ				e->target_obj // DELETE
 # define CAM					e->cameras
 # define CONES					e->cones
 # define CYLIND					e->cylinders
@@ -325,79 +320,45 @@ typedef struct			s_gen
 
 typedef	struct			s_env
 {
-//	void				*mlx; // TO BE DELETED
-//	void				*win; // TO BE DELETED
-//	t_frame				*frame; // TO BE DELETED
-//	t_key				keys;	// TO BE DELETED?
-
-	t_ui				*ui;
-
-	int					*pixel_data; // raw pixel image
-
 	t_cl				*cl;
-
-	void				*mlx;
-	void				*win;
-	t_frame				*frame;
-	t_key				keys;
-	int					win_w;
-	int					win_h;
-
-	int					debug;
-	int					gpu;
+	t_ui				*ui;
 
 	char				*scene_file;
 	int					scene_fd;
-	t_xml				*xml;
-	char				*kernel_src;
-
-	cl_int				err;
-	cl_device_id		device_id;
-	cl_context			context;
-	cl_event			events[3];
-	cl_command_queue	queue;
-	cl_program			program;
-	cl_kernel			kernel_rt;
-	cl_mem				frame_buffer;
-	cl_mem				target_obj_buf;
-	t_hit				target_obj;
-
-	int					target;
-	size_t				global;
-	size_t				local;
-	unsigned int		count;
-
-	t_cam				*cameras;
-	cl_mem				cameras_mem;
-	t_cone				*cones;
-	cl_mem				cones_mem;
-	t_cylinder			*cylinders;
-	cl_mem				cylinders_mem;
-	t_light				*lights;
-	cl_mem				lights_mem;
-	t_plane				*planes;
-	cl_mem				planes_mem;
-	t_sphere			*spheres;
-	cl_mem				spheres_mem;
-
 	t_scene				*scene;
-	cl_mem				scene_mem;
 
-	t_fps				fps;
-
-	int					node_count;
+	t_xml				*xml;
+	t_cam				*cameras;
+	t_cone				*cones;
+	t_cylinder			*cylinders;
+	t_light				*lights;
+	t_plane				*planes;
+	t_sphere			*spheres;
 
 	cl_mem				gen_mem;
 	t_gen				*gen_objects;
 	t_gen				*gen_lights;
+
+	int					win_w;
+	int					win_h;
+	int					debug;
+	int					gpu;
+	t_fps				fps;
+
+	int					*pixel_data; // raw pixel image
+	int					target;
 }						t_env;
 
 cl_float4				add_cl_float(cl_float4 v1, cl_float4 v2);
+cl_float3				sub_cl_float(cl_float3 v1, cl_float3 v2);
+cl_float3				rotz(cl_float3 dir, float roll);
+cl_float3				roty(cl_float3 dir, float yaw);
+cl_float3				rotx(cl_float3 dir, float pitch);
+cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
 
-
-void		*construct_gen();
-bool		gen_add(t_gen *gen, void *elem);
-void		*destruct_gen(t_gen **gen);
+void					*gen_construct();
+bool					gen_add(t_gen *gen, void *elem);
+void					*gen_destruct(t_gen **gen);
 
 void					display_hud(t_env *e);
 int						opencl_draw(t_env *e);
@@ -411,39 +372,24 @@ void					init_gtk(GtkApplication *app, t_env *e);
 
 void					init(GtkApplication *app, gpointer data);
 
-void					mlx_img_line(t_frame *sce, t_p2i p1, t_p2i p2, int c);
-int						mlx_img_pix_put(t_frame *sce, int x, int y, int color);
-void					mlx_keyboard_repeated(t_env *e);
-void					mlx_key_no_repeat_event(t_env *e, const int key);
-int						mlx_key_press(int key, t_env *e);
-int						mlx_key_release(int key, t_env *e);
-int						mlx_key_simple(int key, t_env *e);
-int						mlx_main_loop(t_env *e);
-int						mlx_mouse_events(int btn, int x, int y, t_env *e);
 cl_float3				normalize_vect(cl_float3 v);
 
-// vieille fonctions opencl flo chaton
-//int						opencl_allocate_scene_memory(t_env *e);
-//void					opencl_close(t_env *e);
-//int						opencl_init(t_env *e);
-//void					opencl_print_error(int error);
 void					opencl_set_args(t_env *e, t_cl *cl);
-//int						opencl_builderrors(t_env *e, int err, int errorcode);
+
 
 void					p_error(char *str, t_env *e);
+void					s_error(char *str, t_env *e);
 void					print_usage();
 int						quit(t_env *e);
+
 void					refresh(t_env *e);
-cl_float3				rotz(cl_float3 dir, float roll);
-cl_float3				roty(cl_float3 dir, float yaw);
-cl_float3				rotx(cl_float3 dir, float pitch);
-cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
-void					s_error(char *str, t_env *e);
-void					set_hooks(t_env *e);
-cl_float3				sub_cl_float(cl_float3 v1, cl_float3 v2);
+
+
+
 void					ui_cam(t_env *e);
 void					ui_obj(t_env *e);
 void					update_fps(t_fps *fps);
+
 void					xml_allocate_cam(t_env *e);
 void					xml_allocate_cone(t_env *e);
 void					xml_allocate_cyl(t_env *e);

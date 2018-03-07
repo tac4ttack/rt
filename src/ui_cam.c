@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ui_cam.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:02:45 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 23:56:03 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/07 19:14:15 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void		rot_cam(t_env *e)
+/*void		rot_cam(t_env *e)
 {
 	if (KP_W)
 		ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, \
@@ -52,3 +52,4 @@ void		ui_cam(t_env *e)
 		e->scene->active_cam = (e->scene->active_cam + 1 \
 		< e->scene->n_cams ? e->scene->active_cam + 1 : 0);
 }
+*/

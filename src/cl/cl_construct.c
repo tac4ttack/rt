@@ -70,15 +70,15 @@ static bool		cl_build(t_cl *cl, const char *name)
 	return (true);
 }
 
-t_cl				*construct_cl(const char *path, const char *name,
-												const size_t width, const size_t height, int type)
+t_cl				*cl_construct(const char *path, const char *name,
+							const size_t width, const size_t height, int type)
 {
 	t_cl *cl;
 
 	if (!(cl = ft_memalloc(sizeof(t_cl))))
 		return (NULL);
 	if (!(cl->kernel_src = (char *)ft_memalloc(MAX_SOURCE_SIZE)))
-		return (destruct_cl(&cl));
+		return (cl_destruct(&cl));
 	if (!cl_load_src(cl, path) ||
 		!cl_create_base(cl, type) ||
 		!cl_build(cl, name))

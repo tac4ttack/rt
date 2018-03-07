@@ -1,6 +1,6 @@
 #include "rt.h"
 
-void		*construct_gen()
+void		*gen_construct()
 {
 	t_gen *gen;
 

@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:43 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 18:48:10 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 19:37:47 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cl.h"
 
-static void		opencl_print_error_part_four(const int err)
+static void		cl_print_error_part_four(const int err)
 {
 	(err == -59 ? ft_putstr("\x1b[1;31m\nCL_INVALID_OPERATION\x1b[0m") : 0);
 	(err == -60 ? ft_putstr("\x1b[1;31m\nCL_INVALID_GL_OBJECT\x1b[0m") : 0);
@@ -32,7 +32,7 @@ static void		opencl_print_error_part_four(const int err)
 	"\x1b[1;31m\nCL_INVALID_DEVICE_PARTITION_COUNT\x1b[0m") : 0);
 }
 
-static void		opencl_print_error_part_three(const int err)
+static void		cl_print_error_part_three(const int err)
 {
 	(err == -45 ? ft_putstr(\
 	"\x1b[1;31m\nCL_INVALID_PROGRAM_EXECUTABLE\x1b[0m") : 0);
@@ -61,7 +61,7 @@ static void		opencl_print_error_part_three(const int err)
 	(err == -58 ? ft_putstr("\x1b[1;31m\nCL_INVALID_EVENT\x1b[0m") : 0);
 }
 
-static void		opencl_print_error_part_two(const int err)
+static void		cl_print_error_part_two(const int err)
 {
 	(err == -17 ? ft_putstr("\x1b[1;31m\nCL_LINK_PROGRAM_FAILURE\x1b[0m") : 0);
 	(err == -18 ? ft_putstr(\
@@ -89,7 +89,7 @@ static void		opencl_print_error_part_two(const int err)
 	(err == -44 ? ft_putstr("\x1b[1;31m\nCL_INVALID_PROGRAM\x1b[0m") : 0);
 }
 
-static void		opencl_print_error_part_one(const int err)
+static void		cl_print_error_part_one(const int err)
 {
 	(err == 0 ? ft_putstr("\x1b[1;31m\nCL_SUCCESS\x1b[0m") : 0);
 	(err == -1 ? ft_putstr("\x1b[1;31m\nCL_DEVICE_NOT_FOUND\x1b[0m") : 0);
@@ -121,13 +121,13 @@ static void		opencl_print_error_part_one(const int err)
 bool			cl_print_error(int err)
 {
 	if (err <= -0 && err >= -16)
-		opencl_print_error_part_one(err);
+		cl_print_error_part_one(err);
 	else if ((err <= -17 && err >= -19) || (err <= -30 && err >= -44))
-		opencl_print_error_part_two(err);
+		cl_print_error_part_two(err);
 	else if ((err <= -45 && err >= -58))
-		opencl_print_error_part_three(err);
+		cl_print_error_part_three(err);
 	else if (err <= -59 && err >= -68)
-		opencl_print_error_part_four(err);
+		cl_print_error_part_four(err);
 	else if (err <= -1000 && err >= -1004)
 	{
 		(err == -1000 ? ft_putstr(\

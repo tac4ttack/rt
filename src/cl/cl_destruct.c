@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destruct_cl.c                                      :+:      :+:    :+:   */
+/*   cl_destruct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 17:53:03 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/03/06 22:11:13 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/07 20:25:08 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cl.h"
 
-void		*destruct_cl(t_cl **ptr_cl)
+void		*cl_destruct(t_cl **ptr_cl)
 {
 	t_cl *cl;
 
