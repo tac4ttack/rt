@@ -6,18 +6,10 @@
 # include <math.h>
 # include <sys/time.h>
 # include "libft.h"
-# include <gtk/gtk.h>
+
 # include "cl.h"
-	
-# include "mlx.h"
+# include "ui.h"
 
-# define G_BYTE_ORDER G_LITTLE_ENDIAN
-
-# ifdef MAC_KEYS
-#  include "mac_keys.h"
-# elif LINUX_KEYS
-#  include "linux_keys.h"
-# endif
 
 # ifdef GPU
 #  define IS_GPU			1
@@ -292,22 +284,7 @@ typedef struct			s_scene
 	size_t				mem_size_lights;
 }						t_scene;
 
-typedef	struct			s_ui
-{
-	int					gtk_status;
-	GtkApplication		*gtk_app;
-	GtkWidget			*window;
-	GtkWidget			*mainbox;
 
-	GdkPixbuf			*icon;
-
-	GtkWidget			*frame_box; // box containing frame_placeholder
-	GdkPixbuf			*frame_pixel_buffer; // rendered scene gdkpixbuf
-	GtkWidget			*frame_placeholder; // gtkimage widget
-	guchar				*frame_ptr; // pointer to pixel data of pixbuf
-	
-	int					redraw;
-}						t_ui;
 
 typedef struct			s_gen
 {
