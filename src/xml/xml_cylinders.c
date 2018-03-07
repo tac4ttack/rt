@@ -43,7 +43,7 @@ static void	xml_cylinder_data_n(t_env *e, char **att, t_node *cyl_node, int *i)
 	if (ft_strncmp(att[*i], "opacity=\"", 6) != 0)
 		s_error("\x1b[2;31mError in plane, OPACITY expected in #9\x1b[0m", e);
 	else
-		xml_data_refract(e, att, i, cyl_node);
+		xml_data_opacity(e, att, i, cyl_node);
 }
 
 static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
@@ -124,5 +124,6 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	e->cylinders[list->id].spec = list->spec;
 	e->cylinders[list->id].reflex = list->reflex;
 	e->cylinders[list->id].refract = list->refract;
+	e->cylinders[list->id].opacity = list->opacity;
 	e->gen_objects->add(e->gen_objects, (void*)&e->cylinders[list->id]);
 }

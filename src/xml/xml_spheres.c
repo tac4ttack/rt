@@ -37,7 +37,7 @@ static void	xml_sphere_data_n(t_env *e, char **att, t_node *sphere_node, int *i)
 	if (ft_strncmp(att[*i], "opacity=\"", 6) != 0)
 		s_error("\x1b[2;31mError in sphere, OPACITY expected in #9\x1b[0m", e);
 	else
-		xml_data_refract(e, att, i, sphere_node);
+		xml_data_opacity(e, att, i, sphere_node);
 }
 
 static void	xml_sphere_data(t_env *e, char **att, t_node *sphere_node, int *i)
@@ -116,5 +116,6 @@ void		xml_push_sphere(t_env *e, t_node *list)
 	e->spheres[list->id].spec = list->spec;
 	e->spheres[list->id].reflex = list->reflex;
 	e->spheres[list->id].refract = list->refract;
+	e->spheres[list->id].opacity = list->opacity;
 	e->gen_objects->add(e->gen_objects, (void*)&e->spheres[list->id]);
 }

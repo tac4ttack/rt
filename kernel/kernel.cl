@@ -55,6 +55,7 @@ typedef struct			s_hit
 	float3				pos;
 	t_object __local	*obj;
 	int					mem_index;
+	float				opacity;
 }						t_hit;
 
 typedef struct			s_cam
@@ -353,6 +354,7 @@ static t_hit			hit_init(void)
 	hit.obj = 0;
 	hit.pos = 0.f;
 	hit.mem_index = 0;
+	hit.opacity = 0;
 	return (hit);
 }
 
@@ -529,7 +531,7 @@ static float			inter_sphere(const __local t_sphere *sphere, const float3 ray, co
 
 
 
-static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const float3 ray)
+static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const float3 ray, float lightdist)
 {
 	t_hit						hit;
 	float						dist;
@@ -552,6 +554,8 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 			dist = inter_plan(obj, ray, origin);
 		else if (obj->id == OBJ_CONE)
 			dist = inter_cone(obj, ray, origin);
+		if (lightdist > 0 && dist < lightdist)
+			hit.opacity += obj->opacity;
 		if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
 		{
 			hit.dist = dist;
@@ -658,8 +662,8 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		light_ray.dir = light->pos - hit.pos;
 		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
-		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
-		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON))
+		light_hit = ray_hit(scene, hit.pos, light_ray.dir, light_ray.dist);
+		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON) || light_hit.opacity < 1)
 		{
 			tmp = (dot(hit.normal, light_ray.dir));
 			if (tmp > EPSILON)
@@ -687,7 +691,6 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				(col_b > 255 ? col_b = 255 : 0);
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
-
 			reflect = fast_normalize(((float)(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
 			tmp = dot(reflect, -ray);
 			if (tmp > EPSILON)
@@ -730,7 +733,7 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hi
 		reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normal, reflex) * old_hit.normal));
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		new_hit.dist = MAX_DIST;
-		new_hit = ray_hit(scene, old_hit.pos, reflex);
+		new_hit = ray_hit(scene, old_hit.pos, reflex, 0);
 		reflex_coef = old_hit.obj->reflex;
 		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 		{
@@ -772,7 +775,7 @@ static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_h
 		refract = fast_normalize((eta * refract) + ((eta * c1) - c2) * old_hit.normal);
 		////////////////////////////////////////////////////////////////////////////////
 		new_hit.dist = MAX_DIST;
-		new_hit = ray_hit(scene, old_hit.pos, refract);
+		new_hit = ray_hit(scene, old_hit.pos, refract, 0);
 		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 		{
 			new_hit.pos = (new_hit.dist * refract) + old_hit.pos;
@@ -804,22 +807,21 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	color = 0;
 	bounce_color = 0;
 	hit.dist = MAX_DIST;
-	hit = ray_hit(scene, (ACTIVECAM.pos), ray);
+	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
 	if (isHim)
 		*target = hit.mem_index;
 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normal = get_hit_normal(scene, ray, hit);
-		if (hit.obj->refract != 0)
-			hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * -hit.normal); //pour refract, inverser le decalage de la position
-		else
-			hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
+		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 		color = phong(scene, hit, ray);
+		if (hit.obj->refract != 0)
+			hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * -(hit.normal * 2)); //pour refract, inverser le decalage de la position
 		if (depth > 0 && hit.obj->reflex > 0)
 			bounce_color = bounce(scene, ray, hit, depth);
 		if (hit.obj->refract != 0)
-			return (bounce_color = refract(scene, ray, hit));
+			bounce_color = blend_factor(refract(scene, ray, hit), ((hit.obj->opacity - 1) * -1));
 		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
