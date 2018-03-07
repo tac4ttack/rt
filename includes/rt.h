@@ -316,12 +316,6 @@ typedef struct			s_gen
 	size_t				unit_size;
 	void				*mem;
 }						t_gen;
-void		*construct_gen();
-bool		gen_add(t_gen *gen, void *elem);
-void		*destruct_gen(t_gen **gen);
-
-
-
 
 typedef	struct			s_env
 {
@@ -372,6 +366,11 @@ typedef	struct			s_env
 }						t_env;
 
 cl_float4				add_cl_float(cl_float4 v1, cl_float4 v2);
+
+
+void		*construct_gen();
+bool		gen_add(t_gen *gen, void *elem);
+void		*destruct_gen(t_gen **gen);
 
 void					display_hud(t_env *e);
 int						draw(t_env *e);
