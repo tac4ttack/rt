@@ -26,8 +26,6 @@ static void	xml_scene_res(t_env *e, char **att, int *i)
 		else
 		{
 			e->scene->win_w = (w < 0 ? -w : w);
-			e->scene->win_w = (w < 0 ? -w : w);
-			e->scene->win_h = (h < 0 ? -h : h);
 			e->scene->win_h = (h < 0 ? -h : h);
 		}
 	}

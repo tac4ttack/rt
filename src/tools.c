@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/06 23:39:46 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 18:39:43 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ void	flush(t_env *e)
 {
 	if (e)
 	{
+		destruct_cl(&e->cl);
+		destruct_gen(&e->gen_objects);
+		destruct_gen(&e->gen_lights);
 		if (e->kernel_src)
 			free(e->kernel_src);
 		ft_putendl("\x1b[1;29mFreed Kernel sources\x1b[0m");
@@ -73,7 +76,6 @@ int		gtk_quit(GtkApplication *app, gpointer data)
 	
 	e = data;
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
-	// 	penser a faire appel a opencl_close
 	flush(e);
 	g_object_unref(app);
 	ft_putendl("\x1b[1;29mFreed the GTK App\x1b[0m");

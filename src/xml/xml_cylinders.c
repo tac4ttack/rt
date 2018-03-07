@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 18:42:10 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ static void	xml_cylinder_data_n(t_env *e, char **att, t_node *cyl_node, int *i)
 		s_error("\x1b[1;31mError in cylinder, REFLEX expected in #7\x1b[0m", e);
 	else
 		xml_data_reflex(e, att, i, cyl_node);
+	if (ft_strncmp(att[*i], "refract=\"", 6) != 0)
+		s_error("\x1b[2;31mError in cylinder, REFRACT expected in #7\x1b[0m", e);
+	else
+		xml_data_refract(e, att, i, cyl_node);
 }
 
 static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
@@ -104,6 +108,8 @@ void		xml_allocate_cyl(t_env *e)
 
 void		xml_push_cyl(t_env *e, t_node *list)
 {
+	e->cylinders[list->id].size = sizeof(t_cylinder);
+	e->cylinders[list->id].id = OBJ_CYLINDER;
 	e->cylinders[list->id].pos = list->pos;
 	e->cylinders[list->id].base_dir = normalize_vect(list->dir);
 	e->cylinders[list->id].dir = normalize_vect(list->dir);
@@ -113,7 +119,6 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	e->cylinders[list->id].diff = list->diff;
 	e->cylinders[list->id].spec = list->spec;
 	e->cylinders[list->id].reflex = list->reflex;
-	e->cylinders[list->id].pitch = 0;
-	e->cylinders[list->id].yaw = 0;
-	e->cylinders[list->id].roll = 0;
+	e->cylinders[list->id].refract = list->refract;
+	e->gen_objects->add(e->gen_objects, (void*)&e->cylinders[list->id]);
 }

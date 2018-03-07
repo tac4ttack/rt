@@ -6,9 +6,12 @@
 # include <math.h>
 # include <sys/time.h>
 # include "libft.h"
+# include <gtk/gtk.h>
+# include "cl.h"
+	
 # include "mlx.h"
-#include <gtk/gtk.h>
-# include <sys/time.h>
+
+# define G_BYTE_ORDER G_LITTLE_ENDIAN
 
 # ifdef MAC_KEYS
 #  include "mac_keys.h"
@@ -16,17 +19,10 @@
 #  include "linux_keys.h"
 # endif
 
-# ifdef CPU
-#  define MAX_SOURCE_SIZE	(0x100000)
-#  define IS_GPU			0
+# ifdef GPU
+#  define IS_GPU			1
 # else
 #  define IS_GPU			1
-# endif
-
-# ifdef __APPLE__
-#  include <OpenCL/opencl.h>
-# else
-#  include <CL/cl.h>
 # endif
 
 # ifdef DEBUG
@@ -35,8 +31,7 @@
 #  define DBUG					0
 # endif
 
-#define G_BYTE_ORDER G_LITTLE_ENDIAN
-
+// MLX SHIT TO BE DESTROYED
 # define DESTROYNOTIFY			17
 # define KEYPRESSMASK			(1L<<0)
 # define KEYRELEASEMASK			(1L<<1)
@@ -50,7 +45,7 @@
 # define HEIGHT					e->scene->win_h
 # define DEPTH					e->scene->depth
 
-# define KRT					e->kernel_rt
+# define KRT					e->cl.kernel
 # define NCAM					e->scene->n_cams
 # define NCON					e->scene->n_cones
 # define NCYL					e->scene->n_cylinders
@@ -70,9 +65,30 @@
 # define XML					e->xml
 # define SCN					e->scene
 
+# define RESERVED				(1 << 0)
 # define OPTION_WAVE			(1 << 1)
 # define OPTION_SEPIA			(1 << 2)
 # define OPTION_BW				(1 << 3)
+# define OPTION_RUN				(1 << 4)
+# define OPTION_GPU				(1 << 5)
+
+# define OBJ_CONE			1
+# define OBJ_CYLINDER		2
+# define OBJ_PLANE			3
+# define OBJ_SPHERE			4
+
+typedef struct			s_object
+{
+	cl_int				size;
+	cl_int				id;
+	cl_float3			pos;
+	cl_float3			dir;
+	cl_float3			diff;
+	cl_float3			spec;
+	cl_int				color;
+	cl_float			reflex;
+	cl_float			refract;
+}						t_object;
 
 typedef struct			s_fps
 {
@@ -93,11 +109,11 @@ typedef struct			s_p2i
 
 typedef struct			s_hit
 {
-	float				dist;
-	int					type;
-	int					id;
-	cl_float3			pos;
+	cl_float			dist;
 	cl_float3			normale;
+	cl_float3			pos;
+	t_object			*obj;
+	cl_int				mem_index;
 }						t_hit;
 
 typedef struct			s_cam
@@ -110,35 +126,9 @@ typedef struct			s_cam
 	cl_float			roll;
 }						t_cam;
 
-typedef struct			s_cone
-{
-	cl_float3			pos;
-	cl_float3			dir;
-	cl_float			angle;
-	cl_int				color;
-	cl_float3			diff;
-	cl_float3			spec;
-	cl_float			reflex;
-}						t_cone;
-
-typedef struct			s_cylinder
-{
-	cl_float3			pos;
-	cl_float3			dir;
-	cl_float3			base_dir;
-	cl_float			radius;
-	cl_int				color;
-	cl_float			height;
-	cl_float3			diff;
-	cl_float3			spec;
-	cl_float			pitch;
-	cl_float			yaw;
-	cl_float			roll;
-	cl_float			reflex;
-}						t_cylinder;
-
 typedef struct			s_light
 {
+	cl_int				size;
 	cl_int				type;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -147,25 +137,68 @@ typedef struct			s_light
 	cl_int				color;
 }						t_light;
 
-typedef struct			s_plane
+/*							*\
+**|							**|
+**|			OBJECT			**|
+**|							**!
+*/
+
+typedef struct			s_cone
 {
+	cl_int				size;
+	cl_int				id;
 	cl_float3			pos;
-	cl_float3			normale;
-	cl_int				color;
+	cl_float3			dir;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_int				color;
 	cl_float			reflex;
+	cl_float			refract;
+	cl_float			angle;
+
+}						t_cone;
+
+typedef struct			s_cylinder
+{
+	cl_int				size;
+	cl_int				id;
+	cl_float3			pos;
+	cl_float3			dir;
+	cl_float3			diff;
+	cl_float3			spec;
+	cl_int				color;
+	cl_float			reflex;
+	cl_float			refract;
+	cl_float			height;
+	cl_float3			base_dir;
+	cl_float			radius;
+}						t_cylinder;
+
+typedef struct			s_plane
+{
+	cl_int				size;
+	cl_int				id;
+	cl_float3			pos;
+	cl_float3			normale;
+	cl_float3			diff;
+	cl_float3			spec;
+	cl_int				color;
+	cl_float			reflex;
+	cl_float			refract;
 }						t_plane;
 
 typedef struct			s_sphere
 {
+	cl_int				size;
+	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
-	cl_float			radius;
-	cl_int				color;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_int				color;
 	cl_float			reflex;
+	cl_float			refract;
+	cl_float			radius;
 }						t_sphere;
 
 typedef struct			s_param
@@ -204,6 +237,7 @@ typedef struct			s_node
 	cl_float3			diff;
 	cl_float3			spec;
 	cl_float			reflex;
+	cl_float			refract;
 	struct s_node		*next;
 }						t_node;
 
@@ -223,6 +257,8 @@ typedef	struct			s_xml
 	int					excl;
 }						t_xml;
 
+
+// MLX SHIT TO BE DELETED
 typedef struct			s_frame
 {
 	void				*ptr;
@@ -239,11 +275,8 @@ typedef struct			s_frame
 typedef struct			s_scene
 {
 	t_cam				*cameras;
-	t_cone				*cones;
-	t_cylinder			*cylinders;
-	t_light				*lights;
-	t_plane				*planes;
-	t_sphere			*spheres;
+	void				*mem_lights;
+	void				*mem_obj;
 	unsigned int		n_cams;
 	unsigned int		n_cones;
 	unsigned int		n_cylinders;
@@ -260,6 +293,8 @@ typedef struct			s_scene
 	float				u_time;
 	int					flag;
 	int					tor_count;
+	size_t				mem_size_obj;
+	size_t				mem_size_lights;
 }						t_scene;
 
 typedef	struct			s_ui
@@ -280,16 +315,31 @@ typedef	struct			s_ui
 	int					redraw;
 }						t_ui;
 
+typedef struct			s_gen
+{
+	bool				(*add)(struct s_gen *, void *);
+	size_t				mem_size;
+	size_t				unit_size;
+	void				*mem;
+}						t_gen;
+
 typedef	struct			s_env
 {
-	void				*mlx; // TO BE DELETED
-	void				*win; // TO BE DELETED
-	t_frame				*frame; // TO BE DELETED
-	t_key				keys;	// TO BE DELETED?
+//	void				*mlx; // TO BE DELETED
+//	void				*win; // TO BE DELETED
+//	t_frame				*frame; // TO BE DELETED
+//	t_key				keys;	// TO BE DELETED?
 
 	t_ui				*ui;
 
-	int					*frame_pixel_data; // raw pixel image
+	int					*pixel_data; // raw pixel image
+
+	t_cl				*cl;
+
+	void				*mlx;
+	void				*win;
+	t_frame				*frame;
+	t_key				keys;
 	int					win_w;
 	int					win_h;
 
@@ -311,10 +361,12 @@ typedef	struct			s_env
 	cl_mem				frame_buffer;
 	cl_mem				target_obj_buf;
 	t_hit				target_obj;	
+
+	int					target;
 	size_t				global;
 	size_t				local;
 	unsigned int		count;
-	
+
 	t_cam				*cameras;
 	cl_mem				cameras_mem;
 	t_cone				*cones;
@@ -333,11 +385,20 @@ typedef	struct			s_env
 	
 	t_fps				fps;
 
-	char				run;
 	int					node_count;
+
+	cl_mem				gen_mem;
+	t_gen				*gen_objects;
+	t_gen				*gen_lights;
 }						t_env;
 
-cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);
+cl_float4				add_cl_float(cl_float4 v1, cl_float4 v2);
+
+
+void		*construct_gen();
+bool		gen_add(t_gen *gen, void *elem);
+void		*destruct_gen(t_gen **gen);
+
 void					display_hud(t_env *e);
 int						opencl_draw(t_env *e);
 
@@ -360,12 +421,15 @@ int						mlx_key_simple(int key, t_env *e);
 int						mlx_main_loop(t_env *e);
 int						mlx_mouse_events(int btn, int x, int y, t_env *e);
 cl_float3				normalize_vect(cl_float3 v);
-int						opencl_allocate_scene_memory(t_env *e);
-void					opencl_close(t_env *e);
-int						opencl_init(t_env *e);
-void					opencl_print_error(int error);
-void					opencl_set_args(t_env *e);
-int						opencl_builderrors(t_env *e, int err, int errorcode);
+
+// vieille fonctions opencl flo chaton
+//int						opencl_allocate_scene_memory(t_env *e);
+//void					opencl_close(t_env *e);
+//int						opencl_init(t_env *e);
+//void					opencl_print_error(int error);
+void					opencl_set_args(t_env *e, t_cl *cl);
+//int						opencl_builderrors(t_env *e, int err, int errorcode);
+
 void					p_error(char *str, t_env *e);
 void					print_usage();
 int						quit(t_env *e);
@@ -410,6 +474,8 @@ void					xml_data_pos(t_env *e, char **attributes, \
 void					xml_data_radius(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_reflex(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_refract(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_shrink(t_env *e, char **attributes, \
 										int *i, t_node *node);

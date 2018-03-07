@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 18:42:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 		s_error("\x1b[1;31mError in plane, REFLEX expected in #6\x1b[0m", e);
 	else
 		xml_data_reflex(e, att, i, plane_node);
+	if (ft_strncmp(att[*i], "refract=\"", 6) != 0)
+		s_error("\x1b[2;31mError in plane, REFRACT expected in #7\x1b[0m", e);
+	else
+		xml_data_refract(e, att, i, plane_node);
 }
 
 static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
@@ -94,10 +98,14 @@ void		xml_allocate_plane(t_env *e)
 
 void		xml_push_plane(t_env *e, t_node *list)
 {
+	e->planes[list->id].size = sizeof(t_plane);
+	e->planes[list->id].id = OBJ_PLANE;
 	e->planes[list->id].pos = list->pos;
 	e->planes[list->id].normale = list->normale;
 	e->planes[list->id].color = list->color;
 	e->planes[list->id].diff = list->diff;
 	e->planes[list->id].spec = list->spec;
 	e->planes[list->id].reflex = list->reflex;
+	e->planes[list->id].refract = list->refract;
+	e->gen_objects->add(e->gen_objects, (void*)&e->planes[list->id]);
 }

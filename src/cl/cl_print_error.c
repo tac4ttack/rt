@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   opencl_error.c                                     :+:      :+:    :+:   */
+/*   cl_print_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:43 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 18:48:10 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "cl.h"
 
 static void		opencl_print_error_part_four(const int err)
 {
@@ -118,7 +118,7 @@ static void		opencl_print_error_part_one(const int err)
 	(err == -16 ? ft_putstr("\x1b[1;31m\nCL_LINKER_NOT_AVAILABLE\x1b[0m") : 0);
 }
 
-void			opencl_print_error(int err)
+bool			cl_print_error(int err)
 {
 	if (err <= -0 && err >= -16)
 		opencl_print_error_part_one(err);
@@ -142,5 +142,8 @@ void			opencl_print_error(int err)
 		"\x1b[1;31m\nCL_D3D10_RESOURCE_ALREADY_ACQUIRED_KHR\x1b[0m") : 0);
 	}
 	else
-		ft_putstr("\x1b[1;31m\nUnknown OpenCL error\n");
+		ft_putstr("\x1b[2;31m\nUnknown OpenCL error\n");
+	if (err)
+		return (false);
+	return (true);
 }

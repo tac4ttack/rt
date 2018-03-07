@@ -6,11 +6,26 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/06 23:39:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 18:50:06 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+static void	init_print_structure_memory_size()
+{
+	printf("t_cam 				: %-20lu\n", sizeof(t_cam));
+	printf("t_cone 				: %-20lu\n", sizeof(t_cone));
+	printf("t_cylinder 			: %-20lu\n", sizeof(t_cylinder));
+	printf("t_light 			: %-20lu\n", sizeof(t_light));
+	printf("t_plane 			: %-20lu\n", sizeof(t_plane));
+	printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
+//	printf("t_tor 				: %-20lu\n", sizeof(t_tor));
+	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
+	printf("cl_int				: %-20lu\n", sizeof(cl_int));
+	printf("cl_float			: %-20lu\n", sizeof(cl_float));
+	printf("cl_float3			: %-20lu\n", sizeof(cl_float3));
+}
 
 void		load_obj(t_env *e)
 {
@@ -81,7 +96,11 @@ void		env_init(t_env *e)
 	e->count = e->win_h * e->win_w;
 	e->debug = DBUG;
 	e->gpu = IS_GPU;
-	e->run = 0;
+	if (e->gpu == 1)
+		e->scene->flag |= OPTION_GPU;
+
+//	e->run = 0; // DELETE?
+
 	e->ui->redraw = 1;
 	ft_putendl("\x1b[1;29mRT environnement initialized!\n\x1b[0m");
 //	printf("t_light_ray			: %-20lu\n", sizeof(t_light_ray));
@@ -93,6 +112,8 @@ void		env_init(t_env *e)
 //	printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
 //	printf("t_tor 				: %-20lu\n", sizeof(t_tor)); // TOR IS NO MORE!
 //	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
+		
+//	e->tree = tor_create(e); USELESS
 }
 
 void		init(GtkApplication *app, gpointer data)
@@ -101,14 +122,18 @@ void		init(GtkApplication *app, gpointer data)
 
 	(void)app;
 	e = data;
-	if (!(e->scene = malloc(sizeof(t_scene))))
-		s_error("\x1b[1;31mCan't initialize scene buffer\x1b[0m", e);
+	if (!(e->scene = ft_memalloc(sizeof(t_scene))))
+		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
+	if (!(e->gen_objects = construct_gen()))
+		s_error("\x1b[2;31mCan't initialize objects t_gen\x1b[0m", e);
+	if (!(e->gen_lights = construct_gen()))
+		s_error("\x1b[2;31mCan't initialize lights t_gen\x1b[0m", e);
 	ft_bzero(e->scene, sizeof(t_scene));
 	xml_init(e);
 	env_init(e);
-	if (!(e->frame_pixel_data = malloc(sizeof(int) * e->win_w * e->win_h)))
+	if (!(e->pixel_data = malloc(sizeof(int) * e->win_w * e->win_h)))
 		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
-	ft_bzero(e->frame_pixel_data, sizeof(int) * e->win_w * e->win_h);
+	ft_bzero(e->pixel_data, sizeof(int) * e->win_w * e->win_h);
 	
 //	printf("test1 = %x\n", ((int*)e->frame_pixel_data)[461312]);
 
@@ -119,13 +144,37 @@ void		init(GtkApplication *app, gpointer data)
 //	frame_init(e);
 
 	load_scene(e);
-	if (opencl_init(e) != 0)
-	{
-		e->gpu = 0;
-		opencl_init(e);
-	}
-	init_gtk(app, e);
-	gtk_window_set_title (GTK_WINDOW(e->ui->window), "RT - Initialized!");
+
+// TO BE DELETED
+//	if (opencl_init(e) != 0)
+//	{
+//		e->gpu = 0;
+//		opencl_init(e);
+//	}
+	
 	
 //	gtk_main_loop(e);
+	printf("%i %i %i\n", e->scene->win_w, e->scene->win_h, (e->scene->flag & OPTION_GPU));
+	if (!(e->cl = construct_cl("./kernel/kernel.cl", "ray_trace", e->scene->win_w, e->scene->win_h,
+			(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
+		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
+	
+//	if (e->debug)
+		init_print_structure_memory_size();
+		
+	if (!(e->cl->add_buffer(e->cl, e->scene->win_w * e->scene->win_h * 4)))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, e->gen_objects->mem_size)))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(t_scene))))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(t_cam) * NCAM)))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, e->gen_lights->mem_size)))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(int))))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+
+	init_gtk(app, e);
+	gtk_window_set_title (GTK_WINDOW(e->ui->window), "RT - Initialized!");
 }

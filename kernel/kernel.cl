@@ -1,74 +1,579 @@
-#include "kernel_header.hcl"
-#include "kernel_matrix.hcl"
-#include "kernel_cam.hcl"
-#include "kernel_color.hcl"
-#include "kernel_cone.hcl"
-#include "kernel_cylinder.hcl"
-#include "kernel_data.hcl"
-#include "kernel_debug.hcl"
-#include "kernel_plane.hcl"
-#include "kernel_sphere.hcl"
+// CONTROL
+
+#define BACKCOLOR 0x00999999
+
+# define EPSILON 0.00005f
+#define MAX_DIST 10000000.0 // epsilon 0.00000001 ?
+#define SHADOW_BIAS 1000
+
+#define CAM scene->cameras
+#define CONES scene->cones
+#define CYLIND scene->cylinders
+#define LIGHT scene->lights
+#define PLANE scene->planes
+#define SPHERE scene->spheres
+#define ACTIVECAM scene->cameras[scene->active_cam]
+
+#define OUTPUTE ((__global unsigned int *)output)[id]
+
+#define OPTION_WAVE 	(1 << 1)
+#define OPTION_SEPIA	(1 << 2)
+#define OPTION_BW		(1 << 3)
+#define OPTION_RUN		(1 << 4)
+
+#define FLAG_DEBUG		(1 << 2)
+
+# define OBJ_CONE			1
+# define OBJ_CYLINDER		2
+# define OBJ_PLANE			3
+# define OBJ_SPHERE			4
+
+typedef struct			s_object
+{
+	int					size;
+	int					id;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+	float				refract;
+}						t_object;
+
+typedef struct			s_light_ray
+{
+	float3				dir;
+	float				dist;
+}						t_light_ray;
+
+typedef struct			s_hit
+{
+	float				dist;
+	float3				normal;
+	float3				pos;
+	t_object __local	*obj;
+	int					mem_index;
+}						t_hit;
+
+typedef struct			s_cam
+{
+	float3				pos;
+	float3				dir;
+	float				fov;
+	float				pitch;
+	float				yaw;
+	float				roll;
+}						t_cam;
+
+typedef struct			s_light
+{
+	int					size;
+	int					type;
+	float3				pos;
+	float3				dir;
+	int					shrink;
+	float				brightness;
+	int					color;
+}						t_light;
+
+typedef struct			s_cone
+{
+	int					size;
+	int					id;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+	float				refract;
+
+	float				angle;
+
+}						t_cone;
+
+typedef struct			s_cylinder
+{
+	int					size;
+	int					id;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+	float				refract;
+
+	float				height;
+	float3				base_dir;
+	float				radius;
+}						t_cylinder;
+
+typedef struct			s_plane
+{
+	int					size;
+	int					id;
+	float3				pos;
+	float3				normal;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+	float				refract;
+}						t_plane;
+
+typedef struct			s_sphere
+{
+	int					size;
+	int					id;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+	float				refract;
+
+	float				radius;
+}						t_sphere;
+
+typedef	struct			s_tor
+{
+	float3				prim;
+	//float3				refl;
+	//float3				refr;
+	unsigned int		hit_type;
+	unsigned int		hit_id;
+	//float				coef_refl;
+	//float				coef_refr;
+	unsigned int		color;
+	char				check_g;
+	char				check_d;
+}						t_tor;
+
+typedef struct			s_scene
+{
+	t_cam				__local *cameras;
+	//void				*void1;
+	void				__local *mem_lights;
+	//void				*void4;
+	void				__local *mem_obj;
+	//void				*void7;
+	unsigned int		n_cams;
+	unsigned int		n_cones;
+	unsigned int		n_cylinders;
+	unsigned int		n_lights;
+	unsigned int		n_planes;
+	unsigned int		n_spheres;
+	unsigned int		active_cam;
+	unsigned int		win_w;
+	unsigned int		win_h;
+	float3				ambient;
+	int					mou_x;
+	int					mou_y;
+	int					depth;
+	float				u_time;
+	int					flag;
+	int					tor_count;
+	size_t				mem_size_obj;
+	size_t				mem_size_lights;
+}						t_scene;
+
+unsigned int	sepiarize(const unsigned int color)
+{
+	uint3	base, cooking_pot = 0;
+	base.x = (color & 0x00FF0000) >> 16;
+	base.y = (color & 0x0000FF00) >> 8;
+	base.z = (color & 0x000000FF);
+	cooking_pot.x = (base.x * 0.393) + (base.y * 0.769) + (base.z * 0.189);
+	cooking_pot.y = (base.x * 0.349) + (base.y * 0.686) + (base.z * 0.168);
+	cooking_pot.z = (base.x * 0.272) + (base.y * 0.534) + (base.z * 0.131);
+	(cooking_pot.x > 255 ? cooking_pot.x = 255 : 0);
+	(cooking_pot.y > 255 ? cooking_pot.y = 255 : 0);
+	(cooking_pot.z > 255 ? cooking_pot.z = 255 : 0);
+	return (((uint)cooking_pot.x << 16) + ((uint)cooking_pot.y << 8) + (uint)cooking_pot.z);
+}
+
+static unsigned int	cartoonize(const unsigned int color)
+{
+	uint3	base, cooking_pot = 0;
+	base.x = (color & 0x00FF0000) >> 16;
+	base.y = (color & 0x0000FF00) >> 8;
+	base.z = (color & 0x000000FF);
+	if ((base.x = base.x - base.x % 30) < 0)
+		base.x = 0;
+	if ((base.y = base.y - base.y % 30) < 0)
+		base.y = 0;
+	if ((base.z = base.z - base.z % 30) < 0)
+		base.z = 0;
+	return (((uint)base.x << 16) + ((uint)base.y << 8) + (uint)base.z);
+}
+
+static unsigned int	desaturate(const unsigned int color)
+{
+	uint3	rgb = 0;
+	rgb.x = (color & 0x00FF0000) >> 16;
+	rgb.y = (color & 0x0000FF00) >> 8;
+	rgb.z = (color & 0x000000FF);
+	float 	average = (rgb.x + rgb.y + rgb.z) / 3;
+	return (((uint)average << 16) + ((uint)average << 8) + (uint)average);
+}
+
+static unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
+{
+	unsigned int r, g, b;
+	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
+	unsigned int g1 = (c1 & 0x0000FF00) >> 8;
+	unsigned int b1 = (c1 & 0x000000FF);
+	unsigned int r2 = (c2 & 0x00FF0000) >> 16;
+	unsigned int g2 = (c2 & 0x0000FF00) >> 8;
+	unsigned int b2 = (c2 & 0x000000FF);
+
+	r = (r1 * r2 > 255 ? 255 : r1 * r2);
+	g = (g1 * g2 > 255 ? 255 : g1 * g2);
+	b = (b1 * b2 > 255 ? 255 : b1 * b2);
+
+	return ((r << 16) + (g << 8) + b);
+}
+
+static unsigned int	blend_add(const unsigned int c1, const unsigned int c2)
+{
+	unsigned int r, g, b;
+	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
+	unsigned int g1 = (c1 & 0x0000FF00) >> 8;
+	unsigned int b1 = (c1 & 0x000000FF);
+	unsigned int r2 = (c2 & 0x00FF0000) >> 16;
+	unsigned int g2 = (c2 & 0x0000FF00) >> 8;
+	unsigned int b2 = (c2 & 0x000000FF);
+
+	r = (r1 + r2 > 255 ? 255 : r1 + r2);
+	g = (g1 + g2 > 255 ? 255 : g1 + g2);
+	b = (b1 + b2 > 255 ? 255 : b1 + b2);
+	return ((r << 16) + (g << 8) + b);
+}
+
+static unsigned int	blend_factor(const unsigned int c1, const float factor)
+{
+	unsigned int r, g, b;
+	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
+	unsigned int g1 = (c1 & 0x0000FF00) >> 8;
+	unsigned int b1 = (c1 & 0x000000FF);
+
+	r = r1 * factor;
+	g = g1 * factor;
+	b = b1 * factor;
+	return ((r << 16) + (g << 8) + b);
+}
+
+static unsigned int	get_ambient(const __local t_scene *scene, const unsigned int obj_color)
+{
+	unsigned int r, g, b;
+
+	r = (obj_color & 0x00FF0000) >> 16;
+	g = (obj_color & 0x0000FF00) >> 8;
+	b = (obj_color & 0x000000FF);
+	r = (0.01 + r * scene->ambient.x > 255 ? 255 : 0.01 + r * scene->ambient.x);
+	g = (0.01 + g * scene->ambient.y > 255 ? 255 : 0.01 + g * scene->ambient.y);
+	b = (0.01 + b * scene->ambient.z > 255 ? 255 : 0.01 + b * scene->ambient.z);
+	return ((r << 16) + (g << 8) + b);
+}
+
+
+static float3						rotat_zyx(const float3 vect, const float pitch, const float yaw, const float roll)
+{
+	float3					res;
+	float					rad_pitch = radians(pitch);
+	float					rad_yaw = radians(yaw);
+	float					rad_roll = radians(roll);
+
+	res.x = vect.x * cos(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_pitch) * -sin(rad_roll) + cos(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (-sin(rad_roll) * -sin(rad_pitch) + cos(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
+	res.y = vect.x * sin(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_roll) * cos(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (cos(rad_roll) * -sin(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
+	res.z = vect.x * -sin(rad_yaw) + vect.y * cos(rad_yaw) * sin(rad_pitch) + vect.z * cos(rad_yaw) * cos(rad_pitch);
+	return (res);
+}
+
+static float3						rotat_xyz(const float3 vect, const float pitch, const float yaw, const float roll)
+{
+	float3					res;
+	float					rad_pitch = radians(pitch);
+	float					rad_yaw = radians(yaw);
+	float					rad_roll = radians(roll);
+
+	res.x = vect.x * cos(rad_yaw) * cos(rad_roll) + vect.y * cos(rad_yaw) * -sin(rad_roll) + vect.z * sin(rad_yaw);
+	res.y = vect.x * (-sin(rad_pitch) * -sin(rad_yaw) * cos(rad_roll) + cos(rad_pitch) * sin(rad_roll)) + vect.y * (-sin(rad_pitch) * -sin(rad_yaw) * -sin(rad_roll) + cos(rad_pitch) * cos(rad_roll)) + vect.z * cos(rad_yaw) * -sin(rad_pitch);
+	res.z = vect.x * (cos(rad_pitch) * -sin(rad_yaw) * cos(rad_roll) + sin(rad_pitch) * sin(rad_roll)) + vect.y * (cos(rad_pitch) * -sin(rad_yaw) * -sin(rad_roll) + sin(rad_pitch) * cos(rad_roll)) + vect.z * cos(rad_yaw) * cos(rad_pitch);
+	return (res);
+}
+
+static float3						rotat_x(const float3 vect, const float angle)
+{
+	float3 					res = 0;
+	float					teta = radians(angle);
+
+	res.x = (vect.x * 1) + (vect.y * 0) + (vect.z * 0);
+	res.y = (vect.x * 0) + (vect.y * cos(teta)) + (vect.z * -sin(teta));
+	res.z = (vect.x * 0) + (vect.y * sin(teta)) + (vect.z * cos(teta));
+	return (res);
+}
+
+static float3						rotat_y(const float3 vect, const float angle)
+{
+	float3 					res = 0;
+	float					teta = radians(angle);
+
+	res.x = (vect.x * cos(teta)) + (vect.y * 0) + (vect.z * sin(teta));
+	res.y = (vect.x * 0) + (vect.y * 1) + (vect.z * 0);
+	res.z = (vect.x * -sin(teta)) + (vect.y * 0) + (vect.z * cos(teta));
+	return (res);
+}
+
+static float3						rotat_z(const float3 vect, const float angle)
+{
+	float3 					res = 0;
+	float					teta = radians(angle);
+
+	res.x = (vect.x * cos(teta)) + (vect.y * -sin(teta)) + (vect.z * 0);
+	res.y = (vect.x * sin(teta)) + (vect.y * cos(teta)) + (vect.z * 0);
+	res.z = (vect.x * 0) + (vect.y * 0) + (vect.z * 1);
+	return (res);
+}
+
+static t_hit			hit_init(void)
+{
+	t_hit		hit;
+
+	hit.dist = 0.f;
+	hit.normal = 0.f;
+	hit.obj = 0;
+	hit.pos = 0.f;
+	hit.mem_index = 0;
+	return (hit);
+}
+
+static float		inter_plan(const __local t_plane *plane, const float3 ray, const float3 origin)
+{
+	float	t;
+
+	t = dot(fast_normalize(ray), fast_normalize(plane->normal));
+	if (fabs(t) < 0.0005)
+		return (0);
+	t = (dot(plane->pos - origin, fast_normalize(plane->normal))) / t;
+		if (t < 0.001)
+		return (0);
+	return (t);
+}
+
+static float3	get_cylinder_abc(const float radius, const float3 dir, const float3 ray, const float3 origin)
+{
+	float3		abc;
+
+	// SEMBLE OK
+	abc.x = dot(ray, ray) - (dot(ray, dir) * dot(ray, dir));
+	abc.y = 2 * (dot(ray, origin) - (dot(ray, dir) * dot(origin, dir)));
+	abc.z = dot(origin, origin) - (dot(origin, dir) * dot(origin, dir)) - (radius * radius);
+	return (abc);
+}
+
+static float					inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin)
+{
+	float3				abc;
+	float3				pos;
+	float				d;
+	float				res1 = 0;
+	float				res2 = 0;
+	float				m;
+
+	pos = origin - cylinder->pos;
+	abc = get_cylinder_abc(cylinder->radius, fast_normalize(cylinder->dir), ray, pos);
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	if (d < 0)
+		return (0);
+	if (d == 0)
+		res1 = (-abc[1]) / (2 * abc[0]);
+	else
+	{
+		res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+		res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	}
+	if (res1 < 0 && res2 < 0)
+		return (0);
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+	{
+		if (cylinder->height == 0 || (dot(ray, fast_normalize(cylinder->dir) * res1 +
+			dot(origin, fast_normalize(cylinder->dir))) < cylinder->height && dot(ray, fast_normalize(cylinder->dir) * res1 +
+			dot(origin, fast_normalize(cylinder->dir))) > 0))
+			return (res1);
+	}
+	if (cylinder->height ==  0 || (dot(ray, fast_normalize(cylinder->dir) * res2 +
+			dot(origin, fast_normalize(cylinder->dir))) < cylinder->height && dot(ray, fast_normalize(cylinder->dir) * res2 +
+			dot(origin, fast_normalize(cylinder->dir))) > 0))
+		return (res2);
+	else
+		return (0);
+}
+
+static float3			get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
+{
+	float3 res = 0;
+	float3 v = 0;
+	float3 project = 0;
+	float doty = 0;
+
+	v = hit.pos - cylinder->pos;
+	doty = dot(v, fast_normalize(cylinder->dir));
+
+	project = doty * fast_normalize(cylinder->dir);
+	res = v - project;
+	return (fast_normalize(res));
+}
+
+static float3	get_sphere_abc(const float radius, const float3 ray, const float3 origin)
+{
+	float3		abc = 0;
+
+	abc.x = dot(ray, ray);
+	abc.y = 2 * dot(ray, origin);
+	abc.z = dot(origin, origin) - (radius * radius);
+	return (abc);
+}
+
+static float3	get_cone_abc(const __local t_cone *cone, const float3 ray, const float3 origin)
+{
+	float3		abc = 0;
+	float		k = radians(cone->angle);
+
+	k = tan(k);
+	k = 1 + k * k;
+	abc.x = dot(ray, ray) - (k * (dot(ray, cone->dir) * dot(ray, cone->dir)));
+	abc.y = 2 * (dot(ray, origin) - (k * \
+			(dot(ray, cone->dir) * dot(origin, cone->dir))));
+	abc.z = (dot(origin, origin) - \
+			(k * (dot(origin, cone->dir) * dot(origin, cone->dir))));
+	return (abc);
+}
+
+static void			print_mem(__local t_cone *cone)
+{
+	printf("dir : x = %f, y = %f, z = %f\npos : x = %f, y = %f, z = %f\nangle = %f\n\n", cone->dir.x, cone->dir.y, cone->dir.z, cone->pos.x, cone->pos.y, cone->pos.z, cone->angle);
+}
+
+static void			print_vect(float3 v)
+{
+	printf("ray : x = %f, y = %f, z = %f\n\n", v.x, v.y, v.z);
+}
+
+static float			inter_cone(const __local t_cone *cone, const float3 ray, const float3 origin)
+{
+	float3		abc = 0;
+	float		d = 0;
+	float		res1 = 0;
+	float		res2 = 0;
+	float3		pos = 0;
+
+	pos = origin - cone->pos;
+	abc = get_cone_abc(cone, ray, pos);
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	if (d < 0)
+		return (0);
+	if (d == 0)
+		return (-abc[1]) / (2 * abc[0]);
+	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		return (res1);
+	return (res2);
+}
+
+static float3			get_cone_normal(const __local t_cone *cone, const t_hit hit)
+{
+	float3 res = 0;
+	float3 v = 0;
+	float3 project = 0;
+	float doty = 0;
+
+	v = hit.pos - cone->pos;
+	doty = dot(v, cone->dir);
+	project = doty * fast_normalize(cone->dir);
+	res = v - project;
+	return (fast_normalize(res));
+}
+
+
+static float			inter_sphere(const __local t_sphere *sphere, const float3 ray, const float3 origin)
+{
+	float3		abc = 0;
+	float		d = 0;
+	float		res1 = 0;
+	float		res2 = 0;
+	float3		pos = 0;
+
+	pos = origin - sphere->pos;
+	abc = get_sphere_abc(sphere->radius, ray, pos);
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	if (d < 0)
+		return (0);
+	if (d == 0)
+		return ((-abc[1]) / (2 * abc[0]));
+	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		return (res1);
+	return (res2);
+}
+
+
 
 static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const float3 ray)
 {
-	unsigned int			i;
-	int						max;
-	t_hit					hit;
-	float					dist;
+	t_hit						hit;
+	float						dist;
+	t_object 		__local		*obj;
+	size_t						mem_index_obj;
 
-	max = get_max_obj(scene);
 	dist = 0;
-	i = 0;
 	hit = hit_init();
-	while (i < max)
+	mem_index_obj = 0;
+	obj = 0;
+
+	while (mem_index_obj < scene->mem_size_obj)
 	{
-		if (i < scene->n_cones)
-			if (((dist = inter_cone(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
-			{
-				hit.dist = dist;
-				hit.type = 1;
-				hit.id = i;
-			}
-		if (i < scene->n_cylinders)
-			if (((dist = inter_cylinder(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
-			{
-				hit.dist = dist;
-				hit.type = 2;
-				hit.id = i;
-			}
-		if (i < scene->n_planes)
-			if (((dist = inter_plan(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
-			{
-				hit.dist = dist;
-				hit.type = 4;
-				hit.id = i;
-			}
-		if (i < scene->n_spheres)
-			if (((dist = inter_sphere(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
-			{
-				hit.dist = dist;
-				hit.type = 5;
-				hit.id = i;
-			}
-		i++;
+		obj = scene->mem_obj + mem_index_obj;
+		if (obj->id == OBJ_SPHERE)
+			dist = inter_sphere(obj, ray, origin);
+		else if (obj->id == OBJ_CYLINDER)
+			dist = inter_cylinder(obj, ray, origin);
+		else if (obj->id == OBJ_PLANE)
+			dist = inter_plan(obj, ray, origin);
+		else if (obj->id == OBJ_CONE)
+			dist = inter_cone(obj, ray, origin);
+		if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
+		{
+			hit.dist = dist;
+			hit.obj = obj;
+			hit.mem_index = mem_index_obj;
+		}
+		mem_index_obj += obj->size;
 	}
 	return (hit);
 }
 
-float3			get_hit_normale(const __local t_scene *scene, float3 ray, t_hit hit)
+static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit hit)
 {
 	float3		res, save;
 
-	if (hit.type == 1)
-		res = get_cone_normale(scene, hit);
-	else if (hit.type == 2)
-		res = get_cylinder_normal(scene, hit);
-	else if (hit.type == 4)
+	if (hit.obj->id == OBJ_SPHERE)
+		res = hit.pos - hit.obj->pos;
+	else if (hit.obj->id == OBJ_CYLINDER)
+		res = get_cylinder_normal(hit.obj, hit);
+	else if (hit.obj->id == OBJ_CONE)
+		res = get_cone_normal(hit.obj, hit);
+	else if (hit.obj->id == OBJ_PLANE)
 	{
-		if (dot(PLANE[hit.id].normale, -ray) < 0)
-			res = -PLANE[hit.id].normale;
+		if (dot(hit.obj->dir, -ray) < 0)
+			res = -hit.obj->dir;
 		else
-			res = PLANE[hit.id].normale;
+			res = hit.obj->dir;
 
 		if (scene->flag & OPTION_WAVE)
 		{
@@ -78,219 +583,47 @@ float3			get_hit_normale(const __local t_scene *scene, float3 ray, t_hit hit)
 			return (fast_normalize(save));
 		}
 	}
-	else if (hit.type == 5)
-		res = hit.pos - SPHERE[hit.id].pos;
 	save = res;
 	if (scene->flag & OPTION_WAVE)
 	{
 		/*						VAGUELETTE							*/
 		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
-		save.z = res.z + 0.8 * sin(save.x * 10 + scene->u_time);
+		save.z = res.z + 0.8 * sin(res.x * 10 + scene->u_time);
 		save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
 	}
 
 	return (fast_normalize(save));
 }
 
-unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3 ray)
+static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3 ray)
 {
-	int					i;
-	i = 0;
+	t_object __local		*obj;
+	t_light __local		*light;
+	size_t				mem_index_lights;
+
 	unsigned int		res_color;
-	res_color = get_ambient(scene, get_obj_hue(scene, hit));
 	float				tmp;
+	float3				reflect;
+	float3 __private	diffuse;
+	float __private	brightness;
+	int __private hue;
+	int __private hue_light;
+	unsigned int __private col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g;
+	t_light_ray			light_ray;
+	t_hit					light_hit;
+	float __private pow_of_spec;
+	int __private light_color;
+	float3 __private speculos;
+
 	tmp = 0;
-	float3				reflect;
 	reflect = 0;
-	float3 __private	diffuse;
 	diffuse = 0;
-	float __private	brightness;
 	brightness = 0;
-	int __private hue;
 	hue = 0;
-	int __private hue_light;
 	hue_light = 0;
-	unsigned int __private col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g;
-	col_r = 0;
-	col_g = 0;
-	col_b = 0;
-	obj_r = 0;
-	obj_g = 0;
-	obj_b = 0;
-	l_r = 0;
-	l_g = 0;
-	l_b = 0;
-	t_light_ray			light_ray;
-	t_hit				light_hit;
-	float __private pow_of_spec;
-	pow_of_spec = 0;
-	int __private light_color;
-	light_color = 0;
-	float3 __private speculos;
-	speculos = 0;
 
-	while (i < scene->n_lights)
-	{
-		tmp = 0;
-		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = fast_length(light_ray.dir);
-		light_ray.dir = fast_normalize(light_ray.dir);
-		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
-		light_hit.id = i;
-		light_hit.type = 3;
-		if (light_hit.dist < light_ray.dist && light_hit.dist > 0.f)
-			;
-		else
-		{
-			tmp = dot(hit.normale, light_ray.dir);
-			if (tmp > 0.f)
-			{
-				brightness = (float __private)LIGHT[light_hit.id].brightness;
-
-				if (hit.type == 1)
-					diffuse = (float3 __private)CONES[hit.id].diff;
-				else if (hit.type == 2)
-					diffuse = (float3 __private)CYLIND[hit.id].diff;
-				else if (hit.type == 4)
-					diffuse = (float3 __private)PLANE[hit.id].diff;
-				else if (hit.type == 5)
-					diffuse = (float3 __private)SPHERE[hit.id].diff;
-				else
-					diffuse = 0.f;
-
-				if (hit.type == 1)
-					hue = (int __private)CONES[hit.id].color;
-				if (hit.type == 2)
-					hue = (int __private)CYLIND[hit.id].color;
-				if (hit.type == 3)
-					hue = (int __private)LIGHT[hit.id].color;
-				if (hit.type == 4)
-					hue = (int __private)PLANE[hit.id].color;
-				if (hit.type == 5)
-					hue = (int __private)SPHERE[hit.id].color;
-
-			/*
-				if (hit.type == 1)
-					hue_light = (int __private)CONES[light_hit.id].color;
-				if (hit.type == 2)
-					hue_light = (int __private)CYLIND[light_hit.id].color;
-				if (hit.type == 3)
-					hue_light = (int __private)LIGHT[light_hit.id].color;
-				if (hit.type == 4)
-					hue_light = (int __private)PLANE[light_hit.id].color;
-				if (hit.type == 5)
-					hue_light = (int __private)SPHERE[light_hit.id].color;
-			*/
-				hue_light = LIGHT[i].color;
-
-				col_r = (res_color & 0xFF0000) >> 16;
-				col_g = (res_color & 0x00FF00) >> 8;
-				col_b = (res_color & 0x0000FF);
-				obj_r = (hue & 0xFF0000) >> 16;
-				obj_g = (hue & 0x00FF00) >> 8;
-				obj_b = (hue & 0x00000FF);
-				l_r = (hue_light & 0xFF0000) >> 16;
-				l_g = (hue_light & 0x00FF00) >> 8;
-				l_b = (hue_light & 0x0000FF);
-
-				col_r += ((l_r * brightness) + obj_r) * tmp * diffuse.x;
-				col_g += ((l_g * brightness) + obj_g) * tmp * diffuse.y;
-				col_b += ((l_b * brightness) + obj_b) * tmp * diffuse.z;
-				(col_r > 255 ? col_r = 255 : 0);
-				(col_g > 255 ? col_g = 255 : 0);
-				(col_b > 255 ? col_b = 255 : 0);
-				res_color = ((col_r << 16) + (col_g << 8) + col_b);
-			}
-			reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
-			tmp = dot(reflect, -ray);
-			if (tmp > 0.f)
-			{
-				speculos = 0.f;
-				if (hit.type == 1)
-					speculos = (float3 __private)CONES[hit.id].spec;
-				else if (hit.type == 2)
-					speculos = (float3 __private)CYLIND[hit.id].spec;
-				else if (hit.type == 4)
-					speculos = (float3 __private)PLANE[hit.id].spec;
-				else if (hit.type == 5)
-					speculos = (float3 __private)SPHERE[hit.id].spec;
-				else
-					speculos = 0.f;
-				col_r = (res_color & 0x00FF0000) >> 16;
-				col_g = (res_color & 0x0000FF00) >> 8;
-				col_b = (res_color & 0x000000FF);
-
-				pow_of_spec = native_powr(tmp, (LIGHT[light_hit.id].shrink));
-				light_color = LIGHT[light_hit.id].color;
-				col_r += (((light_color & 0xFF0000) >> 16) * pow_of_spec) * speculos.x;
-				col_g += ((light_color & 0x00FF00) >> 8) * pow_of_spec * speculos.y;
-				col_b += (light_color & 0x0000FF) * pow_of_spec * speculos.z;
-				(col_r > 255 ? col_r = 255 : 0);
-				(col_g > 255 ? col_g = 255 : 0);
-				(col_b > 255 ? col_b = 255 : 0);
-				res_color = ((col_r << 16) + (col_g << 8) + col_b);
-			}
-		}
-		i++;
-	}
-	return (res_color);
-}
-
-unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float3 ray)
-{
-
-	int __private hue_light;
-	unsigned int __private col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g;
-	int __private modx, mody, modz;
-	int __private hue;
-	float __private	brightness;
-	float3 __private	diffuse;
-	float3				reflect;
-	float				tmp;
-	unsigned int		res_color;
-	int					i;
-	int __private light_color;
-	float3 __private speculos;
-	float __private pow_of_spec;
-	t_light_ray			light_ray;
-	t_hit				light_hit;
-
-	i = 0;
-	if (hit.type == 1)
-		hue = (int __private)CONES[hit.id].color;
-	else if (hit.type == 2)
-		hue = (int __private)CYLIND[hit.id].color;
-	else if (hit.type == 3)
-		hue = (int __private)LIGHT[hit.id].color;
-	else if (hit.type == 4)
-		hue = (int __private)PLANE[hit.id].color;
-	else if (hit.type == 5)
-		hue = (int __private)SPHERE[hit.id].color;
-
-	/*
-	if (hit.type == 1)
-		hue_light = (int __private)CONES[0].color;
-	else if (hit.type == 2)
-		hue_light = (int __private)CYLIND[0].color;
-	else if (hit.type == 3)
-		hue_light = (int __private)LIGHT[0].color;
-	else if (hit.type == 4)
-		hue_light = (int __private)PLANE[0].color;
-	else if (hit.type == 5)
-		hue_light = (int __private)SPHERE[0].color;
-	*/
-	hue_light = LIGHT[i].color;
-
-	if (hit.type == 1)
-		speculos = (float3 __private)CONES[hit.id].spec;
-	else if (hit.type == 2)
-		speculos = (float3 __private)CYLIND[hit.id].spec;
-	else if (hit.type == 4)
-		speculos = 0;//speculos = (float3 __private)PLANE[hit.id].spec;
-	else if (hit.type == 5)
-		speculos = (float3 __private)SPHERE[hit.id].spec;
-	else
-		speculos = 0.f;
+	obj = hit.obj;
+	hue = obj->color;
 
 	col_r = (hue & 0x00FF0000) >> 16;
 	col_g = (hue & 0x0000FF00) >> 8;
@@ -299,22 +632,6 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 	col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
 	col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
-
-	while (++i < scene->n_lights)
-	{
-	light_ray.dir = LIGHT[i].pos - hit.pos;
-	light_ray.dist = fast_length(light_ray.dir);
-	light_ray.dir = fast_normalize(light_ray.dir);
-	light_hit = ray_hit(scene, hit.pos, light_ray.dir);
-	light_hit.id = i;
-	light_hit.type = 3;
-
-	reflect = 0;
-	diffuse = 0;
-	brightness = 0;
-	modx = 0;
-	mody = 0;
-	modz = 0;
 	col_r = 0;
 	col_g = 0;
 	col_b = 0;
@@ -326,52 +643,26 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 	l_b = 0;
 	pow_of_spec = 0;
 	light_color = 0;
-	tmp = 0;
+	speculos = 0;
+	mem_index_lights = 0;
+	while (mem_index_lights < scene->mem_size_lights)
+	{
+		light = scene->mem_lights + mem_index_lights;
 
-	float3 touch;
-	touch = scene->cameras->pos + scene->cameras->dir * hit.dist;
-
-		if (!(light_hit.dist < light_ray.dist && light_hit.dist > 0))
+		tmp = 0;
+		light_ray.dir = light->pos - hit.pos;
+		light_ray.dist = fast_length(light_ray.dir);
+		light_ray.dir = fast_normalize(light_ray.dir);
+		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
+		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON))
 		{
-			tmp = dot(hit.normale, light_ray.dir);
-			if (tmp > 0.f)
+			tmp = (dot(hit.normal, light_ray.dir));
+			if (tmp > EPSILON)
 			{
-				brightness = (float __private)LIGHT[light_hit.id].brightness;
-
-				if (hit.type == 1)
-					diffuse = (float3 __private)CONES[hit.id].diff;
-				else if (hit.type == 2)
-					diffuse = (float3 __private)CYLIND[hit.id].diff;
-				else if (hit.type == 4)
-				{
-					diffuse = (float3 __private)PLANE[hit.id].diff;
-					modx = hit.pos.x;
-					mody = hit.pos.y;
-					modz = hit.pos.z;
-					modx = abs((int)(hit.pos.x) % 4);
-					mody = abs((int)(hit.pos.y) % 4);
-					modz = abs((int)(hit.pos.z) % 4);
-					if (modx)
-					{
-						if ((modz && mody) || (!modz && !mody))
-							hue = 0xFFFFFFFF;
-						else
-							hue = 0;
-					}
-					else
-					{
-						if ((modz && mody) || (!modz && !mody))
-							hue = 0;
-						else
-						{
-							hue = 0xFFFFFFFF;
-						}
-					}
-				}
-				else if (hit.type == 5)
-					diffuse = (float3 __private)SPHERE[hit.id].diff;
-				else
-					diffuse = 0;
+				brightness = (float __private)light->brightness;
+				diffuse = (float3 __private)obj->diff;
+				hue = (int __private)obj->color;
+				hue_light = light->color;
 
 				col_r = (res_color & 0xFF0000) >> 16;
 				col_g = (res_color & 0x00FF00) >> 8;
@@ -391,16 +682,18 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 				(col_b > 255 ? col_b = 255 : 0);
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
-			reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
+
+			reflect = fast_normalize(((float)(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
 			tmp = dot(reflect, -ray);
-			if (tmp > 0.f)
+			if (tmp > EPSILON)
 			{
+				speculos = obj->spec;
 				col_r = (res_color & 0x00FF0000) >> 16;
 				col_g = (res_color & 0x0000FF00) >> 8;
 				col_b = (res_color & 0x000000FF);
 
-				pow_of_spec = native_powr(tmp, (LIGHT[light_hit.id].shrink));
-				light_color = LIGHT[light_hit.id].color;
+				pow_of_spec = native_powr(tmp, (light->shrink));
+				light_color = light->color;
 				col_r += (((light_color & 0xFF0000) >> 16) * pow_of_spec) * speculos.x;
 				col_g += ((light_color & 0x00FF00) >> 8) * pow_of_spec * speculos.y;
 				col_b += (light_color & 0x0000FF) * pow_of_spec * speculos.z;
@@ -410,70 +703,38 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 		}
-		i++;
+		mem_index_lights += light->size;
 	}
 	return (res_color);
 }
 
-/* BACKUP OF PHONG
-unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3 ray)
-{
-	int					i = -1;
-	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
-	float				tmp;
-	float3				reflect = 0;
-
-	t_light_ray			light_ray;
-	t_hit				light_hit = hit_init();
-
-	while (++i < scene->n_lights)
-	{
-		tmp = 0;
-		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = fast_length(light_ray.dir);
-		light_ray.dir = fast_normalize(light_ray.dir);
-		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
-		light_hit.id = i;
-		light_hit.type = 3;
-		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
-		{
-		}
-		else
-		{
-			tmp = dot(hit.normale, light_ray.dir);
-			if (tmp > 0)
-				res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
-			reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
-			tmp = dot(reflect, -ray);
-			if (tmp > 0)
-				res_color = color_specular(scene, hit, light_hit, res_color, tmp);
-		}
-	}
-	return (res_color);
-} */
-
 static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hit old_hit, int depth)
 {
-	unsigned int	color = 0;
-	float3			reflex = ray;
+	unsigned int	color;
+	float3			reflex;
 	t_hit			new_hit;
-	float			reflex_coef = 0;
+	float			reflex_coef;
+
+	reflex = ray;
+	new_hit = hit_init();
+	color = 0;
+	reflex_coef = 0;
 	while (depth > 0)
 	{
 		// PREMIÈRE LOI DE SNELL-DESCARTES ///////////////////////////////////////////////////////////
-		reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normale, reflex) * old_hit.normale));
+		reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normal, reflex) * old_hit.normal));
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		new_hit.dist = MAX_DIST;
 		new_hit = ray_hit(scene, old_hit.pos, reflex);
-		reflex_coef = get_obj_reflex(scene, old_hit);
+		reflex_coef = old_hit.obj->reflex;
 		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 		{
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
-			new_hit.normale = get_hit_normale(scene, reflex, new_hit);
-			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
+			new_hit.normal = get_hit_normal(scene, reflex, new_hit);
+			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normal);
 			color = blend_factor(blend_add(color, phong(scene, new_hit, reflex)), reflex_coef);
 		}
-		if (get_obj_reflex(scene, new_hit) == 0)
+		if (new_hit.obj->reflex == 0)
 			return (color);
 		old_hit = new_hit;
 		--depth;
@@ -481,104 +742,153 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hi
 	return (color);
 }
 
-static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
+static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_hit old_hit) // pour le plan, indice de refraction (pour tout objet non plein)
+{
+	float3			refract = ray;
+	t_hit			new_hit;
+	float			c1 = 0;
+	float			c2 = 0;
+	float			eta = 0;
+	float			base = 1;
+	int				i = 0;
+	while (old_hit.obj->refract != 0 && ++i < 50)
+	{
+		c1 = dot(old_hit.normal, refract);
+		eta = base / old_hit.obj->refract;
+		if (c1 < 0)
+			c1 = -c1;
+		else
+		{
+			old_hit.normal = -old_hit.normal;
+			eta = old_hit.obj->refract / base;
+		}
+		c2 = sqrt(1 - ((eta * eta) * (1 - (c1 * c1))));
+		// DEUXIEME LOIS DE SNELL-DECARTES /////////////////////////////////////////////
+		refract = fast_normalize((eta * refract) + ((eta * c1) - c2) * old_hit.normal);
+		////////////////////////////////////////////////////////////////////////////////
+		new_hit.dist = MAX_DIST;
+		new_hit = ray_hit(scene, old_hit.pos, refract);
+		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
+		{
+			new_hit.pos = (new_hit.dist * refract) + old_hit.pos;
+			new_hit.normal = get_hit_normal(scene, refract, new_hit);
+			if (new_hit.mem_index != old_hit.mem_index && new_hit.obj->refract != 0)
+				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000) * -new_hit.normal);//pour refract en chaine, inverser la normale pour le decalage de la position
+			else
+				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000) * new_hit.normal);
+			if (new_hit.obj->refract == 0)
+				return (phong(scene, new_hit, refract));
+		}
+		else
+			return (0);
+		old_hit = new_hit;
+	}
+	return (phong(scene, new_hit, refract));
+}
+
+static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __global int *target, bool isHim)
 {
 	t_hit			hit;
-	int				depth = scene->depth;
-	unsigned int	color  = 0;
-	unsigned int	bounce_color = 0;
-	int tt = (int)scene->u_time;
+	int				depth;
+	unsigned int	color;
+	unsigned int	bounce_color;
 
+	hit = hit_init();
+	hit.dist = MAX_DIST;
+	depth = scene->depth;
+	color = 0;
+	bounce_color = 0;
 	hit.dist = MAX_DIST;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray);
-	if (hit.dist > 0 && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
+	if (isHim)
+		*target = hit.mem_index;
+	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
-		hit.normale = get_hit_normale(scene, ray, hit);
-		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
+		hit.normal = get_hit_normal(scene, ray, hit);
+		if (hit.obj->refract != 0)
+			hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * -hit.normal); //pour refract, inverser le decalage de la position
+		else
+			hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 		color = phong(scene, hit, ray);
-		if (depth > 0 && (get_obj_reflex(scene, hit) > 0))
+		if (depth > 0 && hit.obj->reflex > 0)
 			bounce_color = bounce(scene, ray, hit, depth);
+		if (hit.obj->refract != 0)
+			return (bounce_color = refract(scene, ray, hit));
 		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
 }
 
+static float3						get_ray_cam(__local t_scene *scene, const uint2 pix)
+{
+	float3					cam_ray = 0;
+	float					ratio = (float)scene->win_w / (float)scene->win_h;
+
+	cam_ray.x = ((2 * ((pix.x + 0.5) / scene->win_w)) - 1) * ratio * (tan(radians(ACTIVECAM.fov / 2)));
+	cam_ray.y = ((1 - (2 * ((pix.y + 0.5) / scene->win_h))) * tan(radians(ACTIVECAM.fov / 2)));
+	cam_ray.z = 1;
+	cam_ray = rotat_zyx(cam_ray, ACTIVECAM.pitch, ACTIVECAM.yaw, 0);
+	return(fast_normalize(cam_ray));
+}
+
 __kernel void	ray_trace(	__global	char		*output,
-							__global	t_hit		*target_obj,
+
+							__global	char		*global_mem_objects,
+							__local		char		*mem_objects,
+							__private	size_t		mem_size_objects,
+
+							__private	float		u_time,
+
 							__global	t_scene		*scene_data,
 							__global	t_cam		*cameras_data,
-							__global	t_cone		*cones_data,
-							__global	t_cylinder	*cylinders_data,
-							__global	t_light		*lights_data,
-							__global	t_plane		*planes_data,
-							__global	t_sphere	*spheres_data,
+
 							__local		t_scene		*scene,
 							__local		t_cam		*cameras,
-							__local		t_cone		*cones,
-							__local		t_cylinder	*cylinders,
-							__local		t_light		*lights,
-							__local		t_plane		*planes,
-							__local		t_sphere	*spheres,
-							__private	float		u_time)
+
+							__global	char		*global_mem_lights,
+							__local		char		*mem_lights,
+							__private	size_t		mem_size_lights,
+
+							__global	int		*target
+									)
 {
- 	event_t	ev;
+
+ 	event_t			ev;
+	int				id;
+	uint2			pix;
+	float3			prim_ray;
+	unsigned int	final_color;
+	float			ratio;
+	float3			cam_ray;
+
+	final_color = 0;
+
+	ev = async_work_group_copy((__local char *)mem_objects, (__global char *)global_mem_objects, mem_size_objects, 0);
+	wait_group_events(1, &ev);
 	ev = async_work_group_copy((__local char *)scene, (__global char *)scene_data, sizeof(t_scene), 0);
 	wait_group_events(1, &ev);
 	ev = async_work_group_copy((__local char *)cameras, (__global char *)cameras_data, sizeof(t_cam) * scene->n_cams, 0);
 	wait_group_events(1, &ev);
-	ev = async_work_group_copy((__local char *)cones, (__global char *)cones_data, sizeof(t_cone) * scene->n_cones, 0);
-	wait_group_events(1, &ev);
-	ev = async_work_group_copy((__local char *)cylinders, (__global char *)cylinders_data, sizeof(t_cylinder) * scene->n_cylinders, 0);
-	wait_group_events(1, &ev);
-	ev = async_work_group_copy((__local char *)lights, (__global char *)lights_data, sizeof(t_light) * scene->n_lights, 0);
-	wait_group_events(1, &ev);
-	ev = async_work_group_copy((__local char *)planes, (__global char *)planes_data, sizeof(t_plane) * scene->n_planes, 0);
-	wait_group_events(1, &ev);
-	ev = async_work_group_copy((__local char *)spheres, (__global char *)spheres_data, sizeof(t_sphere) * scene->n_spheres, 0);
+	ev = async_work_group_copy((__local char *)mem_lights, (__global char *)global_mem_lights, mem_size_lights, 0);
 	wait_group_events(1, &ev);
 
-	uint2	pix;
-	pix.x = get_global_id(0);
-	pix.y = get_global_id(1);
+	pix.x = get_global_id(0);// % scene->win_w;
+	pix.y = get_global_id(1);// / scene->win_w;
+	id = pix.x + (scene->win_w * pix.y);
 
 	scene->cameras = cameras;
-	scene->cones = cones;
-	scene->cylinders = cylinders;
-	scene->lights = lights;
-	scene->planes = planes;
-	scene->spheres = spheres;
+	scene->mem_lights = mem_lights;
 	scene->u_time = u_time;
+	scene->mem_obj = mem_objects;
+	scene->mem_size_obj = mem_size_objects;
+	scene->mem_size_lights = mem_size_lights;
 
-/*	if (0)
-	{
-		printf("t_light_ray			: %-20lu\n", sizeof(t_light_ray));
-		printf("t_cam 				: %-20lu\n", sizeof(t_cam));
-		printf("t_cone 				: %-20lu\n", sizeof(t_cone));
-		printf("t_cylinder 			: %-20lu\n", sizeof(t_cylinder));
-		printf("t_light 			: %-20lu\n", sizeof(t_light));
-		printf("t_plane 			: %-20lu\n", sizeof(t_plane));
-		printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
-		printf("t_tor 				: %-20lu\n", sizeof(t_tor));
-		printf("t_scene 			: %-20lu\n", sizeof(t_scene));
-		printf("\n");
-	}
-*/
-	__private t_tor	mojo[2047];
-	__private t_tor *tree = &mojo;
-
-	int			id = pix.x + (scene->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
-
-	unsigned int final_color = 0;
-
-	float3	prim_ray = get_ray_cam(scene, pix);
-
-	if (pix.x == scene->mou_x && pix.y == scene->mou_y)
-		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);
-	final_color = get_pixel_color(scene, prim_ray);
+	prim_ray = get_ray_cam(scene, pix);
+	final_color = get_pixel_color(scene, prim_ray, target, (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y));
 	if (scene->flag & OPTION_SEPIA)
 		final_color = sepiarize(final_color);
 	if (scene->flag & OPTION_BW)
 		final_color = desaturate(final_color);
-	OUTPUTE = final_color;
+	((__global unsigned int *)output)[id] = final_color;
 }

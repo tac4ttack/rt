@@ -23,7 +23,8 @@ OPENCL :=				-framework OpenCL
 OS_TEST := $(shell uname)
 ifeq ($(OS_TEST), Darwin)
 INC_NAMES = 			$(NAME).h \
-						mac_keys.h
+						mac_keys.h \
+						cl.h
 MLXFLAGS =				-framework OpenGL -framework AppKit
 KEYS =					-DMAC_KEYS
 OS_VERSION_TEST := $(shell uname -r | cut -d . -f 1)
@@ -39,7 +40,8 @@ ifeq ($(OS_TEST),"Linux")
 OS_NAME =				"Linux"
 MLX_PATH =				./mlx/mlx_x11
 INC_NAMES = 			$(NAME).h \
-						linux_keys.h
+						linux_keys.h \
+						cl.h
 MLXFLAGS =				-lmlx -lXext -lX11
 KEYS =					-DLINUX_KEYS
 endif
@@ -58,39 +60,44 @@ SRC_NAME =  			gtk.c \
 						init.c \
 						main.c \
 						mlx_image_draw.c \
-						mlx_key_press.c \
-						mlx_key_release.c \
-						mlx_key_norepeat.c \
-						mlx_key_events.c \
 						mlx_main_loop.c \
-						mlx_mouse.c \
-						opencl_compute.c \
-						opencl_error.c \
-						opencl_init.c \
-						opencl_memalloc.c \
 						rotations.c \
 						tools.c \
 						ui_obj.c \
 						ui_cam.c \
 						update_fps.c \
 						vectors.c \
-						xml.c \
-						xml_check_attr.c \
-						xml_cameras.c \
-						xml_cones.c \
-						xml_cylinders.c \
-						xml_data_float.c \
-						xml_data_float3.c \
-						xml_data_int.c \
-						xml_data_vector.c \
-						xml_lights.c \
-						xml_list.c \
-						xml_nodes.c \
-						xml_planes.c \
-						xml_scene.c \
-						xml_spheres.c \
 						hooks.c \
-						xml_tools.c	
+						gen/construct_gen.c \
+						gen/gen_add.c \
+						gen/destruct_gen.c \
+						event/mlx_mouse.c \
+						event/mlx_key_press.c \
+						event/mlx_key_release.c \
+						event/mlx_key_norepeat.c \
+						event/mlx_key_events.c \
+						cl/destruct_cl.c \
+						cl/construct_cl.c \
+						cl/cl_print_error.c \
+						cl/cl_compute.c \
+						cl/cl_create_buffer.c \
+						opencl_compute.c \
+						xml/xml.c \
+						xml/xml_check_attr.c \
+						xml/xml_cameras.c \
+						xml/xml_cones.c \
+						xml/xml_cylinders.c \
+						xml/xml_data_float.c \
+						xml/xml_data_float3.c \
+						xml/xml_data_int.c \
+						xml/xml_data_vector.c \
+						xml/xml_lights.c \
+						xml/xml_list.c \
+						xml/xml_nodes.c \
+						xml/xml_planes.c \
+						xml/xml_scene.c \
+						xml/xml_spheres.c \
+						xml/xml_tools.c
 
 default: gpu
 
@@ -108,6 +115,10 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
 $(OBJ_PATH):
 	@echo "$(GREEN)Creating ./obj path and making binaries from source files$(EOC)"
 	@mkdir $(OBJ_PATH)
+	@mkdir $(OBJ_PATH)/cl
+	@mkdir $(OBJ_PATH)/xml
+	@mkdir $(OBJ_PATH)/gen
+	@mkdir $(OBJ_PATH)/event
 
 CPU:
 	@echo "$(GREEN)Checking for CPU ONLY RT$(EOC)"

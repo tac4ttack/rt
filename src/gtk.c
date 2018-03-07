@@ -121,10 +121,10 @@ void		init_gtk(GtkApplication *app, t_env *e)
 //	printf("verif1 %x\n", e->ui->frame_ptr[461312]);
 
 	e->ui->frame_ptr = gdk_pixbuf_get_pixels(e->ui->frame_pixel_buffer);
-	ft_memcpy(e->ui->frame_ptr, e->frame_pixel_data, (sizeof(int) * e->win_w * e->win_h));
+	ft_memcpy(e->ui->frame_ptr, e->pixel_data, (sizeof(int) * e->win_w * e->win_h));
 	gtk_image_set_from_pixbuf(GTK_IMAGE(e->ui->frame_placeholder), e->ui->frame_pixel_buffer);
 
-	printf("verif pixel data %x\n", e->frame_pixel_data[461312]);
+	printf("verif pixel data %x\n", e->pixel_data[461312]);
 //	printf("test1 = %x\n", ((int*)e->frame_pixel_data)[461312]);
 	printf("verif pixel buffer %x\n", ((int*)e->ui->frame_ptr)[461312]);
 

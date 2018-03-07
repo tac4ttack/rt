@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 13:48:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/06 21:42:15 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 18:25:52 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,21 @@ static void		display_hud_cam(t_env *e)
 
 static	char	*hud_get_obj_type(t_env *e)
 {
-	if (ACTIVEOBJ.type == 0)
+	t_object *object;
+
+	object = e->gen_objects->mem + e->target;
+	if (object->id == 0)
 		return ("CAM #");
-	if (ACTIVEOBJ.type == 1)
+	if (object->id == OBJ_CONE)
 		return ("CONE #");
-	else if (ACTIVEOBJ.type == 2)
+	else if (object->id == OBJ_CYLINDER)
 		return ("CYLINDER #");
-	else if (ACTIVEOBJ.type == 3)
-		return ("LIGHT #");
-	else if (ACTIVEOBJ.type == 4)
+	else if (object->id == OBJ_PLANE)
 		return ("PLANE #");
-	else
+	else if (object->id == OBJ_SPHERE)
 		return ("SPHERE #");
+	else
+		return ("UNKNOW #");
 }
 
 static void		display_hud_obj_pos(t_env *e)
@@ -59,10 +62,10 @@ static void		display_hud_obj_pos(t_env *e)
 	char		*pos;
 	char		*obj;
 
-	obj_pos = get_target_pos(e);
+	obj_pos = &((t_object *)(e->gen_objects->mem + e->target))->pos;
 	if (obj_pos)
 	{
-		obj = ft_strjoin_frs2(hud_get_obj_type(e), ft_itoa(ACTIVEOBJ.id));
+		obj = ft_strdup(hud_get_obj_type(e));
 		mlx_string_put(e->mlx, e->win, 10, HEIGHT - 115, 0x00ffffff, obj);
 		free(obj);
 		pos = ft_strjoin_frs2("POS.X = ", ft_ftoa(obj_pos->x));
@@ -82,7 +85,7 @@ static void		display_hud_obj_dir(t_env *e)
 	cl_float3	*obj_dir;
 	char		*dir;
 
-	obj_dir = get_target_dir(e);
+	obj_dir = &((t_object *)(e->gen_objects->mem + e->target))->pos;
 	if (obj_dir)
 	{
 		dir = ft_strjoin_frs2("DIR.X = ", ft_ftoa(obj_dir->x));
