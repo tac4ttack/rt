@@ -890,5 +890,14 @@ __kernel void	ray_trace(	__global	char		*output,
 		final_color = sepiarize(final_color);
 	if (scene->flag & OPTION_BW)
 		final_color = desaturate(final_color);
+	
+	// RGB TO BGR SWAP
+	uint3 swap;
+	swap.x = (final_color & 0x00FF0000) >> 16;
+	swap.y = (final_color & 0x0000FF00) >> 8;
+	swap.z = (final_color & 0x000000FF);
+	final_color = ((swap.z << 16) + (swap.y << 8) + swap.x);
+
 	((__global unsigned int *)output)[id] = final_color;
 }
+
