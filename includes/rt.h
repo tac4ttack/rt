@@ -7,6 +7,7 @@
 # include <sys/time.h>
 # include "libft.h"
 # include "mlx.h"
+# include "cl.h"
 # include <sys/time.h>
 
 # ifdef MAC_KEYS
@@ -21,11 +22,6 @@
 #  define IS_GPU			0
 # endif
 
-# ifdef __APPLE__
-#  include <OpenCL/opencl.h>
-# else
-#  include <CL/cl.h>
-# endif
 
 # ifdef DEBUG
 #  define DBUG					1
@@ -33,7 +29,7 @@
 #  define DBUG					0
 # endif
 
-# define MAX_SOURCE_SIZE	(0x100000)
+
 # define DESTROYNOTIFY			17
 # define KEYPRESSMASK			(1L<<0)
 # define KEYRELEASEMASK			(1L<<1)
@@ -72,6 +68,7 @@
 # define OPTION_SEPIA			(1 << 2)
 # define OPTION_BW				(1 << 3)
 # define OPTION_RUN				(1 << 4)
+# define OPTION_GPU				(1 << 4)
 
 # define OBJ_CONE			1
 # define OBJ_CYLINDER		2
@@ -323,36 +320,12 @@ void		*construct_gen();
 bool		gen_add(t_gen *gen, void *elem);
 void		*destruct_gen(t_gen **gen);
 
-# define CL_ERROR_LEN_BUFFER 17000
 
-typedef struct			s_cl
-{
-	cl_device_id		device_id;
-	cl_context			context;
-	cl_command_queue	cq;
-	size_t				nb_mem;
-	cl_mem				*mem;
-	cl_program			program;
-	cl_kernel			kernel;
-	cl_platform_id		platform_id;
-	cl_uint				ret_num_devices;
-	cl_uint				ret_num_platforms;
-	cl_int				err;
-	size_t				global_item_size;
-	size_t				local_item_size;
 
-	char				*path;
-}						t_cl;
-
-void					cl_check_err(cl_int err, const char *name);
-void					cl_end(t_cl *cl);
-int						cl_init(t_cl *cl, const char *path, const char *name,
-								const size_t global_item_size);
-bool					cl_create_buffer(t_cl *cl, size_t size);
 
 typedef	struct			s_env
 {
-	t_cl			cl;
+	t_cl				*cl;
 
 	void				*mlx;
 	void				*win;
@@ -369,7 +342,6 @@ typedef	struct			s_env
 
 	char				*frame_buffer;
 	int					target;
-	int					gpu;
 	size_t				global;
 	size_t				local;
 	unsigned int		count;
@@ -399,10 +371,8 @@ typedef	struct			s_env
 	t_gen				*gen_lights;
 }						t_env;
 
-void		opencl_close(t_env *e);
+cl_float4				add_cl_float(cl_float4 v1, cl_float4 v2);
 
-
-cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);
 void					display_hud(t_env *e);
 int						draw(t_env *e);
 void					error(void);

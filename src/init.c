@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/05 22:17:15 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/06 20:27:40 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,19 @@ void		env_init(t_env *e)
 	e->debug = DBUG;
 	e->cen_x = e->win_w / 2;
 	e->cen_y = e->win_h / 2;
+<<<<<<< HEAD
 	e->gpu = 1;
+=======
+	//if (IS_GPU)
+		e->scene->flag |= OPTION_GPU;
+>>>>>>> 3afeadce2ce771bf5010a28d4f1b7eac8cf5fafe
 	e->tree = tor_create(e);
 }
 
 void		init(t_env *e, int ac, char *av)
 {
 	ft_bzero(e, sizeof(t_env));
-	if (!(e->scene = malloc(sizeof(t_scene))))
+	if (!(e->scene = ft_memalloc(sizeof(t_scene))))
 		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
 	if (!(e->gen_objects = construct_gen()))
 		s_error("\x1b[2;31mCan't initialize t_gen\x1b[0m", e);
@@ -114,16 +119,22 @@ void		init(t_env *e, int ac, char *av)
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RT")))
 		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
 	frame_init(e);
-	printf("%i %i\n", e->scene->win_w, e->scene->win_h);
-	cl_init(&e->cl, "./kernel/kernel.cl", "ray_trace", e->scene->win_w * e->scene->win_h);
+	printf("%i %i %i\n", e->scene->win_w, e->scene->win_h, (e->scene->flag & OPTION_GPU));
+	if (!(e->cl = construct_cl("./kernel/kernel.cl", "ray_trace", e->scene->win_w, e->scene->win_h,
+			(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
+		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
 	//if (e->debug)
 		init_print_structure_memory_size();
-
-	cl_create_buffer(&e->cl, e->scene->win_w * e->scene->win_h * 4);
-	cl_create_buffer(&e->cl, e->gen_objects->mem_size);
-	cl_create_buffer(&e->cl, sizeof(t_scene));
-	cl_create_buffer(&e->cl, sizeof(t_cam) * NCAM);
-	cl_create_buffer(&e->cl, e->gen_lights->mem_size);
-	cl_create_buffer(&e->cl, sizeof(int));
-
+	if (!(e->cl->add_buffer(e->cl, e->scene->win_w * e->scene->win_h * 4)))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, e->gen_objects->mem_size)))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(t_scene))))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(t_cam) * NCAM)))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, e->gen_lights->mem_size)))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(int))))
+		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
 }

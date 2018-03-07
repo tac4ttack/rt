@@ -453,12 +453,12 @@ static float3	get_cone_abc(const __local t_cone *cone, const float3 ray, const f
 	return (abc);
 }
 
-void			print_mem(__local t_cone *cone)
+static void			print_mem(__local t_cone *cone)
 {
 	printf("dir : x = %f, y = %f, z = %f\npos : x = %f, y = %f, z = %f\nangle = %f\n\n", cone->dir.x, cone->dir.y, cone->dir.z, cone->pos.x, cone->pos.y, cone->pos.z, cone->angle);
 }
 
-void			print_vect(float3 v)
+static void			print_vect(float3 v)
 {
 	printf("ray : x = %f, y = %f, z = %f\n\n", v.x, v.y, v.z);
 }
@@ -863,9 +863,6 @@ __kernel void	ray_trace(	__global	char		*output,
 	float3			cam_ray;
 
 	final_color = 0;
-	pix.x = get_global_id(0) % scene->win_w;
-	pix.y = get_global_id(0) / scene->win_w;
-	id = pix.x + (scene->win_w * pix.y);
 
 	ev = async_work_group_copy((__local char *)mem_objects, (__global char *)global_mem_objects, mem_size_objects, 0);
 	wait_group_events(1, &ev);
@@ -875,6 +872,10 @@ __kernel void	ray_trace(	__global	char		*output,
 	wait_group_events(1, &ev);
 	ev = async_work_group_copy((__local char *)mem_lights, (__global char *)global_mem_lights, mem_size_lights, 0);
 	wait_group_events(1, &ev);
+
+	pix.x = get_global_id(0);// % scene->win_w;
+	pix.y = get_global_id(1);// / scene->win_w;
+	id = pix.x + (scene->win_w * pix.y);
 
 	scene->cameras = cameras;
 	scene->mem_lights = mem_lights;
