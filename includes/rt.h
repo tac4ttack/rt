@@ -311,7 +311,6 @@ typedef	struct			s_ui
 	GtkWidget			*frame_placeholder; // gtkimage widget
 	guchar				*frame_ptr; // pointer to pixel data of pixbuf
 	
-	
 	int					redraw;
 }						t_ui;
 
@@ -336,10 +335,6 @@ typedef	struct			s_env
 
 	t_cl				*cl;
 
-	void				*mlx;
-	void				*win;
-	t_frame				*frame;
-	t_key				keys;
 	int					win_w;
 	int					win_h;
 
@@ -422,13 +417,7 @@ int						mlx_main_loop(t_env *e);
 int						mlx_mouse_events(int btn, int x, int y, t_env *e);
 cl_float3				normalize_vect(cl_float3 v);
 
-// vieille fonctions opencl flo chaton
-//int						opencl_allocate_scene_memory(t_env *e);
-//void					opencl_close(t_env *e);
-//int						opencl_init(t_env *e);
-//void					opencl_print_error(int error);
 void					opencl_set_args(t_env *e, t_cl *cl);
-//int						opencl_builderrors(t_env *e, int err, int errorcode);
 
 void					p_error(char *str, t_env *e);
 void					print_usage();

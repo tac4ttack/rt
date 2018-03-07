@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 18:50:06 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 19:14:42 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,26 +64,6 @@ void		load_scene(t_env *e)
 	}
 	xml_list_clean(e, &XML->node_lst);
 	ft_putendl("\x1b[1;29mSuccessfully loaded the scene!\n\x1b[0m");
-}
-
-void		frame_init(t_env *e)
-{
-	int		bpp;
-	int		row;
-	int		endian;
-
-	if (!(e->frame = malloc(sizeof(t_frame))))
-		s_error("\x1b[1;31mCan't initialize the frame\x1b[0m", e);
-	e->frame->w = e->win_w;
-	e->frame->h = e->win_h;
-	if (!(e->frame->ptr = mlx_new_image(e->mlx, e->frame->w, e->frame->h)))
-		s_error("\x1b[1;31mCan't create new mlx image\x1b[0m", e);
-	if (!(e->frame->pix = mlx_get_data_addr(e->frame->ptr, \
-							&(bpp), &(row), &(endian))))
-		s_error("\x1b[1;31mCan't create image address\x1b[0m", e);
-	e->frame->bpp = bpp;
-	e->frame->row = row;
-	e->frame->endian = endian;
 }
 
 void		env_init(t_env *e)

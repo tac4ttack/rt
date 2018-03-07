@@ -59,23 +59,15 @@ SRC_NAME =  			gtk.c \
 						hud.c \
 						init.c \
 						main.c \
-						mlx_image_draw.c \
-						mlx_main_loop.c \
 						rotations.c \
 						tools.c \
 						ui_obj.c \
 						ui_cam.c \
 						update_fps.c \
 						vectors.c \
-						hooks.c \
 						gen/construct_gen.c \
 						gen/gen_add.c \
 						gen/destruct_gen.c \
-						event/mlx_mouse.c \
-						event/mlx_key_press.c \
-						event/mlx_key_release.c \
-						event/mlx_key_norepeat.c \
-						event/mlx_key_events.c \
 						cl/destruct_cl.c \
 						cl/construct_cl.c \
 						cl/cl_print_error.c \
