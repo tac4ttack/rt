@@ -86,6 +86,7 @@ typedef struct			s_object
 	cl_int				color;
 	cl_float			reflex;
 	cl_float			refract;
+	cl_float			opacity;
 }						t_object;
 
 typedef struct			s_fps
@@ -152,6 +153,7 @@ typedef struct			s_cone
 	cl_int				color;
 	cl_float			reflex;
 	cl_float			refract;
+	cl_float			opacity;
 	cl_float			angle;
 
 }						t_cone;
@@ -167,6 +169,7 @@ typedef struct			s_cylinder
 	cl_int				color;
 	cl_float			reflex;
 	cl_float			refract;
+	cl_float			opacity;
 	cl_float			height;
 	cl_float3			base_dir;
 	cl_float			radius;
@@ -183,6 +186,7 @@ typedef struct			s_plane
 	cl_int				color;
 	cl_float			reflex;
 	cl_float			refract;
+	cl_float			opacity;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -196,6 +200,7 @@ typedef struct			s_sphere
 	cl_int				color;
 	cl_float			reflex;
 	cl_float			refract;
+	cl_float			opacity;
 	cl_float			radius;
 }						t_sphere;
 
@@ -236,6 +241,7 @@ typedef struct			s_node
 	cl_float3			spec;
 	cl_float			reflex;
 	cl_float			refract;
+	cl_float			opacity;
 	struct s_node		*next;
 }						t_node;
 
@@ -437,6 +443,8 @@ void					xml_data_radius(t_env *e, char **attributes, \
 void					xml_data_reflex(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_refract(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_opacity(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_shrink(t_env *e, char **attributes, \
 										int *i, t_node *node);

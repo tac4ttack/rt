@@ -39,6 +39,7 @@ typedef struct			s_object
 	int					color;
 	float				reflex;
 	float				refract;
+	float				opacity;
 }						t_object;
 
 typedef struct			s_light_ray
@@ -88,6 +89,7 @@ typedef struct			s_cone
 	int					color;
 	float				reflex;
 	float				refract;
+	float				opacity;
 
 	float				angle;
 
@@ -104,6 +106,7 @@ typedef struct			s_cylinder
 	int					color;
 	float				reflex;
 	float				refract;
+	float				opacity;
 
 	float				height;
 	float3				base_dir;
@@ -121,6 +124,7 @@ typedef struct			s_plane
 	int					color;
 	float				reflex;
 	float				refract;
+	float				opacity;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -134,6 +138,7 @@ typedef struct			s_sphere
 	int					color;
 	float				reflex;
 	float				refract;
+	float				opacity;
 
 	float				radius;
 }						t_sphere;

@@ -31,7 +31,11 @@ static void	xml_cone_data_n(t_env *e, char **att, t_node *cone_node, int *i)
 	else
 		xml_data_reflex(e, att, i, cone_node);
 	if (ft_strncmp(att[*i], "refract=\"", 6) != 0)
-		s_error("\x1b[2;31mError in cone, REFRACT expected in #7\x1b[0m", e);
+		s_error("\x1b[2;31mError in cone, REFRACT expected in #8\x1b[0m", e);
+	else
+		xml_data_refract(e, att, i, cone_node);
+	if (ft_strncmp(att[*i], "opacity=\"", 6) != 0)
+		s_error("\x1b[2;31mError in cone, OPACITY expected in #9\x1b[0m", e);
 	else
 		xml_data_refract(e, att, i, cone_node);
 }

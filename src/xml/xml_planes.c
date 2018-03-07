@@ -34,6 +34,10 @@ static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 		s_error("\x1b[2;31mError in plane, REFRACT expected in #7\x1b[0m", e);
 	else
 		xml_data_refract(e, att, i, plane_node);
+	if (ft_strncmp(att[*i], "opacity=\"", 6) != 0)
+		s_error("\x1b[2;31mError in plane, OPACITY expected in #8\x1b[0m", e);
+	else
+		xml_data_refract(e, att, i, plane_node);
 }
 
 static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
