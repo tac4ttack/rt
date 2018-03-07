@@ -65,15 +65,14 @@ SRC_NAME =  			gtk.c \
 						ui_cam.c \
 						update_fps.c \
 						vectors.c \
-						gen/construct_gen.c \
+						gen/gen_construct.c \
 						gen/gen_add.c \
-						gen/destruct_gen.c \
+						gen/gen_destruct.c \
 						cl/cl_destruct.c \
 						cl/cl_construct.c \
 						cl/cl_print_error.c \
 						cl/cl_compute.c \
 						cl/cl_create_buffer.c \
-						opencl_compute.c \
 						xml/xml.c \
 						xml/xml_check_attr.c \
 						xml/xml_cameras.c \
