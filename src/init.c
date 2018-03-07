@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 19:50:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/07 23:58:08 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void		env_init(t_env *e)
 //	printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
 //	printf("t_tor 				: %-20lu\n", sizeof(t_tor)); // TOR IS NO MORE!
 //	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
-		
+
 //	e->tree = tor_create(e); USELESS
 }
 
@@ -114,7 +114,7 @@ void		init(GtkApplication *app, gpointer data)
 	if (!(e->pixel_data = malloc(sizeof(int) * e->win_w * e->win_h)))
 		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
 	ft_bzero(e->pixel_data, sizeof(int) * e->win_w * e->win_h);
-	
+
 //	printf("test1 = %x\n", ((int*)e->frame_pixel_data)[461312]);
 
 //	if (!(e->mlx = mlx_init()))
@@ -131,17 +131,17 @@ void		init(GtkApplication *app, gpointer data)
 //		e->gpu = 0;
 //		opencl_init(e);
 //	}
-	
-	
+
+
 //	gtk_main_loop(e);
 	printf("%i %i %i\n", e->scene->win_w, e->scene->win_h, (e->scene->flag & OPTION_GPU));
 	if (!(e->cl = cl_construct("./kernel/kernel.cl", "ray_trace", e->scene->win_w, e->scene->win_h,
 			(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
 		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
-	
+
 //	if (e->debug)
 		init_print_structure_memory_size();
-		
+
 	if (!(e->cl->add_buffer(e->cl, e->scene->win_w * e->scene->win_h * 4)))
 		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, e->gen_objects->mem_size)))
@@ -156,5 +156,5 @@ void		init(GtkApplication *app, gpointer data)
 		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
 
 	init_gtk(app, e);
-	gtk_window_set_title (GTK_WINDOW(e->ui->window), "RT - Initialized!");
+	//gtk_window_set_title (GTK_WINDOW(e->ui->window), "RT - Initialized!");
 }

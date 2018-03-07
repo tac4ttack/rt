@@ -298,7 +298,7 @@ typedef	struct			s_env
 {
 	t_cl				*cl;
 	t_ui				*ui;
-	
+
 	char				*scene_file;
 	int					scene_fd;
 	t_scene				*scene;
@@ -320,7 +320,7 @@ typedef	struct			s_env
 	int					debug;
 	int					gpu;
 	t_fps				fps;
-	
+
 	int					*pixel_data; // raw pixel image
 	int					target;
 }						t_env;
