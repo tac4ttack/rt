@@ -70,7 +70,7 @@ static bool		cl_build(t_cl *cl, const char *name)
 	return (true);
 }
 
-t_cl				*construct_cl(const char *path, const char *name,
+t_cl				*cl_construct(const char *path, const char *name,
 							const size_t width, const size_t height, int type)
 {
 	t_cl *cl;

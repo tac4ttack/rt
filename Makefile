@@ -68,8 +68,8 @@ SRC_NAME =  			gtk.c \
 						gen/construct_gen.c \
 						gen/gen_add.c \
 						gen/destruct_gen.c \
-						cl/destruct_cl.c \
-						cl/construct_cl.c \
+						cl/cl_destruct.c \
+						cl/cl_construct.c \
 						cl/cl_print_error.c \
 						cl/cl_compute.c \
 						cl/cl_create_buffer.c \
