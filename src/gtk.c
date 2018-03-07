@@ -96,8 +96,8 @@ void		init_gtk(GtkApplication *app, t_env *e)
 	g_signal_connect(G_OBJECT(e->ui->window), "button-press-event", G_CALLBACK(gtk_event_button_press), (gpointer)e);
 
 //// a pas l'air de fonctionner //////////////////////////////
-////e->ui->icon = create_pixbuf_from_file(e, "icon.png");//////
-////gtk_window_set_icon(GTK_WINDOW(e->ui->window), e->ui->icon);
+e->ui->icon = create_pixbuf_from_file(e, "icon.png");//////
+gtk_window_set_icon(GTK_WINDOW(e->ui->window), e->ui->icon);
 //////////////////////////////////////////////////////////////
 
 	e->ui->mainbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
