@@ -8,7 +8,7 @@
 # include "libft.h"
 # include <gtk/gtk.h>
 # include "cl.h"
-	
+
 # include "mlx.h"
 
 # define G_BYTE_ORDER G_LITTLE_ENDIAN
@@ -308,10 +308,10 @@ typedef	struct			s_ui
 
 	GtkWidget			*frame_box; // box containing frame_placeholder
 	GdkPixbuf			*frame_pixel_buffer; // rendered scene gdkpixbuf
-	GtkWidget			*frame_placeholder; // gtkimage widget
+	void			*frame_placeholder; // gtkimage widget
 	guchar				*frame_ptr; // pointer to pixel data of pixbuf
-	
-	
+
+
 	int					redraw;
 }						t_ui;
 
@@ -345,12 +345,12 @@ typedef	struct			s_env
 
 	int					debug;
 	int					gpu;
-	
+
 	char				*scene_file;
 	int					scene_fd;
 	t_xml				*xml;
 	char				*kernel_src;
-	
+
 	cl_int				err;
 	cl_device_id		device_id;
 	cl_context			context;
@@ -360,7 +360,7 @@ typedef	struct			s_env
 	cl_kernel			kernel_rt;
 	cl_mem				frame_buffer;
 	cl_mem				target_obj_buf;
-	t_hit				target_obj;	
+	t_hit				target_obj;
 
 	int					target;
 	size_t				global;
@@ -382,7 +382,7 @@ typedef	struct			s_env
 
 	t_scene				*scene;
 	cl_mem				scene_mem;
-	
+
 	t_fps				fps;
 
 	int					node_count;

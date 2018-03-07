@@ -1,14 +1,14 @@
 #include "rt.h"
 
 GdkPixbuf	*create_pixbuf_from_file(t_env *e, const gchar *filename)
-{    
+{
 	GdkPixbuf *pixbuf;
 	GError *error;
-	
+
 	error = NULL;
 	pixbuf = gdk_pixbuf_new_from_file(filename, &error);
 	if (!pixbuf)
-	{  
+	{
 		ft_putstr(error->message);
 		g_error_free(error);
 		s_error("\x1b[1;31mCouldn't create GtkPixbuf from file\x1b[0m", e);
@@ -16,7 +16,7 @@ GdkPixbuf	*create_pixbuf_from_file(t_env *e, const gchar *filename)
 	return pixbuf;
 }
 
-static void		gtk_export_png(GdkPixbuf *target, char *format, char *filename)
+void		gtk_export_png(GdkPixbuf *target, char *format, char *filename)
 {
 	GError		*error;
 
@@ -79,12 +79,31 @@ void gtk_stop_redraw(GtkWidget *window, GdkEvent *event, gpointer data)
 	printf("redraw = %d\n", e->ui->redraw);
 }
 
+GdkPixbuf		*gtk_new_image(unsigned char *data, int width, int height)
+{
+	GdkPixbuf	*pixbuf;
+	GBytes		*buffer;
+
+	buffer = NULL;
+	pixbuf = NULL;
+	buffer = g_bytes_new(data, width  * height * 4);
+	pixbuf = gdk_pixbuf_new_from_bytes(buffer, GDK_COLORSPACE_RGB, 0, 8,
+		 width , height, 4 * width);
+	if (!pixbuf)
+		return (NULL);
+	g_bytes_unref(buffer);
+	buffer = NULL;
+	return (pixbuf);
+}
+
 void		init_gtk(GtkApplication *app, t_env *e)
 {
+	(void)e;
+/*
 	ft_putendl("\n\n\x1b[1;32m/\\ Initializing GTK /\\\x1b[0m\n");
-	
+
 	e->ui->window = gtk_application_window_new(app);
-	
+
 	gtk_window_set_title(GTK_WINDOW(e->ui->window), "RT - Initializing...");
 	gtk_window_set_resizable(GTK_WINDOW(e->ui->window), TRUE);
 	gtk_window_set_default_size(GTK_WINDOW(e->ui->window), e->win_w + 200, e->win_h + 200);
@@ -110,11 +129,11 @@ void		init_gtk(GtkApplication *app, t_env *e)
 	e->ui->frame_pixel_buffer = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, e->win_w, e->win_h);
 	gtk_widget_set_size_request(e->ui->frame_placeholder, e->win_w, e->win_h);
 	gtk_container_add(GTK_CONTAINER(e->ui->frame_box), e->ui->frame_placeholder);
-		
+
 	ft_putendl("\x1b[1;29mGTK successfully initialized\x1b[0m");
 
 	ft_putendl("\n\n\x1b[1;32m/\\ Rendering first frame /\\\x1b[0m");
-	ft_putendl("\n\x1b[1;29m...\x1b[0m\n");	
+	ft_putendl("\n\x1b[1;29m...\x1b[0m\n");
 	opencl_draw(e);
 
 //	printf("verif0 %x\n", e->frame_pixel_data[461312]);
@@ -132,22 +151,47 @@ void		init_gtk(GtkApplication *app, t_env *e)
 //	e->ui->frame_pixel_buffer = gdk_pixbuf_new_from_bytes((GBytes *)e->frame_pixel_data, GDK_COLORSPACE_RGB, TRUE, 8, e->win_w, e->win_h, e->win_w * 4);
 	gtk_export_png(e->ui->frame_pixel_buffer, "bmp", "testicule.bmp");
 
-
 	ft_putendl("\x1b[1;29mDone!\x1b[0m");
 	gtk_widget_show_all(e->ui->window);
+*/
+
+opencl_draw(e);
+
+	GtkWidget *window;
+	GtkWidget *button;
+	GtkWidget *button_box, *event_box;
+	GtkWidget *image;
+	GtkImage *imagex;
+	GdkPixbuf		*pixbuf;
+	GtkBuilder	*builder;
+	builder = gtk_builder_new_from_file("lol.c");
+
+	(void)button;
+	(void)button_box;
+	(void)event_box;
+	(void)imagex;
+	(void)image;
+	e->ui->frame_placeholder = gtk_builder_get_object(builder, "img");
+	window = gtk_application_window_new (app);
+	//gtk_window_set_title (GTK_WINDOW (window), "Window");
+	//gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
+
+	pixbuf = gtk_new_image((unsigned char *)e->pixel_data, e->win_w, e->win_h);
+	gtk_image_set_from_pixbuf(GTK_IMAGE(e->ui->frame_placeholder), pixbuf);
+	gtk_widget_show_all (window);
 }
 
 
 /*void		init_gtk(GtkApplication *app, gpointer data)
 {
 	t_env *e;
-	
+
 	e = data;
 
 	ft_putendl("\n\n\x1b[1;32m/\\ Initializing GTK /\\\x1b[0m\n");
-	
+
 	e->ui->window = gtk_application_window_new(app);
-	
+
 	gtk_window_set_title (GTK_WINDOW(e->ui->window), "RT - Initializing...");
 	gtk_window_set_resizable(GTK_WINDOW(e->ui->window), TRUE);
 	gtk_window_set_default_size(GTK_WINDOW(e->ui->window), e->win_w, e->win_h);
