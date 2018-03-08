@@ -585,7 +585,8 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 		}
 	}
 	save = res;
-	if (scene->flag & OPTION_WAVE)
+	//if (scene->flag & OPTION_WAVE)
+	if (1)
 	{
 		/*						VAGUELETTE							*/
 		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);

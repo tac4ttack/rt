@@ -2,11 +2,11 @@
 
 void				mount_image(t_env *e)
 {
-	GdkPixbuf		*pixbuf;
+	//GdkPixbuf		*pixbuf;
 
-	pixbuf = NULL;
-	pixbuf = gtk_new_image((unsigned char *)e->pixel_data, e->win_w, e->win_h);
-	gtk_image_set_from_pixbuf(GTK_IMAGE(e->ui->frame_placeholder), pixbuf);
+//	pixbuf = NULL;
+	e->ui->pixbuf = gtk_new_image((unsigned char *)e->pixel_data, e->win_w, e->win_h);
+	gtk_image_set_from_pixbuf((struct _GtkImage *)e->ui->frame_placeholder, e->ui->pixbuf);
 }
 /*
 static gboolean		gtk_loop(void *data)
@@ -71,7 +71,13 @@ gboolean		gtk_main_loop(void *ptr)
 					return (FALSE);
 				//printf("One\n");
 			}*/
-			gtk_main_iteration_do(FALSE);
+		//	gtk_main_iteration_do(FALSE);
+			while (gtk_events_pending())
+			{
+				printf("Oui\n");
+				if (gtk_main_iteration())
+					return (FALSE);
+			}
 		}
 	}
 	return (0);
