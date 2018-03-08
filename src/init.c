@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 23:58:08 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/08 21:10:09 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,10 @@ void		env_init(t_env *e)
 //	e->tree = tor_create(e); USELESS
 }
 
-void		init(GtkApplication *app, gpointer data)
+void		init(gpointer data)
 {
 	t_env *e;
 
-	(void)app;
 	e = data;
 	if (!(e->scene = ft_memalloc(sizeof(t_scene))))
 		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
@@ -155,6 +154,6 @@ void		init(GtkApplication *app, gpointer data)
 	if (!(e->cl->add_buffer(e->cl, sizeof(int))))
 		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
 
-	init_gtk(app, e);
+	init_gtk(e);
 	//gtk_window_set_title (GTK_WINDOW(e->ui->window), "RT - Initialized!");
 }

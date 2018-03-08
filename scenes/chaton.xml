@@ -89,7 +89,7 @@
 			diff="1, 1, 1"
 			spec="1, 1, 1"
 			reflex="0"
-			refract="1.5"
+			refract="0"
 			/>
 
 <light		id="0"
@@ -141,6 +141,6 @@
 			diff="0.42, 0.42, 0.42"
 			spec="0.42, 0.42, 0.42"
 			reflex="0.42"
-			refract="1.3"
+			refract="0"
 			/>
 </scene>

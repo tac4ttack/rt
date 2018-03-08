@@ -3,7 +3,7 @@
 #define BACKCOLOR 0x00999999
 
 # define EPSILON 0.00005f
-#define MAX_DIST 10000000.0 // epsilon 0.00000001 ?
+#define MAX_DIST 10000000.0
 #define SHADOW_BIAS 1000
 
 #define CAM scene->cameras
@@ -53,6 +53,7 @@ typedef struct			s_hit
 	float3				normal;
 	float3				pos;
 	t_object __local	*obj;
+	void				*void1;
 	int					mem_index;
 }						t_hit;
 
@@ -155,11 +156,11 @@ typedef	struct			s_tor
 typedef struct			s_scene
 {
 	t_cam				__local *cameras;
-	//void				*void1;
+	void				*void1;
 	void				__local *mem_lights;
-	//void				*void4;
+	void				*void4;
 	void				__local *mem_obj;
-	//void				*void7;
+	void				*void7;
 	unsigned int		n_cams;
 	unsigned int		n_cones;
 	unsigned int		n_cylinders;
@@ -890,7 +891,7 @@ __kernel void	ray_trace(	__global	char		*output,
 		final_color = sepiarize(final_color);
 	if (scene->flag & OPTION_BW)
 		final_color = desaturate(final_color);
-	
+
 	// RGB TO BGR SWAP
 	uint3 swap;
 	swap.x = (final_color & 0x00FF0000) >> 16;
@@ -900,4 +901,3 @@ __kernel void	ray_trace(	__global	char		*output,
 
 	((__global unsigned int *)output)[id] = final_color;
 }
-

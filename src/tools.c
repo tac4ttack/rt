@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 20:37:38 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/08 21:10:27 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	flush(t_env *e)
 	{
 		cl_destruct(&e->cl);
 		gen_destruct(&e->gen_objects);
-		gen_destruct(&e->gen_lights);	
+		gen_destruct(&e->gen_lights);
 		if (XML)
 			free(XML);
 		ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
@@ -56,14 +56,13 @@ int		quit(t_env *e)
 	return (0);
 }
 
-int		gtk_quit(GtkApplication *app, gpointer data)
+int		gtk_quit(gpointer data)
 {
 	t_env *e;
-	
+
 	e = data;
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
 	flush(e);
-	g_object_unref(app);
 	ft_putendl("\x1b[1;29mFreed the GTK App\x1b[0m");
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
 	exit(EXIT_SUCCESS);

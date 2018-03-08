@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:32:13 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 22:39:24 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/08 21:09:19 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,6 @@ int			main(int ac, char **av)
 	if (!(e->ui = malloc(sizeof(t_ui))))
 		s_error("\x1b[1;31mCan't initialize UI data structure\x1b[0m", e);
 	e->scene_file = ft_strdup(av[1]);
-
-	e->ui->gtk_app = gtk_application_new("ray.tracing", G_APPLICATION_FLAGS_NONE);
-	g_signal_connect(e->ui->gtk_app, "activate", G_CALLBACK(init), (gpointer)e);
-	e->ui->gtk_status = g_application_run(G_APPLICATION(e->ui->gtk_app), ac++ , av + 1);
-
-//	set_hooks(e);
+	init(e);
 	return (0);
 }
