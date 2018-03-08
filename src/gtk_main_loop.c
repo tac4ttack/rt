@@ -8,9 +8,36 @@ void				mount_image(t_env *e)
 	pixbuf = gtk_new_image((unsigned char *)e->pixel_data, e->win_w, e->win_h);
 	gtk_image_set_from_pixbuf(GTK_IMAGE(e->ui->frame_placeholder), pixbuf);
 }
-
-int		gtk_main_loop(t_env *e)
+/*
+static gboolean		gtk_loop(void *data)
 {
+	t_vm	*vm;
+
+	vm = (t_vm *)data;
+	vm->gtk.time = g_get_monotonic_time();
+	while (IS_UNSET(vm->flag, STOP))
+	{
+		if (IS_UNSET(vm->flag, END)
+			&& (IS_UNSET(vm->flag, PAUSE) || IS_SET(vm->flag, STEP)))
+		{
+			if (gtk_cycle(vm))
+				break ;
+		}
+		while (gtk_events_pending())
+			if (gtk_main_iteration())
+				return (FALSE);
+	}
+	vm->gtk.time = g_get_monotonic_time();
+	while (g_get_monotonic_time() - vm->gtk.time < 100000)
+		;
+	gtk_main_quit();
+	return (FALSE);
+}
+*/
+gboolean		gtk_main_loop(void *ptr)
+{
+	t_env *e;
+	e = (t_env *)ptr;
 	char *fps;
 
 	fps = NULL;
@@ -24,6 +51,7 @@ int		gtk_main_loop(t_env *e)
 			fps = ft_itoa(e->fps.ret_fps);
 			fps = ft_strjoin_frs2("RT - ", fps);
 			fps = ft_strjoin_frs1(fps, " ips");
+			printf("%s\n", fps);
 		//	ft_putendl(fps); // Controle semble ok
 			//gtk_window_set_title(GTK_WINDOW(e->ui->window), fps);
 
@@ -36,6 +64,14 @@ int		gtk_main_loop(t_env *e)
 //			mlx_put_image_to_window(e->mlx, e->win, e->frame->ptr, 0, 0); /// TO REPLACE
 //			display_hud(e); // TO REPLACE
 			free(fps);
+			//gtk_widget_show_all((GtkWidget *)e->ui->main_window);
+			/*while ((gtk_events_pending()))
+			{
+				if (gtk_main_iteration())
+					return (FALSE);
+				//printf("One\n");
+			}*/
+			gtk_main_iteration_do(FALSE);
 		}
 	}
 	return (0);

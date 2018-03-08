@@ -114,12 +114,14 @@ void		init_gtk(t_env *e)
 	gtk_window_set_default_size(GTK_WINDOW(ui->main_window), e->win_w + 200, e->win_h + 200);
 	gtk_window_set_position(GTK_WINDOW(ui->main_window), GTK_WIN_POS_CENTER);
 	g_signal_connect(GTK_WINDOW(ui->main_window), "destroy", G_CALLBACK(gtk_quit), (gpointer)e);
-	g_signal_connect(G_OBJECT(ui->main_window), "key-release-event", G_CALLBACK(gtk_event_key_release), (gpointer)e);
-	g_signal_connect(G_OBJECT(ui->main_window), "key-press-event", G_CALLBACK(gtk_event_key_press), (gpointer)e);
-	g_signal_connect(G_OBJECT(ui->main_window), "button-release-event", G_CALLBACK(gtk_event_button_release), (gpointer)e);
-	g_signal_connect(G_OBJECT(ui->main_window), "button-press-event", G_CALLBACK(gtk_event_button_press), (gpointer)e);
+//	g_signal_connect(G_OBJECT(ui->main_window), "key-release-event", G_CALLBACK(gtk_event_key_release), (gpointer)e);
+//	g_signal_connect(G_OBJECT(ui->main_window), "key-press-event", G_CALLBACK(gtk_event_key_press), (gpointer)e);
+//	g_signal_connect(G_OBJECT(ui->main_window), "button-release-event", G_CALLBACK(gtk_event_button_release), (gpointer)e);
+//	g_signal_connect(G_OBJECT(ui->main_window), "button-press-event", G_CALLBACK(gtk_event_button_press), (gpointer)e);
 
 	ui->pixbuf = gtk_new_image((unsigned char *)e->pixel_data, e->win_w, e->win_h);
 	gtk_image_set_from_pixbuf(GTK_IMAGE(e->ui->frame_placeholder), ui->pixbuf);
+	//g_timeout_add(1, gtk_main_loop, e);
+	g_idle_add(gtk_main_loop, e);
 	gtk_main();
 }
