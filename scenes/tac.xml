@@ -12,6 +12,8 @@
 				diff="0.42, 0.42, 0.42"
 				spec="0, 0, 0"
 				reflex="0"
+			refract="0"
+			opacity="1"
 				/>
 
 	<sphere		id="0"
@@ -22,6 +24,8 @@
 				diff="0.62, 0.6, 0.62"
 				spec="0.42, 0.42, 0.42"
 				reflex="0.42"
+			refract="0"
+			opacity="1"
 				/>
 	<light		id="0"
 				type="1"
@@ -39,7 +43,9 @@
 				height="0"
 				diff="0.42, 0.42, 0.42"
 				spec="0.82, 0.82, 0.82"
-				reflex="0.42"
+				reflex="1"
+			refract="0"
+			opacity="1"
 				/>
 	<cone		id="0"
 				pos="-5, 0, 5"
@@ -48,7 +54,9 @@
 				color="0, 0, 0, 255"
 				diff="0.42, 0.42, 0.42"
 				spec="0.42, 0.42, 0.42"
-				reflex="0.42"
+				reflex="1"
+			refract="0"
+			opacity="1"
 				/>
 
 <!--

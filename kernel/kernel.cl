@@ -146,16 +146,14 @@ typedef struct			s_sphere
 
 typedef	struct			s_tor
 {
+	int					activate;
 	float3				prim;
-	//float3				refl;
-	//float3				refr;
-	unsigned int		hit_type;
-	unsigned int		hit_id;
-	//float				coef_refl;
-	//float				coef_refr;
+	float3				normale;
+	float				coef_ref;
+	float				coef_tra;
 	unsigned int		color;
-	char				check_g;
-	char				check_d;
+	int					check_g;
+	int					check_d;
 }						t_tor;
 
 typedef struct			s_scene
@@ -240,6 +238,22 @@ static unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
 	g = (g1 * g2 > 255 ? 255 : g1 * g2);
 	b = (b1 * b2 > 255 ? 255 : b1 * b2);
 
+	return ((r << 16) + (g << 8) + b);
+}
+
+static unsigned int	blend_med(const unsigned int c1, const unsigned int c2)
+{
+	unsigned int r, g, b;
+	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
+	unsigned int g1 = (c1 & 0x0000FF00) >> 8;
+	unsigned int b1 = (c1 & 0x000000FF);
+	unsigned int r2 = (c2 & 0x00FF0000) >> 16;
+	unsigned int g2 = (c2 & 0x0000FF00) >> 8;
+	unsigned int b2 = (c2 & 0x000000FF);
+
+	r =  (r1 + r2) / 2;
+	g =  (g1 + g2) / 2;
+	b =  (b1 + b2) / 2;
 	return ((r << 16) + (g << 8) + b);
 }
 
@@ -556,10 +570,7 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 		else if (obj->id == OBJ_CONE)
 			dist = inter_cone(obj, ray, origin);
 		if (lightdist > 0 && dist < lightdist && dist > EPSILON)
-		{
-		//		printf("\nhit.opacity : %f, objopacity : %f, lightdist : %f\n", hit.opacity, obj->opacity, lightdist);
 			hit.opacity += obj->opacity;
-		}
 		if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
 		{
 			hit.dist = dist;
@@ -714,6 +725,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				(col_b > 255 ? col_b = 255 : 0);
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
+			res_color = blend_factor(res_color, ((light_hit.opacity - 1) * -1));
 		}
 		mem_index_lights += light->size;
 	}
@@ -763,7 +775,9 @@ static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_h
 	float			eta = 0;
 	float			base = 1;
 	int				i = 0;
-	while (old_hit.obj->refract != 0 && ++i < 50)
+
+	old_hit.pos = old_hit.pos + ((old_hit.dist / SHADOW_BIAS) * -(old_hit.normal * 2)); //pour refract, inverser le decalage de la position	
+	while (old_hit.obj->refract != 0 && old_hit.obj->opacity < 1 && ++i < 50)
 	{
 		c1 = dot(old_hit.normal, refract);
 		eta = base / old_hit.obj->refract;
@@ -784,7 +798,7 @@ static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_h
 		{
 			new_hit.pos = (new_hit.dist * refract) + old_hit.pos;
 			new_hit.normal = get_hit_normal(scene, refract, new_hit);
-			if (new_hit.mem_index != old_hit.mem_index && new_hit.obj->refract != 0)
+			if (new_hit.mem_index != old_hit.mem_index && new_hit.obj->refract != 0 && new_hit.obj->opacity < 1)
 				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000) * -new_hit.normal);//pour refract en chaine, inverser la normale pour le decalage de la position
 			else
 				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000) * new_hit.normal);
@@ -796,6 +810,147 @@ static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_h
 		old_hit = new_hit;
 	}
 	return (phong(scene, new_hit, refract));
+}
+
+static float3		refract_ray(const __local t_scene *scene, const float3 ray, t_hit old_hit) // pour le plan, indice de refraction (pour tout objet non plein)
+{
+	float3			refract = ray;
+	float			c1 = 0;
+	float			c2 = 0;
+	float			eta = 0;
+	float			base = 1;
+
+	old_hit.pos = old_hit.pos + ((old_hit.dist / SHADOW_BIAS) * -(old_hit.normal * 2)); //pour refract, inverser le decalage de la position	
+	c1 = dot(old_hit.normal, refract);
+	eta = base / old_hit.obj->refract;
+	if (c1 < 0)
+		c1 = -c1;
+	else
+	{
+		old_hit.normal = -old_hit.normal;
+		eta = old_hit.obj->refract / base;
+	}
+	c2 = sqrt(1 - ((eta * eta) * (1 - (c1 * c1))));
+	// DEUXIEME LOIS DE SNELL-DECARTES /////////////////////////////////////////////
+	refract = fast_normalize((eta * refract) + ((eta * c1) - c2) * old_hit.normal);
+	////////////////////////////////////////////////////////////////////////////////
+	return (refract);
+}
+
+static float3		bounce_ray(const __local t_scene *scene, const float3 ray, t_hit old_hit)
+{
+	float3			reflex;
+	float			reflex_coef;
+
+	reflex = ray;
+	reflex_coef = 0;
+	// PREMIÈRE LOI DE SNELL-DESCARTES ///////////////////////////////////////////////////////////
+	reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normal, reflex) * old_hit.normal));
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	return (reflex);
+}
+
+static float		reflect_ratio(float n1, float n2, float cos1, float cos2)
+{
+	float			fr1 = 0;
+	float			fr2 = 0;
+
+	if (cos1 >= 0)
+	{
+		fr1 = n1;
+		n1 = n2;
+		n2 = fr1;
+	}
+	if (n1 / n2 * sqrt(1 - cos1 * cos1) > 1)
+		return (1);
+	fr1 = (n2 * cos1 - n1 * cos2) / (n2 * cos1 + n1 * cos2);
+	fr2 = (n1 * cos2 - n2 * cos1) / (n1 * cos2 + n2 * cos1);
+	fr1 *= fr1;
+	fr2 *= fr2;
+	return ((fr1 + fr2) / 2);
+}
+
+static t_tor		tor_push(float3 ray, float3 normale, float coef_ref, float coef_tra, unsigned int color)
+{
+	t_tor			tor;
+
+	tor.prim = ray;
+	tor.normale = normale;
+	tor.coef_ref = coef_ref;
+	tor.coef_tra = coef_tra;
+	tor.color = color;
+	return (tor);
+}
+
+static int			tor_height(int i)
+{
+	int				h = 0;
+
+	while ((i = (i - 1) / 2) >= 0)
+		h++;
+	return (h);
+}
+static t_tor		tor_init(void)
+{
+	t_tor			tor;
+
+	tor.prim = 0;
+	tor.normale = 0;
+	tor.coef_ref = 0;
+	tor.coef_tra = 0;
+	tor.color = 0;
+	tor.check_d = 0;
+	tor.check_g = 0;
+	return (tor);
+}
+
+static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_hit, int depth, unsigned int color)
+{
+	t_hit			new_hit;
+	unsigned int	bounce_color = 0;
+	unsigned int	refract_color = 0;
+	float3			refract = 0;
+	float3			bounce = 0;
+	float			fr = 0;
+	float			ft = 0;
+	float			eta = 0;
+	float			cos1 = 0;
+	float			cos2 = 0;
+	t_tor			tor[2047];
+	int				i = 0;
+
+	tor[i] = tor_init()
+	tor[i] = tor_push(ray, old_hit.normale, old_hit.obj->reflex, old_hit.obj->refract, color);
+	while (tor_height(i) < depth)
+	{
+		eta = 1 / tor[i].coef_tra;
+		cos1 = dot(tor[i].normal, tor[i].prim);
+		if (cos1 >= 0)
+			eta = tor[i].coef_tra;
+		cos2 = sqrt(1 - ((eta * eta) * (1 - (cos1 * cos1))));
+		fr = reflect_ratio(1, tor[i].coef_tra, cos1, cos2);
+		ft = 1 - fr;
+		if (fr < 1)
+		{
+			tor[i].check_g = 1;
+			old_hit.pos = old_hit.pos + 0.0001 * -(old_hit.normal * 2));
+			refract = refract_ray(scene, ray, old_hit);
+			new_hit = ray_hit(scene, old_hit.pos, refract, 0);
+			if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
+			{
+				new_hit.pos = (new_hit.dist * refract) + old_hit.pos;
+				new_hit.normal = get_hit_normal(scene, refract, new_hit);
+				new_hit.pos = new_hit.pos + 0.0001 * new_hit.normal);
+				tor[i * 2 + 1] = tor_push(refract, new_hit.normale, new_hit.obj->reflex, new_hit.obj->refract, phong(scene, new_hit, refract))
+			}
+		}
+		else
+			tor[i].check_g = 0;
+		bounce = bounce_ray(scene, ray, old_hit);
+		i++;
+	}
+	return (blend_add(blend_factor(refract_color, ft), blend_factor(bounce_color, fr)));
+
 }
 
 static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __global int *target, bool isHim)
@@ -820,21 +975,26 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		hit.normal = get_hit_normal(scene, ray, hit);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 		color = phong(scene, hit, ray);
-		if (hit.obj->refract != 0)
-			hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * -(hit.normal * 2)); //pour refract, inverser le decalage de la position
-		if (depth > 0 && hit.obj->reflex > 0)
+		if ((hit.obj->refract != 0 && hit.obj->opacity < 1) && (depth > 0 && hit.obj->reflex > 0))
+			bounce_color = fresnel(scene, ray, hit, depth, color);
+		else if (hit.obj->refract != 0 && hit.obj->opacity < 1)
+		{		
+			bounce_color = refract(scene, ray, hit);
+			if (bounce_color == 0)
+				return (blend_med(bounce_color, blend_factor(color, ((hit.obj->opacity - 1) * -1))));
+			bounce_color = blend_factor(bounce_color, ((hit.obj->opacity - 1) * -1));
+		}
+		else if (depth > 0 && hit.obj->reflex > 0)
 			bounce_color = bounce(scene, ray, hit, depth);
-		if (hit.obj->refract != 0)
-			bounce_color = blend_factor(refract(scene, ray, hit), ((hit.obj->opacity - 1) * -1));
 		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
 }
 
-static float3						get_ray_cam(__local t_scene *scene, const uint2 pix)
+static float3		get_ray_cam(__local t_scene *scene, const uint2 pix)
 {
-	float3					cam_ray = 0;
-	float					ratio = (float)scene->win_w / (float)scene->win_h;
+	float3			cam_ray = 0;
+	float			ratio = (float)scene->win_w / (float)scene->win_h;
 
 	cam_ray.x = ((2 * ((pix.x + 0.5) / scene->win_w)) - 1) * ratio * (tan(radians(ACTIVECAM.fov / 2)));
 	cam_ray.y = ((1 - (2 * ((pix.y + 0.5) / scene->win_h))) * tan(radians(ACTIVECAM.fov / 2)));
@@ -843,26 +1003,26 @@ static float3						get_ray_cam(__local t_scene *scene, const uint2 pix)
 	return(fast_normalize(cam_ray));
 }
 
-__kernel void	ray_trace(	__global	char		*output,
+__kernel void		ray_trace(	__global	char		*output,
 
-							__global	char		*global_mem_objects,
-							__local		char		*mem_objects,
-							__private	size_t		mem_size_objects,
+								__global	char		*global_mem_objects,
+								__local		char		*mem_objects,
+								__private	size_t		mem_size_objects,
 
-							__private	float		u_time,
+								__private	float		u_time,
 
-							__global	t_scene		*scene_data,
-							__global	t_cam		*cameras_data,
+								__global	t_scene		*scene_data,
+								__global	t_cam		*cameras_data,
 
-							__local		t_scene		*scene,
-							__local		t_cam		*cameras,
+								__local		t_scene		*scene,
+								__local		t_cam		*cameras,
 
-							__global	char		*global_mem_lights,
-							__local		char		*mem_lights,
-							__private	size_t		mem_size_lights,
+								__global	char		*global_mem_lights,
+								__local		char		*mem_lights,
+								__private	size_t		mem_size_lights,
 
-							__global	int		*target
-									)
+								__global	int		*target
+							)
 {
 
  	event_t			ev;
