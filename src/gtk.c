@@ -16,7 +16,7 @@ GdkPixbuf	*create_pixbuf_from_file(t_env *e, const gchar *filename)
 	return pixbuf;
 }
 
-void		gtk_export_png(GdkPixbuf *target, char *format, char *filename)
+void		gtk_export(GdkPixbuf *target, char *format, char *filename)
 {
 	GError		*error;
 
