@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/08 21:10:27 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/09 17:47:31 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@ void	flush(t_env *e)
 {
 	if (e)
 	{
-		cl_destruct(&e->cl);
-		gen_destruct(&e->gen_objects);
-		gen_destruct(&e->gen_lights);
+		if (e->cl)
+		{
+			cl_destruct(&e->cl);
+			gen_destruct(&e->gen_objects);
+			gen_destruct(&e->gen_lights);
+		}
 		if (XML)
 			free(XML);
 		ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
