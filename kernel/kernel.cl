@@ -156,11 +156,11 @@ typedef	struct			s_tor
 typedef struct			s_scene
 {
 	t_cam				__local *cameras;
-	void				*void1;
+//	void				*void1;
 	void				__local *mem_lights;
-	void				*void4;
+//	void				*void4;
 	void				__local *mem_obj;
-	void				*void7;
+//cd ..	void				*void7;
 	unsigned int		n_cams;
 	unsigned int		n_cones;
 	unsigned int		n_cylinders;
@@ -894,11 +894,12 @@ __kernel void	ray_trace(	__global	char		*output,
 		final_color = desaturate(final_color);
 
 	// RGB TO BGR SWAP
-	uint3 swap;
+	uint4 swap;
+	swap.w = 0;//(final_color & 0xFF000000) >> 24;
 	swap.x = (final_color & 0x00FF0000) >> 16;
 	swap.y = (final_color & 0x0000FF00) >> 8;
 	swap.z = (final_color & 0x000000FF);
-	final_color = ((swap.z << 16) + (swap.y << 8) + swap.x);
+	final_color = ((swap.z << 24) + (swap.y << 16) + (swap.x << 8)+ swap.w);
 
 	((__global unsigned int *)output)[id] = final_color;
 }
