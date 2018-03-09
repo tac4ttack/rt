@@ -542,7 +542,8 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 	hit = hit_init();
 	mem_index_obj = 0;
 	obj = 0;
-
+	if (lightdist == 0)
+		hit.opacity = 1;
 	while (mem_index_obj < scene->mem_size_obj)
 	{
 		obj = scene->mem_obj + mem_index_obj;
@@ -554,8 +555,11 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 			dist = inter_plan(obj, ray, origin);
 		else if (obj->id == OBJ_CONE)
 			dist = inter_cone(obj, ray, origin);
-		if (lightdist > 0 && dist < lightdist)
+		if (lightdist > 0 && dist < lightdist && dist > EPSILON)
+		{
+		//		printf("\nhit.opacity : %f, objopacity : %f, lightdist : %f\n", hit.opacity, obj->opacity, lightdist);
 			hit.opacity += obj->opacity;
+		}
 		if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
 		{
 			hit.dist = dist;

@@ -97,7 +97,7 @@
 			spec="0.42, 0.42, 0.42"
 			reflex="0"
 			refract="1.5"
-			opacity="0"
+			opacity="0.5"
 			/>
 
 <light		id="0"
