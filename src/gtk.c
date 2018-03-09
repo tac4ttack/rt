@@ -87,7 +87,7 @@ GdkPixbuf		*gtk_new_image(unsigned char *data, int width, int height)
 	buffer = NULL;
 	pixbuf = NULL;
 	buffer = g_bytes_new(data, width  * height * 4);
-	pixbuf = gdk_pixbuf_new_from_bytes(buffer, GDK_COLORSPACE_RGB, 0, 8,
+	pixbuf = gdk_pixbuf_new_from_bytes(buffer, GDK_COLORSPACE_RGB, TRUE, 8,
 		 width , height, 4 * width);
 	if (!pixbuf)
 		return (NULL);
@@ -101,7 +101,8 @@ void		init_gtk(t_env *e)
 	t_ui		*ui;
 	ui = e->ui;
 
-	opencl_draw(e);
+	ft_putendl("im in gtk init");
+	
 
 //	ui->builder = gtk_builder_new_from_file("lol.c");
 
@@ -123,6 +124,10 @@ void		init_gtk(t_env *e)
 
 
 	ui->pixbuf = gtk_new_image((unsigned char *)e->pixel_data, e->win_w, e->win_h);
+	ui->pixbuf_data = gdk_pixbuf_get_pixels(ui->pixbuf);
+	
+	opencl_draw(e);
+	
 	ui->frame_placeholder = (GObject*)gtk_image_new();
 	gtk_image_set_from_pixbuf(GTK_IMAGE(e->ui->frame_placeholder), ui->pixbuf);
 

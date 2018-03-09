@@ -5,7 +5,9 @@ void				mount_image(t_env *e)
 	//GdkPixbuf		*pixbuf;
 
 //	pixbuf = NULL;
-	e->ui->pixbuf = gtk_new_image((unsigned char *)e->pixel_data, e->win_w, e->win_h);
+//	e->ui->pixbuf = gtk_new_image((unsigned char *)e->pixel_data, e->win_w, e->win_h);
+	
+//	ft_memcpy(e->ui->pixbuf_data, (guchar *)e->pixel_data, e->win_w * e->win_h * 4);
 	gtk_image_set_from_pixbuf((struct _GtkImage *)e->ui->frame_placeholder, e->ui->pixbuf);
 }
 /*
@@ -45,15 +47,15 @@ gboolean		gtk_main_loop(void *ptr)
 	{
 		while (e->ui->redraw > 0)
 		{
-			ft_putendl("im in gtk main loop");
+		//	ft_putendl("im in gtk main loop");
 
 			update_fps(&e->fps);
 			fps = ft_itoa(e->fps.ret_fps);
 			fps = ft_strjoin_frs2("RT - ", fps);
 			fps = ft_strjoin_frs1(fps, " ips");
-			printf("%s\n", fps);
+		//	printf("%s\n", fps);
 		//	ft_putendl(fps); // Controle semble ok
-			//gtk_window_set_title(GTK_WINDOW(e->ui->window), fps);
+			gtk_window_set_title(GTK_WINDOW(e->ui->main_window), fps);
 
 //			mlx_keyboard_repeated(e); /// TO REPLACE
 //			mlx_clear_window(e->mlx, e->win); /// TO REPLACE
@@ -74,7 +76,7 @@ gboolean		gtk_main_loop(void *ptr)
 		//	gtk_main_iteration_do(FALSE);
 			while (gtk_events_pending())
 			{
-				printf("Oui\n");
+			//	printf("Oui\n");
 				if (gtk_main_iteration())
 					return (FALSE);
 			}

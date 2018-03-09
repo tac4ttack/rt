@@ -22,6 +22,7 @@ typedef	struct			s_ui
 	guchar				*frame_ptr; // pointer to pixel data of pixbuf
 	GtkBuilder			*builder;
 	GdkPixbuf			*pixbuf;
+	guchar				*pixbuf_data;
 }						t_ui;
 
 GdkPixbuf		*gtk_new_image(unsigned char *data, int width, int height);
