@@ -25,6 +25,8 @@
                         diff="0.42, 0.42, 0.42"
                         spec="0.42, 0.42, 0.42"
                         reflex="0.51"
+			refract="0"
+			opacity="1"
                         />
 
 <!-- Right Panel -->
@@ -35,6 +37,8 @@
                         diff="0.42, 0.42, 0.42"
                         spec="0.42, 0.42, 0.42"
                         reflex="0.51"
+			refract="0"
+			opacity="1"
                         />
 
 <!-- Bottom Panel -->
@@ -45,6 +49,8 @@
                         diff="0.42, 0.42, 0.42"
                         spec="0.42, 0.42, 0.42"
                         reflex="0.51"
+			refract="0"
+			opacity="1"
                         />
 
 <!-- Top Panel -->
@@ -55,6 +61,8 @@
                         diff="0.42, 0.42, 0.42"
                         spec="0.42, 0.42, 0.42"
                         reflex="0.51"
+			refract="0"
+			opacity="1"
                         />
 
 <!-- Front Panel -->
@@ -65,6 +73,8 @@
                         diff="0.42, 0.42, 0.42"
                         spec="0.42, 0.42, 0.42"
                         reflex="0.51"
+			refract="0"
+			opacity="1"
                         />
 
 <!-- Rear Panel -->
@@ -75,6 +85,8 @@
                         diff="0.42, 0.42, 0.42"
                         spec="0.42, 0.42, 0.42"
                         reflex="0.51"
+			refract="0"
+			opacity="1"
                         />
 
 <sphere         id="0"
@@ -85,6 +97,8 @@
                         diff="0.42, 0.42, 0.42"
                         spec="0.50, 0.50, 0.50"
                         reflex="0.2"
+			refract="0"
+			opacity="1"
                         />
 <sphere         id="1"
                         pos="-14, 5, 4"
@@ -94,5 +108,7 @@
                         diff="0.42, 0.42, 0.42"
                         spec="0.50, 0.50, 0.50"
                         reflex="0.2"
+			refract="0"
+			opacity="1"
                         />
 </scene>

@@ -43,7 +43,7 @@
 				height="0"
 				diff="0.42, 0.42, 0.42"
 				spec="0.82, 0.82, 0.82"
-				reflex="1"
+				reflex="0"
 			refract="0"
 			opacity="1"
 				/>
