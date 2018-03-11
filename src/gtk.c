@@ -96,49 +96,41 @@ GdkPixbuf		*gtk_new_image(unsigned char *data, int width, int height)
 	return (pixbuf);
 }
 
-void		init_gtk(t_env *e)
+void		init_gtk(GtkApplication* app, gpointer data)
 {
-	t_ui		*ui;
-	ui = e->ui;
+	t_env *e;
 
+	e = data;
+	(void)app;
 	ft_putendl("im in gtk init");
 	
+//	// css loading
+//	e->ui->css = gtk_css_provider_new();
+//	gtk_css_provider_load_from_path(e->ui->css, "./theme/gtk-dark.css", NULL);
 
-//	ui->builder = gtk_builder_new_from_file("lol.c");
+	// init the builder and load the template
+	e->ui->builder = gtk_builder_new();
+	gtk_builder_add_from_file(e->ui->builder, "./theme/rt_ui.glade", NULL);
 
-//	ui->main_window = gtk_builder_get_object(ui->builder, "window");
-//	ui->frame_placeholder = gtk_builder_get_object(ui->builder, "img");
+	// init and connect the main window
+	e->ui->main_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "main_window"));
+	g_signal_connect(e->ui->main_window, "destroy", G_CALLBACK(gtk_quit), (gpointer)e);
 
-	ui->main_window = (struct _GObject *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
-//	e->ui->mainbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-
-	//gtk_window_set_title(GTK_WINDOW(ui->main_window), "RT - Initializing...");
-	//gtk_window_set_resizable(GTK_WINDOW(ui->main_window), TRUE);
-	//gtk_window_set_default_size(GTK_WINDOW(ui->main_window), e->win_w + 200, e->win_h + 200);
-	//gtk_window_set_position(GTK_WINDOW(ui->main_window), GTK_WIN_POS_CENTER);
-	//g_signal_connect(GTK_WINDOW(ui->main_window), "destroy", G_CALLBACK(gtk_quit), (gpointer)e);
-	//g_signal_connect(G_OBJECT(ui->main_window), "key-release-event", G_CALLBACK(gtk_event_key_release), (gpointer)e);
-	//g_signal_connect(G_OBJECT(ui->main_window), "key-press-event", G_CALLBACK(gtk_event_key_press), (gpointer)e);
-	//g_signal_connect(G_OBJECT(ui->main_window), "button-release-event", G_CALLBACK(gtk_event_button_release), (gpointer)e);
-	//g_signal_connect(G_OBJECT(ui->main_window), "button-press-event", G_CALLBACK(gtk_event_button_press), (gpointer)e);
+//	e->ui->drawing_area = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "drawing_area"));
+//	gtk_widget_set_size_request(e->ui->drawing_area, 648, 480);
+//	e->ui->cr = cairo_create(e->ui->surface);
+//	cairo_set_source_rgb(e->ui->cr, 1, 1, 1);
+//	cairo_paint(e->ui->cr);
 
 
-	ui->pixbuf = gtk_new_image((unsigned char *)e->pixel_data, e->win_w, e->win_h);
-	ui->pixbuf_data = gdk_pixbuf_get_pixels(ui->pixbuf);
+
+	// init and activate all preset signals from template
+	gtk_builder_connect_signals(e->ui->builder, NULL);
 	
-	opencl_draw(e);
+	// free the builder
+	g_object_unref(e->ui->builder);
+
+	gtk_widget_show_all(e->ui->main_window);
 	
-	ui->frame_placeholder = (GObject*)gtk_image_new();
-	gtk_image_set_from_pixbuf(GTK_IMAGE(e->ui->frame_placeholder), ui->pixbuf);
-
-	GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-	gtk_container_add(GTK_CONTAINER(e->ui->main_window), box);
-	gtk_box_pack_start(GTK_BOX(box),
-					GTK_WIDGET(ui->frame_placeholder ), FALSE, FALSE, 0);
-
-
-	//g_timeout_add(1, gtk_main_loop, e);
-	g_idle_add(gtk_main_loop, e);
-	gtk_widget_show_all((GtkWidget*) e->ui->main_window);
 	gtk_main();
 }

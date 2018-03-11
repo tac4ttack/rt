@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:32:13 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/08 22:58:47 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/11 18:00:09 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,23 @@ int			main(int ac, char **av)
 	ft_putendl("\n\x1b[1;32mRAYTASOEUR!!!!!!\x1b[0m");
 	if (ac < 2 || ac > 8)
 		print_usage();
-//	else
-//		check_arguments(ac, av);
+	else
+		check_arguments(ac, av);
 	if (!(e = malloc(sizeof(t_env))))
 		s_error("\x1b[1;31mCan't initialize RT\x1b[0m", NULL);
 	ft_bzero(e, sizeof(t_env));
 	if (!(e->ui = malloc(sizeof(t_ui))))
 		s_error("\x1b[1;31mCan't initialize UI data structure\x1b[0m", e);
 	e->scene_file = ft_strdup(av[1]);
-	gtk_init(&ac, &av);
-	init(e);
+	e->ui->app = gtk_application_new("ray.tracer", G_APPLICATION_FLAGS_NONE);
+	g_signal_connect(e->ui->app, "startup", G_CALLBACK(init), (gpointer)e);
+	g_signal_connect(e->ui->app, "activate", G_CALLBACK(init_gtk), (gpointer)e);
+	e->ui->gtkstatus = g_application_run(G_APPLICATION(e->ui->app), --ac, ++av);
+
+//	init(e);
+//	gtk_init(&ac, &av);
+
+	
+	
 	return (0);
 }

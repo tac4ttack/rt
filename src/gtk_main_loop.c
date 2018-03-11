@@ -1,6 +1,6 @@
 #include "rt.h"
 
-void				mount_image(t_env *e)
+/*void				mount_image(t_env *e)
 {
 	//GdkPixbuf		*pixbuf;
 
@@ -9,7 +9,7 @@ void				mount_image(t_env *e)
 	
 //	ft_memcpy(e->ui->pixbuf_data, (guchar *)e->pixel_data, e->win_w * e->win_h * 4);
 	gtk_image_set_from_pixbuf((struct _GtkImage *)e->ui->frame_placeholder, e->ui->pixbuf);
-}
+}*/
 /*
 static gboolean		gtk_loop(void *data)
 {
@@ -61,7 +61,7 @@ gboolean		gtk_main_loop(void *ptr)
 //			mlx_clear_window(e->mlx, e->win); /// TO REPLACE
 
 			opencl_draw(e);
-			mount_image(e);
+		//	mount_image(e);
 
 //			mlx_put_image_to_window(e->mlx, e->win, e->frame->ptr, 0, 0); /// TO REPLACE
 //			display_hud(e); // TO REPLACE

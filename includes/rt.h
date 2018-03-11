@@ -343,10 +343,10 @@ cl_float3				*get_target_dir(t_env *e);
 cl_float3				*get_target_pos(t_env *e);
 
 gboolean				gtk_main_loop(void *e);
-int						gtk_quit(gpointer data);
-void					init_gtk(t_env *e);
+int		gtk_quit(GtkApplication *app, gpointer data);
+void					init_gtk(GtkApplication* app, gpointer data);
 
-void					init(gpointer data);
+void					init(GtkApplication* app, gpointer data);
 
 cl_float3				normalize_vect(cl_float3 v);
 

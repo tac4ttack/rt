@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/09 17:47:31 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/11 19:26:55 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@ void	flush(t_env *e)
 			gen_destruct(&e->gen_objects);
 			gen_destruct(&e->gen_lights);
 		}
+	//	if (e->ui->surface)
+    //		cairo_surface_destroy(e->ui->surface);
 		if (XML)
 			free(XML);
 		ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
-		// GTK SHIT
-		if (e->ui->icon)
-			g_object_unref(e->ui->icon);
-		ft_putendl("\x1b[1;29mFreed the GTK Icon\x1b[0m");
 		if (e)
 			free(e);
 		ft_putendl("\x1b[1;29mFreed RT environnement\x1b[0m");
@@ -59,14 +57,17 @@ int		quit(t_env *e)
 	return (0);
 }
 
-int		gtk_quit(gpointer data)
+int		gtk_quit(GtkApplication *app, gpointer data)
 {
 	t_env *e;
 
+	(void)app;
 	e = data;
+	gtk_main_quit();
+	g_object_unref(e->ui->app);
+	printf("%d\n", e->win_w);
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
 	flush(e);
-	ft_putendl("\x1b[1;29mFreed the GTK App\x1b[0m");
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
 	exit(EXIT_SUCCESS);
 	return (0);
