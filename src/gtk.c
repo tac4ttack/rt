@@ -114,6 +114,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 	// init and connect the main window
 	e->ui->main_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "main_window"));
+	gtk_window_set_title(GTK_WINDOW(e->ui->main_window), "RT");
 	g_signal_connect(e->ui->main_window, "destroy", G_CALLBACK(gtk_quit), (gpointer)e);
 
 //	e->ui->drawing_area = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "drawing_area"));
