@@ -1,15 +1,12 @@
 TODO LIST COMMON:
 -----------------
 * norm norm norm
-* sortie d'erreur opencl, mettre code erreur et sa traduction -> FAIT FLO
 * faire une touche pour reload le kernel en pleine execution
 * génération damier -> Noé on the job
 * faire print_usage
 * bruit de perlinpinpin -> Chaton?
-* kernel post process Sepia -> Flo
 * kernel post process Stereoscopie -> Flo?
 * kernel post process Cel Shading
-* faire la conversion vers le type d'objets générique
 * finir le TREE OF RAY
 	-> creation OK FLO
 	-> preremplissage
@@ -23,6 +20,7 @@ TODO LIST COMMON:
 * faire GUI, avec GTK? avec Nuklear (https://github.com/vurtun/nuklear)?
 
 
+
 TEXTURES:
 ---------
 * ajouter textures -> cf ajout PARSER
@@ -33,7 +31,6 @@ TEXTURES:
 PARSER:
 -----------------
 * rajouter la propriété 'depth' à la scene (nombre de reflexions) 
-* rajouter la propriété indice de 'refraction' aux objets
 * rajouter propriété sinwave="0, 0.5, 1" avec 3 valeurs comprises entre 0 et 1
 
 
@@ -42,3 +39,8 @@ CAMERA:
 	* direction pas du tout prise en compte pour le départ
 	* si direction avec multi composante alors bug deplacement
 
+KNOWN BUGS:
+-----------
+
+	*cylinder.xml crash au lancement
+	*erreur si aucun objet -> normal ou pas ?

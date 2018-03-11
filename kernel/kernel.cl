@@ -911,14 +911,14 @@ static unsigned int	tor_final_color(t_tor *tor)
 		//if (i % 2 != 0)
 		//	color = blend_add(color, blend_factor(tor[i].color, (tor[(i - 1) / 2].opacity - 1) * -1));
 		//else
-		if (tor[(i - 1) / 2].mem_index == tor[i].mem_index)
+		if (!(tor[(i - 1) / 2].mem_index == tor[i].mem_index))
 			color = blend_add(color, tor[i].color);
 			
 		i--;
-		while (tor[i].activate == 0 && i > 0)
+		while (i > 0 && tor[i].activate == 0)
 			i--;
 	}
-//color = blend_add(color, tor[0].color);
+	color = blend_add(color, tor[0].color);
 	return (color);
 }
 
@@ -976,19 +976,19 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 		//	printf("HA !\n");
 			tor[i].check_g = 1;
 			refract = refract_ray(scene, tor[i].prim, tor[i]);
-			new_hit = ray_hit(scene, tor[i].pos, refract, 0);
+			new_hit = ray_hit(scene, tor[i].pos + (0.001f * -(2 * tor[i].normale)), refract, 0);
 			if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 			{
 				new_hit.pos = (new_hit.dist * refract) + tor[i].pos;
 				new_hit.normal = get_hit_normal(scene, refract, new_hit);
-				new_hit.pos = new_hit.pos + ( 0.001f* new_hit.normal);
+				new_hit.pos = new_hit.pos + (0.001f * new_hit.normal);
 				ncolor = blend_factor(phong(scene, new_hit, refract), ft);
 				tor[i * 2 + 1] = tor_push(refract, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index);
 			}
 		}
 		else
 			tor[i].check_g = 0;
-		if (((tor[i].opacity < 1 && tor[i].coef_tra >= 1) || tor[i].coef_ref != 0))
+		if ((tor[i].opacity < 1 && tor[i].coef_tra >= 1) || tor[i].coef_ref != 0)
 		{
 			tor[i].check_d = 1;
 			bounce = bounce_ray(scene, tor[i].prim, tor[i]);
