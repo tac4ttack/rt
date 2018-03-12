@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/11 19:26:55 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/12 17:57:03 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	flush(t_env *e)
 			gen_destruct(&e->gen_objects);
 			gen_destruct(&e->gen_lights);
 		}
-	//	if (e->ui->surface)
-    //		cairo_surface_destroy(e->ui->surface);
+		if (e->ui->surface)
+			cairo_surface_destroy(e->ui->surface);
 		if (XML)
 			free(XML);
 		ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
