@@ -18,14 +18,32 @@ typedef	struct			s_ui
 	GtkCssProvider		*style_provider;
 
 	GtkWidget			*main_window;
-	GtkWidget			*drawing_area;
-
-	cairo_t				*cr;
-	cairo_surface_t		*surface;
-
+		GtkWidget			*main_box;
+			GtkWidget			*main_panels;
+			GtkWidget			*left_panel_scroll_win;
+				GtkWidget			*left_panel_viewport;
+				GtkWidget			*render;
+					cairo_t				*cr; //useless ?
+					cairo_surface_t		*surface;
+					GdkPixbuf			*pixbuf;
+			GtkWidget			*right_panel;
+			GtkWidget			*status_bar;
+			GtkWidget			*tool_bar;	
 	
+	
+
+
+
 }						t_ui;
 
-GdkPixbuf		*gtk_new_image(unsigned char *data, int width, int height);
+// GdkPixbuf		*gtk_new_image(unsigned char *data, int width, int height);
+
+gboolean	cb_draw_render(GtkWidget *widget, cairo_t *cr, gpointer data);
+gboolean	cb_configure_draw_area(GtkWidget *widget, \
+									GdkEventConfigure *event, \
+									gpointer data);
+
+//cairo_set_source_rgb(cr, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX);
 
 #endif
+
