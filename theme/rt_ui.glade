@@ -75,12 +75,14 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="shadow_type">in</property>
+                <property name="propagate_natural_width">True</property>
+                <property name="propagate_natural_height">True</property>
                 <child>
                   <object class="GtkViewport" id="left_panel_viewport">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkDrawingArea" id="drawing_area">
+                      <object class="GtkDrawingArea" id="render">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                       </object>
