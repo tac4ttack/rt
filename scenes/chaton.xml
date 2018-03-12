@@ -38,7 +38,7 @@
 			color="0, 0, 80, 144"
 			diff="0.42, 0.42, 0.42"
 			spec="0.50, 0.50, 0.50"
-			reflex="0"
+			reflex="0.40"
 			refract="0"
 			opacity="1"
 			/>
@@ -72,8 +72,8 @@
 			diff="0.42, 0.42, 0.42"
 			spec="0, 0, 0"
 			reflex="0"
-			refract="0"
-			opacity="1"
+			refract="1.5"
+			opacity="0"
 			/>
 
 <sphere		id="0"
@@ -96,7 +96,7 @@
 			diff="0.42, 0.42, 0.42"
 			spec="0.42, 0.42, 0.42"
 			reflex="0"
-			refract="1.5"
+			refract="1.8"
 			opacity="0"
 			/>
 
