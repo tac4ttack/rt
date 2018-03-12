@@ -922,7 +922,7 @@ static unsigned int	tor_final_color(t_tor *tor)
 	if (tor[0].coef_tra != 0)
 		color = blend_add(color, blend_factor(tor[0].color, (tor[0].opacity - 1) * -1));
 	else
-		color = blend_add(color, tor[0].color);
+		color = blend_add(color, blend_factor(tor[0].color, tor[0].coef_ref));
 	return (color);
 }
 
@@ -1044,7 +1044,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 			hit.pos = hit.pos + (0.001f * hit.normal);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 		color = phong(scene, hit, ray);
-		if ((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0)
+		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
 			return (fresnel(scene, ray, hit, depth, color));
 		/*else if (hit.obj->refract != 0 && hit.obj->opacity < 1)
 		{
