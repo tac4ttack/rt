@@ -29,8 +29,10 @@ OBJ_NAME =				$(SRC_NAME:.c=.o)
 
 SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 SRC_PATH =				./src
-SRC_NAME =  			gtk.c \
-						gtk_main_loop.c \
+SRC_NAME =  			gtk/gtk.c \
+						gtk/gtk_main_loop.c \
+						gtk/cb_configure_draw_area.c \
+						gtk/cb_draw_render.c \
 						hud.c \
 						init.c \
 						main.c \
@@ -85,6 +87,7 @@ $(OBJ_PATH):
 	@mkdir $(OBJ_PATH)/cl
 	@mkdir $(OBJ_PATH)/xml
 	@mkdir $(OBJ_PATH)/gen
+	@mkdir $(OBJ_PATH)/gtk
 	@mkdir $(OBJ_PATH)/event
 
 CPU:
