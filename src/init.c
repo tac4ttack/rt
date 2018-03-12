@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/11 15:29:08 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/12 16:50:51 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void		init(GtkApplication* app, gpointer data)
 
 //	if (e->debug)
 		init_print_structure_memory_size();
+		
 	if (!(e->cl->add_buffer(e->cl, e->scene->win_w * e->scene->win_h * 4)))
 		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, e->gen_objects->mem_size)))
