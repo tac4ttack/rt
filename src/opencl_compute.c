@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/11 15:29:54 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/12 18:38:49 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int			opencl_draw(t_env *e)
 {
 	t_cl *cl = e->cl;
 	//const size_t g[2] = {e->scene->win_w, e->scene->win_h};
+
+	ft_putendl("hi im in opencl_draw!!!!");
 
 	opencl_set_args(e, cl);
 
