@@ -903,26 +903,38 @@ static int			tor_height(int i)
 
 static unsigned int	tor_final_color(t_tor *tor)
 {
-	int				i = 64;
+	int				i = 30;
 	unsigned int	color = 0;
 
 	while (i > 0)
 	{
-		if (i % 2 != 0)
-		{
-			if (!(tor[(i - 1) / 2].mem_index == tor[i].mem_index))
-				color = blend_add(color, tor[i].color);
-		}
+		if (tor[i].activate == 0 || (tor[i].coef_tra != 0 && tor[i * 2 + 1].mem_index == tor[i].mem_index))
+			;
 		else
-			color = blend_add(color, blend_factor(tor[i].color, tor[(i - 1) / 2].coef_ref));
+		{
+			color = blend_add(tor[(i + 1) * 2].color, tor[i * 2 + 1].color);
+			//if (tor[i].coef_tra != 0)
+			//	tor[i].color = blend_add(tor[i].color, color);
+			//else
+				tor[i].color = blend_add(tor[i].color, color);
+		//	color = blend_add(color, tor[i].color);
+			/*if (i % 2 != 0)
+			{
+				if (!(tor[(i - 1) / 2].mem_index == tor[i].mem_index))
+					color = blend_add(color, tor[i].color);
+			}
+			else
+				color = blend_add(color, blend_factor(tor[i].color, tor[(i - 1) / 2].coef_ref));*/
+		}
 		i = i - 1;
 		while (i > 0 && tor[i].activate == 0)
 			i = i - 1;
 	}
+	color = blend_add(tor[(i + 1) * 2].color, tor[i * 2 + 1].color);
 	if (tor[0].coef_tra != 0)
 		color = blend_add(color, blend_factor(tor[0].color, (tor[0].opacity - 1) * -1));
 	else
-		color = blend_add(color, blend_factor(tor[0].color, tor[0].coef_ref));
+		color = blend_factor(blend_add(tor[0].color, color), tor[0].coef_ref);
 	return (color);
 }
 
