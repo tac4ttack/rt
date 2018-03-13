@@ -1045,7 +1045,6 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	depth = scene->depth;
 	color = 0;
 	bounce_color = 0;
-	hit.dist = MAX_DIST;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
 	if (isHim)
 		*target = hit.mem_index;
