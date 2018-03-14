@@ -11,7 +11,7 @@ gboolean cb_draw_test(GtkWidget *widget, GdkEvent  *event, gpointer data)
 	cr = cairo_create(e->ui->surface);
 	update_fps(&e->fps);
 	opencl_draw(e);
-	ft_putendl("im in drawtest");
+	ft_putendl("im in drawtest\n");
 	// 1ere methode
 	gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 0, 0);
 
@@ -25,14 +25,34 @@ gboolean cb_draw_test(GtkWidget *widget, GdkEvent  *event, gpointer data)
 	return FALSE;
 }
 
+gboolean test(t_env *e)
+{
+	cairo_t				*cr;
 
+	cr = cairo_create(e->ui->surface);
+	update_fps(&e->fps);
+	opencl_draw(e);
+	ft_putendl("im in test\n");
+	// 1ere methode
+	gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 0, 0);
+
+	// 2nde methode
+//	if (e->ui->surface)
+//		cairo_surface_destroy(e->ui->surface);
+//	e->ui->surface = gdk_cairo_surface_create_from_pixbuf (e->ui->pixbuf, 1, NULL);
+//	cairo_set_source_surface(cr, e->ui->surface, 0, 0);
+
+	cairo_paint(cr);
+	gtk_main_iteration_do(TRUE);
+	return FALSE;
+}
 void		init_gtk(GtkApplication* app, gpointer data)
 {
 	t_env *e;
 
 	e = data;
 	(void)app;
-	ft_putendl("im in gtk init");
+	ft_putendl("im in gtk init\n");
 	
 //	// css loading
 //	e->ui->css = gtk_css_provider_new();
@@ -77,5 +97,13 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	g_object_unref(e->ui->builder);
 
 	gtk_widget_show_all(e->ui->main_window);
+
+	g_idle_add((GSourceFunc)test, (gpointer)e);
+	//g_timeout_add(10, (GSourceFunc)test, (gpointer)e);
+/*	while (gtk_events_pending())
+  {
+	ft_putendl("im in event pending\n");
+	gtk_main_iteration();
+  }*/
 	gtk_main();
 }
