@@ -32,7 +32,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 	e = data;
 	(void)app;
-	ft_putendl("im in gtk init\n");
+//	ft_putendl("im in gtk init\n");
 
 
 

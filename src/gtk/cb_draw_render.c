@@ -11,7 +11,7 @@ gboolean cb_draw_render(GtkWidget *widget, cairo_t *cr, gpointer data)
 	opencl_draw(e);
 
 	// check si je trempe bien le biscuit
-	ft_putendl("im in draw render");
+//	ft_putendl("im in draw render");
 
 	// 1ere methode
 	gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 1, 1);

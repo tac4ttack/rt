@@ -895,10 +895,14 @@ __kernel void	ray_trace(	__global	char		*output,
 
 	// RGB TO BGR SWAP
 	uint4 swap;
-	swap.w = 0;//(final_color & 0xFF000000) >> 24;
+	swap.w = 255;//(final_color & 0xFF000000) >> 24;
 	swap.x = (final_color & 0x00FF0000) >> 16;
 	swap.y = (final_color & 0x0000FF00) >> 8;
 	swap.z = (final_color & 0x000000FF);
+
+//	final_color = ((swap.z << 24) + (swap.y << 16) + (swap.x << 8)+ swap.w);
+//	final_color = ((swap.w << 24) + (swap.z << 16) + (swap.y << 8)+ swap.x);
+
 	final_color = ((swap.z << 24) + (swap.y << 16) + (swap.x << 8)+ swap.w);
 
 	((__global unsigned int *)output)[id] = final_color;
