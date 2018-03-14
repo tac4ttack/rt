@@ -38,10 +38,15 @@ typedef	struct			s_ui
 
 // GdkPixbuf		*gtk_new_image(unsigned char *data, int width, int height);
 
-gboolean	cb_draw_render(GtkWidget *widget, cairo_t *cr, gpointer data);
-gboolean	cb_configure_draw_area(GtkWidget *widget, \
+gboolean				gtk_main_loop(void *e);
+int						gtk_quit(GtkApplication *app, gpointer data);
+void					init_gtk(GtkApplication* app, gpointer data);
+
+gboolean				cb_draw_render(GtkWidget *widget, cairo_t *cr, gpointer data);
+gboolean				cb_configure_draw_area(GtkWidget *widget, \
 									GdkEventConfigure *event, \
 									gpointer data);
+gboolean				test(gpointer data);
 
 //cairo_set_source_rgb(cr, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX);
 
