@@ -36,6 +36,10 @@ static gboolean		gtk_loop(void *data)
 	return (FALSE);
 }
 */
+
+
+
+/* FONCTIONNE BACKUP
 gboolean		gtk_main_loop(void *ptr)
 {
 	t_env *e;
@@ -67,16 +71,69 @@ gboolean		gtk_main_loop(void *ptr)
 //			display_hud(e); // TO REPLACE
 			free(fps);
 			//gtk_widget_show_all((GtkWidget *)e->ui->main_window);
-			/*while ((gtk_events_pending()))
-			{
-				if (gtk_main_iteration())
-					return (FALSE);
-				//printf("One\n");
-			}*/
+		
+		///////////////
+		//	while ((gtk_events_pending()))
+		//	{
+		//		if (gtk_main_iteration())
+		//			return (FALSE);
+		//		//printf("One\n");
+		//	}
+		/////////////////////
+
 		//	gtk_main_iteration_do(FALSE);
 			while (gtk_events_pending())
 			{
 			//	printf("Oui\n");
+				if (gtk_main_iteration())
+					return (FALSE);
+			}
+		}
+	}
+	return (0);
+} */
+
+gboolean		gtk_main_loop(gpointer ptr)
+{
+	t_env *e;
+	char *fps;
+	cairo_t				*cr;
+
+	e = (t_env *)ptr;
+	fps = NULL;
+	if (e)
+	{
+		while (e->ui->redraw > 0)
+		{
+			ft_putendl("im in gtk main loop");
+
+			update_fps(&e->fps);
+			fps = ft_itoa(e->fps.ret_fps);
+			fps = ft_strjoin_frs2("RT - ", fps);
+			fps = ft_strjoin_frs1(fps, " ips");
+		//	printf("%s\n", fps);
+		//	ft_putendl(fps); // Controle semble ok
+			gtk_window_set_title(GTK_WINDOW(e->ui->main_window), fps);
+
+			cr = cairo_create(e->ui->surface);
+
+			opencl_draw(e);
+
+		// 1ere methode
+			gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 0, 0);
+
+		// 2nde methode
+		//	if (e->ui->surface)
+		//		cairo_surface_destroy(e->ui->surface);
+		//	e->ui->surface = gdk_cairo_surface_create_from_pixbuf (e->ui->pixbuf, 1, NULL);
+		//	cairo_set_source_surface(cr, e->ui->surface, 0, 0);
+
+			cairo_paint(cr);
+			
+			free(fps);
+
+			while (gtk_events_pending())
+			{
 				if (gtk_main_iteration())
 					return (FALSE);
 			}
