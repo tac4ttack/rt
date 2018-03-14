@@ -34,6 +34,8 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	(void)app;
 	ft_putendl("im in gtk init\n");
 
+
+
 //	// css loading
 //	e->ui->css = gtk_css_provider_new();
 //	gtk_css_provider_load_from_path(e->ui->css, "./theme/gtk-dark.css", NULL);
@@ -58,7 +60,6 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 	// init render shit
 	e->ui->render = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "render"));
-	gtk_widget_set_app_paintable(e->ui->render, TRUE);
 	e->ui->pixbuf = gdk_pixbuf_new_from_data((const guchar *)e->pixel_data, GDK_COLORSPACE_RGB, 1, 8, e->win_w, e->win_h, e->win_w * 4, NULL, NULL);
 	e->ui->surface = NULL;
 	g_signal_connect(e->ui->render,"configure-event", G_CALLBACK(cb_configure_draw_area), (gpointer)e);
@@ -78,8 +79,8 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 	gtk_widget_show_all(e->ui->main_window);
 
-	g_idle_add(gtk_main_loop, (gpointer)e); // fonctionne
-//	g_timeout_add(10, (GSourceFunc)test, (gpointer)e);
+//	g_idle_add(gtk_main_loop, (gpointer)e); // fonctionne
+	g_timeout_add(10, gtk_main_loop, (gpointer)e);
 /*	while (gtk_events_pending())
   {
 	ft_putendl("im in event pending\n");

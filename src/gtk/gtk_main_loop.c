@@ -97,7 +97,6 @@ gboolean		gtk_main_loop(gpointer ptr)
 {
 	t_env *e;
 	char *fps;
-	cairo_t				*cr;
 
 	e = (t_env *)ptr;
 	fps = NULL;
@@ -106,7 +105,7 @@ gboolean		gtk_main_loop(gpointer ptr)
 		while (e->ui->redraw > 0)
 		{
 			ft_putendl("im in gtk main loop");
-
+	
 			update_fps(&e->fps);
 			fps = ft_itoa(e->fps.ret_fps);
 			fps = ft_strjoin_frs2("RT - ", fps);
@@ -115,23 +114,11 @@ gboolean		gtk_main_loop(gpointer ptr)
 		//	ft_putendl(fps); // Controle semble ok
 			gtk_window_set_title(GTK_WINDOW(e->ui->main_window), fps);
 
-			cr = cairo_create(e->ui->surface);
-
 			opencl_draw(e);
 
-		// 1ere methode
-			gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 0, 0);
-
-		// 2nde methode
-		//	if (e->ui->surface)
-		//		cairo_surface_destroy(e->ui->surface);
-		//	e->ui->surface = gdk_cairo_surface_create_from_pixbuf (e->ui->pixbuf, 1, NULL);
-		//	cairo_set_source_surface(cr, e->ui->surface, 0, 0);
-
-			cairo_paint(cr);
-			
 			free(fps);
 
+			gtk_widget_queue_draw_area(e->ui->main_window, 0, 40, 2000, 1200);
 			while (gtk_events_pending())
 			{
 				if (gtk_main_iteration())
