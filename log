@@ -1,48 +1,12 @@
 [2;32mChecking for Libft library[0m
 make -C ./libft/ libft.a
 make[1]: `libft.a' is up to date.
-[2;32mChecking for MLX library[0m
-make -C ./mlx/mlx_sierra/ libmlx.a
-make[1]: `libmlx.a' is up to date.
-[2;32mChecking for RT[0m
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/init.c -o obj/init.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/hud.c -o obj/hud.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/main.c -o obj/main.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-[2;32mCreating ./obj path and making binaries from source files[0m
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_image_draw.c -o obj/mlx_image_draw.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_key_press.c -o obj/mlx_key_press.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_key_release.c -o obj/mlx_key_release.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_key_norepeat.c -o obj/mlx_key_norepeat.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_key_events.c -o obj/mlx_key_events.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_main_loop.c -o obj/mlx_main_loop.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/mlx_mouse.c -o obj/mlx_mouse.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/opencl_compute.c -o obj/opencl_compute.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/opencl_error.c -o obj/opencl_error.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/opencl_init.c -o obj/opencl_init.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/opencl_memalloc.c -o obj/opencl_memalloc.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/rotations.c -o obj/rotations.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/tools.c -o obj/tools.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/tree_of_ray.c -o obj/tree_of_ray.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/ui_obj.c -o obj/ui_obj.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/ui_cam.c -o obj/ui_cam.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/update_fps.c -o obj/update_fps.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/vectors.c -o obj/vectors.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml.c -o obj/xml.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_check_attr.c -o obj/xml_check_attr.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_cameras.c -o obj/xml_cameras.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_cones.c -o obj/xml_cones.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_cylinders.c -o obj/xml_cylinders.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_data_float.c -o obj/xml_data_float.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_data_float3.c -o obj/xml_data_float3.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_data_int.c -o obj/xml_data_int.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_data_vector.c -o obj/xml_data_vector.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_lights.c -o obj/xml_lights.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_list.c -o obj/xml_list.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_nodes.c -o obj/xml_nodes.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_planes.c -o obj/xml_planes.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_scene.c -o obj/xml_scene.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_spheres.c -o obj/xml_spheres.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/hooks.c -o obj/hooks.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-gcc -fdiagnostics-color=auto -Wall -Wextra -Werror -O3 -c src/xml_tools.c -o obj/xml_tools.o -I ./includes -I ./libft -I ./mlx/mlx_sierra   -DMAC_KEYS  
-[2;32mCompiling rt with Sierra MLX version[0m
-gcc -fdiagnostics-color=auto -o rt ./obj/init.o ./obj/hud.o ./obj/main.o ./obj/mlx_image_draw.o ./obj/mlx_key_press.o ./obj/mlx_key_release.o ./obj/mlx_key_norepeat.o ./obj/mlx_key_events.o ./obj/mlx_main_loop.o ./obj/mlx_mouse.o ./obj/opencl_compute.o ./obj/opencl_error.o ./obj/opencl_init.o ./obj/opencl_memalloc.o ./obj/rotations.o ./obj/tools.o ./obj/tree_of_ray.o ./obj/ui_obj.o ./obj/ui_cam.o ./obj/update_fps.o ./obj/vectors.o ./obj/xml.o ./obj/xml_check_attr.o ./obj/xml_cameras.o ./obj/xml_cones.o ./obj/xml_cylinders.o ./obj/xml_data_float.o ./obj/xml_data_float3.o ./obj/xml_data_int.o ./obj/xml_data_vector.o ./obj/xml_lights.o ./obj/xml_list.o ./obj/xml_nodes.o ./obj/xml_planes.o ./obj/xml_scene.o ./obj/xml_spheres.o ./obj/hooks.o ./obj/xml_tools.o -L./libft -lft ./mlx/mlx_sierra/libmlx.a -framework OpenGL -framework AppKit -lm -framework OpenCL 
+
+
+[2;32mChecking for GPU accelerated RT[0m
+[2;33mBe sure to do a 'make fclean' before switching between normal and CPU forced mode[0m
+make[1]: `gpu_flags' is up to date.
+clang -Wall -Wextra -Werror -O2 -c src/gtk/gtk.c -o obj/gtk/gtk.o -I ./includes -I ./libft -D_REENTRANT -I/Users/fmessina/.brew/Cellar/gtk+3/3.22.28/include/gtk-3.0 -I/Users/fmessina/.brew/Cellar/glib/2.54.3/include/gio-unix-2.0/ -I/Users/fmessina/.brew/Cellar/cairo/1.14.12/include/cairo -I/Users/fmessina/.brew/Cellar/libepoxy/1.5.0/include -I/Users/fmessina/.brew/Cellar/pango/1.40.14/include/pango-1.0 -I/Users/fmessina/.brew/Cellar/harfbuzz/1.7.6/include/harfbuzz -I/Users/fmessina/.brew/Cellar/graphite2/1.3.10/include -I/Users/fmessina/.brew/Cellar/pango/1.40.14/include/pango-1.0 -I/Users/fmessina/.brew/Cellar/atk/2.26.1/include/atk-1.0 -I/Users/fmessina/.brew/Cellar/cairo/1.14.12/include/cairo -I/Users/fmessina/.brew/Cellar/pixman/0.34.0_1/include/pixman-1 -I/Users/fmessina/.brew/Cellar/fontconfig/2.12.6/include -I/Users/fmessina/.brew/opt/freetype/include/freetype2 -I/Users/fmessina/.brew/Cellar/libpng/1.6.34/include/libpng16 -I/Users/fmessina/.brew/Cellar/gdk-pixbuf/2.36.11/include/gdk-pixbuf-2.0 -I/Users/fmessina/.brew/Cellar/libpng/1.6.34/include/libpng16 -I/Users/fmessina/.brew/Cellar/glib/2.54.3/include/glib-2.0 -I/Users/fmessina/.brew/Cellar/glib/2.54.3/lib/glib-2.0/include -I/Users/fmessina/.brew/opt/gettext/include -I/Users/fmessina/.brew/Cellar/pcre/8.41/include -DGPU   
+clang -Wall -Wextra -Werror -O2 -c src/gtk/gtk_main_loop.c -o obj/gtk/gtk_main_loop.o -I ./includes -I ./libft -D_REENTRANT -I/Users/fmessina/.brew/Cellar/gtk+3/3.22.28/include/gtk-3.0 -I/Users/fmessina/.brew/Cellar/glib/2.54.3/include/gio-unix-2.0/ -I/Users/fmessina/.brew/Cellar/cairo/1.14.12/include/cairo -I/Users/fmessina/.brew/Cellar/libepoxy/1.5.0/include -I/Users/fmessina/.brew/Cellar/pango/1.40.14/include/pango-1.0 -I/Users/fmessina/.brew/Cellar/harfbuzz/1.7.6/include/harfbuzz -I/Users/fmessina/.brew/Cellar/graphite2/1.3.10/include -I/Users/fmessina/.brew/Cellar/pango/1.40.14/include/pango-1.0 -I/Users/fmessina/.brew/Cellar/atk/2.26.1/include/atk-1.0 -I/Users/fmessina/.brew/Cellar/cairo/1.14.12/include/cairo -I/Users/fmessina/.brew/Cellar/pixman/0.34.0_1/include/pixman-1 -I/Users/fmessina/.brew/Cellar/fontconfig/2.12.6/include -I/Users/fmessina/.brew/opt/freetype/include/freetype2 -I/Users/fmessina/.brew/Cellar/libpng/1.6.34/include/libpng16 -I/Users/fmessina/.brew/Cellar/gdk-pixbuf/2.36.11/include/gdk-pixbuf-2.0 -I/Users/fmessina/.brew/Cellar/libpng/1.6.34/include/libpng16 -I/Users/fmessina/.brew/Cellar/glib/2.54.3/include/glib-2.0 -I/Users/fmessina/.brew/Cellar/glib/2.54.3/lib/glib-2.0/include -I/Users/fmessina/.brew/opt/gettext/include -I/Users/fmessina/.brew/Cellar/pcre/8.41/include -DGPU   
+[2;32mCompiling rt[0m
+clang -o rt ./obj/gtk/gtk.o ./obj/gtk/gtk_main_loop.o ./obj/gtk/cb_configure_draw_area.o ./obj/gtk/cb_draw_render.o ./obj/hud.o ./obj/init.o ./obj/main.o ./obj/rotations.o ./obj/tools.o ./obj/ui_obj.o ./obj/ui_cam.o ./obj/update_fps.o ./obj/vectors.o ./obj/gen/gen_construct.o ./obj/gen/gen_add.o ./obj/gen/gen_destruct.o ./obj/cl/cl_destruct.o ./obj/cl/cl_construct.o ./obj/cl/cl_print_error.o ./obj/cl/cl_compute.o ./obj/cl/cl_create_buffer.o ./obj/opencl_compute.o ./obj/xml/xml.o ./obj/xml/xml_check_attr.o ./obj/xml/xml_cameras.o ./obj/xml/xml_cones.o ./obj/xml/xml_cylinders.o ./obj/xml/xml_data_float.o ./obj/xml/xml_data_float3.o ./obj/xml/xml_data_int.o ./obj/xml/xml_data_vector.o ./obj/xml/xml_lights.o ./obj/xml/xml_list.o ./obj/xml/xml_nodes.o ./obj/xml/xml_planes.o ./obj/xml/xml_scene.o ./obj/xml/xml_spheres.o ./obj/xml/xml_tools.o -L./libft -lft -L/Users/fmessina/.brew/Cellar/gtk+3/3.22.28/lib -L/Users/fmessina/.brew/Cellar/pango/1.40.14/lib -L/Users/fmessina/.brew/Cellar/atk/2.26.1/lib -L/Users/fmessina/.brew/Cellar/cairo/1.14.12/lib -L/Users/fmessina/.brew/Cellar/gdk-pixbuf/2.36.11/lib -L/Users/fmessina/.brew/Cellar/glib/2.54.3/lib -L/Users/fmessina/.brew/opt/gettext/lib -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lintl -Wl,-framework -Wl,CoreFoundation -lm -framework OpenCL 

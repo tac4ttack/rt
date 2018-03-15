@@ -1,27 +1,26 @@
 #include "rt.h"
 
-gboolean cb_draw_test(GtkWidget *widget, GdkEvent  *event, gpointer data)
+gboolean cb_render_btnpress(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
+	(void)widget;
+	(void)event;
 	t_env *e;
-	cairo_t				*cr;
+
 
 	e = data;
-	(void)event;
+//	gtk_widget_grab_focus(widget);
+	ft_putendl("test btnpress");
+	return FALSE;
+}
+
+gboolean cb_render_keypress(GtkWidget *widget, GdkEvent  *event, gpointer data)
+{
 	(void)widget;
-	cr = cairo_create(e->ui->surface);
-	update_fps(&e->fps);
-	opencl_draw(e);
-	ft_putendl("im in drawtest\n");
-	// 1ere methode
-	gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 0, 0);
+	(void)event;
+	t_env *e;
 
-	// 2nde methode
-//	if (e->ui->surface)
-//		cairo_surface_destroy(e->ui->surface);
-//	e->ui->surface = gdk_cairo_surface_create_from_pixbuf (e->ui->pixbuf, 1, NULL);
-//	cairo_set_source_surface(cr, e->ui->surface, 0, 0);
-
-	cairo_paint(cr);
+	e = data;
+	ft_putendl("test keypress 1");
 	return FALSE;
 }
 
@@ -32,9 +31,6 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 	e = data;
 	(void)app;
-//	ft_putendl("im in gtk init\n");
-
-
 
 //	// css loading
 //	e->ui->css = gtk_css_provider_new();
@@ -64,13 +60,18 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->surface = NULL;
 	g_signal_connect(e->ui->render,"configure-event", G_CALLBACK(cb_configure_draw_area), (gpointer)e);
 	g_signal_connect(e->ui->render, "draw", G_CALLBACK(cb_draw_render), (gpointer)e);
-//	g_signal_connect(e->ui->render, "event", G_CALLBACK(cb_draw_test), (gpointer)e);
 
 
-
-//	gtk_image_set_from_pixbuf(GTK_IMAGE(e->ui->render), e->ui->pixbuf);
+	// signals and shit
+	//gtk_signal_connect(GTK_OBJECT(e->ui->render));
+//	g_signal_connect(GTK_WIDGET(e->ui->left_panel_scroll_win), "key-press-event", G_CALLBACK(cb_render_keypress1), (gpointer)e);
+//	g_signal_connect(GTK_WIDGET(e->ui->left_panel_viewport), "key-press-event", G_CALLBACK(cb_render_keypress2), (gpointer)e);
+	gtk_widget_add_events (e->ui->render, GDK_BUTTON_PRESS_MASK);
+	g_signal_connect(GTK_WIDGET(e->ui->render), "button-press-event", G_CALLBACK(cb_render_btnpress), (gpointer)e);
+	gtk_widget_add_events (e->ui->render, GDK_KEY_PRESS_MASK);
+	g_signal_connect(GTK_WIDGET(e->ui->render), "key-press-event", G_CALLBACK(cb_render_keypress), (gpointer)e);
 	
-
+	
 	// init and activate all preset signals from template
 	gtk_builder_connect_signals(e->ui->builder, NULL);
 	
@@ -79,12 +80,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 	gtk_widget_show_all(e->ui->main_window);
 
-//	g_idle_add(gtk_main_loop, (gpointer)e); // fonctionne
-	g_timeout_add(10, gtk_main_loop, (gpointer)e);
-/*	while (gtk_events_pending())
-  {
-	ft_putendl("im in event pending\n");
-	gtk_main_iteration();
-  }*/
+	g_idle_add(gtk_main_loop, (gpointer)e);
+
 	gtk_main();
 }

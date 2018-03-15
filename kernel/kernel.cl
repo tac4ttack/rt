@@ -894,12 +894,12 @@ __kernel void	ray_trace(	__global	char		*output,
 	if (scene->flag & OPTION_BW)
 		final_color = desaturate(final_color);
 
-	// ALPHA INSERT
+	// ALPHA INSERT and RGB SWAP
 	int4 swap;
 	swap.w = 255;
 	swap.x = (final_color & 0x00FF0000) >> 16;
 	swap.y = (final_color & 0x0000FF00) >> 8;
 	swap.z = (final_color & 0x000000FF);
-	final_color = ((swap.w << 24) + (swap.x << 16) + (swap.y << 8) + swap.z);
+	final_color = ((swap.w << 24) + (swap.z << 16) + (swap.y << 8) + swap.x);
 	((__global unsigned int *)output)[id] = final_color;
 }
