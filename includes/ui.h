@@ -23,7 +23,7 @@ typedef	struct			s_ui
 			GtkWidget			*left_panel_scroll_win;
 				GtkWidget			*left_panel_viewport;
 					GtkWidget			*render;
-						cairo_t				*cr; //useless ?
+					//	cairo_t				*cr; //useless ?
 						cairo_surface_t		*surface;
 						GdkPixbuf			*pixbuf;
 			GtkWidget			*right_panel;
@@ -36,7 +36,7 @@ typedef	struct			s_ui
 
 }						t_ui;
 
-gboolean				gtk_main_loop(void *e);
+gboolean				gtk_main_loop(gpointer data);
 int						gtk_quit(GtkApplication *app, gpointer data);
 void					init_gtk(GtkApplication* app, gpointer data);
 
@@ -44,7 +44,11 @@ gboolean				cb_draw_render(GtkWidget *widget, cairo_t *cr, gpointer data);
 gboolean				cb_configure_draw_area(GtkWidget *widget, \
 									GdkEventConfigure *event, \
 									gpointer data);
-gboolean				test(gpointer data);
+
+gboolean				cb_render_btnpress(GtkWidget *widget, \
+											GdkEvent *event, gpointer data);
+gboolean				cb_render_keypress(GtkWidget *widget, \
+											GdkEvent *event, gpointer data);
 
 #endif
 

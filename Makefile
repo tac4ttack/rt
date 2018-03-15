@@ -33,6 +33,8 @@ SRC_NAME =  			gtk/gtk.c \
 						gtk/gtk_main_loop.c \
 						gtk/cb_configure_draw_area.c \
 						gtk/cb_draw_render.c \
+						gtk/cb_render_btnpress.c \
+						gtk/cb_render_keypress.c \
 						hud.c \
 						init.c \
 						main.c \

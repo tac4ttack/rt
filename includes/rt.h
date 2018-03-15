@@ -23,8 +23,6 @@
 #  define DBUG					0
 # endif
 
-
-
 # define DEG2RAD				(M_PI / 180)
 # define RAD2DEG				(180 / M_PI)
 
@@ -300,6 +298,7 @@ typedef	struct			s_env
 	t_ui				*ui;
 
 	char				*scene_file;
+	char				*scene_target;
 	int					scene_fd;
 	t_scene				*scene;
 
@@ -360,8 +359,8 @@ void					refresh(t_env *e);
 
 
 
-void					ui_cam(t_env *e);
-void					ui_obj(t_env *e);
+void					ui_cam(t_env *e, guint key);
+void					ui_obj(t_env *e, guint key);
 void					update_fps(t_fps *fps);
 
 void					xml_allocate_cam(t_env *e);

@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:02:45 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 19:14:15 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/15 19:42:12 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-/*void		rot_cam(t_env *e)
+void		rot_cam(t_env *e, guint key)
 {
 	if (KP_W)
 		ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, \
@@ -34,7 +34,7 @@
 		90) * DEG2RAD), ACTIVECAM.pos);
 }
 
-void		ui_cam(t_env *e)
+void		ui_cam(t_env *e, guint key)
 {
 	if (KP_W || KP_S || KP_C || KP_SPC || KP_D || KP_A)
 		rot_cam(e);
@@ -52,4 +52,4 @@ void		ui_cam(t_env *e)
 		e->scene->active_cam = (e->scene->active_cam + 1 \
 		< e->scene->n_cams ? e->scene->active_cam + 1 : 0);
 }
-*/
+

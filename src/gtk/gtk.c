@@ -1,30 +1,5 @@
 #include "rt.h"
 
-gboolean cb_render_btnpress(GtkWidget *widget, GdkEvent  *event, gpointer data)
-{
-	(void)widget;
-	(void)event;
-	t_env *e;
-
-
-	e = data;
-//	gtk_widget_grab_focus(widget);
-	ft_putendl("test btnpress");
-	return TRUE;
-}
-
-gboolean cb_render_keypress(GtkWidget *widget, GdkEvent  *event, gpointer data)
-{
-	(void)widget;
-	(void)event;
-	t_env *e;
-
-	e = data;
-	ft_putendl("test keypress 1");
-	return TRUE;
-}
-
-
 void		init_gtk(GtkApplication* app, gpointer data)
 {
 	t_env *e;
