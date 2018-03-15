@@ -1,94 +1,94 @@
-NAME = 					rt
+NAME = rt
 
-CC = 					clang
-CFLAGS +=				-Wall -Wextra -Werror
-OFLAGS := 				-O3
-RM := 					rm -rf
+CC = clang
+CFLAGS += -Wall -Wextra -Werror
+OFLAGS := -O3
+RM := rm -rf
 
-INC = 					$(addprefix $(INC_PATH)/,$(INC_NAMES))
-INC_PATH =				./includes
+INC = $(addprefix $(INC_PATH)/,$(INC_NAMES))
+INC_PATH = ./includes
 
-LIBFT :=				$(LIBFT_PATH)/libft.a
-LIBFT_PATH :=			./libft
-LIBFT_INC_PATH :=		./libft
-LIBFTFLAGS :=			-lft
+LIBFT := $(LIBFT_PATH)/libft.a
+LIBFT_PATH := ./libft
+LIBFT_INC_PATH := ./libft
+LIBFTFLAGS := -lft
 
-LIBMATHFLAGS :=			-lm
+LIBMATHFLAGS := -lm
 
-OPENCL :=				-framework OpenCL
+OPENCL := -framework OpenCL
 
 OS_TEST := $(shell uname)
 ifeq ($(OS_TEST), Darwin)
-INC_NAMES = 			$(NAME).h \
+INC_NAMES = $(NAME).h \
 						mac_keys.h
-MLXFLAGS =				-framework OpenGL -framework AppKit
-KEYS =					-DMAC_KEYS
+MLXFLAGS = -framework OpenGL -framework AppKit
+KEYS = -DMAC_KEYS
 OS_VERSION_TEST := $(shell uname -r | cut -d . -f 1)
 endif
-ifeq  ($(OS_VERSION_TEST),16)
-OS_NAME =				"Sierra"
-MLX_PATH =				./mlx/mlx_sierra
+ifeq ($(OS_VERSION_TEST),16)
+OS_NAME = "Sierra"
+MLX_PATH = ./mlx/mlx_sierra
 else ifeq ($(OS_TEST), Darwin)
-OS_NAME =				"El_Capitan"
-MLX_PATH =				./mlx/mlx_capitan
+OS_NAME = "El_Capitan"
+MLX_PATH = ./mlx/mlx_capitan
 endif
-ifeq ($(OS_TEST),"Linux")
-OS_NAME =				"Linux"
-MLX_PATH =				./mlx/mlx_x11
-INC_NAMES = 			$(NAME).h \
+ifeq ($(OS_TEST),Linux)
+OS_NAME = Linux
+MLX_PATH = ./mlx/minilibx
+INC_NAMES = $(NAME).h \
 						linux_keys.h
-MLXFLAGS =				-lmlx -lXext -lX11
-KEYS =					-DLINUX_KEYS
+MLXFLAGS = -lmlx -lXext -lX11
+KEYS = -DLINUX_KEYS
 endif
 
-MLX =					$(MLX_PATH)/libmlx.a
+MLX = $(MLX_PATH)/libmlx.a
 
-NUKLEAR =				./nuklear
+NUKLEAR = ./nuklear
 
-OBJ =					$(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
-OBJ_PATH =				./obj
-OBJ_NAME =				$(SRC_NAME:.c=.o)
+OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
+OBJ_PATH = ./obj
+OBJ_NAME = $(SRC_NAME:.c=.o)
 
-SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
-SRC_PATH =				./src
-SRC_NAME =  			init.c \
-						hud.c \
-						main.c \
-						mlx_image_draw.c \
-						mlx_key_press.c \
-						mlx_key_release.c \
-						mlx_key_norepeat.c \
-						mlx_key_events.c \
-						mlx_main_loop.c \
-						mlx_mouse.c \
-						opencl_compute.c \
-						opencl_error.c \
-						opencl_init.c \
-						opencl_memalloc.c \
-						rotations.c \
-						tools.c \
-						tree_of_ray.c \
-						ui_obj.c \
-						ui_cam.c \
-						update_fps.c \
-						vectors.c \
-						xml.c \
-						xml_check_attr.c \
-						xml_cameras.c \
-						xml_cones.c \
-						xml_cylinders.c \
-						xml_data_float.c \
-						xml_data_float3.c \
-						xml_data_int.c \
-						xml_data_vector.c \
-						xml_lights.c \
-						xml_list.c \
-						xml_nodes.c \
-						xml_planes.c \
-						xml_scene.c \
-						xml_spheres.c \
-						hooks.c \
-						xml_tools.c	
+SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
+SRC_PATH = ./src
+SRC_NAME = init.c \
+hud.c \
+main.c \
+mlx_image_draw.c \
+mlx_key_press.c \
+mlx_key_release.c \
+mlx_key_norepeat.c \
+mlx_key_events.c \
+mlx_main_loop.c \
+mlx_mouse.c \
+opencl_compute.c \
+opencl_error.c \
+opencl_init.c \
+opencl_memalloc.c \
+rotations.c \
+tools.c \
+tree_of_ray.c \
+ui_obj.c \
+ui_cam.c \
+update_fps.c \
+vectors.c \
+xml.c \
+xml_check_attr.c \
+xml_cameras.c \
+xml_cones.c \
+xml_cylinders.c \
+xml_data_float.c \
+xml_data_float3.c \
+xml_data_int.c \
+xml_data_vector.c \
+xml_lights.c \
+xml_list.c \
+xml_nodes.c \
+xml_planes.c \
+xml_scene.c \
+xml_spheres.c \
+hooks.c \
+xml_tools.c
 
 default: gpu
 
@@ -130,7 +130,7 @@ clean:
 	@echo "$(GREEN)Deleting .obj files$(EOC)"
 	@rm -rf $(OBJ_PATH)
 
-fclean: clean 
+fclean: clean
 	@echo "$(GREEN)Full cleaning...$(EOC)"
 	@echo "$(GREEN)Deleting $(NAME) executable and config file$(EOC)"
 	@rm -rf $(NAME) ./config
@@ -156,6 +156,7 @@ cleanmlx:
 	@make -C ./mlx/mlx_capitan/ clean
 	@make -C ./mlx/mlx_sierra/ clean
 	@make -C ./mlx/mlx_x11/ clean
+	@make -C ./mlx/minilibx/ clean
 
 re: fclean fcleanlibft cleanmlx default
 
