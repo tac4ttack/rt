@@ -10,7 +10,7 @@ gboolean cb_render_btnpress(GtkWidget *widget, GdkEvent  *event, gpointer data)
 	e = data;
 //	gtk_widget_grab_focus(widget);
 	ft_putendl("test btnpress");
-	return FALSE;
+	return TRUE;
 }
 
 gboolean cb_render_keypress(GtkWidget *widget, GdkEvent  *event, gpointer data)
@@ -21,7 +21,7 @@ gboolean cb_render_keypress(GtkWidget *widget, GdkEvent  *event, gpointer data)
 
 	e = data;
 	ft_putendl("test keypress 1");
-	return FALSE;
+	return TRUE;
 }
 
 
