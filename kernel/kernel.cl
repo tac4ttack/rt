@@ -585,12 +585,13 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 		}
 	}
 	save = res;
-	//if (scene->flag & OPTION_WAVE)
+//	if (scene->flag & OPTION_WAVE)
 	if (1)
 	{
 		/*						VAGUELETTE							*/
 		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
-		save.z = res.z + 0.8 * sin(res.x * 10 + scene->u_time);
+		//save.z = res.z + 0.8 * sin(res.x * 10 + scene->u_time);
+		save.z = res.z + 0.8 * sin(save.x * 10 + scene->u_time);
 		save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
 	}
 
@@ -893,17 +894,12 @@ __kernel void	ray_trace(	__global	char		*output,
 	if (scene->flag & OPTION_BW)
 		final_color = desaturate(final_color);
 
-	// RGB TO BGR SWAP
-	uint4 swap;
-	swap.w = 255;//(final_color & 0xFF000000) >> 24;
+	// ALPHA INSERT
+	int4 swap;
+	swap.w = 255;
 	swap.x = (final_color & 0x00FF0000) >> 16;
 	swap.y = (final_color & 0x0000FF00) >> 8;
 	swap.z = (final_color & 0x000000FF);
-
-//	final_color = ((swap.z << 24) + (swap.y << 16) + (swap.x << 8)+ swap.w);
-//	final_color = ((swap.w << 24) + (swap.z << 16) + (swap.y << 8)+ swap.x);
-
-	final_color = ((swap.z << 24) + (swap.y << 16) + (swap.x << 8)+ swap.w);
-
+	final_color = ((swap.w << 24) + (swap.x << 16) + (swap.y << 8) + swap.z);
 	((__global unsigned int *)output)[id] = final_color;
 }
