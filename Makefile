@@ -29,35 +29,37 @@ OBJ_NAME =				$(SRC_NAME:.c=.o)
 
 SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 SRC_PATH =				./src
-SRC_NAME = 			ui/gtk.c \
-						ui/gtk_main_loop.c \
-						ui/gtk_render_events.c \
+SRC_NAME =	 			cl/cl_compute.c \
+						cl/cl_construct.c \
+						cl/cl_create_buffer.c \
+						cl/cl_destruct.c \
+						cl/cl_print_error.c \
+						hud.c \
+						init.c \
+						gen/gen_add.c \
+						gen/gen_construct.c \
+						gen/gen_destruct.c \
+						main.c \
+						opencl_compute.c \
+						rotations.c \
+						tools.c \
+						ui/cb_ambient_update.c \
 						ui/cb_configure_draw_area.c \
+						ui/cb_depth_update.c \
 						ui/cb_draw_render.c \
 						ui/cb_render_btnpress.c \
 						ui/cb_render_keypress.c \
 						ui/cb_render_keyrelease.c \
-						ui/ui_obj.c \
+						ui/gtk.c \
+						ui/gtk_main_loop.c \
+						ui/gtk_render_events.c \
 						ui/ui_cam.c \
-						hud.c \
-						init.c \
-						main.c \
-						rotations.c \
-						tools.c \
+						ui/ui_obj.c \
 						update_fps.c \
 						vectors.c \
-						gen/gen_construct.c \
-						gen/gen_add.c \
-						gen/gen_destruct.c \
-						cl/cl_destruct.c \
-						cl/cl_construct.c \
-						cl/cl_print_error.c \
-						cl/cl_compute.c \
-						cl/cl_create_buffer.c \
-						opencl_compute.c \
 						xml/xml.c \
-						xml/xml_check_attr.c \
 						xml/xml_cameras.c \
+						xml/xml_check_attr.c \
 						xml/xml_cones.c \
 						xml/xml_cylinders.c \
 						xml/xml_data_float.c \
@@ -74,7 +76,7 @@ SRC_NAME = 			ui/gtk.c \
 
 default: gpu
 
-all: libft mlx
+all: libft
 	@echo "$(GREEN)Checking for RT$(EOC)"
 	@make $(NAME)
 
