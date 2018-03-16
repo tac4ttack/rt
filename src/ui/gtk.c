@@ -7,6 +7,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e = data;
 	(void)app;
 
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 //	// css loading
 //	e->ui->css = gtk_css_provider_new();
 //	gtk_css_provider_load_from_path(e->ui->css, "./theme/gtk-dark.css", NULL);
@@ -44,8 +45,8 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	g_signal_connect(GTK_WIDGET(e->ui->render), "key-press-event", G_CALLBACK(cb_render_keypress), (gpointer)e);
 	gtk_widget_add_events (e->ui->render, GDK_KEY_RELEASE_MASK);
 	g_signal_connect(GTK_WIDGET(e->ui->render), "key-release-event", G_CALLBACK(cb_render_keyrelease), (gpointer)e);
-	
-	
+	gtk_widget_grab_focus(e->ui->render);
+
 	// init and activate all preset signals from template
 	gtk_builder_connect_signals(e->ui->builder, NULL);
 	
