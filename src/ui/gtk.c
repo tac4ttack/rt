@@ -46,13 +46,13 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->scene_resolution_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_box"));
 	e->ui->scene_resolution_width_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_width_spin"));
 	e->ui->scene_resolution_height_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_height_spin"));
-/*
+
 	// scene ambient shit
 	e->ui->scene_ambient_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_box"));
 	e->ui->scene_ambient_red_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_red_spin"));
 	e->ui->scene_ambient_green_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_green_spin"));
 	e->ui->scene_ambient_blue_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_blue_spin"));
-*/
+
 
 	// scene depth shit
 	e->ui->scene_depth_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_box"));
