@@ -34,6 +34,41 @@ typedef struct		s_keystate
 	unsigned int		: 6;
 }					t_keystate;
 
+typedef struct			s_widget_list
+{
+	GtkWidget			*main_window; //
+			GtkWidget			*main_box; //
+				GtkWidget			*main_panels;
+
+					GtkWidget			*left_panel_scroll; //
+						GtkWidget			*left_panel_viewport; //
+							GtkWidget			*render; //
+							
+					GtkWidget			*right_panel_scroll; //
+						GtkWidget			*right_panel_viewport; //
+							GtkWidget			*right_panel; //
+
+								GtkWidget			*scene_resolution_box;
+									GtkWidget			*scene_resolution_width_spin;
+									GtkWidget			*scene_resolution_height_spin;
+							
+								GtkWidget			*scene_ambient_box;
+									GtkWidget			*scene_ambient_red_spin;
+									GtkWidget			*scene_ambient_green_spin;
+									GtkWidget			*scene_ambient_blue_spin;
+							
+								GtkWidget			*scene_depth_box;
+									GtkWidget			*scene_depth_spin;
+
+								GtkWidget			*scene_postproc_box;
+									GtkWidget			*scene_postproc_bw_radio;
+									GtkWidget			*scene_postproc_sepia_radio;
+									GtkWidget			*scene_postproc_none_radio;
+
+				GtkWidget			*status_bar;
+				GtkWidget			*tool_bar;	
+}						t_widget_list;
+
 typedef	struct			s_ui
 {
 	int					gtkstatus;
@@ -47,16 +82,38 @@ typedef	struct			s_ui
 	// css
 	GtkCssProvider		*style_provider;
 
-	GtkWidget			*main_window;
-		GtkWidget			*main_box;
+	GtkWidget			*main_window; //
+		GtkWidget			*main_box; //
 			GtkWidget			*main_panels;
-			GtkWidget			*left_panel_scroll_win;
-				GtkWidget			*left_panel_viewport;
-					GtkWidget			*render;
-					//	cairo_t				*cr; //useless ?
-						cairo_surface_t		*surface;
-						GdkPixbuf			*pixbuf;
-			GtkWidget			*right_panel;
+
+				GtkWidget			*left_panel_scroll; //
+					GtkWidget			*left_panel_viewport; //
+						GtkWidget			*render; //
+						//	cairo_t				*cr; //useless ?
+							cairo_surface_t		*surface;  //
+							GdkPixbuf			*pixbuf; //
+
+				GtkWidget			*right_panel_scroll; //
+					GtkWidget			*right_panel_viewport; //
+						GtkWidget			*right_panel; //
+
+							GtkWidget			*scene_resolution_box;
+								GtkWidget			*scene_resolution_width_spin;
+								GtkWidget			*scene_resolution_height_spin;
+						
+							GtkWidget			*scene_ambient_box;
+								GtkWidget			*scene_ambient_red_spin;
+								GtkWidget			*scene_ambient_green_spin;
+								GtkWidget			*scene_ambient_blue_spin;
+						
+							GtkWidget			*scene_depth_box;
+								GtkWidget			*scene_depth_spin;
+
+							GtkWidget			*scene_postproc_box;
+								GtkWidget			*scene_postproc_bw_radio;
+								GtkWidget			*scene_postproc_sepia_radio;
+								GtkWidget			*scene_postproc_none_radio;
+
 			GtkWidget			*status_bar;
 			GtkWidget			*tool_bar;	
 	

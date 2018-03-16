@@ -10,7 +10,7 @@ gboolean cb_render_keypress(GtkWidget *widget, GdkEvent *event, gpointer data)
 	if (!e)
 		exit(EXIT_FAILURE);
 	key = event->key.keyval;
-	printf("key is %d\n", key);
+//	printf("key is %d\n", key);
 	(key == KEY_UA ? KEY_STATE_UA = 1 : 0 );
 	(key == KEY_DA ? KEY_STATE_DA = 1 : 0 );
 	(key == KEY_LA ? KEY_STATE_LA = 1 : 0 );

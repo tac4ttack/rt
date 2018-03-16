@@ -24,7 +24,8 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	// init all widget in order
 	e->ui->main_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "main_box"));
 	e->ui->main_panels = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "main_panels"));
-	e->ui->left_panel_scroll_win = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "left_panel_scroll_win"));
+
+	e->ui->left_panel_scroll = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "left_panel_scroll"));
 	e->ui->left_panel_viewport = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "left_panel_viewport"));
 	e->ui->right_panel = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "right_panel"));
 	e->ui->tool_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_bar"));
@@ -34,11 +35,13 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->render = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "render"));
 	e->ui->pixbuf = gdk_pixbuf_new_from_data((const guchar *)e->pixel_data, GDK_COLORSPACE_RGB, 1, 8, e->win_w, e->win_h, e->win_w * 4, NULL, NULL);
 	e->ui->surface = NULL;
-	g_signal_connect(e->ui->render,"configure-event", G_CALLBACK(cb_configure_draw_area), (gpointer)e);
-	g_signal_connect(e->ui->render, "draw", G_CALLBACK(cb_draw_render), (gpointer)e);
+
+	
 
 
 	// signals and shit
+	g_signal_connect(e->ui->render,"configure-event", G_CALLBACK(cb_configure_draw_area), (gpointer)e);
+	g_signal_connect(e->ui->render, "draw", G_CALLBACK(cb_draw_render), (gpointer)e);
 	gtk_widget_add_events (e->ui->render, GDK_BUTTON_PRESS_MASK);
 	g_signal_connect(GTK_WIDGET(e->ui->render), "button-press-event", G_CALLBACK(cb_render_btnpress), (gpointer)e);
 	gtk_widget_add_events (e->ui->render, GDK_KEY_PRESS_MASK);
