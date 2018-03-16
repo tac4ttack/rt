@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:02:45 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/16 14:26:49 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/16 20:20:32 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ void		ui_cam(t_env *e)
 	if (KEY_STATE_Z)
 		e->scene->active_cam = (e->scene->active_cam + 1 \
 		< e->scene->n_cams ? e->scene->active_cam + 1 : 0);
-	opencl_set_args(e, e->cl);
+//	opencl_set_args(e, e->cl);
 }
 

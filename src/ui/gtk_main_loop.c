@@ -19,7 +19,7 @@ gboolean	gtk_main_loop(gpointer data)
 			opencl_draw(e);
 			free(fps);
 			gtk_render_events(e);
-			gtk_widget_queue_draw_area(e->ui->main_window, 0, 40, e->win_w + 50 , e->win_h + 50);
+			gtk_widget_queue_draw_area(e->ui->main_window, 0, 40, e->scene->win_w + 50 , e->scene->win_h + 50);
 			while (gtk_events_pending())
 			{
 				if (gtk_main_iteration())

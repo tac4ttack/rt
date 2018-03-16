@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/14 17:01:46 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/16 21:31:22 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,11 @@ void		opencl_set_args(t_env *e, t_cl *cl)
 int			opencl_draw(t_env *e)
 {
 	t_cl *cl = e->cl;
-	//const size_t g[2] = {e->scene->win_w, e->scene->win_h};
-
-//	ft_putendl("hi im in opencl_draw!!!!\n");
-
 	opencl_set_args(e, cl);
-
 	cl->compute(cl);
-
 	cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[0], CL_TRUE, 0,
 			e->scene->win_w * e->scene->win_h * 4,
 			e->pixel_data, 0, NULL, NULL);
-//			e->pixel_data, 0, NULL, NULL);
 	if (e->scene->flag & OPTION_RUN)
 	{
 		cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[5], CL_FALSE, 0,

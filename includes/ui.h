@@ -34,41 +34,6 @@ typedef struct		s_keystate
 	unsigned int		: 6;
 }					t_keystate;
 
-typedef struct			s_widget_list
-{
-	GtkWidget			*main_window; //
-			GtkWidget			*main_box; //
-				GtkWidget			*main_panels;
-
-					GtkWidget			*left_panel_scroll; //
-						GtkWidget			*left_panel_viewport; //
-							GtkWidget			*render; //
-							
-					GtkWidget			*right_panel_scroll; //
-						GtkWidget			*right_panel_viewport; //
-							GtkWidget			*right_panel; //
-
-								GtkWidget			*scene_resolution_box;
-									GtkWidget			*scene_resolution_width_spin;
-									GtkWidget			*scene_resolution_height_spin;
-							
-								GtkWidget			*scene_ambient_box;
-									GtkWidget			*scene_ambient_red_spin;
-									GtkWidget			*scene_ambient_green_spin;
-									GtkWidget			*scene_ambient_blue_spin;
-							
-								GtkWidget			*scene_depth_box;
-									GtkWidget			*scene_depth_spin;
-
-								GtkWidget			*scene_postproc_box;
-									GtkWidget			*scene_postproc_bw_radio;
-									GtkWidget			*scene_postproc_sepia_radio;
-									GtkWidget			*scene_postproc_none_radio;
-
-				GtkWidget			*status_bar;
-				GtkWidget			*tool_bar;	
-}						t_widget_list;
-
 typedef	struct			s_ui
 {
 	int					gtkstatus;
@@ -130,17 +95,35 @@ void					init_gtk(GtkApplication* app, gpointer data);
 gboolean				gtk_main_loop(gpointer data);
 int						gtk_quit(GtkApplication *app, gpointer data);
 
-gboolean				cb_draw_render(GtkWidget *widget, cairo_t *cr, gpointer data);
-gboolean				cb_configure_draw_area(GtkWidget *widget, \
-									GdkEventConfigure *event, \
-									gpointer data);
 
-gboolean				cb_render_btnpress(GtkWidget *widget, \
-											GdkEvent *event, gpointer data);
-gboolean				cb_render_keypress(GtkWidget *widget, \
-											GdkEvent *event, gpointer data);
+gboolean				cb_ambient_red_update(GtkSpinButton *spin, \
+											gpointer data);
+gboolean				cb_ambient_green_update(GtkSpinButton *spin, \
+											gpointer data);
+gboolean				cb_ambient_blue_update(GtkSpinButton *spin, \
+											gpointer data);
+
+gboolean				cb_configure_draw_area(GtkWidget *widget, \
+									GdkEventConfigure *event, gpointer data);
+
+gboolean				cb_depth_update(GtkSpinButton *spin, gpointer data);
+
+gboolean				cb_draw_render(GtkWidget *widget, cairo_t *cr, \
+										gpointer data);
+
+void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
+void					cb_postproc_none(GtkToggleButton *button, gpointer data);
+void					cb_postproc_sepia(GtkToggleButton *button, gpointer data);
+
+gboolean				cb_render_btnpress(GtkWidget *widget, GdkEvent *event, \
+											gpointer data);
+gboolean				cb_render_keypress(GtkWidget *widget, GdkEvent *event, \
+											gpointer data);
 gboolean				cb_render_keyrelease(GtkWidget *widget, \
 											GdkEvent *event, gpointer data);
+
+
+
 
 # define KEY_STATE_UA		e->ui->keys.k_up
 # define KEY_STATE_DA		e->ui->keys.k_down

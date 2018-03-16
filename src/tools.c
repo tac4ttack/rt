@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/12 17:57:03 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/16 20:01:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int		gtk_quit(GtkApplication *app, gpointer data)
 	e = data;
 	gtk_main_quit();
 	g_object_unref(e->ui->app);
-	printf("%d\n", e->win_w);
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
 	flush(e);
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");

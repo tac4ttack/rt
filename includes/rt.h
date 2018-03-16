@@ -56,6 +56,7 @@
 # define OPTION_BW				(1 << 3)
 # define OPTION_RUN				(1 << 4)
 # define OPTION_GPU				(1 << 5)
+# define OPTION_DEBUG			(1 << 6)
 
 # define OBJ_CONE			1
 # define OBJ_CYLINDER		2
@@ -248,21 +249,6 @@ typedef	struct			s_xml
 	int					excl;
 }						t_xml;
 
-
-// MLX SHIT TO BE DELETED
-typedef struct			s_frame
-{
-	void				*ptr;
-	char				*pix;
-	int					x;
-	int					y;
-	int					w;
-	int					h;
-	int					row;
-	int					bpp;
-	int					endian;
-}						t_frame;
-
 typedef struct			s_scene
 {
 	t_cam				*cameras;
@@ -318,8 +304,6 @@ typedef	struct			s_env
 	t_gen				*gen_objects;
 	t_gen				*gen_lights;
 
-	int					win_w;
-	int					win_h;
 	int					debug;
 	int					gpu;
 	t_fps				fps;

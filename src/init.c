@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/16 19:28:15 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/16 21:33:00 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,7 @@ void		env_init(t_env *e)
 {
 	ft_putendl("\n\x1b[1;32m/\\ Initializing RT environnement /\\\x1b[0m\n");
 	e->scene->depth = 0;
-
 	e->scene->tor_count = pow(2, e->scene->depth + 1) - 1; // USELESS?
-	
-	e->win_w = e->scene->win_w;
-	e->win_h = e->scene->win_h;
 	e->debug = DBUG;
 	e->gpu = IS_GPU;
 	if (e->gpu == 1)
@@ -98,9 +94,9 @@ void		init(GtkApplication* app, gpointer data)
 	ft_bzero(e->scene, sizeof(t_scene));
 	xml_init(e);
 	env_init(e);
-	if (!(e->pixel_data = malloc(sizeof(int) * e->win_w * e->win_h)))
+	if (!(e->pixel_data = malloc(sizeof(int) * e->scene->win_w * e->scene->win_h)))
 		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
-	ft_bzero(e->pixel_data, sizeof(int) * e->win_w * e->win_h);
+	ft_bzero(e->pixel_data, sizeof(int) * e->scene->win_w * e->scene->win_h);
 	load_scene(e);
 	
 	

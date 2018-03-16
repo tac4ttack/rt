@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 18:27:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/16 20:01:02 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	xml_data_refract(t_env *e, char **attributes, int *i, t_node *node)
 		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
 			s_error("\x1b[2;31mError in REFRACT from scene\x1b[0m", e);
 		node->refract = ft_atof(attributes[(*i)++] + 9);
-		printf("in node refract = %f\n", node->refract);
 		if (node->refract < 0 || (node->refract > 0 && node->refract < 1))
 			s_error("\x1b[2;31mError REFRACT must be 0 or >= 1\x1b[0m", e);
 	}
@@ -54,7 +53,6 @@ void	xml_data_opacity(t_env *e, char **attributes, int *i, t_node *node)
 		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
 			s_error("\x1b[2;31mError in OPACITY from scene\x1b[0m", e);
 		node->opacity = ft_atof(attributes[(*i)++] + 9);
-		printf("in node opacity = %f\n", node->opacity);
 		if (node->opacity < 0 || node->opacity > 1)
 			s_error("\x1b[2;31mError OPACITY must be 0 <= n <= 1\x1b[0m", e);
 	}
