@@ -97,23 +97,30 @@ typedef	struct			s_ui
 					GtkWidget			*right_panel_viewport; //
 						GtkWidget			*right_panel; //
 
-							GtkWidget			*scene_resolution_box;
-								GtkWidget			*scene_resolution_width_spin;
-								GtkWidget			*scene_resolution_height_spin;
-						
-							GtkWidget			*scene_ambient_box;
-								GtkWidget			*scene_ambient_red_spin;
-								GtkWidget			*scene_ambient_green_spin;
-								GtkWidget			*scene_ambient_blue_spin;
-						
-							GtkWidget			*scene_depth_box;
-								GtkWidget			*scene_depth_spin;
-
-							GtkWidget			*scene_postproc_box;
-								GtkWidget			*scene_postproc_bw_radio;
-								GtkWidget			*scene_postproc_sepia_radio;
-								GtkWidget			*scene_postproc_none_radio;
-
+						GtkWidget			*scene_frame; //
+							GtkWidget			*scene_frame_label; //
+							GtkWidget			*scene_frame_align; //
+								GtkWidget			*scene_frame_box; //
+									GtkWidget			*scene_resolution_box; //
+										GtkWidget			*scene_resolution_label; //
+										GtkWidget			*scene_resolution_width_spin; //
+										GtkWidget			*scene_resolution_height_spin; //
+									GtkWidget			*scene_ambient_box; //
+										GtkWidget			*scene_ambient_label; //
+										GtkWidget			*scene_ambient_red_spin; //
+										GtkWidget			*scene_ambient_green_spin; //
+										GtkWidget			*scene_ambient_blue_spin; //
+									GtkWidget			*scene_depth_box; //
+										GtkWidget			*scene_depth_label; //
+										GtkWidget			*scene_depth_spin; //
+									GtkWidget			*scene_postproc_box; //
+										GtkWidget			*scene_postproc_label; //
+										GtkWidget			*scene_postproc_bw_radio; //
+										GtkWidget			*scene_postproc_sepia_radio; //
+										GtkWidget			*scene_postproc_none_radio; //
+							
+							
+							
 			GtkWidget			*status_bar;
 			GtkWidget			*tool_bar;	
 	
@@ -122,7 +129,6 @@ typedef	struct			s_ui
 void					init_gtk(GtkApplication* app, gpointer data);
 gboolean				gtk_main_loop(gpointer data);
 int						gtk_quit(GtkApplication *app, gpointer data);
-
 
 gboolean				cb_draw_render(GtkWidget *widget, cairo_t *cr, gpointer data);
 gboolean				cb_configure_draw_area(GtkWidget *widget, \

@@ -2,6 +2,10 @@
 <!-- Generated with glade 3.22.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkAdjustment" id="blue_ambient_adjustement">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+  </object>
   <object class="GtkListStore" id="cam_tree_list">
     <columns>
       <!-- column-name test1 -->
@@ -28,6 +32,14 @@
     <property name="upper">32</property>
     <property name="step_increment">1</property>
   </object>
+  <object class="GtkAdjustment" id="green_ambient_adjustement">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+  </object>
+  <object class="GtkAdjustment" id="red_ambient_adjustement">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+  </object>
   <object class="GtkAdjustment" id="res_height_adjustement">
     <property name="lower">5</property>
     <property name="upper">9999</property>
@@ -37,10 +49,6 @@
     <property name="lower">5</property>
     <property name="upper">9999</property>
     <property name="step_increment">1</property>
-  </object>
-  <object class="GtkAdjustment" id="ucoef_adjustement">
-    <property name="upper">1</property>
-    <property name="step_increment">0.01</property>
   </object>
   <object class="GtkApplicationWindow" id="main_window">
     <property name="width_request">2560</property>
@@ -167,7 +175,7 @@
                             <property name="label_xalign">0.05000000074505806</property>
                             <property name="shadow_type">in</property>
                             <child>
-                              <object class="GtkAlignment">
+                              <object class="GtkAlignment" id="scene_frame_align">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="top_padding">12</property>
@@ -276,11 +284,13 @@
                                             <property name="can_focus">True</property>
                                             <property name="tooltip_text" translatable="yes">
 </property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
                                             <property name="max_length">4</property>
                                             <property name="width_chars">4</property>
                                             <property name="text" translatable="yes">0,00</property>
                                             <property name="input_purpose">number</property>
-                                            <property name="adjustment">ucoef_adjustement</property>
+                                            <property name="adjustment">red_ambient_adjustement</property>
                                             <property name="climb_rate">0.01</property>
                                             <property name="digits">2</property>
                                             <property name="wrap">True</property>
@@ -298,11 +308,13 @@
                                             <property name="can_focus">True</property>
                                             <property name="tooltip_text" translatable="yes">GREEN
  component, must be between 0 and 1</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
                                             <property name="max_length">4</property>
                                             <property name="width_chars">4</property>
                                             <property name="text" translatable="yes">0,00</property>
                                             <property name="input_purpose">number</property>
-                                            <property name="adjustment">ucoef_adjustement</property>
+                                            <property name="adjustment">green_ambient_adjustement</property>
                                             <property name="climb_rate">0.01</property>
                                             <property name="digits">2</property>
                                             <property name="wrap">True</property>
@@ -320,11 +332,13 @@
                                             <property name="can_focus">True</property>
                                             <property name="tooltip_text" translatable="yes">BLUE
  component, must be between 0 and 1</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
                                             <property name="max_length">4</property>
                                             <property name="width_chars">4</property>
                                             <property name="text" translatable="yes">0,00</property>
                                             <property name="input_purpose">number</property>
-                                            <property name="adjustment">ucoef_adjustement</property>
+                                            <property name="adjustment">blue_ambient_adjustement</property>
                                             <property name="climb_rate">0.01</property>
                                             <property name="digits">2</property>
                                             <property name="wrap">True</property>
@@ -369,6 +383,8 @@
                                             <property name="can_focus">True</property>
                                             <property name="tooltip_text" translatable="yes">Enter the maximum number of rebound a ray can make.
 Higher values decrease a lot the rendering speed.</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
                                             <property name="max_length">2</property>
                                             <property name="width_chars">2</property>
                                             <property name="text" translatable="yes">0</property>
@@ -413,13 +429,16 @@ Higher values decrease a lot the rendering speed.</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkRadioButton" id="scene_postproc_bw_radio">
-                                            <property name="label" translatable="yes">Black &amp; White</property>
+                                          <object class="GtkRadioButton" id="scene_postprocess_none_radio">
+                                            <property name="label" translatable="yes">None</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
                                             <property name="active">True</property>
                                             <property name="draw_indicator">True</property>
+                                            <property name="group">scene_postproc_bw_radio</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -428,13 +447,14 @@ Higher values decrease a lot the rendering speed.</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkRadioButton" id="scene_postproc_sepia_radio">
-                                            <property name="label" translatable="yes">Sepia filter</property>
+                                          <object class="GtkRadioButton" id="scene_postproc_bw_radio">
+                                            <property name="label" translatable="yes">Black &amp; White</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
                                             <property name="draw_indicator">True</property>
-                                            <property name="group">scene_postproc_bw_radio</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -443,13 +463,15 @@ Higher values decrease a lot the rendering speed.</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkRadioButton" id="scene_postprocess_none_radio">
-                                            <property name="label" translatable="yes">None</property>
+                                          <object class="GtkRadioButton" id="scene_postproc_sepia_radio">
+                                            <property name="label" translatable="yes">Sepia filter</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
                                             <property name="draw_indicator">True</property>
-                                            <property name="group">scene_postproc_bw_radio</property>
+                                            <property name="group">scene_postprocess_none_radio</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -494,7 +516,7 @@ Higher values decrease a lot the rendering speed.</property>
                             <property name="label_xalign">0.05000000074505806</property>
                             <property name="shadow_type">in</property>
                             <child>
-                              <object class="GtkAlignment">
+                              <object class="GtkAlignment" id="cam_frame_align">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="top_padding">12</property>
@@ -553,7 +575,7 @@ Higher values decrease a lot the rendering speed.</property>
                             <property name="label_xalign">0.05000000074505806</property>
                             <property name="shadow_type">in</property>
                             <child>
-                              <object class="GtkAlignment">
+                              <object class="GtkAlignment" id="light_frame_align">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="top_padding">12</property>
@@ -844,14 +866,14 @@ Higher values decrease a lot the rendering speed.</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkFrame" id="textures_frame">
+                          <object class="GtkFrame" id="texture_frame">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_bottom">5</property>
                             <property name="label_xalign">0.05000000074505806</property>
                             <property name="shadow_type">in</property>
                             <child>
-                              <object class="GtkAlignment">
+                              <object class="GtkAlignment" id="texture_frame_align">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="top_padding">12</property>
@@ -1142,7 +1164,7 @@ Higher values decrease a lot the rendering speed.</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkFrame" id="objects_frame">
+                          <object class="GtkFrame" id="object_frame">
                             <property name="height_request">600</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -1150,7 +1172,7 @@ Higher values decrease a lot the rendering speed.</property>
                             <property name="label_xalign">0.05000000074505806</property>
                             <property name="shadow_type">in</property>
                             <child>
-                              <object class="GtkAlignment">
+                              <object class="GtkAlignment" id="object_frame_align">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="top_padding">12</property>
@@ -1423,7 +1445,7 @@ Higher values decrease a lot the rendering speed.</property>
                               </object>
                             </child>
                             <child type="label">
-                              <object class="GtkLabel" id="objects_frame_label">
+                              <object class="GtkLabel" id="object_frame_label">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="margin_top">5</property>
