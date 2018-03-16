@@ -29,7 +29,7 @@ OBJ_NAME =				$(SRC_NAME:.c=.o)
 
 SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 SRC_PATH =				./src
-SRC_NAME =  			ui/gtk.c \
+SRC_NAME = 			ui/gtk.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
 						ui/cb_configure_draw_area.c \
@@ -76,7 +76,7 @@ default: gpu
 
 all: libft mlx
 	@echo "$(GREEN)Checking for RT$(EOC)"
-	@make -j $(NAME)
+	@make $(NAME)
 
 $(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
@@ -97,7 +97,7 @@ $(OBJ_PATH):
 CPU:
 	@echo "$(GREEN)Checking for CPU ONLY RT$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make -j cpu_flags $(NAME)
+	@make cpu_flags $(NAME)
 
 cpu: libft CPU
 cpu_flags:
@@ -106,7 +106,7 @@ $(eval GPU_MACRO = )
 GPU:
 	@echo "$(GREEN)Checking for GPU accelerated RT$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make -j gpu_flags $(NAME)
+	@make gpu_flags $(NAME)
 
 gpu: libft GPU
 gpu_flags:
@@ -117,14 +117,14 @@ debuggpu: fclean debuglibft
 	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
 	@echo "$(GREEN)Checking for GPU accelerated RT with ASAN debug flags enabled$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make -j debug_flag gpu_flags $(NAME)
+	@make debug_flag gpu_flags $(NAME)
 
 debugcpu: fclean debuglibft
 	@echo "$(GREEN)So you want to compile RT with CPU mode forced and DEBUG enabled hu?$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
 	@echo "$(GREEN)Checking for CPU ONLY RT with ASAN debug flags enabled$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make -j debug_flag cpu_flags $(NAME)
+	@make debug_flag cpu_flags $(NAME)
 
 debug_flag:
 	$(eval DEBUG_MACRO = -DDEBUG -g)
