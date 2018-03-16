@@ -903,28 +903,22 @@ static int			tor_height(int i)
 
 static unsigned int	tor_final_color(t_tor *tor)
 {
-	int				i = 30;
+	int				i = 63;
 	unsigned int	color = 0;
 
 	while (i > 0)
 	{
-		if (tor[i].activate == 0 || (tor[i].coef_tra != 0 && tor[i * 2 + 1].mem_index == tor[i].mem_index))
+		if (tor[i].activate == 0 && tor[i * 2 + 1].mem_index == tor[i].mem_index)
 			;
 		else
 		{
 			color = blend_add(tor[(i + 1) * 2].color, tor[i * 2 + 1].color);
-			//if (tor[i].coef_tra != 0)
-			//	tor[i].color = blend_add(tor[i].color, color);
-			//else
-				tor[i].color = blend_add(tor[i].color, color);
-		//	color = blend_add(color, tor[i].color);
-			/*if (i % 2 != 0)
-			{
-				if (!(tor[(i - 1) / 2].mem_index == tor[i].mem_index))
-					color = blend_add(color, tor[i].color);
-			}
+			if (tor[i].coef_tra != 0)
+				tor[i].color = blend_add(blend_factor(tor[i].color, tor[i].opacity), blend_factor(color, 1 - tor[i].opacity));
+			else if (tor[i].coef_ref != 0)
+				tor[i].color = blend_add(blend_factor(tor[i].color, 1 - tor[i].coef_ref), blend_factor(color, tor[i].coef_ref));
 			else
-				color = blend_add(color, blend_factor(tor[i].color, tor[(i - 1) / 2].coef_ref));*/
+			tor[i].color = blend_add(color, tor[i].color);
 		}
 		i = i - 1;
 		while (i > 0 && tor[i].activate == 0)
@@ -932,9 +926,9 @@ static unsigned int	tor_final_color(t_tor *tor)
 	}
 	color = blend_add(tor[(i + 1) * 2].color, tor[i * 2 + 1].color);
 	if (tor[0].coef_tra != 0)
-		color = blend_add(color, blend_factor(tor[0].color, (tor[0].opacity - 1) * -1));
+		color = blend_add(blend_factor(tor[i].color, tor[i].opacity), blend_factor(color, 1 - tor[i].opacity));
 	else
-		color = blend_factor(blend_add(tor[0].color, color), tor[0].coef_ref);
+		color = blend_add(blend_factor(tor[i].color, 1 - tor[i].coef_ref), blend_factor(color, tor[i].coef_ref));
 	return (color);
 }
 
@@ -949,12 +943,12 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 	float			eta = 0;
 	float			cos1 = 0;
 	float			sint = 0;
-	t_tor			tor[64];
+	t_tor			tor[128];
 	int				i = 0;
 
 	depth = (int)pow(2.f, (float)depth) - 1;
 	i = 0;
-	while (i < 64)
+	while (i < 128)
 	{
 		tor[i].activate = 0;
 		tor[i].prim = 0;
@@ -972,7 +966,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 	}
 	i = 0;
 	tor[i] = tor_push(ray, old_hit.normal, old_hit.pos, old_hit.obj->reflex, old_hit.obj->refract, old_hit.obj->opacity, color, old_hit.mem_index, old_hit.obj->id);
-	while (i < 31 && i < depth)
+	while (i < 63 && i < depth)
 	{
 		eta = 1 / tor[i].coef_tra;
 		cos1 = dot(tor[i].normale, tor[i].prim);
@@ -986,6 +980,10 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 			fr = 1;
 		else
 			fr = reflect_ratio(1, tor[i].coef_tra, cos1, sint);
+		if (fr > 0.9)
+			fr = 1;
+		if (fr < 0.1)
+			fr = 0;
 		ft = 1 - fr;
 		if (fr < 1)
 		{
@@ -1027,7 +1025,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 			}
 		}
 		i = i + 1;
-		while (i < 31 && tor[i].activate == 0)
+		while (i < 63 && tor[i].activate == 0)
 			i = i + 1;
 	}
 	return (tor_final_color(tor));
