@@ -18,7 +18,8 @@ gboolean	gtk_main_loop(gpointer data)
 			gtk_window_set_title(GTK_WINDOW(e->ui->main_window), fps);
 			opencl_draw(e);
 			free(fps);
-			gtk_widget_queue_draw_area(e->ui->main_window, 0, 40, e->win_w, e->win_h);
+			gtk_render_events(e);
+			gtk_widget_queue_draw_area(e->ui->main_window, 0, 40, e->win_w + 50 , e->win_h + 50);
 			while (gtk_events_pending())
 			{
 				if (gtk_main_iteration())

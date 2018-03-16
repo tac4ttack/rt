@@ -38,13 +38,12 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 
 	// signals and shit
-	//gtk_signal_connect(GTK_OBJECT(e->ui->render));
-//	g_signal_connect(GTK_WIDGET(e->ui->left_panel_scroll_win), "key-press-event", G_CALLBACK(cb_render_keypress1), (gpointer)e);
-//	g_signal_connect(GTK_WIDGET(e->ui->left_panel_viewport), "key-press-event", G_CALLBACK(cb_render_keypress2), (gpointer)e);
 	gtk_widget_add_events (e->ui->render, GDK_BUTTON_PRESS_MASK);
 	g_signal_connect(GTK_WIDGET(e->ui->render), "button-press-event", G_CALLBACK(cb_render_btnpress), (gpointer)e);
 	gtk_widget_add_events (e->ui->render, GDK_KEY_PRESS_MASK);
 	g_signal_connect(GTK_WIDGET(e->ui->render), "key-press-event", G_CALLBACK(cb_render_keypress), (gpointer)e);
+	gtk_widget_add_events (e->ui->render, GDK_KEY_RELEASE_MASK);
+	g_signal_connect(GTK_WIDGET(e->ui->render), "key-release-event", G_CALLBACK(cb_render_keyrelease), (gpointer)e);
 	
 	
 	// init and activate all preset signals from template

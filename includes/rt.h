@@ -282,8 +282,6 @@ typedef struct			s_scene
 	size_t				mem_size_lights;
 }						t_scene;
 
-
-
 typedef struct			s_gen
 {
 	bool				(*add)(struct s_gen *, void *);
@@ -358,9 +356,9 @@ int						quit(t_env *e);
 void					refresh(t_env *e);
 
 
-
-void					ui_cam(t_env *e, guint key);
-void					ui_obj(t_env *e, guint key);
+void					gtk_render_events(t_env *e);
+void					ui_cam(t_env *e);
+void					ui_obj(t_env *e);
 void					update_fps(t_fps *fps);
 
 void					xml_allocate_cam(t_env *e);

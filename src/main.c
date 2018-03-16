@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:32:13 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/15 18:52:01 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/16 15:56:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ int			main(int ac, char **av)
 	if (!(e->ui = malloc(sizeof(t_ui))))
 		s_error("\x1b[1;31mCan't initialize UI data structure\x1b[0m", e);
 	e->scene_file = ft_strdup(av[1]);
-
 	
 	/* solution temporaire j'aimerais garder le nom de fichier seulement,
 	le probleme etant que scene_file se remplit avec contenu du fichier xml*/

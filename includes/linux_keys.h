@@ -27,7 +27,7 @@ typedef	struct	s_key
 	char			k_q;
 	char			k_r;
 	char			k_s;
-	char			k_t;
+	int				vqr:1
 	char			k_u;
 	char			k_v;
 	char			k_w;

@@ -29,19 +29,21 @@ OBJ_NAME =				$(SRC_NAME:.c=.o)
 
 SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 SRC_PATH =				./src
-SRC_NAME =  			gtk/gtk.c \
-						gtk/gtk_main_loop.c \
-						gtk/cb_configure_draw_area.c \
-						gtk/cb_draw_render.c \
-						gtk/cb_render_btnpress.c \
-						gtk/cb_render_keypress.c \
+SRC_NAME =  			ui/gtk.c \
+						ui/gtk_main_loop.c \
+						ui/gtk_render_events.c \
+						ui/cb_configure_draw_area.c \
+						ui/cb_draw_render.c \
+						ui/cb_render_btnpress.c \
+						ui/cb_render_keypress.c \
+						ui/cb_render_keyrelease.c \
+						ui/ui_obj.c \
+						ui/ui_cam.c \
 						hud.c \
 						init.c \
 						main.c \
 						rotations.c \
 						tools.c \
-						ui_obj.c \
-						ui_cam.c \
 						update_fps.c \
 						vectors.c \
 						gen/gen_construct.c \
@@ -89,7 +91,7 @@ $(OBJ_PATH):
 	@mkdir $(OBJ_PATH)/cl
 	@mkdir $(OBJ_PATH)/xml
 	@mkdir $(OBJ_PATH)/gen
-	@mkdir $(OBJ_PATH)/gtk
+	@mkdir $(OBJ_PATH)/ui
 	@mkdir $(OBJ_PATH)/event
 
 CPU:

@@ -31,6 +31,6 @@
 		diff="0.42, 0.42, 0.42"
 		spec="0, 0, 0"
 		reflex="0"
-		refract="1.42"
+		refract="0"
 		/>
 </scene>

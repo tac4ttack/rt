@@ -853,8 +853,7 @@ __kernel void	ray_trace(	__global	char		*output,
 							__local		char		*mem_lights,
 							__private	size_t		mem_size_lights,
 
-							__global	int		*target
-									)
+							__global	int		*target)
 {
 
  	event_t			ev;
