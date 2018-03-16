@@ -105,12 +105,15 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	g_signal_connect(GTK_WIDGET(e->ui->render), "key-release-event", G_CALLBACK(cb_render_keyrelease), (gpointer)e);
 	gtk_widget_grab_focus(e->ui->render);
 
-	//scene depth spinbutton
-	g_signal_connect(GTK_WIDGET(e->ui->scene_depth_spin), "value-changed", G_CALLBACK(cb_depth_update), (gpointer)e);
+	//scene resolution spinbuttons
+	g_signal_connect(GTK_WIDGET(e->ui->scene_resolution_width_spin), "value-changed", G_CALLBACK(cb_width_update), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->scene_resolution_height_spin), "value-changed", G_CALLBACK(cb_height_update), (gpointer)e);
 	//scene ambient spinbuttons
 	g_signal_connect(GTK_WIDGET(e->ui->scene_ambient_red_spin), "value-changed", G_CALLBACK(cb_ambient_red_update), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->scene_ambient_green_spin), "value-changed", G_CALLBACK(cb_ambient_green_update), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->scene_ambient_blue_spin), "value-changed", G_CALLBACK(cb_ambient_blue_update), (gpointer)e);
+	//scene depth spinbutton
+	g_signal_connect(GTK_WIDGET(e->ui->scene_depth_spin), "value-changed", G_CALLBACK(cb_depth_update), (gpointer)e);
 	//scene postproc radiobuttons
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_none_radio), "toggled", G_CALLBACK(cb_postproc_none), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_bw_radio), "toggled", G_CALLBACK(cb_postproc_bw), (gpointer)e);

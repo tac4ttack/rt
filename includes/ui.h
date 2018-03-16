@@ -122,7 +122,8 @@ gboolean				cb_render_keypress(GtkWidget *widget, GdkEvent *event, \
 gboolean				cb_render_keyrelease(GtkWidget *widget, \
 											GdkEvent *event, gpointer data);
 
-
+gboolean				cb_height_update(GtkSpinButton *spin, gpointer data);
+gboolean				cb_width_update(GtkSpinButton *spin, gpointer data);
 
 
 # define KEY_STATE_UA		e->ui->keys.k_up
