@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/06 20:27:40 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/16 19:28:15 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	init_print_structure_memory_size()
 	printf("t_light 			: %-20lu\n", sizeof(t_light));
 	printf("t_plane 			: %-20lu\n", sizeof(t_plane));
 	printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
-	printf("t_tor 				: %-20lu\n", sizeof(t_tor));
+//	printf("t_tor 				: %-20lu\n", sizeof(t_tor));
 	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
 	printf("cl_int				: %-20lu\n", sizeof(cl_int));
 	printf("cl_float			: %-20lu\n", sizeof(cl_float));
@@ -29,18 +29,21 @@ static void	init_print_structure_memory_size()
 
 void		load_obj(t_env *e)
 {
+	ft_putendl("\x1b[1;29mFetching scene objects...\x1b[0m");
 	xml_allocate_cam(e);
 	xml_allocate_cone(e);
 	xml_allocate_cyl(e);
 	xml_allocate_light(e);
 	xml_allocate_plane(e);
 	xml_allocate_sphere(e);
+	ft_putendl("\x1b[1;29mScene objects fetched!\x1b[0m");
 }
 
 void		load_scene(t_env *e)
 {
 	t_node	*list;
 
+	ft_putendl("\n\x1b[1;32m/\\ Loading scene /\\\x1b[0m\n");
 	load_obj(e);
 	list = XML->node_lst;
 	while (list != NULL)
@@ -60,67 +63,58 @@ void		load_scene(t_env *e)
 		list = list->next;
 	}
 	xml_list_clean(e, &XML->node_lst);
-}
-
-void		frame_init(t_env *e)
-{
-	int		bpp;
-	int		row;
-	int		endian;
-
-	if (!(e->frame = malloc(sizeof(t_frame))))
-		s_error("\x1b[2;31mCan't initialize the frame\x1b[0m", e);
-	e->frame->w = e->win_w;
-	e->frame->h = e->win_h;
-	if (!(e->frame->ptr = mlx_new_image(e->mlx, e->frame->w, e->frame->h)))
-		s_error("\x1b[2;31mCan't create new mlx image\x1b[0m", e);
-	if (!(e->frame->pix = mlx_get_data_addr(e->frame->ptr, \
-							&(bpp), &(row), &(endian))))
-		s_error("\x1b[2;31mCan't create image address\x1b[0m", e);
-	e->frame->bpp = bpp;
-	e->frame->row = row;
-	e->frame->endian = endian;
-	load_scene(e);
+	ft_putendl("\x1b[1;29mSuccessfully loaded the scene!\n\x1b[0m");
 }
 
 void		env_init(t_env *e)
 {
+	ft_putendl("\n\x1b[1;32m/\\ Initializing RT environnement /\\\x1b[0m\n");
 	e->scene->depth = 0;
-	e->scene->tor_count = pow(2, e->scene->depth + 1) - 1;
+
+	e->scene->tor_count = pow(2, e->scene->depth + 1) - 1; // USELESS?
+	
 	e->win_w = e->scene->win_w;
 	e->win_h = e->scene->win_h;
-	e->count = e->win_h * e->win_w;
 	e->debug = DBUG;
-	e->cen_x = e->win_w / 2;
-	e->cen_y = e->win_h / 2;
-	//if (IS_GPU)
+	e->gpu = IS_GPU;
+	if (e->gpu == 1)
 		e->scene->flag |= OPTION_GPU;
-	e->tree = tor_create(e);
+	e->ui->redraw = 1;
+	ft_putendl("\x1b[1;29mRT environnement initialized!\n\x1b[0m");
 }
 
-void		init(t_env *e, int ac, char *av)
+void		init(GtkApplication* app, gpointer data)
 {
+	t_env *e;
+
+	(void)app;
+	e = data;
 	if (!(e->scene = ft_memalloc(sizeof(t_scene))))
 		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
-	if (!(e->gen_objects = construct_gen()))
-		s_error("\x1b[2;31mCan't initialize t_gen\x1b[0m", e);
-	if (!(e->gen_lights = construct_gen()))
-		s_error("\x1b[2;31mCan't initialize t_gen\x1b[0m", e);
+	if (!(e->gen_objects = gen_construct()))
+		s_error("\x1b[2;31mCan't initialize objects t_gen\x1b[0m", e);
+	if (!(e->gen_lights = gen_construct()))
+		s_error("\x1b[2;31mCan't initialize lights t_gen\x1b[0m", e);
 	ft_bzero(e->scene, sizeof(t_scene));
-	xml_init(e, ac, av);
+	xml_init(e);
 	env_init(e);
-	if (!(e->mlx = mlx_init()))
-		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m", e);
-	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RT")))
-		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
-	frame_init(e);
-	printf("%i %i %i\n", e->scene->win_w, e->scene->win_h, (e->scene->flag & OPTION_GPU));
-	if (!(e->cl = construct_cl("./kernel/kernel.cl", "ray_trace", e->scene->win_w, e->scene->win_h,
+	if (!(e->pixel_data = malloc(sizeof(int) * e->win_w * e->win_h)))
+		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
+	ft_bzero(e->pixel_data, sizeof(int) * e->win_w * e->win_h);
+	load_scene(e);
+	
+	
+	
+	if (!(e->cl = cl_construct("./kernel/kernel.cl", "ray_trace", e->scene->win_w, e->scene->win_h,
 			(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
 		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
-	//if (e->debug)
-		init_print_structure_memory_size();
 
+	if (e->debug)
+	{
+		printf("%i %i %i\n", e->scene->win_w, e->scene->win_h, (e->scene->flag & OPTION_GPU));
+		init_print_structure_memory_size();
+	}
+		
 	if (!(e->cl->add_buffer(e->cl, e->scene->win_w * e->scene->win_h * 4)))
 		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, e->gen_objects->mem_size)))
@@ -133,4 +127,5 @@ void		init(t_env *e, int ac, char *av)
 		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, sizeof(int))))
 		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	opencl_draw(e);
 }

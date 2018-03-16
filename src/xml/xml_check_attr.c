@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   xml_check_attr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/25 16:28:15 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 23:26:32 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/07 18:41:59 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-int			check_float(cl_float3 *clf, float f, int mod)
+int			xml_check_float(cl_float3 *clf, float f, int mod)
 {
 	if (mod == 0)
 	{

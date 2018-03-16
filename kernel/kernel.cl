@@ -1,9 +1,7 @@
-// CONTROL
-
 #define BACKCOLOR 0x00999999
 
 # define EPSILON 0.00005f
-#define MAX_DIST 10000000.0 // epsilon 0.00000001 ?
+#define MAX_DIST 10000000.0
 #define SHADOW_BIAS 1000
 
 #define CAM scene->cameras
@@ -54,6 +52,7 @@ typedef struct			s_hit
 	float3				normal;
 	float3				pos;
 	t_object __local	*obj;
+	void				*void1;
 	int					mem_index;
 	float				opacity;
 }						t_hit;
@@ -163,11 +162,11 @@ typedef	struct			s_tor
 typedef struct			s_scene
 {
 	t_cam				__local *cameras;
-	//void				*void1;
+//	void				*void1;
 	void				__local *mem_lights;
-	//void				*void4;
+//	void				*void4;
 	void				__local *mem_obj;
-	//void				*void7;
+//	void				*void7;
 	unsigned int		n_cams;
 	unsigned int		n_cones;
 	unsigned int		n_cylinders;
@@ -613,10 +612,12 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	}
 	save = res;
 	if (scene->flag & OPTION_WAVE)
+//	if (1)
 	{
 		/*						VAGUELETTE							*/
 		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
-		save.z = res.z + 0.8 * sin(res.x * 10 + scene->u_time);
+		//save.z = res.z + 0.8 * sin(res.x * 10 + scene->u_time);
+		save.z = res.z + 0.8 * sin(save.x * 10 + scene->u_time);
 		save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
 	}
 
@@ -1099,8 +1100,7 @@ __kernel void		ray_trace(	__global	char		*output,
 								__local		char		*mem_lights,
 								__private	size_t		mem_size_lights,
 
-								__global	int		*target
-							)
+								__global	int			*target)
 {
 
  	event_t			ev;
@@ -1136,5 +1136,13 @@ __kernel void		ray_trace(	__global	char		*output,
 		final_color = sepiarize(final_color);
 	if (scene->flag & OPTION_BW)
 		final_color = desaturate(final_color);
+
+	// ALPHA INSERT and RGB SWAP
+	int4 swap;
+	swap.w = 255;
+	swap.x = (final_color & 0x00FF0000) >> 16;
+	swap.y = (final_color & 0x0000FF00) >> 8;
+	swap.z = (final_color & 0x000000FF);
+	final_color = ((swap.w << 24) + (swap.z << 16) + (swap.y << 8) + swap.x);
 	((__global unsigned int *)output)[id] = final_color;
 }

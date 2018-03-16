@@ -2,7 +2,7 @@ NAME = 					rt
 
 CC = 					clang
 CFLAGS +=				-Wall -Wextra -Werror
-OFLAGS := 				-O3
+OFLAGS := 				-O2
 RM := 					rm -rf
 
 INC = 					$(addprefix $(INC_PATH)/,$(INC_NAMES))
@@ -15,37 +15,13 @@ LIBFTFLAGS :=			-lft
 
 LIBMATHFLAGS :=			-lm
 
+GTK_CFLAGS	=	$(shell pkg-config --cflags gtk+-3.0)
+GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
+
 OPENCL :=				-framework OpenCL
 
-OS_TEST := $(shell uname)
-ifeq ($(OS_TEST), Darwin)
 INC_NAMES = 			$(NAME).h \
-						mac_keys.h \
 						cl.h
-MLXFLAGS =				-framework OpenGL -framework AppKit
-KEYS =					-DMAC_KEYS
-OS_VERSION_TEST := $(shell uname -r | cut -d . -f 1)
-endif
-ifeq  ($(OS_VERSION_TEST),16)
-OS_NAME =				"Sierra"
-MLX_PATH =				./mlx/mlx_sierra
-else ifeq ($(OS_TEST), Darwin)
-OS_NAME =				"El_Capitan"
-MLX_PATH =				./mlx/mlx_capitan
-endif
-ifeq ($(OS_TEST),"Linux")
-OS_NAME =				"Linux"
-MLX_PATH =				./mlx/mlx_x11
-INC_NAMES = 			$(NAME).h \
-						linux_keys.h \
-						cl.h
-MLXFLAGS =				-lmlx -lXext -lX11
-KEYS =					-DLINUX_KEYS
-endif
-
-MLX =					$(MLX_PATH)/libmlx.a
-
-NUKLEAR =				./nuklear
 
 OBJ =					$(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 OBJ_PATH =				./obj
@@ -53,29 +29,28 @@ OBJ_NAME =				$(SRC_NAME:.c=.o)
 
 SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 SRC_PATH =				./src
-SRC_NAME =  			init.c \
+SRC_NAME = 			ui/gtk.c \
+						ui/gtk_main_loop.c \
+						ui/gtk_render_events.c \
+						ui/cb_configure_draw_area.c \
+						ui/cb_draw_render.c \
+						ui/cb_render_btnpress.c \
+						ui/cb_render_keypress.c \
+						ui/cb_render_keyrelease.c \
+						ui/ui_obj.c \
+						ui/ui_cam.c \
 						hud.c \
+						init.c \
 						main.c \
-						mlx_image_draw.c \
-						mlx_main_loop.c \
 						rotations.c \
 						tools.c \
-						tree_of_ray.c \
-						ui_obj.c \
-						ui_cam.c \
 						update_fps.c \
 						vectors.c \
-						hooks.c \
-						gen/construct_gen.c \
+						gen/gen_construct.c \
 						gen/gen_add.c \
-						gen/destruct_gen.c \
-						event/mlx_mouse.c \
-						event/mlx_key_press.c \
-						event/mlx_key_release.c \
-						event/mlx_key_norepeat.c \
-						event/mlx_key_events.c \
-						cl/destruct_cl.c \
-						cl/construct_cl.c \
+						gen/gen_destruct.c \
+						cl/cl_destruct.c \
+						cl/cl_construct.c \
 						cl/cl_print_error.c \
 						cl/cl_compute.c \
 						cl/cl_create_buffer.c \
@@ -101,14 +76,14 @@ default: gpu
 
 all: libft mlx
 	@echo "$(GREEN)Checking for RT$(EOC)"
-	@make -j $(NAME)
+	@make $(NAME)
 
 $(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
-	@echo "$(GREEN)Compiling $(NAME) with $(OS_NAME) MLX version$(EOC)"
-	$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(MLX) $(MLXFLAGS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
+	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
+	$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(GTK_CLIBS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
-	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) -I $(MLX_PATH) -I $(NUKLEAR) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_PATH):
 	@echo "$(GREEN)Creating ./obj path and making binaries from source files$(EOC)"
@@ -116,18 +91,41 @@ $(OBJ_PATH):
 	@mkdir $(OBJ_PATH)/cl
 	@mkdir $(OBJ_PATH)/xml
 	@mkdir $(OBJ_PATH)/gen
+	@mkdir $(OBJ_PATH)/ui
 	@mkdir $(OBJ_PATH)/event
 
-CPU: all
-cpu: CPU
+CPU:
+	@echo "$(GREEN)Checking for CPU ONLY RT$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
+	@make cpu_flags $(NAME)
 
-GPU: gpu_flags all
-gpu: GPU
+cpu: libft CPU
+cpu_flags:
+$(eval GPU_MACRO = )
+
+GPU:
+	@echo "$(GREEN)Checking for GPU accelerated RT$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
+	@make gpu_flags $(NAME)
+
+gpu: libft GPU
 gpu_flags:
 	$(eval GPU_MACRO = -DGPU)
 
-debuggpu: clean cleanlibft debuglibft debug_flag gpu
-debugcpu: clean cleanlibft debuglibft debug_flag cpu
+debuggpu: fclean debuglibft
+	@echo "$(GREEN)So you want to compile RT with GPU and DEBUG enabled hu?$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
+	@echo "$(GREEN)Checking for GPU accelerated RT with ASAN debug flags enabled$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
+	@make debug_flag gpu_flags $(NAME)
+
+debugcpu: fclean debuglibft
+	@echo "$(GREEN)So you want to compile RT with CPU mode forced and DEBUG enabled hu?$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
+	@echo "$(GREEN)Checking for CPU ONLY RT with ASAN debug flags enabled$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
+	@make debug_flag cpu_flags $(NAME)
+
 debug_flag:
 	$(eval DEBUG_MACRO = -DDEBUG -g)
 	$(eval ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer)
@@ -141,14 +139,17 @@ clean:
 	@echo "$(GREEN)Deleting .obj files$(EOC)"
 	@rm -rf $(OBJ_PATH)
 
-fclean: clean
+fclean: fcleanlibft clean 
 	@echo "$(GREEN)Full cleaning...$(EOC)"
-	@echo "$(GREEN)Deleting $(NAME) executable and config file$(EOC)"
-	@rm -rf $(NAME) ./config
+	@echo "$(GREEN)Deleting $(NAME) binary$(EOC)"
+	@rm -rf $(NAME)
 
 libft:
 	@echo "$(GREEN)Checking for Libft library$(EOC)"
 	make -C $(LIBFT_PATH)/ libft.a
+	@echo ""
+	@read -p "Please press enter to continue..."
+	@echo ""
 
 cleanlibft:
 	@echo "$(GREEN)Cleaning Libft folder$(EOC)"
@@ -158,17 +159,7 @@ fcleanlibft: cleanlibft
 	@echo "$(GREEN)Full cleaning Libft$(EOC)"
 	make -C $(LIBFT_PATH)/ fclean
 
-mlx:
-	@echo "$(GREEN)Checking for MLX library$(EOC)"
-	make -C $(MLX_PATH)/ libmlx.a
-
-cleanmlx:
-	@echo "$(GREEN)Cleaning Minilibx folder$(EOC)"
-	@make -C ./mlx/mlx_capitan/ clean
-	@make -C ./mlx/mlx_sierra/ clean
-	@make -C ./mlx/mlx_x11/ clean
-
-re: fclean fcleanlibft cleanmlx default
+re: fclean fcleanlibft default
 
 norme:
 	norminette $(SRC_PATH)
@@ -176,22 +167,10 @@ norme:
 	norminette $(LIBFT_PATH)
 
 usage:
-	@echo "\n$(B_RED)Please use one of the following commands:$(EOC)\n"
-	@echo "\tCompile and compute with one $(GREEN)CPU$(EOC) thread -> $(B_YELL)make cpu$(EOC)\n"
-	@echo "\tCompile the $(GREEN)LIBFT$(EOC) -> $(B_YELL)make libft$(EOC)\n"
-	@echo "\tCompile the $(GREEN)MLX$(EOC) (according to your OS) -> $(B_YELL)make mlx$(EOC)\n"
-	@echo "\tCheck the $(GREEN)42 C STANDARD$(EOC) in sources and includes directories -> $(B_YELL)make norme$(EOC)\n"
-	@echo "\tClean the $(GREEN)$(NAME)$(EOC) directory from object files -> $(B_YELL)make clean$(EOC)\n"
-	@echo "\tClean the $(GREEN)LIBFT$(EOC) directory from object files -> $(B_YELL)make cleanlibft$(EOC)\n"
-	@echo "\tClean the $(GREEN)MLX$(EOC) directory from object files -> $(B_YELL)make cleanmlx$(EOC)\n"
-	@echo "\tRemove object files and binaries from $(GREEN)$(NAME) LIBFT and MLX$(EOC) directories -> $(B_YELL)make fclean$(EOC)\n"
-	@echo "\tRemove object files and binaries from $(GREEN)LIBFT$(EOC) directory -> $(B_YELL)make fcleanlibft$(EOC)\n"
-	@echo "\tRemove object files and binaries from $(GREEN)$(NAME)$(EOC) directory then compile it again using one $(GREEN)CPU$(EOC) thread -> $(B_YELL)make re$(EOC)\n"
-	@echo "\t$(B_RED)NOT IMPLEMENTED YET!$(EOC) Compile and compute with $(GREEN)OpenCL$(EOC) using multiple threads -> $(B_YELL)make gpu$(EOC)\n"
-	@echo "\tIf you want to activate the debugging output add \
-	$(GREEN)debug$(EOC) before -> $(B_YELL)make debug cpu$(EOC)\n"
+	@echo "\n$(B_RED)A REDIGER!!!!$(EOC)\n"
+	
 
-.PHONY: all clean fclean re libft mlx cpu gpu cleanlibft cleanmlx fcleanlibft debug usage norme
+.PHONY: all clean fclean re libft cpu gpu cleanlibft fcleanlibft debug usage norme
 
 GREY =					\x1b[2;29m
 BLACK =					\x1b[2;30m

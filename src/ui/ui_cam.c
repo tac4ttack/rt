@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ui_cam.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:02:45 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 23:56:03 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/16 14:26:49 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,43 @@
 
 void		rot_cam(t_env *e)
 {
-	if (KP_W)
+	if (KEY_STATE_W)
 		ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, \
 		ACTIVECAM.pitch * DEG2RAD, ACTIVECAM.yaw * DEG2RAD), ACTIVECAM.pos);
-	if (KP_S)
+	if (KEY_STATE_S)
 		ACTIVECAM.pos = sub_cl_float(ACTIVECAM.pos, rotcam(ACTIVECAM.dir, \
 		ACTIVECAM.pitch * DEG2RAD, ACTIVECAM.yaw * DEG2RAD));
-	if (KP_C)
+	if (KEY_STATE_C)
 		ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, (ACTIVECAM.pitch + \
 		90) * DEG2RAD, ACTIVECAM.yaw * DEG2RAD), ACTIVECAM.pos);
-	if (KP_SPC)
+	if (KEY_STATE_SPC)
 		ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, (ACTIVECAM.pitch - \
 		90) * DEG2RAD, ACTIVECAM.yaw * DEG2RAD), ACTIVECAM.pos);
-	if (KP_D)
+	if (KEY_STATE_D)
 		ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, 0, (ACTIVECAM.yaw + \
 		90) * DEG2RAD), ACTIVECAM.pos);
-	if (KP_A)
+	if (KEY_STATE_A)
 		ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, 0, (ACTIVECAM.yaw - \
 		90) * DEG2RAD), ACTIVECAM.pos);
 }
 
 void		ui_cam(t_env *e)
 {
-	if (KP_W || KP_S || KP_C || KP_SPC || KP_D || KP_A)
+	if (KEY_STATE_W || KEY_STATE_S || KEY_STATE_C || KEY_STATE_SPC || KEY_STATE_D || KEY_STATE_A)
 		rot_cam(e);
-	(KP_DA ? ACTIVECAM.pitch += 2 : 0);
-	(KP_UA ? ACTIVECAM.pitch -= 2 : 0);
-	(KP_LA ? ACTIVECAM.yaw -= 2 : 0);
-	(KP_RA ? ACTIVECAM.yaw += 2 : 0);
+	(KEY_STATE_DA ? ACTIVECAM.pitch += 2 : 0);
+	(KEY_STATE_UA ? ACTIVECAM.pitch -= 2 : 0);
+	(KEY_STATE_LA ? ACTIVECAM.yaw -= 2 : 0);
+	(KEY_STATE_RA ? ACTIVECAM.yaw += 2 : 0);
 	(ACTIVECAM.pitch >= 360 ? ACTIVECAM.pitch = 0 : ACTIVECAM.pitch);
 	(ACTIVECAM.pitch < 0 ? ACTIVECAM.pitch = 359 : ACTIVECAM.pitch);
 	(ACTIVECAM.yaw >= 360 ? ACTIVECAM.yaw = 0 : ACTIVECAM.yaw);
 	(ACTIVECAM.yaw < 0 ? ACTIVECAM.yaw = 359 : ACTIVECAM.yaw);
 	(ACTIVECAM.roll >= 360 ? ACTIVECAM.roll = 0 : ACTIVECAM.roll);
 	(ACTIVECAM.roll < 0 ? ACTIVECAM.roll = 359 : ACTIVECAM.roll);
-	if (KP_Z)
+	if (KEY_STATE_Z)
 		e->scene->active_cam = (e->scene->active_cam + 1 \
 		< e->scene->n_cams ? e->scene->active_cam + 1 : 0);
+	opencl_set_args(e, e->cl);
 }
+

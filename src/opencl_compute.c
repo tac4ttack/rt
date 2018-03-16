@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opencl_compute.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/06 22:13:18 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/14 17:01:46 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,12 @@ void		opencl_set_args(t_env *e, t_cl *cl)
 		s_error("Error: Failed to send arguments to kernel!", e);
 }
 
-int			draw(t_env *e)
+int			opencl_draw(t_env *e)
 {
 	t_cl *cl = e->cl;
 	//const size_t g[2] = {e->scene->win_w, e->scene->win_h};
+
+//	ft_putendl("hi im in opencl_draw!!!!\n");
 
 	opencl_set_args(e, cl);
 
@@ -72,7 +74,8 @@ int			draw(t_env *e)
 
 	cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[0], CL_TRUE, 0,
 			e->scene->win_w * e->scene->win_h * 4,
-			e->frame->pix, 0, NULL, NULL);
+			e->pixel_data, 0, NULL, NULL);
+//			e->pixel_data, 0, NULL, NULL);
 	if (e->scene->flag & OPTION_RUN)
 	{
 		cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[5], CL_FALSE, 0,

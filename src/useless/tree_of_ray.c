@@ -24,7 +24,7 @@ t_tor	*tor_create(t_env *e)
 	e->node_count = pow(2, e->scene->depth + 1) - 1;
 	tree = NULL;
 	if (!(tree = malloc(sizeof(t_tor) * e->node_count)))
-		s_error("\x1b[2;31mCan't initialize the Tree of Ray\x1b[0m", e);
+		s_error("\x1b[1;31mCan't initialize the Tree of Ray\x1b[0m", e);
 	while (i < e->node_count)
 	{
 		ft_bzero(&tree[i], sizeof(t_tor));

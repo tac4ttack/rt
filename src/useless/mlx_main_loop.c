@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:44:28 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/27 16:18:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/05 19:36:32 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		mlx_main_loop(t_env *e)
 		update_fps(&e->fps);
 		mlx_keyboard_repeated(e);
 		mlx_clear_window(e->mlx, e->win);
-		draw(e);
+		opencl_draw(e);
 		mlx_put_image_to_window(e->mlx, e->win, e->frame->ptr, 0, 0);
 		display_hud(e);
 	}

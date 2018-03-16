@@ -1,6 +1,6 @@
 #include "rt.h"
 
-void		*destruct_gen(t_gen **gen)
+void		*gen_destruct(t_gen **gen)
 {
 	if ((*gen)->mem)
 		free((*gen)->mem);
