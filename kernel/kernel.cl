@@ -707,8 +707,12 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				col_g += ((l_g * brightness) + obj_g) * tmp * diffuse.y;
 				col_b += ((l_b * brightness) + obj_b) * tmp * diffuse.z;
 				(col_r > 255 ? col_r = 255 : 0);
+				// commented lines are failed tonemaping test
+			//	col_r = (col_r > 255 ? col_r / (col_r + 1) : col_r);
 				(col_g > 255 ? col_g = 255 : 0);
+			//	col_g = (col_g > 255 ? col_g / (col_g + 1) : col_g);
 				(col_b > 255 ? col_b = 255 : 0);
+			//	col_b = (col_b > 255 ? col_b / (col_b + 1) : col_b);
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 			reflect = fast_normalize(((float)(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
@@ -726,8 +730,11 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				col_g += ((light_color & 0x00FF00) >> 8) * pow_of_spec * speculos.y;
 				col_b += (light_color & 0x0000FF) * pow_of_spec * speculos.z;
 				(col_r > 255 ? col_r = 255 : 0);
+			//	col_r = (col_r > 255 ? col_r / (col_r + 1) : col_r);
 				(col_g > 255 ? col_g = 255 : 0);
+			//	col_g = (col_g > 255 ? col_g / (col_g + 1) : col_g);
 				(col_b > 255 ? col_b = 255 : 0);
+			//	col_b = (col_b > 255 ? col_b / (col_b + 1) : col_b);
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 			res_color = blend_factor(res_color, ((light_hit.opacity - 1) * -1));
@@ -1146,3 +1153,5 @@ __kernel void		ray_trace(	__global	char		*output,
 	final_color = ((swap.w << 24) + (swap.z << 16) + (swap.y << 8) + swap.x);
 	((__global unsigned int *)output)[id] = final_color;
 }
+
+
