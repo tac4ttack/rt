@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/18 18:56:04 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void		xml_data_cam_fov(t_env *e, char **attributes, int *i, t_node *node)
 		if (attributes[(*i)] == NULL)
 			s_error("\x1b[1;31mError reading FOV value\x1b[0m", e);
 		node->fov = ft_atof(attributes[(*i)++] + 5);
-		if (node->fov <= 0 || node->fov >= 180)
-			s_error("\x1b[1;31mError FOV must be between 0 and 180\x1b[0m", e);
+		if (node->fov < 5 || node->fov > 120)
+			s_error("\x1b[1;31mError FOV must be between 5 and 120\x1b[0m", e);
 	}
 	else
 		s_error("\x1b[1;31mError reading FOV from scene\x1b[0m", e);
