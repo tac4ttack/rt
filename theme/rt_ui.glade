@@ -6,27 +6,28 @@
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
   </object>
-  <object class="GtkListStore" id="cam_tree_list">
-    <columns>
-      <!-- column-name test1 -->
-      <column type="gint"/>
-      <!-- column-name gfloat1 -->
-      <column type="gfloat"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0">0</col>
-        <col id="1">0</col>
-      </row>
-      <row>
-        <col id="0">0</col>
-        <col id="1">0</col>
-      </row>
-      <row>
-        <col id="0">0</col>
-        <col id="1">0</col>
-      </row>
-    </data>
+  <object class="GtkAdjustment" id="cam_dir_adjustement_x">
+    <property name="step_increment">0.01</property>
+  </object>
+  <object class="GtkAdjustment" id="cam_dir_adjustement_y">
+    <property name="step_increment">0.01</property>
+  </object>
+  <object class="GtkAdjustment" id="cam_dir_adjustement_z">
+    <property name="step_increment">0.01</property>
+  </object>
+  <object class="GtkAdjustment" id="cam_fov_adjustement">
+    <property name="lower">5</property>
+    <property name="upper">120</property>
+    <property name="step_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="cam_pos_adjustement_x">
+    <property name="step_increment">0.01</property>
+  </object>
+  <object class="GtkAdjustment" id="cam_pos_adjustement_y">
+    <property name="step_increment">0.01</property>
+  </object>
+  <object class="GtkAdjustment" id="cam_pos_adjustement_z">
+    <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="depth_adjustement">
     <property name="upper">6</property>
@@ -35,6 +36,26 @@
   <object class="GtkAdjustment" id="green_ambient_adjustement">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
+  </object>
+  <object class="GtkImage" id="img_add">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-add</property>
+  </object>
+  <object class="GtkImage" id="img_delete">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-delete</property>
+  </object>
+  <object class="GtkImage" id="img_next">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-go-forward</property>
+  </object>
+  <object class="GtkImage" id="img_prev">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-go-back</property>
   </object>
   <object class="GtkAdjustment" id="red_ambient_adjustement">
     <property name="upper">1</property>
@@ -160,6 +181,7 @@
                     <property name="can_focus">False</property>
                     <property name="margin_left">5</property>
                     <property name="margin_right">5</property>
+                    <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkBox" id="right_panel">
                         <property name="visible">True</property>
@@ -529,24 +551,384 @@ Higher values decrease a lot the rendering speed.</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="orientation">vertical</property>
-                                    <property name="homogeneous">True</property>
                                     <child>
-                                      <object class="GtkTreeView" id="cam_tree_view">
+                                      <object class="GtkListBox" id="cam_list_box">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="model">cam_tree_list</property>
-                                        <child internal-child="selection">
-                                          <object class="GtkTreeSelection"/>
-                                        </child>
+                                        <property name="can_focus">False</property>
+                                        <property name="margin_top">5</property>
+                                        <property name="margin_bottom">5</property>
+                                        <property name="selection_mode">none</property>
+                                        <property name="activate_on_single_click">False</property>
                                         <child>
-                                          <object class="GtkTreeViewColumn" id="treetest">
-                                            <property name="title" translatable="yes">column1</property>
+                                          <object class="GtkListBoxRow" id="cam_list_id">
+                                            <property name="height_request">30</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="activatable">False</property>
+                                            <property name="selectable">False</property>
+                                            <child>
+                                              <object class="GtkLabel" id="cam_list_id_label">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="label" translatable="yes">CAMERA #</property>
+                                              </object>
+                                            </child>
                                           </object>
                                         </child>
                                         <child>
-                                          <object class="GtkTreeViewColumn" id="treetest2">
-                                            <property name="title" translatable="yes">column2</property>
+                                          <object class="GtkListBoxRow" id="cam_list_pos">
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <object class="GtkBox" id="cam_list_pos_box">
+                                                <property name="height_request">35</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="margin_top">3</property>
+                                                <property name="margin_bottom">3</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="cam_list_pos_label">
+                                                    <property name="width_request">90</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
+                                                    <property name="label" translatable="yes">Position
+</property>
+                                                    <property name="single_line_mode">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="cam_list_pos_spin_x">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">
+</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="max_length">4</property>
+                                                    <property name="width_chars">4</property>
+                                                    <property name="text" translatable="yes">0,00</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">cam_pos_adjustement_x</property>
+                                                    <property name="climb_rate">0.01</property>
+                                                    <property name="digits">2</property>
+                                                    <property name="wrap">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="cam_list_pos_spin_y">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">GREEN
+ component, must be between 0 and 1</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="max_length">4</property>
+                                                    <property name="width_chars">4</property>
+                                                    <property name="text" translatable="yes">0,00</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">cam_pos_adjustement_y</property>
+                                                    <property name="climb_rate">0.01</property>
+                                                    <property name="digits">2</property>
+                                                    <property name="wrap">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">2</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="cam_list_pos_spin_z">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">BLUE
+ component, must be between 0 and 1</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="max_length">4</property>
+                                                    <property name="width_chars">4</property>
+                                                    <property name="text" translatable="yes">0,00</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">cam_pos_adjustement_z</property>
+                                                    <property name="climb_rate">0.01</property>
+                                                    <property name="digits">2</property>
+                                                    <property name="wrap">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">3</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                            </child>
                                           </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="cam_list_dir">
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <object class="GtkBox" id="cam_list_dir_box">
+                                                <property name="height_request">35</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="margin_top">3</property>
+                                                <property name="margin_bottom">3</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="cam_list_dir_label">
+                                                    <property name="width_request">90</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
+                                                    <property name="label" translatable="yes">Direction
+
+</property>
+                                                    <property name="single_line_mode">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="cam_list_dir_spin_x">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">
+</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="max_length">4</property>
+                                                    <property name="width_chars">4</property>
+                                                    <property name="text" translatable="yes">0,00</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">cam_dir_adjustement_x</property>
+                                                    <property name="climb_rate">0.01</property>
+                                                    <property name="digits">2</property>
+                                                    <property name="wrap">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="cam_list_dir_spin_y">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">GREEN
+ component, must be between 0 and 1</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="max_length">4</property>
+                                                    <property name="width_chars">4</property>
+                                                    <property name="text" translatable="yes">0,00</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">cam_dir_adjustement_y</property>
+                                                    <property name="climb_rate">0.01</property>
+                                                    <property name="digits">2</property>
+                                                    <property name="wrap">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">2</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="cam_list_dir_spin_z">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">BLUE
+ component, must be between 0 and 1</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="max_length">4</property>
+                                                    <property name="width_chars">4</property>
+                                                    <property name="text" translatable="yes">0,00</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">cam_dir_adjustement_z</property>
+                                                    <property name="climb_rate">0.01</property>
+                                                    <property name="digits">2</property>
+                                                    <property name="wrap">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">3</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="cam_list_fov">
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="margin_bottom">5</property>
+                                            <child>
+                                              <object class="GtkBox" id="cam_list_fov_box">
+                                                <property name="height_request">35</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="margin_top">3</property>
+                                                <property name="margin_bottom">3</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="cam_list_fov_label">
+                                                    <property name="width_request">90</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">Field Of View</property>
+                                                    <property name="single_line_mode">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="cam_list_fov_spin">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">Enter the maximum number of rebound a ray can make.
+Higher values decrease a lot the rendering speed.</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="max_length">2</property>
+                                                    <property name="width_chars">2</property>
+                                                    <property name="text" translatable="yes">0</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">cam_fov_adjustement</property>
+                                                    <property name="climb_rate">1</property>
+                                                    <property name="wrap">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox" id="cam_nav_box">
+                                        <property name="height_request">45</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="margin_top">5</property>
+                                        <property name="margin_bottom">5</property>
+                                        <child>
+                                          <object class="GtkButton" id="cam_nav_prev_btn">
+                                            <property name="label" translatable="yes">  Previous</property>
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="double_buffered">False</property>
+                                            <property name="valign">start</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
+                                            <property name="image">img_prev</property>
+                                            <property name="always_show_image">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="cam_nav_next_btn">
+                                            <property name="label" translatable="yes">  Next</property>
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="double_buffered">False</property>
+                                            <property name="valign">start</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
+                                            <property name="image">img_next</property>
+                                            <property name="always_show_image">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="cam_nav_add_btn">
+                                            <property name="label" translatable="yes">  Add</property>
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="valign">start</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
+                                            <property name="image">img_add</property>
+                                            <property name="always_show_image">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="cam_nav_remove_btn">
+                                            <property name="label" translatable="yes">  Delete</property>
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="valign">start</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
+                                            <property name="image">img_delete</property>
+                                            <property name="always_show_image">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">3</property>
+                                          </packing>
                                         </child>
                                       </object>
                                       <packing>
@@ -593,265 +975,23 @@ Higher values decrease a lot the rendering speed.</property>
                                 <property name="left_padding">12</property>
                                 <property name="right_padding">12</property>
                                 <child>
-                                  <object class="GtkBox" id="scene_frame_box2">
+                                  <object class="GtkBox" id="light_frame_box">
                                     <property name="width_request">370</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="orientation">vertical</property>
                                     <property name="homogeneous">True</property>
                                     <child>
-                                      <object class="GtkBox" id="scene_resolution_box2">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_resolution_label2">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Resolution</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_resolution_width_spin2">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_resolution_height_spin2">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">0</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="scene_ambient_box2">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_ambient_label2">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
-                                            <property name="label" translatable="yes">Ambient light
-</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_ambient_red_spin2">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">
-</property>
-                                            <property name="max_length">4</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0,00</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">0.01</property>
-                                            <property name="digits">4</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_ambient_green_spin2">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">GREEN
- component, must be between 0 and 1</property>
-                                            <property name="max_length">4</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0,00</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">0.01</property>
-                                            <property name="digits">4</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_ambient_blue_spin2">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">BLUE
- component, must be between 0 and 1</property>
-                                            <property name="max_length">4</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0,00</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">0.01</property>
-                                            <property name="digits">4</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">3</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">1</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="scene_depth_box2">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_depth_label2">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Ray Depth</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_depth_spin2">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">Enter the maximum number of rebound a ray can make.
-Higher values decrease a lot the rendering speed.</property>
-                                            <property name="max_length">2</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">1</property>
-                                            <property name="wrap">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">2</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="scene_postproc_box2">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_postproc_label2">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Postprocessing:
-</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkRadioButton" id="scene_postproc_bw_radio2">
-                                            <property name="label" translatable="yes">Black &amp; White</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="active">True</property>
-                                            <property name="draw_indicator">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkRadioButton" id="scene_postproc_sepia_radio2">
-                                            <property name="label" translatable="yes">Sepia filter</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="draw_indicator">True</property>
-                                            <property name="group">scene_postproc_bw_radio</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkRadioButton" id="scene_postprocess_none_radio2">
-                                            <property name="label" translatable="yes">None</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="draw_indicator">True</property>
-                                            <property name="group">scene_postproc_bw_radio</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">3</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">3</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                   </object>
                                 </child>
@@ -891,265 +1031,23 @@ Higher values decrease a lot the rendering speed.</property>
                                 <property name="left_padding">12</property>
                                 <property name="right_padding">12</property>
                                 <child>
-                                  <object class="GtkBox" id="scene_frame_box3">
+                                  <object class="GtkBox" id="texture_frame_box">
                                     <property name="width_request">370</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="orientation">vertical</property>
                                     <property name="homogeneous">True</property>
                                     <child>
-                                      <object class="GtkBox" id="scene_resolution_box3">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_resolution_label3">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Resolution</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_resolution_width_spin3">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_resolution_height_spin3">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">0</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="scene_ambient_box3">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_ambient_label3">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
-                                            <property name="label" translatable="yes">Ambient light
-</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_ambient_red_spin3">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">
-</property>
-                                            <property name="max_length">4</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0,00</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">0.01</property>
-                                            <property name="digits">4</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_ambient_green_spin3">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">GREEN
- component, must be between 0 and 1</property>
-                                            <property name="max_length">4</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0,00</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">0.01</property>
-                                            <property name="digits">4</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_ambient_blue_spin3">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">BLUE
- component, must be between 0 and 1</property>
-                                            <property name="max_length">4</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0,00</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">0.01</property>
-                                            <property name="digits">4</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">3</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">1</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="scene_depth_box3">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_depth_label3">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Ray Depth</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_depth_spin3">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">Enter the maximum number of rebound a ray can make.
-Higher values decrease a lot the rendering speed.</property>
-                                            <property name="max_length">2</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">1</property>
-                                            <property name="wrap">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">2</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="scene_postproc_box3">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_postproc_label3">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Postprocessing:
-</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkRadioButton" id="scene_postproc_bw_radio3">
-                                            <property name="label" translatable="yes">Black &amp; White</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="active">True</property>
-                                            <property name="draw_indicator">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkRadioButton" id="scene_postproc_sepia_radio3">
-                                            <property name="label" translatable="yes">Sepia filter</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="draw_indicator">True</property>
-                                            <property name="group">scene_postproc_bw_radio</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkRadioButton" id="scene_postprocess_none_radio3">
-                                            <property name="label" translatable="yes">None</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="draw_indicator">True</property>
-                                            <property name="group">scene_postproc_bw_radio</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">3</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">3</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                   </object>
                                 </child>
@@ -1175,7 +1073,6 @@ Higher values decrease a lot the rendering speed.</property>
                         </child>
                         <child>
                           <object class="GtkFrame" id="object_frame">
-                            <property name="height_request">600</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_bottom">5</property>
@@ -1190,265 +1087,23 @@ Higher values decrease a lot the rendering speed.</property>
                                 <property name="left_padding">12</property>
                                 <property name="right_padding">12</property>
                                 <child>
-                                  <object class="GtkBox" id="scene_frame_box4">
+                                  <object class="GtkBox" id="object_frame_box">
                                     <property name="width_request">370</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="orientation">vertical</property>
                                     <property name="homogeneous">True</property>
                                     <child>
-                                      <object class="GtkBox" id="scene_resolution_box4">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_resolution_label4">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Resolution</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_resolution_width_spin4">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_resolution_height_spin4">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">0</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="scene_ambient_box4">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_ambient_label4">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
-                                            <property name="label" translatable="yes">Ambient light
-</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_ambient_red_spin4">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">
-</property>
-                                            <property name="max_length">4</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0,00</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">0.01</property>
-                                            <property name="digits">4</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_ambient_green_spin4">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">GREEN
- component, must be between 0 and 1</property>
-                                            <property name="max_length">4</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0,00</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">0.01</property>
-                                            <property name="digits">4</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_ambient_blue_spin4">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">BLUE
- component, must be between 0 and 1</property>
-                                            <property name="max_length">4</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0,00</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">0.01</property>
-                                            <property name="digits">4</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">3</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">1</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="scene_depth_box4">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_depth_label4">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Ray Depth</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="scene_depth_spin4">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">Enter the maximum number of rebound a ray can make.
-Higher values decrease a lot the rendering speed.</property>
-                                            <property name="max_length">2</property>
-                                            <property name="width_chars">5</property>
-                                            <property name="text" translatable="yes">0</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="climb_rate">1</property>
-                                            <property name="wrap">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">2</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="scene_postproc_box4">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_top">3</property>
-                                        <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_postproc_label4">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Postprocessing:
-</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkRadioButton" id="scene_postproc_bw_radio4">
-                                            <property name="label" translatable="yes">Black &amp; White</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="active">True</property>
-                                            <property name="draw_indicator">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkRadioButton" id="scene_postproc_sepia_radio4">
-                                            <property name="label" translatable="yes">Sepia filter</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="draw_indicator">True</property>
-                                            <property name="group">scene_postproc_bw_radio</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkRadioButton" id="scene_postprocess_none_radio4">
-                                            <property name="label" translatable="yes">None</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="draw_indicator">True</property>
-                                            <property name="group">scene_postproc_bw_radio</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">3</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">3</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                   </object>
                                 </child>
