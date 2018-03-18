@@ -84,19 +84,19 @@ typedef	struct			s_ui
 										GtkWidget			*scene_postproc_sepia_radio; //
 										GtkWidget			*scene_postproc_none_radio; //
 
-						GtkWidget			*cam_frame;
-							GtkWidget			*cam_frame_label;
-							GtkWidget			*cam_frame_align;
-								GtkWidget			*cam_frame_box;
-									GtkWidget			*cam_list_box;
-										GtkWidget			*cam_list_id;
-											GtkWidget			*cam_list_id_label;
-										GtkWidget			*cam_list_pos;
-											GtkWidget			*cam_list_pos_box;
-												GtkWidget			*cam_list_pos_label;
-												GtkWidget			*cam_list_pos_spin_x;
-												GtkWidget			*cam_list_pos_spin_y;
-												GtkWidget			*cam_list_pos_spin_z;
+						GtkWidget			*cam_frame; //
+							GtkWidget			*cam_frame_label; //
+							GtkWidget			*cam_frame_align; //
+								GtkWidget			*cam_frame_box; //
+									GtkWidget			*cam_list_box; //
+										GtkWidget			*cam_list_id; //
+											GtkWidget			*cam_list_id_label; //
+										GtkWidget			*cam_list_pos; // 
+											GtkWidget			*cam_list_pos_box; // 
+												GtkWidget			*cam_list_pos_label; // 
+												GtkWidget			*cam_list_pos_spin_x; //
+												GtkWidget			*cam_list_pos_spin_y; //
+												GtkWidget			*cam_list_pos_spin_z; //
 										GtkWidget			*cam_list_dir;
 											GtkWidget			*cam_list_dir_box;
 												GtkWidget			*cam_list_dir_label;

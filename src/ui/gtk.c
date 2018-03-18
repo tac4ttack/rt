@@ -1,28 +1,8 @@
 #include "rt.h"
 
-void		init_gtk(GtkApplication* app, gpointer data)
+void		init_gtk_main_widgets(t_env *e)
 {
-	t_env *e;
-
-	e = data;
-	(void)app;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
-
-////CSS STYLING
-	e->ui->css_provider = gtk_css_provider_new();
-	gtk_css_provider_load_from_path(e->ui->css_provider, "./theme/gtk-dark.css", NULL);
-	gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), \
-	GTK_STYLE_PROVIDER(e->ui->css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-
-	// init the builder and load the template
-	e->ui->builder = gtk_builder_new();
-	gtk_builder_add_from_file(e->ui->builder, "./theme/rt_ui.glade", NULL);
-
-
-/////////////////////////////////WIDGET LINKING & INIT//////////////////////////////////
-///WE WILL REMOVE ALL UNUSED WIDGET AFTER FINISHING UI DESIGN //////////////////////////
-
-////MAIN WINDOW
+	////MAIN WINDOW
 	// init and connect the main window
 	e->ui->main_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "main_window"));
 
@@ -38,16 +18,19 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->render = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "render"));
 	e->ui->pixbuf = gdk_pixbuf_new_from_data((const guchar *)e->pixel_data, GDK_COLORSPACE_RGB, 1, 8, e->scene->win_w, e->scene->win_h, e->scene->win_w * 4, NULL, NULL);
 	e->ui->surface = NULL;
-
 ////RIGHT PANEL
 	e->ui->right_panel_scroll = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "right_panel_scroll"));
 	e->ui->right_panel_viewport = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "right_panel_viewport"));
 	e->ui->right_panel = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "right_panel"));
+}
+
+void		init_gtk_scene_widgets(t_env *e)
+{
+/////SCENE/////
 	e->ui->scene_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame"));
 	e->ui->scene_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame_align"));
 	e->ui->scene_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame_label"));
 	e->ui->scene_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame_box"));
-
 	// scene resolution shit
 	e->ui->scene_resolution_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_box"));
 	e->ui->scene_resolution_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_label"));
@@ -55,7 +38,6 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_resolution_width_spin, (gdouble)e->scene->win_w);
 	e->ui->scene_resolution_height_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_height_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_resolution_height_spin, (gdouble)e->scene->win_h);
-
 	// scene ambient shit
 	e->ui->scene_ambient_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_box"));
 	e->ui->scene_ambient_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_label"));
@@ -65,20 +47,90 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_ambient_green_spin, (gdouble)e->scene->ambient.y);
 	e->ui->scene_ambient_blue_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_blue_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_ambient_blue_spin, (gdouble)e->scene->ambient.z);
-
 	// scene depth shit
 	e->ui->scene_depth_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_box"));
 	e->ui->scene_depth_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_label"));
 	e->ui->scene_depth_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_depth_spin, (gdouble)e->scene->depth);
-
-
 	// scene post proc shit
 	e->ui->scene_postproc_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_box"));
 	e->ui->scene_postproc_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_label"));
 	e->ui->scene_postproc_bw_radio = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_bw_radio"));
 	e->ui->scene_postproc_sepia_radio = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_sepia_radio"));
 	e->ui->scene_postproc_none_radio = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_none_radio"));
+}
+
+void		init_gtk(GtkApplication* app, gpointer data)
+{
+	t_env *e;
+
+	e = data;
+	(void)app;
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
+
+////CSS STYLING
+//	e->ui->css_provider = gtk_css_provider_new();
+//	gtk_css_provider_load_from_path(e->ui->css_provider, "./theme/gtk-dark.css", NULL);
+//	gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(e->ui->css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+
+	// init the builder and load the template
+	e->ui->builder = gtk_builder_new();
+	gtk_builder_add_from_file(e->ui->builder, "./theme/rt_ui.glade", NULL);
+
+
+/////////////////////////////////WIDGET LINKING & INIT//////////////////////////////////
+///WE WILL REMOVE ALL UNUSED WIDGET AFTER FINISHING UI DESIGN //////////////////////////
+
+	init_gtk_main_widgets(e);
+	init_gtk_scene_widgets(e);
+
+
+	
+	
+
+	/////CAMERAS////
+	e->ui->cam_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame"));
+	e->ui->cam_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame_align"));
+	e->ui->cam_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame_label"));
+	e->ui->cam_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame_box"));
+	// cam list box
+	e->ui->cam_list_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_box"));
+	// cam list id
+	e->ui->cam_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_id"));
+	e->ui->cam_list_id_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_id_label"));
+	// cam list pos
+	e->ui->cam_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos"));
+	e->ui->cam_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_box"));
+	e->ui->cam_list_pos_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_label"));
+	e->ui->cam_list_pos_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_spin_x"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_pos_spin_x, (gdouble)ACTIVECAM.pos.x);
+	e->ui->cam_list_pos_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_spin_y"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_pos_spin_y, (gdouble)ACTIVECAM.pos.y);
+	e->ui->cam_list_pos_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_spin_z"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_pos_spin_z, (gdouble)ACTIVECAM.pos.z);
+	// cam list dir
+	e->ui->cam_list_dir = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir"));
+	e->ui->cam_list_dir_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_box"));
+	e->ui->cam_list_dir_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_label"));
+	e->ui->cam_list_dir_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_spin_x"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_dir_spin_x, (gdouble)ACTIVECAM.dir.x);
+	e->ui->cam_list_dir_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_spin_y"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_dir_spin_y, (gdouble)ACTIVECAM.dir.y);
+	e->ui->cam_list_dir_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_spin_z"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_dir_spin_z, (gdouble)ACTIVECAM.dir.z);
+	// cam list fov
+	e->ui->cam_list_fov = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov"));
+	e->ui->cam_list_fov_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_box"));
+	e->ui->cam_list_fov_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_label"));
+	e->ui->cam_list_fov_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_spin"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_fov_spin, (guint)ACTIVECAM.fov);
+	// cam nav box
+	e->ui->cam_nav_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_box"));
+	e->ui->cam_nav_prev_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_prev_btn"));
+	e->ui->cam_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_next_btn"));
+	e->ui->cam_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_add_btn"));
+	e->ui->cam_nav_del_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_del_btn"));
+
 
 ////TOOL BAR
 	e->ui->tool_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_bar"));

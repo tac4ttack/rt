@@ -15,7 +15,7 @@ gboolean	gtk_main_loop(gpointer data)
 			fps = ft_strjoin("RT - ", e->scene_target);
 			fps = ft_strjoin_frs1(fps, " - ");
 			fps = ft_strjoin_free(fps, ft_itoa(e->fps.ret_fps));
-			gtk_window_set_title(GTK_WINDOW(e->ui->main_window), fps);
+		//	gtk_window_set_title(GTK_WINDOW(e->ui->main_window), fps);
 			opencl_draw(e);
 			free(fps);
 			gtk_render_events(e);

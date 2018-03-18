@@ -7,12 +7,18 @@
     <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="cam_dir_adjustement_x">
+    <property name="lower">-99999</property>
+    <property name="upper">99999</property>
     <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="cam_dir_adjustement_y">
+    <property name="lower">-99999</property>
+    <property name="upper">99999</property>
     <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="cam_dir_adjustement_z">
+    <property name="lower">-99999</property>
+    <property name="upper">99999</property>
     <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="cam_fov_adjustement">
@@ -21,12 +27,18 @@
     <property name="step_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="cam_pos_adjustement_x">
+    <property name="lower">-99999</property>
+    <property name="upper">99999</property>
     <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="cam_pos_adjustement_y">
+    <property name="lower">-99999</property>
+    <property name="upper">99999</property>
     <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="cam_pos_adjustement_z">
+    <property name="lower">-99999</property>
+    <property name="upper">99999</property>
     <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="depth_adjustement">
@@ -589,7 +601,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                 <property name="margin_bottom">3</property>
                                                 <child>
                                                   <object class="GtkLabel" id="cam_list_pos_label">
-                                                    <property name="width_request">90</property>
+                                                    <property name="width_request">60</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
                                                     <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
@@ -611,8 +623,7 @@ Higher values decrease a lot the rendering speed.</property>
 </property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
-                                                    <property name="max_length">4</property>
-                                                    <property name="width_chars">4</property>
+                                                    <property name="width_chars">0</property>
                                                     <property name="text" translatable="yes">0,00</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_pos_adjustement_x</property>
@@ -622,7 +633,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
                                                   <packing>
-                                                    <property name="expand">False</property>
+                                                    <property name="expand">True</property>
                                                     <property name="fill">True</property>
                                                     <property name="position">1</property>
                                                   </packing>
@@ -635,8 +646,7 @@ Higher values decrease a lot the rendering speed.</property>
  component, must be between 0 and 1</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
-                                                    <property name="max_length">4</property>
-                                                    <property name="width_chars">4</property>
+                                                    <property name="width_chars">0</property>
                                                     <property name="text" translatable="yes">0,00</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_pos_adjustement_y</property>
@@ -646,7 +656,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
                                                   <packing>
-                                                    <property name="expand">False</property>
+                                                    <property name="expand">True</property>
                                                     <property name="fill">True</property>
                                                     <property name="position">2</property>
                                                   </packing>
@@ -659,8 +669,7 @@ Higher values decrease a lot the rendering speed.</property>
  component, must be between 0 and 1</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
-                                                    <property name="max_length">4</property>
-                                                    <property name="width_chars">4</property>
+                                                    <property name="width_chars">0</property>
                                                     <property name="text" translatable="yes">0,00</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_pos_adjustement_z</property>
@@ -670,7 +679,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
                                                   <packing>
-                                                    <property name="expand">False</property>
+                                                    <property name="expand">True</property>
                                                     <property name="fill">True</property>
                                                     <property name="position">3</property>
                                                   </packing>
@@ -693,7 +702,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                 <property name="margin_bottom">3</property>
                                                 <child>
                                                   <object class="GtkLabel" id="cam_list_dir_label">
-                                                    <property name="width_request">90</property>
+                                                    <property name="width_request">60</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
                                                     <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
@@ -716,8 +725,7 @@ Higher values decrease a lot the rendering speed.</property>
 </property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
-                                                    <property name="max_length">4</property>
-                                                    <property name="width_chars">4</property>
+                                                    <property name="width_chars">0</property>
                                                     <property name="text" translatable="yes">0,00</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_dir_adjustement_x</property>
@@ -740,8 +748,7 @@ Higher values decrease a lot the rendering speed.</property>
  component, must be between 0 and 1</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
-                                                    <property name="max_length">4</property>
-                                                    <property name="width_chars">4</property>
+                                                    <property name="width_chars">0</property>
                                                     <property name="text" translatable="yes">0,00</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_dir_adjustement_y</property>
@@ -764,8 +771,7 @@ Higher values decrease a lot the rendering speed.</property>
  component, must be between 0 and 1</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
-                                                    <property name="max_length">4</property>
-                                                    <property name="width_chars">4</property>
+                                                    <property name="width_chars">0</property>
                                                     <property name="text" translatable="yes">0,00</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_dir_adjustement_z</property>
@@ -799,10 +805,10 @@ Higher values decrease a lot the rendering speed.</property>
                                                 <property name="margin_bottom">3</property>
                                                 <child>
                                                   <object class="GtkLabel" id="cam_list_fov_label">
-                                                    <property name="width_request">90</property>
+                                                    <property name="width_request">60</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="label" translatable="yes">Field Of View</property>
+                                                    <property name="label" translatable="yes">FOV</property>
                                                     <property name="single_line_mode">True</property>
                                                   </object>
                                                   <packing>
@@ -859,7 +865,6 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
-                                            <property name="double_buffered">False</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
@@ -879,7 +884,6 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
-                                            <property name="double_buffered">False</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
@@ -912,7 +916,7 @@ Higher values decrease a lot the rendering speed.</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkButton" id="cam_nav_remove_btn">
+                                          <object class="GtkButton" id="cam_nav_del_btn">
                                             <property name="label" translatable="yes">  Delete</property>
                                             <property name="height_request">35</property>
                                             <property name="visible">True</property>

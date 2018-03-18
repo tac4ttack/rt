@@ -2,7 +2,7 @@
 <scene res="1024, 768" ambient="0.1, 0.1, 0.1">
 <cam 	id="0"
 			pos="0, 0, -30"
-			dir="0, 0, 1"
+			dir="0, 1, 1"
 			fov="30"
 			/>
 	<sphere id="0"
