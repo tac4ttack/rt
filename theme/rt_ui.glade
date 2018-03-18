@@ -538,6 +538,16 @@ Higher values decrease a lot the rendering speed.</property>
                                         <child internal-child="selection">
                                           <object class="GtkTreeSelection"/>
                                         </child>
+                                        <child>
+                                          <object class="GtkTreeViewColumn" id="treetest">
+                                            <property name="title" translatable="yes">column1</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkTreeViewColumn" id="treetest2">
+                                            <property name="title" translatable="yes">column2</property>
+                                          </object>
+                                        </child>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>

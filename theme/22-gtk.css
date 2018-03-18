@@ -3,9 +3,9 @@
 .notebook,
 .button,
 .entry {
-  border-radius: 3;
+  border-radius: 3px;
   border-style: solid;
-  border-width: 1;
+  border-width: 1px;
 }
 
 
@@ -93,7 +93,7 @@ GtkTreeView row {
   border-radius: 0;
 }
 
-GtkTreeView row:selected:focused {
+GtkTreeView row:selected:focus {
   background-image: -gtk-gradient (linear,
                                    left top, left bottom,
                                    from (@selected_bg_color),

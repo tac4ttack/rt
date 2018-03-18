@@ -45,7 +45,7 @@ typedef	struct			s_ui
 	GtkBuilder			*builder;
 	
 	// css
-	GtkCssProvider		*style_provider;
+	GtkCssProvider		*css_provider;
 
 	GtkWidget			*main_window; //
 		GtkWidget			*main_box; //
