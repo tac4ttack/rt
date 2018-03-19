@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/16 21:33:00 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/19 17:48:26 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,5 +123,6 @@ void		init(GtkApplication* app, gpointer data)
 		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, sizeof(int))))
 		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	opencl_set_args(e, e->cl);
 	opencl_draw(e);
 }

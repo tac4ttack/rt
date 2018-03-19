@@ -18,6 +18,7 @@
 #define OPTION_SEPIA	(1 << 2)
 #define OPTION_BW		(1 << 3)
 #define OPTION_RUN		(1 << 4)
+#define OPTION_INVERT	(1 << 7)
 
 #define FLAG_DEBUG		(1 << 2)
 
@@ -187,7 +188,7 @@ typedef struct			s_scene
 	size_t				mem_size_lights;
 }						t_scene;
 
-unsigned int	sepiarize(const unsigned int color)
+static unsigned int	sepiarize(const unsigned int color)
 {
 	uint3	base, cooking_pot = 0;
 	base.x = (color & 0x00FF0000) >> 16;
@@ -202,6 +203,19 @@ unsigned int	sepiarize(const unsigned int color)
 	return (((uint)cooking_pot.x << 16) + ((uint)cooking_pot.y << 8) + (uint)cooking_pot.z);
 }
 
+static unsigned int	invert(const unsigned int color)
+{
+	uint3	base = 0;
+	base.x = (color & 0x00FF0000) >> 16;
+	base.y = (color & 0x0000FF00) >> 8;
+	base.z = (color & 0x000000FF);
+	base.x = 255 - base.x;
+	base.y = 255 - base.y;
+	base.z = 255 - base.z;
+	return (((uint)base.x << 16) + ((uint)base.y << 8) + (uint)base.z);
+}
+
+// not working
 static unsigned int	cartoonize(const unsigned int color)
 {
 	uint3	base, cooking_pot = 0;
@@ -1143,6 +1157,8 @@ __kernel void		ray_trace(	__global	char		*output,
 		final_color = sepiarize(final_color);
 	if (scene->flag & OPTION_BW)
 		final_color = desaturate(final_color);
+	if (scene->flag & OPTION_INVERT)
+		final_color = invert(final_color);
 
 	// ALPHA INSERT and RGB SWAP
 	int4 swap;

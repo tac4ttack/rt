@@ -49,40 +49,85 @@
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
   </object>
-  <object class="GtkImage" id="img_add">
+  <object class="GtkImage" id="img_cam_add">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
   </object>
-  <object class="GtkImage" id="img_delete">
+  <object class="GtkImage" id="img_cam_delete">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-delete</property>
+  </object>
+  <object class="GtkImage" id="img_cam_next">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-go-forward</property>
+  </object>
+  <object class="GtkImage" id="img_cam_prev">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-go-back</property>
   </object>
   <object class="GtkImage" id="img_export_btn">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-select-color</property>
   </object>
-  <object class="GtkImage" id="img_next">
+  <object class="GtkImage" id="img_light_add">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-add</property>
+  </object>
+  <object class="GtkImage" id="img_light_del">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-delete</property>
+  </object>
+  <object class="GtkImage" id="img_light_next">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-go-forward</property>
+  </object>
+  <object class="GtkImage" id="img_light_prev">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-go-back</property>
   </object>
   <object class="GtkImage" id="img_play_btn">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-media-play</property>
   </object>
-  <object class="GtkImage" id="img_prev">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-go-back</property>
-  </object>
   <object class="GtkImage" id="img_stop_btn">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-media-stop</property>
+  </object>
+  <object class="GtkAdjustment" id="light_brightness_adjustement">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="light_pos_adjustement_x">
+    <property name="lower">-99999</property>
+    <property name="upper">99999</property>
+    <property name="step_increment">0.01</property>
+  </object>
+  <object class="GtkAdjustment" id="light_pos_adjustement_y">
+    <property name="lower">-99999</property>
+    <property name="upper">99999</property>
+    <property name="step_increment">0.01</property>
+  </object>
+  <object class="GtkAdjustment" id="light_pos_adjustement_z">
+    <property name="lower">-99999</property>
+    <property name="upper">99999</property>
+    <property name="step_increment">0.01</property>
+  </object>
+  <object class="GtkAdjustment" id="light_shrink_adjustement">
+    <property name="upper">999</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="red_ambient_adjustement">
     <property name="upper">1</property>
@@ -226,7 +271,7 @@
             </child>
             <child>
               <object class="GtkScrolledWindow" id="right_panel_scroll">
-                <property name="width_request">520</property>
+                <property name="width_request">550</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="margin_left">5</property>
@@ -557,6 +602,22 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="position">3</property>
                                           </packing>
                                         </child>
+                                        <child>
+                                          <object class="GtkCheckButton" id="scene_postproc_invert_check">
+                                            <property name="label" translatable="yes">Inverted colors</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
+                                            <property name="draw_indicator">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">4</property>
+                                          </packing>
+                                        </child>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -574,8 +635,7 @@ Higher values decrease a lot the rendering speed.</property>
                                 <property name="can_focus">False</property>
                                 <property name="margin_top">5</property>
                                 <property name="margin_bottom">5</property>
-                                <property name="label" translatable="yes">Scene Options
-</property>
+                                <property name="label" translatable="yes">Scene Options</property>
                                 <property name="single_line_mode">True</property>
                               </object>
                             </child>
@@ -626,7 +686,7 @@ Higher values decrease a lot the rendering speed.</property>
                                               <object class="GtkLabel" id="cam_list_id_label">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
-                                                <property name="label" translatable="yes">CAMERA #</property>
+                                                <property name="label" translatable="yes">CAMERA n / N</property>
                                               </object>
                                             </child>
                                           </object>
@@ -779,7 +839,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
                                                   <packing>
-                                                    <property name="expand">False</property>
+                                                    <property name="expand">True</property>
                                                     <property name="fill">True</property>
                                                     <property name="position">1</property>
                                                   </packing>
@@ -802,7 +862,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
                                                   <packing>
-                                                    <property name="expand">False</property>
+                                                    <property name="expand">True</property>
                                                     <property name="fill">True</property>
                                                     <property name="position">2</property>
                                                   </packing>
@@ -825,7 +885,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
                                                   <packing>
-                                                    <property name="expand">False</property>
+                                                    <property name="expand">True</property>
                                                     <property name="fill">True</property>
                                                     <property name="position">3</property>
                                                   </packing>
@@ -869,8 +929,8 @@ Higher values decrease a lot the rendering speed.</property>
 Higher values decrease a lot the rendering speed.</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
-                                                    <property name="max_length">2</property>
-                                                    <property name="width_chars">2</property>
+                                                    <property name="max_length">3</property>
+                                                    <property name="width_chars">4</property>
                                                     <property name="text" translatable="yes">0</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_fov_adjustement</property>
@@ -912,7 +972,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
-                                            <property name="image">img_prev</property>
+                                            <property name="image">img_cam_prev</property>
                                             <property name="always_show_image">True</property>
                                           </object>
                                           <packing>
@@ -931,7 +991,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
-                                            <property name="image">img_next</property>
+                                            <property name="image">img_cam_next</property>
                                             <property name="always_show_image">True</property>
                                           </object>
                                           <packing>
@@ -950,7 +1010,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
-                                            <property name="image">img_add</property>
+                                            <property name="image">img_cam_add</property>
                                             <property name="always_show_image">True</property>
                                           </object>
                                           <packing>
@@ -969,7 +1029,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
-                                            <property name="image">img_delete</property>
+                                            <property name="image">img_cam_delete</property>
                                             <property name="always_show_image">True</property>
                                           </object>
                                           <packing>
@@ -995,8 +1055,7 @@ Higher values decrease a lot the rendering speed.</property>
                                 <property name="can_focus">False</property>
                                 <property name="margin_top">5</property>
                                 <property name="margin_bottom">5</property>
-                                <property name="label" translatable="yes">Cameras
-</property>
+                                <property name="label" translatable="yes">Cameras Manager</property>
                                 <property name="single_line_mode">True</property>
                               </object>
                             </child>
@@ -1028,18 +1087,331 @@ Higher values decrease a lot the rendering speed.</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="orientation">vertical</property>
-                                    <property name="homogeneous">True</property>
                                     <child>
-                                      <placeholder/>
+                                      <object class="GtkListBox" id="light_list_box">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="margin_top">5</property>
+                                        <property name="margin_bottom">5</property>
+                                        <property name="selection_mode">none</property>
+                                        <property name="activate_on_single_click">False</property>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="light_list_id">
+                                            <property name="height_request">30</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="activatable">False</property>
+                                            <property name="selectable">False</property>
+                                            <child>
+                                              <object class="GtkLabel" id="light_list_label">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="label" translatable="yes">LIGHT n / N</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="light_list_pos">
+                                            <property name="height_request">30</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <object class="GtkBox" id="light_list_pos_box">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="light_list_pos_label">
+                                                    <property name="width_request">60</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
+                                                    <property name="label" translatable="yes">Position
+</property>
+                                                    <property name="single_line_mode">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="light_list_pos_spin_x">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">
+</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="width_chars">0</property>
+                                                    <property name="text" translatable="yes">0,000</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">light_pos_adjustement_x</property>
+                                                    <property name="climb_rate">0.01</property>
+                                                    <property name="digits">3</property>
+                                                    <property name="wrap">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">True</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="light_list_pos_spin_y">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">GREEN
+ component, must be between 0 and 1</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="width_chars">0</property>
+                                                    <property name="text" translatable="yes">0,000</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">light_pos_adjustement_y</property>
+                                                    <property name="climb_rate">0.01</property>
+                                                    <property name="digits">3</property>
+                                                    <property name="wrap">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">True</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">2</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="light_list_pos_spin_z">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">BLUE
+ component, must be between 0 and 1</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="width_chars">0</property>
+                                                    <property name="text" translatable="yes">0,000</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">light_pos_adjustement_z</property>
+                                                    <property name="climb_rate">0.01</property>
+                                                    <property name="digits">3</property>
+                                                    <property name="wrap">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">True</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">3</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="light_list_params">
+                                            <property name="height_request">30</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <object class="GtkBox" id="light_list_params_box">
+                                                <property name="height_request">35</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="margin_top">3</property>
+                                                <property name="margin_bottom">3</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="light_list_bright_label">
+                                                    <property name="width_request">60</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">Brightness</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="light_list_bright_spin">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="max_length">5</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">light_brightness_adjustement</property>
+                                                    <property name="digits">2</property>
+                                                    <property name="wrap">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">True</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="light_list_shrink_label">
+                                                    <property name="width_request">60</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">Shrink</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">2</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="light_list_shrink_spin">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="max_length">3</property>
+                                                    <property name="width_chars">3</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">light_shrink_adjustement</property>
+                                                    <property name="wrap">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">True</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">3</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="light_list_color_label">
+                                                    <property name="width_request">60</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">Color</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">4</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkColorButton" id="light_list_color_button">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">True</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="title" translatable="yes">Pick the light's color</property>
+                                                    <property name="show_editor">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">5</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
                                     </child>
                                     <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
+                                      <object class="GtkBox" id="light_nav_box">
+                                        <property name="height_request">45</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="margin_top">5</property>
+                                        <property name="margin_bottom">5</property>
+                                        <child>
+                                          <object class="GtkButton" id="light_nav_prev_btn">
+                                            <property name="label" translatable="yes">  Previous</property>
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="valign">start</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
+                                            <property name="image">img_light_prev</property>
+                                            <property name="always_show_image">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="light_nav_next_btn">
+                                            <property name="label" translatable="yes">  Next</property>
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="valign">start</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
+                                            <property name="image">img_light_next</property>
+                                            <property name="always_show_image">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="light_nav_add_btn">
+                                            <property name="label" translatable="yes">  Add</property>
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="valign">start</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
+                                            <property name="image">img_light_add</property>
+                                            <property name="always_show_image">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="light_nav_del_btn">
+                                            <property name="label" translatable="yes">  Delete</property>
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="valign">start</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
+                                            <property name="image">img_light_del</property>
+                                            <property name="always_show_image">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">3</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
                                     </child>
                                   </object>
                                 </child>
@@ -1051,8 +1423,7 @@ Higher values decrease a lot the rendering speed.</property>
                                 <property name="can_focus">False</property>
                                 <property name="margin_top">5</property>
                                 <property name="margin_bottom">5</property>
-                                <property name="label" translatable="yes">Lights
-</property>
+                                <property name="label" translatable="yes">Lights Manager</property>
                                 <property name="single_line_mode">True</property>
                               </object>
                             </child>
@@ -1107,8 +1478,7 @@ Higher values decrease a lot the rendering speed.</property>
                                 <property name="can_focus">False</property>
                                 <property name="margin_top">5</property>
                                 <property name="margin_bottom">5</property>
-                                <property name="label" translatable="yes">Textures
-</property>
+                                <property name="label" translatable="yes">Textures Manager</property>
                                 <property name="single_line_mode">True</property>
                               </object>
                             </child>
@@ -1163,7 +1533,7 @@ Higher values decrease a lot the rendering speed.</property>
                                 <property name="can_focus">False</property>
                                 <property name="margin_top">5</property>
                                 <property name="margin_bottom">5</property>
-                                <property name="label" translatable="yes">Objects</property>
+                                <property name="label" translatable="yes">Objects Manager</property>
                                 <property name="single_line_mode">True</property>
                               </object>
                             </child>

@@ -20,9 +20,7 @@ void	cb_cam_manage_del(GtkButton *btn, gpointer data)
 	(void)btn;
 	e = data;
 	if (e->scene->n_cams == 1)
-	{
-		ft_putendl("sorry dave, i cant let you do that :(((((");
-	}
+		ft_putendl("you re not supposed to fall in this case, what did u du? :(((((");
 	else
 	{
 		if (--e->scene->n_cams == 1)

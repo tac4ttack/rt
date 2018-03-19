@@ -58,6 +58,7 @@ void		init_gtk_scene_widgets(t_env *e)
 	e->ui->scene_postproc_bw_radio = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_bw_radio"));
 	e->ui->scene_postproc_sepia_radio = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_sepia_radio"));
 	e->ui->scene_postproc_none_radio = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_none_radio"));
+	e->ui->scene_postproc_invert_check = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_invert_check"));
 }
 
 void		init_gtk(GtkApplication* app, gpointer data)
@@ -84,10 +85,6 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	init_gtk_main_widgets(e);
 	init_gtk_scene_widgets(e);
 
-
-	
-	
-
 	/////CAMERAS////
 	e->ui->cam_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame"));
 	e->ui->cam_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame_align"));
@@ -98,7 +95,6 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	// cam list id
 	e->ui->cam_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_id"));
 	e->ui->cam_list_id_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_id_label"));
-	gtk_label_set_text(GTK_LABEL(e->ui->cam_list_id_label), "CAMERA #1");
 	// cam list pos
 	e->ui->cam_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos"));
 	e->ui->cam_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_box"));
@@ -123,6 +119,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->cam_list_fov = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov"));
 	e->ui->cam_list_fov_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_box"));
 	e->ui->cam_list_fov_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_label"));
+	ui_cam_set_id(e);
 	e->ui->cam_list_fov_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_fov_spin, (guint)ACTIVECAM.fov);
 	// cam nav box
@@ -137,6 +134,44 @@ void		init_gtk(GtkApplication* app, gpointer data)
 		gtk_widget_set_sensitive(e->ui->cam_nav_next_btn, FALSE);
 		gtk_widget_set_sensitive(e->ui->cam_nav_del_btn, FALSE);
 	}
+
+	/////LIGHTS/////
+	e->ui->light_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame"));
+	e->ui->light_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_align"));
+	e->ui->light_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_label"));
+	e->ui->light_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_box"));
+	e->ui->light_list_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_box"));
+	//light id
+	e->ui->light_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_id"));
+	e->ui->light_list_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_label"));
+	//light pos
+	e->ui->light_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos"));
+	e->ui->light_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_box"));
+	e->ui->light_list_pos_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_label"));
+	e->ui->light_list_pos_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_spin_x"));
+	e->ui->light_list_pos_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_spin_y"));
+	e->ui->light_list_pos_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_spin_z"));
+	//light params
+	e->ui->light_list_params = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_params"));
+	e->ui->light_list_params_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_params_box"));
+	e->ui->light_list_bright_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_bright_label"));
+	e->ui->light_list_bright_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_bright_spin"));
+	e->ui->light_list_shrink_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_shrink_label"));
+	e->ui->light_list_shrink_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_shrink_spin"));
+	e->ui->light_list_color_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_color_label"));
+	e->ui->light_list_color_button = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_color_button"));
+	//light nav
+	e->ui->light_nav_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_box"));
+	e->ui->light_nav_prev_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_prev_btn"));
+	e->ui->light_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_next_btn"));
+	e->ui->light_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_add_btn"));
+	e->ui->light_nav_del_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_del_btn"));
+//	if (e->scene->n_lights < 2)
+//	{	
+//		gtk_widget_set_sensitive(e->ui->light_nav_prev_btn, FALSE);
+//		gtk_widget_set_sensitive(e->ui->light_nav_next_btn, FALSE);
+//		gtk_widget_set_sensitive(e->ui->light_nav_del_btn, FALSE);
+//	}
 
 
 ////TOOL BAR
@@ -186,6 +221,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_none_radio), "toggled", G_CALLBACK(cb_postproc_none), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_bw_radio), "toggled", G_CALLBACK(cb_postproc_bw), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_sepia_radio), "toggled", G_CALLBACK(cb_postproc_sepia), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_invert_check), "toggled", G_CALLBACK(cb_postproc_invert), (gpointer)e);
 	//cam pos spinbutton
 	g_signal_connect(GTK_WIDGET(e->ui->cam_list_pos_spin_x), "value-changed", G_CALLBACK(cb_cam_pos_x), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->cam_list_pos_spin_y), "value-changed", G_CALLBACK(cb_cam_pos_y), (gpointer)e);

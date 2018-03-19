@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:32:13 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/16 19:55:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/19 19:14:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,23 +76,13 @@ int			main(int ac, char **av)
 	ft_bzero(e, sizeof(t_env));
 	if (!(e->ui = malloc(sizeof(t_ui))))
 		s_error("\x1b[1;31mCan't initialize UI data structure\x1b[0m", e);
+	ft_bzero(e->ui, sizeof(t_ui));
 	e->scene_file = ft_strdup(av[1]);
-	
-	/* solution temporaire j'aimerais garder le nom de fichier seulement,
-	le probleme etant que scene_file se remplit avec contenu du fichier xml*/
-	e->scene_target = ft_strdup(av[1]);
-	
-
 	
 	e->ui->app = gtk_application_new("ray.tracer", G_APPLICATION_FLAGS_NONE);
 	g_signal_connect(e->ui->app, "startup", G_CALLBACK(init), (gpointer)e);
 	g_signal_connect(e->ui->app, "activate", G_CALLBACK(init_gtk), (gpointer)e);
 	e->ui->gtkstatus = g_application_run(G_APPLICATION(e->ui->app), --ac, ++av);
 
-//	init(e);
-//	gtk_init(&ac, &av);
-
-	
-	
 	return (0);
 }

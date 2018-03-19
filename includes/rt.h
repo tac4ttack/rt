@@ -57,6 +57,7 @@
 # define OPTION_RUN				(1 << 4)
 # define OPTION_GPU				(1 << 5)
 # define OPTION_DEBUG			(1 << 6)
+# define OPTION_INVERT			(1 << 7)
 
 # define OBJ_CONE			1
 # define OBJ_CYLINDER		2
@@ -192,24 +193,6 @@ typedef struct			s_sphere
 	cl_float			radius;
 }						t_sphere;
 
-/*typedef struct			s_param
-{
-	int					n_cams;
-	int					n_cones;
-	int					n_cylinders;
-	int					n_lights;
-	int					n_planes;
-	int					n_spheres;
-	int					active_cam;
-	int					win_w;
-	int					win_h;
-	cl_float3			mvt;
-	cl_float3			ambient;
-	int					mou_x;
-	int					mou_y;
-	int					depth;
-}						t_param; */
-
 typedef struct			s_node
 {
 	int					id;
@@ -287,8 +270,7 @@ typedef	struct			s_env
 	t_cl				*cl;
 	t_ui				*ui;
 
-	char				*scene_file;
-	char				*scene_target;
+	char				*scene_file;	
 	int					scene_fd;
 	t_scene				*scene;
 
@@ -349,6 +331,7 @@ void					refresh(t_env *e);
 void					gtk_render_events(t_env *e);
 void					ui_cam(t_env *e);
 void					ui_cam_update(t_env *e);
+void					ui_cam_set_id(t_env *e);
 void					ui_obj(t_env *e);
 void					update_fps(t_fps *fps);
 

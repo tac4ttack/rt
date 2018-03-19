@@ -83,6 +83,7 @@ typedef	struct			s_ui
 										GtkWidget			*scene_postproc_bw_radio; //
 										GtkWidget			*scene_postproc_sepia_radio; //
 										GtkWidget			*scene_postproc_none_radio; //
+										GtkWidget			*scene_postproc_invert_check; //
 
 						GtkWidget			*cam_frame; //
 							GtkWidget			*cam_frame_label; //
@@ -97,24 +98,49 @@ typedef	struct			s_ui
 												GtkWidget			*cam_list_pos_spin_x; //
 												GtkWidget			*cam_list_pos_spin_y; //
 												GtkWidget			*cam_list_pos_spin_z; //
-										GtkWidget			*cam_list_dir;
-											GtkWidget			*cam_list_dir_box;
-												GtkWidget			*cam_list_dir_label;
-												GtkWidget			*cam_list_dir_spin_x;
-												GtkWidget			*cam_list_dir_spin_y;
-												GtkWidget			*cam_list_dir_spin_z;
-										GtkWidget			*cam_list_fov;
-											GtkWidget			*cam_list_fov_box;
-												GtkWidget			*cam_list_fov_label;
-												GtkWidget			*cam_list_fov_spin;
-									GtkWidget			*cam_nav_box;
-										GtkWidget			*cam_nav_prev_btn;
-										GtkWidget			*cam_nav_next_btn;
-										GtkWidget			*cam_nav_add_btn;
-										GtkWidget			*cam_nav_del_btn;
+										GtkWidget			*cam_list_dir; //
+											GtkWidget			*cam_list_dir_box; //
+												GtkWidget			*cam_list_dir_label; //
+												GtkWidget			*cam_list_dir_spin_x; //
+												GtkWidget			*cam_list_dir_spin_y; // 
+												GtkWidget			*cam_list_dir_spin_z;// 
+										GtkWidget			*cam_list_fov; //
+											GtkWidget			*cam_list_fov_box; // 
+												GtkWidget			*cam_list_fov_label; // 
+												GtkWidget			*cam_list_fov_spin; //
+									GtkWidget			*cam_nav_box; //
+										GtkWidget			*cam_nav_prev_btn; //
+										GtkWidget			*cam_nav_next_btn; //
+										GtkWidget			*cam_nav_add_btn; //
+										GtkWidget			*cam_nav_del_btn; //
 
-		GtkWidget			*file_export_window;
-
+						GtkWidget			*light_frame; //
+							GtkWidget			*light_frame_label; //
+							GtkWidget			*light_frame_align; //
+								GtkWidget			*light_frame_box; // 
+									GtkWidget			*light_list_box; // 
+										GtkWidget			*light_list_id; //
+											GtkWidget			*light_list_label; //
+										GtkWidget			*light_list_pos; //
+											GtkWidget			*light_list_pos_box; //
+												GtkWidget			*light_list_pos_label; //
+												GtkWidget			*light_list_pos_spin_x; //
+												GtkWidget			*light_list_pos_spin_y; //
+												GtkWidget			*light_list_pos_spin_z; //
+										GtkWidget			*light_list_params; //
+											GtkWidget			*light_list_params_box; // 
+												GtkWidget			*light_list_bright_label; //
+												GtkWidget			*light_list_bright_spin; //
+												GtkWidget			*light_list_shrink_label; //
+												GtkWidget			*light_list_shrink_spin; //
+												GtkWidget			*light_list_color_label; //
+												GtkWidget			*light_list_color_button; //
+									GtkWidget			*light_nav_box; //
+									//	int					light_selector; // 
+										GtkWidget			*light_nav_prev_btn; //
+										GtkWidget			*light_nav_next_btn; //
+										GtkWidget			*light_nav_add_btn; //
+										GtkWidget			*light_nav_del_btn; //
 
 
 			GtkWidget			*status_bar; //
@@ -126,6 +152,8 @@ typedef	struct			s_ui
 				GtkWidget			*tool_fps_placeholder; //
 					GtkWidget			*tool_fps_label; //
 	
+GtkWidget			*file_export_window; // WIP
+
 }						t_ui;
 
 void					init_gtk(GtkApplication* app, gpointer data);
@@ -153,6 +181,7 @@ gboolean				cb_draw_render(GtkWidget *widget, cairo_t *cr, \
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
 void					cb_postproc_none(GtkToggleButton *button, gpointer data);
 void					cb_postproc_sepia(GtkToggleButton *button, gpointer data);
+void					cb_postproc_invert(GtkToggleButton *button, gpointer data);
 
 gboolean				cb_render_btnpress(GtkWidget *widget, GdkEvent *event, \
 											gpointer data);
@@ -179,6 +208,10 @@ gboolean				cb_cam_pos_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_z(GtkSpinButton *spin, gpointer data);
 
+void					cb_light_nav_prev(GtkButton *btn, gpointer data);
+void					cb_light_nav_next(GtkButton *btn, gpointer data);
+void					cb_light_nav_add(GtkButton *btn, gpointer data);
+void					cb_light_nav_del(GtkButton *btn, gpointer data);
 
 gboolean				cb_height_update(GtkSpinButton *spin, gpointer data);
 gboolean				cb_width_update(GtkSpinButton *spin, gpointer data);

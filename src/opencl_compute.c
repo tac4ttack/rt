@@ -6,11 +6,21 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/16 21:31:22 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/19 17:32:08 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+/*
+ *	rappel pour Flo
+ *	cl->mem[0] = output
+ *	cl->mem[1] = global_mem_objects
+ *	cl->mem[2] = scene_data
+ *	cl->mem[3] = cameras_data
+ *	cl->mem[4] = global_mem_lights
+ *	cl->mem[5] = target
+*/
 
 static void		cl_write_buffer(t_env *e, t_cl *cl)
 {
@@ -25,7 +35,7 @@ static void		cl_write_buffer(t_env *e, t_cl *cl)
 	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[3], CL_TRUE, 0,
 							sizeof(t_cam) * NCAM,
 							e->cameras, 0, NULL, NULL)))
-		s_error("Error: Failed to send arguments to kernel!", e);
+		s_error("Error: Failed to send CAM arguments to kernel!", e);
 	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[4], CL_TRUE, 0,
 							e->gen_lights->mem_size,
 							e->gen_lights->mem, 0, NULL, NULL)))
@@ -64,7 +74,7 @@ void		opencl_set_args(t_env *e, t_cl *cl)
 int			opencl_draw(t_env *e)
 {
 	t_cl *cl = e->cl;
-	opencl_set_args(e, cl);
+//	opencl_set_args(e, cl); // si decommenté alors commenter les autres appels et vice versa
 	cl->compute(cl);
 	cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[0], CL_TRUE, 0,
 			e->scene->win_w * e->scene->win_h * 4,
