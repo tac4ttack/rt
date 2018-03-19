@@ -192,7 +192,7 @@ typedef struct			s_sphere
 	cl_float			radius;
 }						t_sphere;
 
-typedef struct			s_param
+/*typedef struct			s_param
 {
 	int					n_cams;
 	int					n_cones;
@@ -208,7 +208,7 @@ typedef struct			s_param
 	int					mou_x;
 	int					mou_y;
 	int					depth;
-}						t_param;
+}						t_param; */
 
 typedef struct			s_node
 {
@@ -348,6 +348,7 @@ void					refresh(t_env *e);
 
 void					gtk_render_events(t_env *e);
 void					ui_cam(t_env *e);
+void					ui_update_cam(t_env *e);
 void					ui_obj(t_env *e);
 void					update_fps(t_fps *fps);
 

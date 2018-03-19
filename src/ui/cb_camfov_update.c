@@ -1,5 +1,6 @@
 #include "rt.h"
 
+
 gboolean	cb_camfov_update(GtkSpinButton *spin, gpointer data)
 {
 	gint 	value;

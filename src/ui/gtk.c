@@ -98,6 +98,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	// cam list id
 	e->ui->cam_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_id"));
 	e->ui->cam_list_id_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_id_label"));
+	gtk_label_set_text(GTK_LABEL(e->ui->cam_list_id_label), "CAMERA #1");
 	// cam list pos
 	e->ui->cam_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos"));
 	e->ui->cam_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_box"));
@@ -179,8 +180,15 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_none_radio), "toggled", G_CALLBACK(cb_postproc_none), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_bw_radio), "toggled", G_CALLBACK(cb_postproc_bw), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_sepia_radio), "toggled", G_CALLBACK(cb_postproc_sepia), (gpointer)e);
+	//cam pos spinbutton
+	g_signal_connect(GTK_WIDGET(e->ui->cam_list_pos_spin_x), "value-changed", G_CALLBACK(cb_cam_pos_x), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->cam_list_pos_spin_y), "value-changed", G_CALLBACK(cb_cam_pos_y), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->cam_list_pos_spin_z), "value-changed", G_CALLBACK(cb_cam_pos_z), (gpointer)e);
 	//cam fov spinbutton
 	g_signal_connect(GTK_WIDGET(e->ui->cam_list_fov_spin), "value-changed", G_CALLBACK(cb_camfov_update), (gpointer)e);
+	//cam nav buttons
+	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_prev_btn), "clicked", G_CALLBACK(cb_cam_nav_prev), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_next_btn), "clicked", G_CALLBACK(cb_cam_nav_next), (gpointer)e);
 	//tool bar buttons
 	g_signal_connect(GTK_WIDGET(e->ui->tool_play_btn), "clicked", G_CALLBACK(cb_play_btn), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->tool_stop_btn), "clicked", G_CALLBACK(cb_stop_btn), (gpointer)e);

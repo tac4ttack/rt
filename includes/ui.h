@@ -113,7 +113,7 @@ typedef	struct			s_ui
 										GtkWidget			*cam_nav_add_btn;
 										GtkWidget			*cam_nav_del_btn;
 
-
+		GtkWidget			*file_export_window;
 
 
 
@@ -162,11 +162,24 @@ gboolean				cb_render_keyrelease(GtkWidget *widget, \
 											GdkEvent *event, gpointer data);
 
 void					cb_play_btn(GtkButton *btn, gpointer data);
+
+
 void					cb_stop_btn(GtkButton *btn, gpointer data);
 void					cb_export_btn(GtkButton *btn, gpointer data);
 
+void					cb_cam_nav_prev(GtkButton *btn, gpointer data);
+void					cb_cam_nav_next(GtkButton *btn, gpointer data);
+void					cb_cam_nav_add(GtkButton *btn, gpointer data);
+void					cb_cam_nav_del(GtkButton *btn, gpointer data);
+
+gboolean				cb_cam_pos_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_cam_pos_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_cam_pos_z(GtkSpinButton *spin, gpointer data);
+
+
 gboolean				cb_height_update(GtkSpinButton *spin, gpointer data);
 gboolean				cb_width_update(GtkSpinButton *spin, gpointer data);
+
 
 
 # define KEY_STATE_UA		e->ui->keys.k_up

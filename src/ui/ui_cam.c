@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:02:45 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/19 11:43:37 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/19 12:50:12 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ void		rot_cam(t_env *e)
 
 void		ui_cam(t_env *e)
 {
+	char	*cam_id;
+	
+	cam_id = NULL;
 	if (KEY_STATE_W || KEY_STATE_S || KEY_STATE_C || KEY_STATE_SPC || KEY_STATE_D || KEY_STATE_A)
 		rot_cam(e);
 	(KEY_STATE_DA ? ACTIVECAM.pitch += 2 : 0);
@@ -49,8 +52,12 @@ void		ui_cam(t_env *e)
 	(ACTIVECAM.roll >= 360 ? ACTIVECAM.roll = 0 : ACTIVECAM.roll);
 	(ACTIVECAM.roll < 0 ? ACTIVECAM.roll = 359 : ACTIVECAM.roll);
 	if (KEY_STATE_Z)
-		e->scene->active_cam = (e->scene->active_cam + 1 \
+	{	e->scene->active_cam = (e->scene->active_cam + 1 \
 		< e->scene->n_cams ? e->scene->active_cam + 1 : 0);
+		cam_id = ft_strjoin_frs2("CAMERA #", ft_itoa(e->scene->active_cam + 1));
+		gtk_label_set_text(GTK_LABEL(e->ui->cam_list_id_label), (gchar*)cam_id);
+		free(cam_id);
+	}
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_pos_spin_x, (gdouble)ACTIVECAM.pos.x);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_pos_spin_y, (gdouble)ACTIVECAM.pos.y);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_pos_spin_z, (gdouble)ACTIVECAM.pos.z);

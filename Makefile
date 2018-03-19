@@ -45,6 +45,8 @@ SRC_NAME =	 			cl/cl_compute.c \
 						tools.c \
 						ui/cb_ambient_update.c \
 						ui/cb_camfov_update.c \
+						ui/cb_cam_nav_btn.c \
+						ui/cb_cam_pos.c \
 						ui/cb_configure_draw_area.c \
 						ui/cb_depth_update.c \
 						ui/cb_draw_render.c \
@@ -58,6 +60,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
 						ui/ui_cam.c \
+						ui/ui_cam_update.c \
 						ui/ui_obj.c \
 						update_fps.c \
 						vectors.c \

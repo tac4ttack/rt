@@ -118,8 +118,7 @@
               <object class="GtkToolButton" id="tool_play_btn">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Toggle realtime rendering
-</property>
+                <property name="tooltip_text" translatable="yes">Toggle realtime rendering</property>
                 <property name="label" translatable="yes">Play</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">img_play_btn</property>
