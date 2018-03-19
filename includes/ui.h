@@ -134,6 +134,8 @@ gboolean				cb_ambient_green_update(GtkSpinButton *spin, \
 gboolean				cb_ambient_blue_update(GtkSpinButton *spin, \
 											gpointer data);
 
+gboolean				cb_camfov_update(GtkSpinButton *spin, gpointer data);
+
 gboolean				cb_configure_draw_area(GtkWidget *widget, \
 									GdkEventConfigure *event, gpointer data);
 

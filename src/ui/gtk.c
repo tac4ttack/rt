@@ -172,6 +172,8 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_none_radio), "toggled", G_CALLBACK(cb_postproc_none), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_bw_radio), "toggled", G_CALLBACK(cb_postproc_bw), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_sepia_radio), "toggled", G_CALLBACK(cb_postproc_sepia), (gpointer)e);
+	//cam fov spinbutton
+	g_signal_connect(GTK_WIDGET(e->ui->cam_list_fov_spin), "value-changed", G_CALLBACK(cb_camfov_update), (gpointer)e);
 	// init and activate all preset signals from template
 	gtk_builder_connect_signals(e->ui->builder, NULL);
 /////////////////////////////////////////////////////////////////////////////////////////////

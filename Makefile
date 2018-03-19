@@ -44,6 +44,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						rotations.c \
 						tools.c \
 						ui/cb_ambient_update.c \
+						ui/cb_camfov_update.c \
 						ui/cb_configure_draw_area.c \
 						ui/cb_depth_update.c \
 						ui/cb_draw_render.c \
