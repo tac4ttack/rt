@@ -51,6 +51,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/cb_configure_draw_area.c \
 						ui/cb_depth_update.c \
 						ui/cb_draw_render.c \
+						ui/cb_light_nav.c \
 						ui/cb_postproc_radio.c \
 						ui/cb_render_btnpress.c \
 						ui/cb_render_keypress.c \
