@@ -117,8 +117,14 @@ typedef	struct			s_ui
 
 
 
-			GtkWidget			*status_bar;
-			GtkWidget			*tool_bar;	
+			GtkWidget			*status_bar; //
+			GtkWidget			*tool_bar; //
+				GtkWidget			*tool_play_btn; //
+				GtkWidget			*tool_stop_btn; //
+				GtkWidget			*tool_export_btn; //
+				GtkWidget			*tool_separate; //
+				GtkWidget			*tool_fps_placeholder; //
+					GtkWidget			*tool_fps_label; //
 	
 }						t_ui;
 
@@ -154,6 +160,10 @@ gboolean				cb_render_keypress(GtkWidget *widget, GdkEvent *event, \
 											gpointer data);
 gboolean				cb_render_keyrelease(GtkWidget *widget, \
 											GdkEvent *event, gpointer data);
+
+void					cb_play_btn(GtkButton *btn, gpointer data);
+void					cb_stop_btn(GtkButton *btn, gpointer data);
+void					cb_export_btn(GtkButton *btn, gpointer data);
 
 gboolean				cb_height_update(GtkSpinButton *spin, gpointer data);
 gboolean				cb_width_update(GtkSpinButton *spin, gpointer data);

@@ -134,6 +134,13 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 ////TOOL BAR
 	e->ui->tool_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_bar"));
+	e->ui->tool_play_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_play_btn"));
+	e->ui->tool_stop_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_stop_btn"));
+	e->ui->tool_export_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_export_btn"));
+	e->ui->tool_separate = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_separate"));
+	e->ui->tool_fps_placeholder = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_fps_placeholder"));
+	e->ui->tool_fps_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_fps_label"));
+
 
 ////STATUS BAR
 	e->ui->status_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "status_bar"));
@@ -174,6 +181,10 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_sepia_radio), "toggled", G_CALLBACK(cb_postproc_sepia), (gpointer)e);
 	//cam fov spinbutton
 	g_signal_connect(GTK_WIDGET(e->ui->cam_list_fov_spin), "value-changed", G_CALLBACK(cb_camfov_update), (gpointer)e);
+	//tool bar buttons
+	g_signal_connect(GTK_WIDGET(e->ui->tool_play_btn), "clicked", G_CALLBACK(cb_play_btn), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->tool_stop_btn), "clicked", G_CALLBACK(cb_stop_btn), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->tool_export_btn), "clicked", G_CALLBACK(cb_export_btn), (gpointer)e);
 	// init and activate all preset signals from template
 	gtk_builder_connect_signals(e->ui->builder, NULL);
 /////////////////////////////////////////////////////////////////////////////////////////////

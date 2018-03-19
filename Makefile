@@ -53,6 +53,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/cb_render_keypress.c \
 						ui/cb_render_keyrelease.c \
 						ui/cb_resolution_update.c \
+						ui/cb_tool_bar.c \
 						ui/gtk.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \

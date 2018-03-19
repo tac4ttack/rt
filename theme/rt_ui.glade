@@ -59,15 +59,30 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-delete</property>
   </object>
+  <object class="GtkImage" id="img_export_btn">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-select-color</property>
+  </object>
   <object class="GtkImage" id="img_next">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-go-forward</property>
   </object>
+  <object class="GtkImage" id="img_play_btn">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-media-play</property>
+  </object>
   <object class="GtkImage" id="img_prev">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-go-back</property>
+  </object>
+  <object class="GtkImage" id="img_stop_btn">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-media-stop</property>
   </object>
   <object class="GtkAdjustment" id="red_ambient_adjustement">
     <property name="upper">1</property>
@@ -100,13 +115,14 @@
             <property name="can_focus">False</property>
             <property name="toolbar_style">both-horiz</property>
             <child>
-              <object class="GtkToolButton" id="btn1">
+              <object class="GtkToolButton" id="tool_play_btn">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">btn1
+                <property name="tooltip_text" translatable="yes">Toggle realtime rendering
 </property>
-                <property name="label" translatable="yes">btn1</property>
+                <property name="label" translatable="yes">Play</property>
                 <property name="use_underline">True</property>
+                <property name="icon_widget">img_play_btn</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -114,13 +130,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="btn2">
+              <object class="GtkToolButton" id="tool_stop_btn">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">btn2
-</property>
-                <property name="label" translatable="yes">btn2</property>
+                <property name="tooltip_text" translatable="yes">Stop realtime rendering</property>
+                <property name="label" translatable="yes">Stop</property>
                 <property name="use_underline">True</property>
+                <property name="icon_widget">img_stop_btn</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -128,11 +144,40 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="btn3">
+              <object class="GtkToolButton" id="tool_export_btn">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">btn3</property>
+                <property name="tooltip_text" translatable="yes">Export render</property>
+                <property name="label" translatable="yes">Export render</property>
                 <property name="use_underline">True</property>
+                <property name="icon_widget">img_export_btn</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparatorToolItem" id="tool_separate">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolItem" id="tool_fps_placeholder">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="tool_fps_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">label</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
