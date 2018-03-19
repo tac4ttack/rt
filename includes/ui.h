@@ -167,6 +167,9 @@ void					cb_play_btn(GtkButton *btn, gpointer data);
 void					cb_stop_btn(GtkButton *btn, gpointer data);
 void					cb_export_btn(GtkButton *btn, gpointer data);
 
+void					cb_cam_manage_add(GtkButton *btn, gpointer data);
+void					cb_cam_manage_del(GtkButton *btn, gpointer data);
+
 void					cb_cam_nav_prev(GtkButton *btn, gpointer data);
 void					cb_cam_nav_next(GtkButton *btn, gpointer data);
 void					cb_cam_nav_add(GtkButton *btn, gpointer data);

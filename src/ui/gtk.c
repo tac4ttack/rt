@@ -131,6 +131,12 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->cam_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_next_btn"));
 	e->ui->cam_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_add_btn"));
 	e->ui->cam_nav_del_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_del_btn"));
+	if (e->scene->n_cams < 2)
+	{	
+		gtk_widget_set_sensitive(e->ui->cam_nav_prev_btn, FALSE);
+		gtk_widget_set_sensitive(e->ui->cam_nav_next_btn, FALSE);
+		gtk_widget_set_sensitive(e->ui->cam_nav_del_btn, FALSE);
+	}
 
 
 ////TOOL BAR
@@ -189,6 +195,8 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	//cam nav buttons
 	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_prev_btn), "clicked", G_CALLBACK(cb_cam_nav_prev), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_next_btn), "clicked", G_CALLBACK(cb_cam_nav_next), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_add_btn), "clicked", G_CALLBACK(cb_cam_manage_add), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_del_btn), "clicked", G_CALLBACK(cb_cam_manage_del), (gpointer)e);
 	//tool bar buttons
 	g_signal_connect(GTK_WIDGET(e->ui->tool_play_btn), "clicked", G_CALLBACK(cb_play_btn), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->tool_stop_btn), "clicked", G_CALLBACK(cb_stop_btn), (gpointer)e);
