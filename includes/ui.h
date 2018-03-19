@@ -183,8 +183,6 @@ gboolean				cb_cam_pos_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_height_update(GtkSpinButton *spin, gpointer data);
 gboolean				cb_width_update(GtkSpinButton *spin, gpointer data);
 
-
-
 # define KEY_STATE_UA		e->ui->keys.k_up
 # define KEY_STATE_DA		e->ui->keys.k_down
 # define KEY_STATE_LA		e->ui->keys.k_left

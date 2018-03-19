@@ -13,7 +13,7 @@ void		cb_cam_nav_prev(GtkButton *btn, gpointer data)
 	cam_id = ft_strjoin_frs2("CAMERA #", ft_itoa(e->scene->active_cam + 1));
 	gtk_label_set_text(GTK_LABEL(e->ui->cam_list_id_label), (gchar*)cam_id);
 	free(cam_id);
-	ui_update_cam(e);
+	ui_cam_update(e);
 }
 
 void		cb_cam_nav_next(GtkButton *btn, gpointer data)
@@ -29,7 +29,7 @@ void		cb_cam_nav_next(GtkButton *btn, gpointer data)
 	cam_id = ft_strjoin_frs2("CAMERA #", ft_itoa(e->scene->active_cam + 1));
 	gtk_label_set_text(GTK_LABEL(e->ui->cam_list_id_label), (gchar*)cam_id);
 	free(cam_id);
-	ui_update_cam(e);
+	ui_cam_update(e);
 }
 
 void		cb_cam_nav_add(GtkButton *btn, gpointer data)

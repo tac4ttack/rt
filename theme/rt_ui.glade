@@ -672,7 +672,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_pos_adjustement_x</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
+                                                    <property name="digits">3</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -695,7 +695,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_pos_adjustement_y</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
+                                                    <property name="digits">3</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -718,7 +718,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_pos_adjustement_z</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
+                                                    <property name="digits">3</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>

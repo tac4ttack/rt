@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:02:45 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/19 16:08:14 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/19 16:53:05 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void		ui_cam(t_env *e)
 		gtk_label_set_text(GTK_LABEL(e->ui->cam_list_id_label), (gchar*)cam_id);
 		free(cam_id);
 	}
-	
+	ui_cam_update(e);
 //	opencl_set_args(e, e->cl);
 }
 

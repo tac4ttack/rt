@@ -1,15 +1,5 @@
 #include "rt.h"
 
-void	gtk_update_ui(t_env *e)
-{
-	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_pos_spin_x, (gdouble)ACTIVECAM.pos.x);
-	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_pos_spin_y, (gdouble)ACTIVECAM.pos.y);
-	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_pos_spin_z, (gdouble)ACTIVECAM.pos.z);
-	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_dir_spin_x, (gdouble)ACTIVECAM.dir.x);
-	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_dir_spin_y, (gdouble)ACTIVECAM.dir.y);
-	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_dir_spin_z, (gdouble)ACTIVECAM.dir.z);
-}
-
 void	gtk_render_events(t_env *e)
 {
 	if (KEY_STATE_NPLU || KEY_STATE_NMIN)
@@ -32,5 +22,4 @@ void	gtk_render_events(t_env *e)
 			KEY_STATE_D || KEY_STATE_SPC || KEY_STATE_Z || KEY_STATE_UA || \
 			KEY_STATE_DA || KEY_STATE_LA || KEY_STATE_RA)
 			ui_cam(e);
-		gtk_update_ui(e);
 }
