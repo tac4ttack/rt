@@ -330,8 +330,10 @@ void					refresh(t_env *e);
 
 void					gtk_render_events(t_env *e);
 void					ui_cam(t_env *e);
-void					ui_cam_update(t_env *e);
 void					ui_cam_set_id(t_env *e);
+void					ui_cam_update(t_env *e);
+void					ui_light_set_id(t_env *e);
+void					ui_light_update(t_env *e);
 void					ui_obj(t_env *e);
 void					update_fps(t_fps *fps);
 

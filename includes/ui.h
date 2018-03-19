@@ -136,7 +136,7 @@ typedef	struct			s_ui
 												GtkWidget			*light_list_color_label; //
 												GtkWidget			*light_list_color_button; //
 									GtkWidget			*light_nav_box; //
-									//	int					light_selector; // 
+										int					light_selector; // 
 										GtkWidget			*light_nav_prev_btn; //
 										GtkWidget			*light_nav_next_btn; //
 										GtkWidget			*light_nav_add_btn; //
@@ -207,6 +207,9 @@ void					cb_cam_nav_del(GtkButton *btn, gpointer data);
 gboolean				cb_cam_pos_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_z(GtkSpinButton *spin, gpointer data);
+
+void					cb_light_manage_del(GtkButton *btn, gpointer data);
+void					cb_light_manage_add(GtkButton *btn, gpointer data);
 
 void					cb_light_nav_prev(GtkButton *btn, gpointer data);
 void					cb_light_nav_next(GtkButton *btn, gpointer data);

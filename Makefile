@@ -51,6 +51,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/cb_configure_draw_area.c \
 						ui/cb_depth_update.c \
 						ui/cb_draw_render.c \
+						ui/cb_light_manager.c \
 						ui/cb_light_nav.c \
 						ui/cb_postproc_radio.c \
 						ui/cb_render_btnpress.c \
@@ -61,6 +62,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/gtk.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
+						ui/ui_light_update.c \
 						ui/ui_cam.c \
 						ui/ui_cam_update.c \
 						ui/ui_obj.c \

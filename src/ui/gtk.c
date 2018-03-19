@@ -137,6 +137,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	}
 
 /////LIGHTS/////
+	printf("selectore = %d\n", e->ui->light_selector);
 	e->ui->light_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame"));
 	e->ui->light_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_align"));
 	e->ui->light_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_label"));
@@ -167,13 +168,12 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->light_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_next_btn"));
 	e->ui->light_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_add_btn"));
 	e->ui->light_nav_del_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_del_btn"));
-//	if (e->scene->n_lights < 2)
-//	{	
-//		gtk_widget_set_sensitive(e->ui->light_nav_prev_btn, FALSE);
-//		gtk_widget_set_sensitive(e->ui->light_nav_next_btn, FALSE);
-//		gtk_widget_set_sensitive(e->ui->light_nav_del_btn, FALSE);
-//	}
-
+	if (e->scene->n_lights < 2)
+	{	
+		gtk_widget_set_sensitive(e->ui->light_nav_prev_btn, FALSE);
+		gtk_widget_set_sensitive(e->ui->light_nav_next_btn, FALSE);
+		gtk_widget_set_sensitive(e->ui->light_nav_del_btn, FALSE);
+	}
 
 ////TOOL BAR
 	e->ui->tool_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_bar"));
@@ -234,6 +234,11 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_next_btn), "clicked", G_CALLBACK(cb_cam_nav_next), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_add_btn), "clicked", G_CALLBACK(cb_cam_manage_add), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_del_btn), "clicked", G_CALLBACK(cb_cam_manage_del), (gpointer)e);
+	//light nav buttons
+	g_signal_connect(GTK_WIDGET(e->ui->light_nav_prev_btn), "clicked", G_CALLBACK(cb_light_nav_prev), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->light_nav_next_btn), "clicked", G_CALLBACK(cb_light_nav_next), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->light_nav_add_btn), "clicked", G_CALLBACK(cb_light_manage_add), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->light_nav_del_btn), "clicked", G_CALLBACK(cb_light_manage_del), (gpointer)e);
 	//tool bar buttons
 	g_signal_connect(GTK_WIDGET(e->ui->tool_play_btn), "clicked", G_CALLBACK(cb_play_btn), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->tool_stop_btn), "clicked", G_CALLBACK(cb_stop_btn), (gpointer)e);
