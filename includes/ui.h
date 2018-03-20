@@ -31,7 +31,8 @@ typedef struct		s_keystate
 	unsigned int	k_u : 1;
 	unsigned int	k_o : 1;
 	unsigned int	k_z : 1;
-	unsigned int		: 6;
+	unsigned int	k_1 : 1;
+	unsigned int		: 5;
 }					t_keystate;
 
 typedef	struct			s_ui
@@ -245,6 +246,7 @@ gboolean				cb_width_update(GtkSpinButton *spin, gpointer data);
 # define KEY_STATE_U		e->ui->keys.k_u
 # define KEY_STATE_O		e->ui->keys.k_o
 # define KEY_STATE_Z		e->ui->keys.k_z
+# define KEY_STATE_1		e->ui->keys.k_1
 
 # define KEY_UA				65362
 # define KEY_DA				65364
@@ -272,6 +274,7 @@ gboolean				cb_width_update(GtkSpinButton *spin, gpointer data);
 # define KEY_U				117
 # define KEY_O				111
 # define KEY_Z				122
+# define KEY_1				49
 
 #endif
 

@@ -145,7 +145,7 @@
   </object>
   <object class="GtkApplicationWindow" id="main_window">
     <property name="width_request">2560</property>
-    <property name="height_request">1300</property>
+    <property name="height_request">1330</property>
     <property name="can_focus">False</property>
     <property name="resizable">False</property>
     <child>
@@ -257,8 +257,6 @@
                   <object class="GtkViewport" id="left_panel_viewport">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkDrawingArea" id="render">
@@ -1459,7 +1457,6 @@ Higher values decrease a lot the rendering speed.</property>
                                 <child>
                                   <object class="GtkBox" id="texture_frame_box">
                                     <property name="width_request">370</property>
-                                    <property name="height_request">900</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="orientation">vertical</property>

@@ -37,6 +37,6 @@ gboolean cb_render_keypress(GtkWidget *widget, GdkEvent *event, gpointer data)
 	(key == KEY_U ? KEY_STATE_U = 1 : 0 );
 	(key == KEY_O ? KEY_STATE_O = 1 : 0 );
 	(key == KEY_Z ? KEY_STATE_Z = 1 : 0 );
-	
+	(key == KEY_1 ? KEY_STATE_1 = 1 : 0 );
 	return TRUE;
 }

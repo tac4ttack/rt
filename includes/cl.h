@@ -37,6 +37,7 @@ t_cl					*cl_construct(const char *path, const char *name, \
 							const size_t width, const size_t height, int type);
 void					*cl_destruct(t_cl **ptr_cl);
 bool					cl_add_buffer(t_cl *cl, size_t size);
+bool					cl_replace_buffer(t_cl *cl, size_t size, size_t target);
 bool					cl_print_error(int err);
 bool					cl_compute(t_cl *cl);
 

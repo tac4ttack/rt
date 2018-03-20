@@ -2,6 +2,13 @@
 
 void	gtk_render_events(t_env *e)
 {
+	if (KEY_STATE_1)
+	{
+		if (e->scene->flag & OPTION_WAVE)
+			e->scene->flag ^= OPTION_WAVE;
+		else
+			e->scene->flag |= OPTION_WAVE;
+	}
 	if (KEY_STATE_NPLU || KEY_STATE_NMIN)
 	{
 		if (KEY_STATE_NPLU)

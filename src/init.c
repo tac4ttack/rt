@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/19 17:48:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/20 16:01:48 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,17 +112,17 @@ void		init(GtkApplication* app, gpointer data)
 	}
 		
 	if (!(e->cl->add_buffer(e->cl, e->scene->win_w * e->scene->win_h * 4)))
-		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+		s_error("\x1b[2;31mError creation FRAMEBUFFER cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, e->gen_objects->mem_size)))
-		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+		s_error("\x1b[2;31mError creation OBJECTS cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, sizeof(t_scene))))
-		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+		s_error("\x1b[2;31mError creation SCENE cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, sizeof(t_cam) * NCAM)))
-		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+		s_error("\x1b[2;31mError creation CAMERAS cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, e->gen_lights->mem_size)))
-		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+		s_error("\x1b[2;31mError creation LIGHTS cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, sizeof(int))))
-		s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+		s_error("\x1b[2;31mError creation TARGETOBJ cl_mem failed\x1b[0m", e);
 	opencl_set_args(e, e->cl);
 	opencl_draw(e);
 }

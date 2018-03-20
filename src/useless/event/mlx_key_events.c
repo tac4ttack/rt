@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_key_events.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:47:00 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 23:16:38 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/20 16:12:12 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,7 @@ void			mlx_keyboard_repeated(t_env *e)
 	}
 /*	if (KP_1)
 	{
-		if (e->scene->flag & OPTION_WAVE)
-			e->scene->flag ^= OPTION_WAVE;
-		else
-			e->scene->flag |= OPTION_WAVE;
+
 	}
 	if (KP_2)
 	{

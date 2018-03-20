@@ -96,6 +96,7 @@ Double precision fp capability                     	:
                                                    	:	round to +ve and -ve infinity rounding modes supported
                                                    	:	IEEE754-2008 fused multiply-add is supported
 Half precision fp capability                       	:
+                                                   	:	round to +ve and -ve infinity rounding modes supported
 Execution capabilities                             	:
                                                    	:	The OpenCL device can execute OpenCL kernels
                                                    	:	The OpenCL device can execute native kernels
@@ -198,6 +199,7 @@ Double precision fp capability                     	:
                                                    	:	round to +ve and -ve infinity rounding modes supported
                                                    	:	IEEE754-2008 fused multiply-add is supported
 Half precision fp capability                       	:
+                                                   	:	round to +ve and -ve infinity rounding modes supported
 Execution capabilities                             	:
                                                    	:	The OpenCL device can execute OpenCL kernels
 Supported command-queue properties                 	:	The profiling of commands is enabled

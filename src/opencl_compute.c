@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/19 17:32:08 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/20 17:24:52 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		opencl_set_args(t_env *e, t_cl *cl)
 int			opencl_draw(t_env *e)
 {
 	t_cl *cl = e->cl;
-//	opencl_set_args(e, cl); // si decommenté alors commenter les autres appels et vice versa
+	opencl_set_args(e, cl); // si decommenté alors commenter les autres appels et vice versa
 	cl->compute(cl);
 	cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[0], CL_TRUE, 0,
 			e->scene->win_w * e->scene->win_h * 4,
