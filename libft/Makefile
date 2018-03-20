@@ -6,7 +6,7 @@
 #    By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/05 23:18:40 by fmessina          #+#    #+#              #
-#    Updated: 2018/03/04 23:26:51 by ntoniolo         ###   ########.fr        #
+#    Updated: 2018/03/20 17:40:26 by fmessina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 NAME =		libft.a
 
 CC =		clang
-CFLAGS +=	-Wall -Wextra -Werror $(ASANFLAGS)
+CFLAGS +=	-Wall -Wextra -Werror $(ASANFLAGS) $(DEBUGFLAGS)
 
 SRC =		ft_abs.c \
 			ft_ahtoi.c \
@@ -125,7 +125,11 @@ $(NAME): libft.h get_next_line.h $(SRC) $(OFILES)
 	@echo "Library indexed\n"
 
 debug:
-	$(eval ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer -g)
+	$(eval DEBUGFLAGS = -g)
+
+debugasan:
+	$(eval DEBUGFLAGS = -g)
+	$(eval ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer)
 
 clean:
 	@echo "Cleaning object files..."

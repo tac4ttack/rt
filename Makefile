@@ -132,6 +132,14 @@ debuggpu: fclean debuglibft
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
 	@make debug_flag gpu_flags $(NAME)
 
+debugasangpu: fclean debugasanlibft
+	@echo "$(GREEN)So you want to compile RT with GPU and DEBUG enabled hu?$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
+	@echo "$(GREEN)Checking for GPU accelerated RT with ASAN debug flags enabled$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
+	@make debug_asan_flag gpu_flags $(NAME)
+
+
 debugcpu: fclean debuglibft
 	@echo "$(GREEN)So you want to compile RT with CPU mode forced and DEBUG enabled hu?$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
@@ -141,11 +149,18 @@ debugcpu: fclean debuglibft
 
 debug_flag:
 	$(eval DEBUG_MACRO = -DDEBUG -g)
+
+debug_asan_flag:
+	$(eval DEBUG_MACRO = -DDEBUG -g)
 	$(eval ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer)
 
 debuglibft:
 	@echo "$(GREEN)Checking for Libft library with ASan$(EOC)"
 	make -C $(LIBFT_PATH)/ debug libft.a
+
+debugasanlibft:
+	@echo "$(GREEN)Checking for Libft library with ASan$(EOC)"
+	make -C $(LIBFT_PATH)/ debugasan libft.a
 
 clean:
 	@echo "$(GREEN)Cleaning...$(EOC)"
