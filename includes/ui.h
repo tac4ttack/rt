@@ -1,7 +1,7 @@
 #ifndef UI_H
 # define UI_H
 
-# include <gtk/gtk.h>
+# include "gtk/gtk.h"
 
 typedef struct		s_keystate
 {
@@ -39,6 +39,7 @@ typedef	struct			s_ui
 {
 	int					gtkstatus;
 	int					redraw;
+	cl_int4				render_pos;
 	t_keystate			keys;
 
 	// core
