@@ -34,7 +34,6 @@ SRC_NAME =	 			cl/cl_compute.c \
 						cl/cl_create_buffer.c \
 						cl/cl_destruct.c \
 						cl/cl_print_error.c \
-						hud.c \
 						init.c \
 						gen/gen_add.c \
 						gen/gen_construct.c \

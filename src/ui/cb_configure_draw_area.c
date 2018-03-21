@@ -1,7 +1,7 @@
 #include "rt.h"
 
 
-static void		clear_surface(t_env *e)
+void		clear_surface(t_env *e)
 {
 	cairo_t	*cr;
 

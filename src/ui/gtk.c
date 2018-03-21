@@ -16,6 +16,7 @@ void		init_gtk_main_widgets(t_env *e)
 	e->ui->left_panel_viewport = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "left_panel_viewport"));
 	// init render shit
 	e->ui->render = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "render"));
+	gtk_widget_set_size_request(e->ui->render, e->scene->win_w, e->scene->win_h);
 	e->ui->pixbuf = gdk_pixbuf_new_from_data((const guchar *)e->pixel_data, GDK_COLORSPACE_RGB, 1, 8, e->scene->win_w, e->scene->win_h, e->scene->win_w * 4, NULL, NULL);
 	e->ui->surface = NULL;
 ////RIGHT PANEL

@@ -328,6 +328,7 @@ int						quit(t_env *e);
 void					refresh(t_env *e);
 
 
+void					clear_surface(t_env *e);
 void					gtk_render_events(t_env *e);
 void					ui_cam(t_env *e);
 void					ui_cam_set_id(t_env *e);

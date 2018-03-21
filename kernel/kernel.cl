@@ -1,6 +1,6 @@
 #define BACKCOLOR 0x00999999
 
-# define EPSILON 0.00005f
+#define EPSILON 0.00005f
 #define MAX_DIST 10000000.0
 #define SHADOW_BIAS 1000
 
@@ -11,8 +11,6 @@
 #define PLANE scene->planes
 #define SPHERE scene->spheres
 #define ACTIVECAM scene->cameras[scene->active_cam]
-
-#define OUTPUTE ((__global unsigned int *)output)[id]
 
 #define OPTION_WAVE 	(1 << 1)
 #define OPTION_SEPIA	(1 << 2)
@@ -537,7 +535,6 @@ static float3			get_cone_normal(const __local t_cone *cone, const t_hit hit)
 	return (fast_normalize(res));
 }
 
-
 static float			inter_sphere(const __local t_sphere *sphere, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
@@ -559,8 +556,6 @@ static float			inter_sphere(const __local t_sphere *sphere, const float3 ray, co
 		return (res1);
 	return (res2);
 }
-
-
 
 static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const float3 ray, float lightdist)
 {

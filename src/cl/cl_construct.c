@@ -74,6 +74,7 @@ t_cl				*cl_construct(const char *path, const char *name,
 							const size_t width, const size_t height, int type)
 {
 	t_cl *cl;
+	cl_ulong size;
 
 	if (!(cl = ft_memalloc(sizeof(t_cl))))
 		return (NULL);
@@ -87,7 +88,6 @@ t_cl				*cl_construct(const char *path, const char *name,
 	cl->compute = &cl_compute;
 	cl->dimension[0] = width;
 	cl->dimension[1] = height;
-	cl_ulong size;
 	clGetDeviceInfo(cl->device_id, CL_DEVICE_LOCAL_MEM_SIZE, sizeof(cl_ulong), &size, 0);
 	return (cl);
 }

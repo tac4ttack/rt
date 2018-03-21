@@ -15,7 +15,10 @@
 		"utility": "c",
 		"__bit_reference": "c",
 		"*.hl": "c",
-		"ios": "c"
-	}
+		"ios": "c",
+		"ui.h": "c"
+	},
+	"C_Cpp.intelliSenseEngine": "Tag Parser",
+	"C_Cpp.intelliSenseEngineFallback": "Disabled"
 }
 
