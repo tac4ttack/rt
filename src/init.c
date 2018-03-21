@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/20 16:01:48 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/21 16:06:01 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void		env_init(t_env *e)
 {
 	ft_putendl("\n\x1b[1;32m/\\ Initializing RT environnement /\\\x1b[0m\n");
 	e->scene->depth = 0;
+	e->target = -1;
 	e->scene->tor_count = pow(2, e->scene->depth + 1) - 1; // USELESS?
 	e->debug = DBUG;
 	e->gpu = IS_GPU;

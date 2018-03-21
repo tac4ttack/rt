@@ -9,12 +9,12 @@ gboolean cb_draw_render(GtkWidget *widget, cairo_t *cr, gpointer data)
 	update_fps(&e->fps);
 
 //	1ere methode
-	gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 1, 1);
+	gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 0, 0);
 //	2nde methode
-//	if (e->ui->surface)
-//		cairo_surface_destroy(e->ui->surface);
-//	e->ui->surface = gdk_cairo_surface_create_from_pixbuf (e->ui->pixbuf, 1, NULL);
-//	cairo_set_source_surface(cr, e->ui->surface, 0, 0);
+	// if (e->ui->surface)
+	// 	cairo_surface_destroy(e->ui->surface);
+	// e->ui->surface = gdk_cairo_surface_create_from_pixbuf (e->ui->pixbuf, 1, NULL);
+	// cairo_set_source_surface(cr, e->ui->surface, 0, 0);
 
 	cairo_paint(cr);
 	return FALSE;

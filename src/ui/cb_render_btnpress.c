@@ -2,10 +2,10 @@
 
 gboolean cb_render_btnpress(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
-	(void)widget;
-	(void)event;
 	t_env *e;
 
+	(void)widget;
+	(void)event;
 	e = data;
 	e->scene->flag |= OPTION_RUN;
 	e->scene->mou_x = (int)event->button.x;
