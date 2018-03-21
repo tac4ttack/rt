@@ -47,8 +47,10 @@ typedef	struct			s_ui
 	
 	// css
 	GtkCssProvider		*css_provider;
-
+	GtkWidget			*menu_bar;
+	
 	GtkWidget			*main_window; //
+	GtkAccelGroup			*main_window_accel;
 		GtkWidget			*main_box; //
 			GtkWidget			*main_panels;
 

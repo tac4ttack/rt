@@ -2,9 +2,15 @@
 
 void		init_gtk_main_widgets(t_env *e)
 {
-	////MAIN WINDOW
+////MAIN WINDOW
 	// init and connect the main window
+	e->ui->menu_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "menu_bar"));
+//	gtk_widget_hide(e->ui->menu_bar);
+ //	gtk_mac_menu_set_menu_bar(GTK_MENU_SHELL(e->ui->menu_bar));
+
 	e->ui->main_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "main_window"));
+	e->ui->main_window_accel = gtk_accel_group_new();
+	gtk_window_add_accel_group(GTK_WINDOW(e->ui->main_window), e->ui->main_window_accel);
 
 ////MAIN PANEL	
 	// init all widget in order
@@ -138,7 +144,9 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	}
 
 /////LIGHTS/////
-	printf("selectore = %d\n", e->ui->light_selector);
+
+//	printf("selectore = %d\n", e->ui->light_selector);
+
 	e->ui->light_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame"));
 	e->ui->light_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_align"));
 	e->ui->light_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_label"));
@@ -198,8 +206,6 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	
 	// mainwindow
 	g_signal_connect(e->ui->main_window, "destroy", G_CALLBACK(gtk_quit), (gpointer)e);
-
-	// render
 	g_signal_connect(e->ui->render,"configure-event", G_CALLBACK(cb_configure_draw_area), (gpointer)e);
 	g_signal_connect(e->ui->render, "draw", G_CALLBACK(cb_draw_render), (gpointer)e);
 	gtk_widget_add_events (e->ui->render, GDK_BUTTON_PRESS_MASK);

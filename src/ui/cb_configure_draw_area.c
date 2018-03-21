@@ -20,7 +20,6 @@ gboolean		cb_configure_draw_area(GtkWidget *widget, \
 
 	e = data;
 	(void)event;
-	ft_putendl("im in config ");
 	if (e->ui->surface)
 		cairo_surface_destroy(e->ui->surface);
 	e->ui->surface = gdk_window_create_similar_surface(\
