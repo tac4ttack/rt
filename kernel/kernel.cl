@@ -1148,7 +1148,7 @@ __kernel void		ray_trace(	__global	char		*output,
 	scene->mem_size_lights = mem_size_lights;
 	prim_ray = get_ray_cam(scene, pix);
 	if (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y)
-	*target = -1;
+		*target = -1;
 	final_color = get_pixel_color(scene, prim_ray, target, (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y));
 	if (scene->flag & OPTION_SEPIA)
 		final_color = sepiarize(final_color);
