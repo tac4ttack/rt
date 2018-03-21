@@ -19,7 +19,11 @@ gboolean	gtk_main_loop(gpointer data)
 			gtk_label_set_text(GTK_LABEL(e->ui->tool_fps_label), (gchar*)fps);
 			opencl_draw(e);
 			free(fps);
-			gtk_widget_queue_draw_area(e->ui->main_window, 0, 40, e->scene->win_w + 50 , e->scene->win_h + 50);
+//			if (e->scene->win_w > 2000 || e->scene->win_h > 1250)
+				gtk_widget_queue_draw_area(e->ui->main_window, 0, 40, \
+										2200, \
+										1500);
+	
 		}
 		else if (e->ui->redraw == 0)
 		{

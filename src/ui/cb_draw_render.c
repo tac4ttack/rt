@@ -7,10 +7,6 @@ gboolean cb_draw_render(GtkWidget *widget, cairo_t *cr, gpointer data)
 	(void)widget;
 	e = data;
 	update_fps(&e->fps);
-	if (e->ui->redraw == 1)
-		opencl_draw(e);
-
-//	gtk_widget_grab_focus(widget); /// fou le focus sur le render
 
 //	1ere methode
 	gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 1, 1);

@@ -32,7 +32,6 @@ gboolean	cb_width_update(GtkSpinButton *spin, gpointer data)
 
 	e = data;
 	value = gtk_spin_button_get_value_as_int(spin);
-	printf("width has changed! it was %d, it is now %d\n", e->scene->win_w, (int)value);
 	e->ui->redraw = 0;
 	ui_update_resolution(e, value, e->scene->win_h);
 	e->ui->redraw = 1;
@@ -47,7 +46,6 @@ gboolean	cb_height_update(GtkSpinButton *spin, gpointer data)
 
 	e = data;
 	value = gtk_spin_button_get_value_as_int(spin);
-	printf("height has changed! it was %d, it is now %d\n", e->scene->win_h, (int)value);
 	e->ui->redraw = 0;
 	ui_update_resolution(e, e->scene->win_w, value);
 	e->ui->redraw = 1;
