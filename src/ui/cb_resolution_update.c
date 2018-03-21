@@ -18,10 +18,11 @@ void		ui_update_resolution(t_env *e, int width, int height)
 		s_error("\x1b[2;31mCan't initialize new scene buffer\x1b[0m", e);
 	gtk_widget_set_size_request(e->ui->render, e->scene->win_w, e->scene->win_h);
 	opencl_set_args(e, e->cl);
-	e->ui->pixbuf = gdk_pixbuf_new_from_data((const guchar *)e->pixel_data, GDK_COLORSPACE_RGB, 1, 8, e->scene->win_w, e->scene->win_h, e->scene->win_w * 4, NULL, NULL);
+	e->ui->pixbuf = gdk_pixbuf_new_from_data((const guchar *)e->pixel_data, \
+					GDK_COLORSPACE_RGB, 1, 8, e->scene->win_w, \
+					e->scene->win_h, e->scene->win_w * 4, NULL, NULL);
 	e->ui->surface = NULL;
 	clear_surface(e);
-
 }
 
 gboolean	cb_width_update(GtkSpinButton *spin, gpointer data)
