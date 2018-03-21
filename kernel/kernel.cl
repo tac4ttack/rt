@@ -380,7 +380,7 @@ static t_hit			hit_init(void)
 
 	hit.dist = 0.f;
 	hit.normal = 0.f;
-	hit.obj = 0;
+	hit.obj = -1;
 	hit.pos = 0.f;
 	hit.mem_index = 0;
 	hit.opacity = 0;
@@ -1061,7 +1061,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	color = 0;
 	bounce_color = 0;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
-	if (isHim)
+	if (isHim && hit.obj != -1)
 		*target = hit.mem_index;
 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
@@ -1147,6 +1147,8 @@ __kernel void		ray_trace(	__global	char		*output,
 	scene->mem_size_obj = mem_size_objects;
 	scene->mem_size_lights = mem_size_lights;
 	prim_ray = get_ray_cam(scene, pix);
+	if (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y)
+	*target = -1;
 	final_color = get_pixel_color(scene, prim_ray, target, (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y));
 	if (scene->flag & OPTION_SEPIA)
 		final_color = sepiarize(final_color);
