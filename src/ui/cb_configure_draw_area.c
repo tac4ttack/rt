@@ -19,7 +19,10 @@ gboolean		cb_configure_draw_area(GtkWidget *widget, \
 	t_env *e;
 
 	e = data;
-	(void)event;
+	e->ui->render_pos.w = event->x;
+	e->ui->render_pos.x = event->y + 45;
+	e->ui->render_pos.y = event->width;
+	e->ui->render_pos.z = event->height;
 	if (e->ui->surface)
 		cairo_surface_destroy(e->ui->surface);
 	e->ui->surface = gdk_window_create_similar_surface(\

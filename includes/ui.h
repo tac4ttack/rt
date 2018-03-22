@@ -48,7 +48,7 @@ typedef	struct			s_ui
 	
 	// css
 	GtkCssProvider		*css_provider;
-	GtkWidget			*menu_bar;
+//	GtkWidget			*menu_bar;
 	
 	GtkWidget			*main_window; //
 	GtkAccelGroup			*main_window_accel;
@@ -181,6 +181,8 @@ gboolean				cb_depth_update(GtkSpinButton *spin, gpointer data);
 
 gboolean				cb_draw_render(GtkWidget *widget, cairo_t *cr, \
 										gpointer data);
+
+void					cb_main_window_resize(GtkContainer *box, gpointer data);
 
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
 void					cb_postproc_none(GtkToggleButton *button, gpointer data);
