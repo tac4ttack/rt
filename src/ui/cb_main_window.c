@@ -17,5 +17,12 @@ void	cb_main_window_resize(GtkContainer *box, gpointer data)
 		e->ui->render_pos.y = e->scene->win_w;
 		e->ui->render_pos.z = e->scene->win_h;
 	}
+	else
+	{
+		e->ui->render_pos.w = 0;
+		e->ui->render_pos.x = 42;
+		e->ui->render_pos.y = zone.x;
+		e->ui->render_pos.z = zone.y;
+	}
 }
 		
