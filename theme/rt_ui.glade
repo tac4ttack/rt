@@ -146,7 +146,6 @@
   <object class="GtkApplicationWindow" id="main_window">
     <property name="can_focus">False</property>
     <property name="has_resize_grip">True</property>
-    <property name="show_menubar">False</property>
     <child>
       <object class="GtkBox" id="main_box">
         <property name="visible">True</property>
@@ -1335,6 +1334,7 @@ Higher values decrease a lot the rendering speed.</property>
                                         <child>
                                           <object class="GtkButton" id="light_nav_prev_btn">
                                             <property name="label" translatable="yes">  Previous</property>
+                                            <property name="name">toto</property>
                                             <property name="height_request">35</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
