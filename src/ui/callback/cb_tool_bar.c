@@ -35,13 +35,13 @@ void		gtk_export(GdkPixbuf *target, char *format, char *filename)
 	ft_putendl("\x1b[0m\x1b[1;29m successfully exported!\x1b[0m");
 }
 
-void	cb_export_btn(GtkButton *btn, gpointer data)
+void		cb_export_btn(GtkButton *btn, gpointer data)
 {
-	t_env *e;
+	t_env	*e; 
 
 	(void)btn;
 	e = data;
-	ft_putendl("im in export!");
+	ft_putendl("expoooooorteu");
 	e->ui->file_export_window = gtk_file_chooser_dialog_new("Export render to...", GTK_WINDOW(e->ui->main_window), \
 								GTK_FILE_CHOOSER_ACTION_SAVE, NULL, NULL);
 }

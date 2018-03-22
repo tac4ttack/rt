@@ -1,3 +1,10 @@
+NEEEEEEEEED TO BE UPDATED!!!!
+
+* leaks gtk ok -> free à la fin du programme
+* leaks à la fin du programme, foutre while(1) avant le exit pour les trouver
+
+
+
 TODO LIST COMMON:
 -----------------
 * norm norm norm
@@ -7,17 +14,6 @@ TODO LIST COMMON:
 * bruit de perlinpinpin -> Chaton?
 * kernel post process Stereoscopie -> Flo?
 * kernel post process Cel Shading
-* finir le TREE OF RAY
-	-> creation OK FLO
-	-> preremplissage
-	-> transmission
-	-> remplissage vecteurs etc
-	-> remplissage couleur et synthèse finale
-	-> faire essais sur reflexions
-	-> faire essais sur refractions
-	-> OBJETS DIALECTRIQUES TA RACE (Fresnel bro')
-	-> faire essais objets dialec'
-* faire GUI, avec GTK? avec Nuklear (https://github.com/vurtun/nuklear)?
 
 
 

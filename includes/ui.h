@@ -160,71 +160,56 @@ GtkWidget			*file_export_window; // WIP
 
 }						t_ui;
 
-void					init_gtk(GtkApplication* app, gpointer data);
-gboolean				gtk_main_loop(gpointer data);
-int						gtk_quit(GtkApplication *app, gpointer data);
-
 
 gboolean				cb_ambient_red_update(GtkSpinButton *spin, \
-											gpointer data);
-gboolean				cb_ambient_green_update(GtkSpinButton *spin, \
-											gpointer data);
-gboolean				cb_ambient_blue_update(GtkSpinButton *spin, \
-											gpointer data);
-
-gboolean				cb_camfov_update(GtkSpinButton *spin, gpointer data);
-
-gboolean				cb_configure_draw_area(GtkWidget *widget, \
-									GdkEventConfigure *event, gpointer data);
-
-gboolean				cb_depth_update(GtkSpinButton *spin, gpointer data);
-
-
-
-void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
-void					cb_postproc_none(GtkToggleButton *button, gpointer data);
-void					cb_postproc_sepia(GtkToggleButton *button, gpointer data);
-void					cb_postproc_invert(GtkToggleButton *button, gpointer data);
-
-gboolean				cb_render_btnpress(GtkWidget *widget, GdkEvent *event, \
-											gpointer data);
-gboolean				cb_render_keypress(GtkWidget *widget, GdkEvent *event, \
-											gpointer data);
-gboolean				cb_render_keyrelease(GtkWidget *widget, \
-											GdkEvent *event, gpointer data);
-
-void					cb_play_btn(GtkButton *btn, gpointer data);
-
-gboolean				cb_render_draw(GtkWidget *widget, cairo_t *cr, \
 										gpointer data);
-
-void					cb_render_update_size(GtkContainer *box, gpointer data);
-
-void					cb_stop_btn(GtkButton *btn, gpointer data);
-void					cb_export_btn(GtkButton *btn, gpointer data);
-
+gboolean				cb_ambient_green_update(GtkSpinButton *spin, \
+										gpointer data);
+gboolean				cb_ambient_blue_update(GtkSpinButton *spin, \
+										gpointer data);
+gboolean				cb_cam_fov_update(GtkSpinButton *spin, gpointer data);
 void					cb_cam_manage_add(GtkButton *btn, gpointer data);
 void					cb_cam_manage_del(GtkButton *btn, gpointer data);
-
 void					cb_cam_nav_prev(GtkButton *btn, gpointer data);
 void					cb_cam_nav_next(GtkButton *btn, gpointer data);
 void					cb_cam_nav_add(GtkButton *btn, gpointer data);
 void					cb_cam_nav_del(GtkButton *btn, gpointer data);
-
 gboolean				cb_cam_pos_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_z(GtkSpinButton *spin, gpointer data);
-
+gboolean				cb_configure_draw_area(GtkWidget *widget, \
+									GdkEventConfigure *event, gpointer data);
+gboolean				cb_depth_update(GtkSpinButton *spin, gpointer data);
+void					cb_export_btn(GtkButton *btn, gpointer data);
+gboolean				cb_height_update(GtkSpinButton *spin, gpointer data);
 void					cb_light_manage_del(GtkButton *btn, gpointer data);
 void					cb_light_manage_add(GtkButton *btn, gpointer data);
-
 void					cb_light_nav_prev(GtkButton *btn, gpointer data);
 void					cb_light_nav_next(GtkButton *btn, gpointer data);
 void					cb_light_nav_add(GtkButton *btn, gpointer data);
 void					cb_light_nav_del(GtkButton *btn, gpointer data);
-
-gboolean				cb_height_update(GtkSpinButton *spin, gpointer data);
+void					cb_play_btn(GtkButton *btn, gpointer data);
+void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
+void					cb_postproc_invert(GtkToggleButton *button, \
+										gpointer data);
+void					cb_postproc_none(GtkToggleButton *button, \
+										gpointer data);
+void					cb_postproc_sepia(GtkToggleButton *button, \
+										gpointer data);
+gboolean				cb_render_btnpress(GtkWidget *widget, GdkEvent *event, \
+										gpointer data);
+gboolean				cb_render_draw(GtkWidget *widget, cairo_t *cr, \
+										gpointer data);
+gboolean				cb_render_keypress(GtkWidget *widget, GdkEvent *event, \
+										gpointer data);
+gboolean				cb_render_keyrelease(GtkWidget *widget, \
+										GdkEvent *event, gpointer data);
+void					cb_render_update_size(GtkContainer *box, gpointer data);
+void					cb_stop_btn(GtkButton *btn, gpointer data);
 gboolean				cb_width_update(GtkSpinButton *spin, gpointer data);
+gboolean				gtk_main_loop(gpointer data);
+int						gtk_quit(GtkApplication *app, gpointer data);
+void					init_gtk(GtkApplication* app, gpointer data);
 
 # define KEY_STATE_UA		e->ui->keys.k_up
 # define KEY_STATE_DA		e->ui->keys.k_down

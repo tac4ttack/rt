@@ -42,25 +42,25 @@ SRC_NAME =	 			cl/cl_compute.c \
 						opencl_compute.c \
 						rotations.c \
 						tools.c \
-						ui/cb_ambient_update.c \
-						ui/cb_camfov_update.c \
-						ui/cb_cam_manager.c \
-						ui/cb_cam_nav.c \
-						ui/cb_cam_pos.c \
-						ui/cb_configure_draw_area.c \
-						ui/cb_depth_update.c \
-						ui/cb_light_manager.c \
-						ui/cb_light_nav.c \
-						ui/cb_postproc_radio.c \
-						ui/cb_render_btnpress.c \
-						ui/cb_render_keypress.c \
-						ui/cb_render_keyrelease.c \
-						ui/cb_render_update_size.c \
-						ui/cb_resolution_update.c \
-						ui/cb_tool_bar.c \
+						ui/callback/cb_ambient_update.c \
+						ui/callback/cb_cam_fov_update.c \
+						ui/callback/cb_cam_manager.c \
+						ui/callback/cb_cam_nav.c \
+						ui/callback/cb_cam_pos.c \
+						ui/callback/cb_configure_draw_area.c \
+						ui/callback/cb_depth_update.c \
+						ui/callback/cb_light_manager.c \
+						ui/callback/cb_light_nav.c \
+						ui/callback/cb_postproc_radio.c \
+						ui/callback/cb_render_btnpress.c \
+						ui/callback/cb_render_draw.c \
+						ui/callback/cb_render_keypress.c \
+						ui/callback/cb_render_keyrelease.c \
+						ui/callback/cb_render_update_size.c \
+						ui/callback/cb_resolution_update.c \
+						ui/callback/cb_tool_bar.c \
 						ui/gtk.c \
 						ui/gtk_main_loop.c \
-						ui/cb_render_draw.c \
 						ui/gtk_render_events.c \
 						ui/ui_light_update.c \
 						ui/ui_cam.c \
@@ -105,6 +105,7 @@ $(OBJ_PATH):
 	@mkdir $(OBJ_PATH)/xml
 	@mkdir $(OBJ_PATH)/gen
 	@mkdir $(OBJ_PATH)/ui
+	@mkdir $(OBJ_PATH)/ui/callback
 	@mkdir $(OBJ_PATH)/event
 
 CPU:

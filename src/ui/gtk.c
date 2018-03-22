@@ -238,7 +238,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	g_signal_connect(GTK_WIDGET(e->ui->cam_list_pos_spin_y), "value-changed", G_CALLBACK(cb_cam_pos_y), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->cam_list_pos_spin_z), "value-changed", G_CALLBACK(cb_cam_pos_z), (gpointer)e);
 	//cam fov spinbutton
-	g_signal_connect(GTK_WIDGET(e->ui->cam_list_fov_spin), "value-changed", G_CALLBACK(cb_camfov_update), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->cam_list_fov_spin), "value-changed", G_CALLBACK(cb_cam_fov_update), (gpointer)e);
 	//cam nav buttons
 	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_prev_btn), "clicked", G_CALLBACK(cb_cam_nav_prev), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_next_btn), "clicked", G_CALLBACK(cb_cam_nav_next), (gpointer)e);
