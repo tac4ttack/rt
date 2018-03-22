@@ -21,9 +21,9 @@ gboolean	gtk_main_loop(gpointer data)
 			opencl_draw(e);
 			free(fps);
 		//	printf("x = %d\ty = %d\twidth = %d\theight = %d\n", e->ui->render_pos.w, e->ui->render_pos.x, e->ui->render_pos.y, e->ui->render_pos.z);
-			gtk_widget_queue_draw_area(e->ui->main_window, e->ui->render_pos.w, e->ui->render_pos.x, e->ui->render_pos.y, e->ui->render_pos.z);
-			// gtk_widget_queue_draw_area(e->ui->main_window, 1000 - (e->scene->win_w /2), \
-			// 	40 + 625 - (e->scene->win_h / 2), e->scene->win_w + 10, e->scene->win_h + 10);
+		//	gtk_widget_queue_draw_area(e->ui->main_window, e->ui->render_pos.w, e->ui->render_pos.x, e->ui->render_pos.y, e->ui->render_pos.z);
+		//	gtk_widget_queue_draw_area(e->ui->main_window, 1000 - (e->scene->win_w /2), \
+		// 	40 + 625 - (e->scene->win_h / 2), e->scene->win_w + 10, e->scene->win_h + 10);
 		}
 		else if (e->ui->redraw == 0)
 		{

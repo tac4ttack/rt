@@ -1,7 +1,7 @@
 #include "rt.h"
 
 
-gboolean cb_draw_render(GtkWidget *widget, cairo_t *cr, gpointer data)
+gboolean cb_render_draw(GtkWidget *widget, cairo_t *cr, gpointer data)
 {
 	t_env *e;
 	(void)widget;

@@ -15,6 +15,7 @@
 			dir="0, 0, 1"
 			fov="60"
 			/> 
+
 	<sphere id="0"
 			pos="-5, 0, 0"
 			dir="0, 0, 0"
@@ -37,6 +38,10 @@
 			refract="0"
 			opacity="0"
 			/>
+
+
+
+
 	<sphere id="2"
 			pos="5, 0, 0"
 			dir="0, 0, 0"

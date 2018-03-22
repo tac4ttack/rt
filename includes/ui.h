@@ -179,10 +179,7 @@ gboolean				cb_configure_draw_area(GtkWidget *widget, \
 
 gboolean				cb_depth_update(GtkSpinButton *spin, gpointer data);
 
-gboolean				cb_draw_render(GtkWidget *widget, cairo_t *cr, \
-										gpointer data);
 
-void					cb_main_window_resize(GtkContainer *box, gpointer data);
 
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
 void					cb_postproc_none(GtkToggleButton *button, gpointer data);
@@ -198,6 +195,10 @@ gboolean				cb_render_keyrelease(GtkWidget *widget, \
 
 void					cb_play_btn(GtkButton *btn, gpointer data);
 
+gboolean				cb_render_draw(GtkWidget *widget, cairo_t *cr, \
+										gpointer data);
+
+void					cb_render_update_size(GtkContainer *box, gpointer data);
 
 void					cb_stop_btn(GtkButton *btn, gpointer data);
 void					cb_export_btn(GtkButton *btn, gpointer data);
