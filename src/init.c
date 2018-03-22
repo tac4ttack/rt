@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/21 16:06:01 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/23 00:07:10 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void		load_scene(t_env *e)
 	t_node	*list;
 
 	ft_putendl("\n\x1b[1;32m/\\ Loading scene /\\\x1b[0m\n");
+	e->scene->over_sampling = 1;
 	load_obj(e);
 	list = XML->node_lst;
 	while (list != NULL)
@@ -99,9 +100,9 @@ void		init(GtkApplication* app, gpointer data)
 		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
 	ft_bzero(e->pixel_data, sizeof(int) * e->scene->win_w * e->scene->win_h);
 	load_scene(e);
-	
-	
-	
+
+
+
 	if (!(e->cl = cl_construct("./kernel/kernel.cl", "ray_trace", e->scene->win_w, e->scene->win_h,
 			(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
 		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
@@ -111,7 +112,7 @@ void		init(GtkApplication* app, gpointer data)
 		printf("%i %i %i\n", e->scene->win_w, e->scene->win_h, (e->scene->flag & OPTION_GPU));
 		init_print_structure_memory_size();
 	}
-		
+
 	if (!(e->cl->add_buffer(e->cl, e->scene->win_w * e->scene->win_h * 4)))
 		s_error("\x1b[2;31mError creation FRAMEBUFFER cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, e->gen_objects->mem_size)))

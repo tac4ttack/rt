@@ -255,6 +255,7 @@ typedef struct			s_scene
 	int					tor_count;
 	size_t				mem_size_obj;
 	size_t				mem_size_lights;
+	int					over_sampling;
 }						t_scene;
 
 typedef struct			s_gen
@@ -270,7 +271,7 @@ typedef	struct			s_env
 	t_cl				*cl;
 	t_ui				*ui;
 
-	char				*scene_file;	
+	char				*scene_file;
 	int					scene_fd;
 	t_scene				*scene;
 

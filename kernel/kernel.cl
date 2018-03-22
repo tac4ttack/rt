@@ -184,6 +184,7 @@ typedef struct			s_scene
 	int					tor_count;
 	size_t				mem_size_obj;
 	size_t				mem_size_lights;
+	int					over_sampling;
 }						t_scene;
 
 static unsigned int	sepiarize(const unsigned int color)
@@ -797,7 +798,7 @@ static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_h
 	float			base = 1;
 	int				i = 0;
 
-	old_hit.pos = old_hit.pos + ((old_hit.dist / SHADOW_BIAS) * -(old_hit.normal * 2)); //pour refract, inverser le decalage de la position	
+	old_hit.pos = old_hit.pos + ((old_hit.dist / SHADOW_BIAS) * -(old_hit.normal * 2)); //pour refract, inverser le decalage de la position
 	while (old_hit.obj->refract != 0 && old_hit.obj->opacity < 1 && ++i < 50)
 	{
 		c1 = dot(old_hit.normal, refract);
@@ -1086,13 +1087,13 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	return (get_ambient(scene, BACKCOLOR));
 }
 
-static float3		get_ray_cam(__local t_scene *scene, const uint2 pix)
+static float3		get_ray_cam(__local t_scene *scene, const uint2 pix, const uint width, const uint height)
 {
 	float3			cam_ray = 0;
-	float			ratio = (float)scene->win_w / (float)scene->win_h;
+	float			ratio = ((float)width) / ((float)height);
 
-	cam_ray.x = ((2 * ((pix.x + 0.5) / scene->win_w)) - 1) * ratio * (tan(radians(ACTIVECAM.fov / 2)));
-	cam_ray.y = ((1 - (2 * ((pix.y + 0.5) / scene->win_h))) * tan(radians(ACTIVECAM.fov / 2)));
+	cam_ray.x = ((2 * ((pix.x + 0.5) / width)) - 1) * ratio * (tan(radians(ACTIVECAM.fov / 2)));
+	cam_ray.y = ((1 - (2 * ((pix.y + 0.5) / height))) * tan(radians(ACTIVECAM.fov / 2)));
 	cam_ray.z = 1;
 	cam_ray = rotat_zyx(cam_ray, ACTIVECAM.pitch, ACTIVECAM.yaw, 0);
 	return(fast_normalize(cam_ray));
@@ -1123,9 +1124,10 @@ __kernel void		ray_trace(	__global	char		*output,
 	int				id;
 	uint2			pix;
 	float3			prim_ray;
+	unsigned int	final_color_o[32];
 	unsigned int	final_color;
+	uint3			rgb = 0;
 
-	final_color = 0;
 
 	ev = async_work_group_copy((__local char *)mem_objects, (__global char *)global_mem_objects, mem_size_objects, 0);
 	wait_group_events(1, &ev);
@@ -1135,6 +1137,8 @@ __kernel void		ray_trace(	__global	char		*output,
 	wait_group_events(1, &ev);
 	ev = async_work_group_copy((__local char *)mem_lights, (__global char *)global_mem_lights, mem_size_lights, 0);
 	wait_group_events(1, &ev);
+
+	int boo = get_global_id(0) + get_global_id(1);
 
 	pix.x = get_global_id(0);// % scene->win_w;
 	pix.y = get_global_id(1);// / scene->win_w;
@@ -1146,10 +1150,37 @@ __kernel void		ray_trace(	__global	char		*output,
 	scene->mem_obj = mem_objects;
 	scene->mem_size_obj = mem_size_objects;
 	scene->mem_size_lights = mem_size_lights;
-	prim_ray = get_ray_cam(scene, pix);
 	if (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y)
 		*target = -1;
-	final_color = get_pixel_color(scene, prim_ray, target, (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y));
+
+	final_color = 0;
+	if (scene->over_sampling > 1)
+	{
+		int i = 0;
+		pix.x *= scene->over_sampling;
+		pix.y *= scene->over_sampling;
+
+		while (i < scene->over_sampling * 2)
+		{
+			pix.x += (i % 2);
+			pix.y += !(i % 2);
+			prim_ray = get_ray_cam(scene, pix, scene->win_w * scene->over_sampling, scene->win_h * scene->over_sampling);
+			final_color_o[i] = get_pixel_color(scene, prim_ray, target, (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y));
+			rgb.x += (final_color_o[i] & 0x00FF0000);
+			rgb.y += (final_color_o[i] & 0x0000FF00);
+			rgb.z += (final_color_o[i] & 0x000000FF);
+			i++;
+		}
+		final_color += ((rgb.x / (scene->over_sampling * 2)) & 0x00FF0000);
+		final_color += ((rgb.y / (scene->over_sampling * 2)) & 0x0000FF00);
+		final_color += ((rgb.z / (scene->over_sampling * 2)) & 0x000000FF);
+	}
+	else
+	{
+		prim_ray = get_ray_cam(scene, pix, scene->win_w, scene->win_h);
+		final_color = get_pixel_color(scene, prim_ray, target, (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y));
+	}
+
 	if (scene->flag & OPTION_SEPIA)
 		final_color = sepiarize(final_color);
 	if (scene->flag & OPTION_BW)
@@ -1166,5 +1197,3 @@ __kernel void		ray_trace(	__global	char		*output,
 	final_color = ((swap.w << 24) + (swap.z << 16) + (swap.y << 8) + swap.x);
 	((__global unsigned int *)output)[id] = final_color;
 }
-
-

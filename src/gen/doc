@@ -1,0 +1,71 @@
+/*************************************/
+/*************************************/
+/*************************************/
+
+
+typedef struct			s_gen
+{
+	bool				(*add)(struct s_gen *, void *);
+	size_t				mem_size;
+	size_t				unit_size;
+	void				*mem;
+}						t_gen;
+
+Un object gen doit avoir comme première variable un INT.
+Cet INT doit contenir la taille de la structure en question.
+
+exemple :
+
+typedef struct			s_stru
+{
+	int					size_of_stru;
+	int					var1;
+	int					var2;
+	int					var3;
+}						t_stru;
+
+t_stru stru;
+stru.size_of_stru = sizeof(t_stru);
+
+
+
+
+*************************************************
+				Méthodes
+*************************************************
+
+[constructor]
+	t_gen *gen_construct(void);
+
+[add]
+	Add permet d'ajouter la mémoire de votre structure a la suite du tas générique gen->mem
+--
+	gen->add(gen, (void)*stru);
+
+[remove_index]
+	remove_index permet de supprimer l'object a l'index X
+--
+	gen->remove_index(gen, 10); // Supprime l'object a l'index X
+
+[remove_mem_size]
+	remove_mem_size permet de supprimer l'object ce trouvant a tel Octet.
+	(WARNING) Dans le cas ou vous vous trompez d'octet ... Aie 🔥
+
+	RET
+		False dans le cas ou l'index est au dela des possibles;
+--
+	gen->remove_index(gen, 187); // Supprime l'object qui commence a l'octet 187
+
+---------------------------------------------------------------
+
+	int			mem_index;
+	t_example	*example;
+
+	mem_index = 0;
+	while (mem_index < gen->mem_size)
+	{
+		example = (t_example *)(gem->mem + mem_index);
+		/* DO NICE THINGS :D*/
+		mem_index += example->mem_size;
+		mem_index += *((int *)(gem->mem + mem_index))
+	}
