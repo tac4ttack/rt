@@ -4,7 +4,7 @@
 void		clear_surface(t_env *e)
 {
 	cairo_t	*cr;
-	ft_putendl("clear");
+
 	cr = cairo_create(e->ui->surface);
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_paint(cr);

@@ -6,7 +6,6 @@ gboolean cb_render_draw(GtkWidget *widget, cairo_t *cr, gpointer data)
 	t_env *e;
 	(void)widget;
 	e = data;
-	update_fps(&e->fps);
 
 //	1ere methode
 	gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 0, 0);
