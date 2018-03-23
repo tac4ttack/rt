@@ -6,18 +6,48 @@
   <object class="GtkAboutDialog" id="about_window">
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>
-    <property name="program_name">RT</property>
+    <property name="program_name">RT - Another Raytracer</property>
     <property name="version">0.42</property>
-    <property name="copyright" translatable="yes">2018</property>
-    <property name="authors">adalenco
-anroche
-fmessina
-ntoniolo</property>
-    <property name="artists">norminet</property>
-    <property name="logo_icon_name">image-missing</property>
+    <property name="copyright" translatable="yes">2018 to the end of times</property>
+    <property name="comments" translatable="yes">This project is just a computer graphics grand finale!
+
+GUI made with GTK+3 and Glade
+Optimized with OpenCL
+</property>
+    <property name="website">https://github.com/tac4ttack/rt</property>
+    <property name="website_label" translatable="yes">https://github.com/tac4ttack/rt</property>
+    <property name="license" translatable="yes">This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to &lt;https://unlicense.org&gt;</property>
+    <property name="authors">adalenco - Arthur DALENÇON
+anroche - Antoine ROCHE
+fmessina - Florian MESSINA
+ntoniolo - Noé TONIOLO</property>
+    <property name="logo">logo.png</property>
     <property name="license_type">custom</property>
     <child internal-child="vbox">
-      <object class="GtkBox">
+      <object class="GtkBox" id="about_box">
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
@@ -140,76 +170,10 @@ ntoniolo</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-go-back</property>
   </object>
-  <object class="GtkImage" id="img_cancel_btn">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-cancel</property>
-  </object>
   <object class="GtkImage" id="img_export_btn">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-select-color</property>
-  </object>
-  <object class="GtkImage" id="img_export_btnn">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-floppy</property>
-  </object>
-  <object class="GtkFileChooserDialog" id="export_window">
-    <property name="can_focus">False</property>
-    <property name="type_hint">dialog</property>
-    <property name="action">save</property>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="export_box">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="export_button_box">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="export_cancel_btn">
-                <property name="label" translatable="yes">Cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="image">img_cancel_btn</property>
-                <property name="always_show_image">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="export_save_btn">
-                <property name="label" translatable="yes">Export</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="image">img_export_btnn</property>
-                <property name="always_show_image">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkImage" id="img_light_add">
     <property name="visible">True</property>

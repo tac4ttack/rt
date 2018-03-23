@@ -160,10 +160,7 @@ typedef	struct			s_ui
 					GtkWidget			*tool_fps_label; //
 	
 	GtkWidget			*export_window; //
-		GtkWidget			*export_box;
-			GtkWidget			*export_button_box;
-				GtkWidget			*export_cancel_btn;
-				GtkWidget			*export_save_btn;
+	
 	GtkWidget			*about_window; //
 
 	GtkWidget			*color_window;

@@ -211,17 +211,9 @@ void		init_gtk(GtkApplication* app, gpointer data)
 ////STATUS BAR
 	e->ui->status_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "status_bar"));
 
-////EXPORT DIALOG
-//	e->ui->export_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_window"));
-	
-//	e->ui->export_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_box"));
-//	e->ui->export_button_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_button_box"));
-//	e->ui->export_cancel_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_cancel_btn"));
-//	e->ui->export_save_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_save_btn"));
-
-
 ////ABOUT DIALOG
 e->ui->about_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "about_window"));
+gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->main_window)) ;
 /////////////////////////////////////////////////////////////////////////////////////////////
 	
 
