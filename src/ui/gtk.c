@@ -54,11 +54,22 @@ void		init_gtk_scene_widgets(t_env *e)
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_ambient_green_spin, (gdouble)e->scene->ambient.y);
 	e->ui->scene_ambient_blue_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_blue_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_ambient_blue_spin, (gdouble)e->scene->ambient.z);
+	
+	// scene supersampling & depth shit
+	e->ui->scene_depth_ss_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_ss_box"));
 	// scene depth shit
-	e->ui->scene_depth_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_box"));
 	e->ui->scene_depth_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_label"));
 	e->ui->scene_depth_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_depth_spin, (gdouble)e->scene->depth);
+	// scene supersampling shit
+	e->ui->scene_supersampling_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_supersampling_label"));
+	e->ui->scene_supersampling_scale = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_supersampling_scale"));
+	gtk_scale_add_mark(GTK_SCALE(e->ui->scene_supersampling_scale), 1, GTK_POS_BOTTOM, "x1");
+	gtk_scale_add_mark(GTK_SCALE(e->ui->scene_supersampling_scale), 2, GTK_POS_BOTTOM, "x2");
+	gtk_scale_add_mark(GTK_SCALE(e->ui->scene_supersampling_scale), 3, GTK_POS_BOTTOM, "x4");
+	gtk_scale_add_mark(GTK_SCALE(e->ui->scene_supersampling_scale), 4, GTK_POS_BOTTOM, "x8");
+	gtk_scale_add_mark(GTK_SCALE(e->ui->scene_supersampling_scale), 5, GTK_POS_BOTTOM, "x16");
+	
 	// scene post proc shit
 	e->ui->scene_postproc_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_box"));
 	e->ui->scene_postproc_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_label"));
@@ -228,6 +239,8 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	g_signal_connect(GTK_WIDGET(e->ui->scene_ambient_blue_spin), "value-changed", G_CALLBACK(cb_ambient_blue_update), (gpointer)e);
 	//scene depth spinbutton
 	g_signal_connect(GTK_WIDGET(e->ui->scene_depth_spin), "value-changed", G_CALLBACK(cb_depth_update), (gpointer)e);
+	//scene supersampling scale
+	g_signal_connect(GTK_WIDGET(e->ui->scene_supersampling_scale), "value-changed", G_CALLBACK(cb_supersampling_update), (gpointer)e);
 	//scene postproc radiobuttons
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_none_radio), "toggled", G_CALLBACK(cb_postproc_none), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->scene_postproc_bw_radio), "toggled", G_CALLBACK(cb_postproc_bw), (gpointer)e);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/23 00:07:10 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/23 13:04:25 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void		load_scene(t_env *e)
 	t_node	*list;
 
 	ft_putendl("\n\x1b[1;32m/\\ Loading scene /\\\x1b[0m\n");
-	e->scene->over_sampling = 1;
 	load_obj(e);
 	list = XML->node_lst;
 	while (list != NULL)
@@ -71,6 +70,7 @@ void		env_init(t_env *e)
 {
 	ft_putendl("\n\x1b[1;32m/\\ Initializing RT environnement /\\\x1b[0m\n");
 	e->scene->depth = 0;
+	e->scene->over_sampling = 1;
 	e->target = -1;
 	e->scene->tor_count = pow(2, e->scene->depth + 1) - 1; // USELESS?
 	e->debug = DBUG;

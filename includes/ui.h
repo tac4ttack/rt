@@ -79,9 +79,11 @@ typedef	struct			s_ui
 										GtkWidget			*scene_ambient_red_spin; //
 										GtkWidget			*scene_ambient_green_spin; //
 										GtkWidget			*scene_ambient_blue_spin; //
-									GtkWidget			*scene_depth_box; //
+									GtkWidget			*scene_depth_ss_box; //
 										GtkWidget			*scene_depth_label; //
 										GtkWidget			*scene_depth_spin; //
+										GtkWidget			*scene_supersampling_label; //
+										GtkWidget			*scene_supersampling_scale; //
 									GtkWidget			*scene_postproc_box; //
 										GtkWidget			*scene_postproc_label; //
 										GtkWidget			*scene_postproc_bw_radio; //
@@ -206,6 +208,7 @@ gboolean				cb_render_keyrelease(GtkWidget *widget, \
 										GdkEvent *event, gpointer data);
 void					cb_render_update_size(GtkContainer *box, gpointer data);
 void					cb_stop_btn(GtkButton *btn, gpointer data);
+gboolean				cb_supersampling_update(GtkScale *scale, gpointer data);
 gboolean				cb_width_update(GtkSpinButton *spin, gpointer data);
 gboolean				gtk_main_loop(gpointer data);
 int						gtk_quit(GtkApplication *app, gpointer data);

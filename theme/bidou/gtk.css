@@ -2206,7 +2206,7 @@ scale {
         background-color: gray;
         border-color: gray; }
   scale value {
-    color: alpha(currentColor,0.4); }
+    color: #404040; }
   scale marks {
     color: alpha(currentColor,0.4); }
     scale marks.top {

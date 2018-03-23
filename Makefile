@@ -58,6 +58,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_render_keyrelease.c \
 						ui/callback/cb_render_update_size.c \
 						ui/callback/cb_resolution_update.c \
+						ui/callback/cb_supersampling_update.c \
 						ui/callback/cb_tool_bar.c \
 						ui/gtk.c \
 						ui/gtk_main_loop.c \
