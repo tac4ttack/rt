@@ -272,7 +272,7 @@
             </child>
             <child>
               <object class="GtkScrolledWindow" id="right_panel_scroll">
-                <property name="width_request">550</property>
+                <property name="width_request">580</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="margin_left">5</property>
@@ -543,6 +543,8 @@ Higher values decrease a lot the rendering speed.</property>
                                           <object class="GtkScale" id="scene_supersampling_scale">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
                                             <property name="hexpand">True</property>
                                             <property name="adjustment">supersampling_adjustement</property>
                                             <property name="digits">0</property>
