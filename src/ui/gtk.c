@@ -197,25 +197,31 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 ////TOOL BAR
 	e->ui->tool_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_bar"));
-	e->ui->tool_play_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_play_btn"));
-	e->ui->tool_stop_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_stop_btn"));
-	e->ui->tool_export_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_export_btn"));
-	e->ui->tool_separate = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_separate"));
 	e->ui->tool_fps_placeholder = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_fps_placeholder"));
 	e->ui->tool_fps_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_fps_label"));
-
+	e->ui->tool_play_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_play_btn"));
+	e->ui->tool_stop_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_stop_btn"));
+	e->ui->tool_render_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_render_btn"));
+	e->ui->tool_export_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_export_btn"));
+	e->ui->tool_about_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_about_btn"));
+	gtk_widget_set_sensitive(e->ui->tool_play_btn, FALSE);
+	gtk_widget_set_sensitive(e->ui->tool_render_btn, FALSE);
+	gtk_widget_set_sensitive(e->ui->tool_stop_btn, TRUE);
 
 ////STATUS BAR
 	e->ui->status_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "status_bar"));
 
 ////EXPORT DIALOG
-e->ui->export_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_window"));
-// e->ui->file_export_window = gtk_file_chooser_dialog_new("Export render to...", \
-// 							GTK_WINDOW(e->ui->main_window), \
-// 							GTK_FILE_CHOOSER_ACTION_SAVE, \
-// 							"Cancel", GTK_RESPONSE_CLOSE, \
-// 							"Export", GTK_RESPONSE_OK, NULL);
+//	e->ui->export_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_window"));
+	
+//	e->ui->export_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_box"));
+//	e->ui->export_button_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_button_box"));
+//	e->ui->export_cancel_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_cancel_btn"));
+//	e->ui->export_save_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_save_btn"));
 
+
+////ABOUT DIALOG
+e->ui->about_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "about_window"));
 /////////////////////////////////////////////////////////////////////////////////////////////
 	
 
@@ -272,7 +278,9 @@ e->ui->export_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export
 	//tool bar buttons
 	g_signal_connect(GTK_WIDGET(e->ui->tool_play_btn), "clicked", G_CALLBACK(cb_play_btn), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->tool_stop_btn), "clicked", G_CALLBACK(cb_stop_btn), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->tool_render_btn), "clicked", G_CALLBACK(cb_render_btn), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->tool_export_btn), "clicked", G_CALLBACK(cb_export_btn), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->tool_about_btn), "clicked", G_CALLBACK(cb_about_btn), (gpointer)e);
 	// init and activate all preset signals from template
 	gtk_builder_connect_signals(e->ui->builder, NULL);
 /////////////////////////////////////////////////////////////////////////////////////////////

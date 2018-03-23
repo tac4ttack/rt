@@ -42,6 +42,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						opencl_compute.c \
 						rotations.c \
 						tools.c \
+						ui/callback/cb_about_dialog.c \
 						ui/callback/cb_ambient_update.c \
 						ui/callback/cb_cam_fov_update.c \
 						ui/callback/cb_cam_manager.c \
@@ -49,6 +50,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_cam_pos.c \
 						ui/callback/cb_configure_draw_area.c \
 						ui/callback/cb_depth_update.c \
+						ui/callback/cb_export_dialog.c \
 						ui/callback/cb_light_manager.c \
 						ui/callback/cb_light_nav.c \
 						ui/callback/cb_postproc_radio.c \

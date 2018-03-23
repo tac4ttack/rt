@@ -3,6 +3,44 @@
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <!-- interface-css-provider-path bidou/gtk.css -->
+  <object class="GtkAboutDialog" id="about_window">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <property name="program_name">RT</property>
+    <property name="version">0.42</property>
+    <property name="copyright" translatable="yes">2018</property>
+    <property name="authors">adalenco
+anroche
+fmessina
+ntoniolo</property>
+    <property name="artists">norminet</property>
+    <property name="logo_icon_name">image-missing</property>
+    <property name="license_type">custom</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
   <object class="GtkAdjustment" id="blue_ambient_adjustement">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
@@ -42,6 +80,33 @@
     <property name="upper">99999</property>
     <property name="step_increment">0.01</property>
   </object>
+  <object class="GtkColorChooserDialog" id="color_window">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <property name="rgba">rgb(255,255,255)</property>
+    <property name="show_editor">True</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
   <object class="GtkAdjustment" id="depth_adjustement">
     <property name="upper">6</property>
     <property name="step_increment">1</property>
@@ -49,6 +114,11 @@
   <object class="GtkAdjustment" id="green_ambient_adjustement">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
+  </object>
+  <object class="GtkImage" id="img_about_btn">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-dialog-question</property>
   </object>
   <object class="GtkImage" id="img_cam_add">
     <property name="visible">True</property>
@@ -166,6 +236,11 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-media-play</property>
   </object>
+  <object class="GtkImage" id="img_render_btn">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-refresh</property>
+  </object>
   <object class="GtkImage" id="img_stop_btn">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -231,6 +306,23 @@
             <property name="can_focus">False</property>
             <property name="toolbar_style">both-horiz</property>
             <child>
+              <object class="GtkToolItem" id="tool_fps_placeholder">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="tool_fps_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">label</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolButton" id="tool_play_btn">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -259,6 +351,20 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="tool_render_btn">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Render one image with current settings</property>
+                <property name="label" translatable="yes">Render</property>
+                <property name="use_underline">True</property>
+                <property name="icon_widget">img_render_btn</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolButton" id="tool_export_btn">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -273,26 +379,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSeparatorToolItem" id="tool_separate">
+              <object class="GtkToolButton" id="tool_about_btn">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolItem" id="tool_fps_placeholder">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkLabel" id="tool_fps_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">label</property>
-                  </object>
-                </child>
+                <property name="tooltip_text" translatable="yes">About</property>
+                <property name="halign">end</property>
+                <property name="label" translatable="yes">About</property>
+                <property name="use_underline">True</property>
+                <property name="icon_widget">img_about_btn</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -619,7 +713,6 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="can_focus">True</property>
                                             <property name="halign">start</property>
                                             <property name="margin_left">5</property>
-                                            <property name="margin_right">5</property>
                                             <property name="adjustment">supersampling_adjustement</property>
                                             <property name="digits">0</property>
                                             <property name="value_pos">right</property>

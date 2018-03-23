@@ -153,15 +153,24 @@ typedef	struct			s_ui
 			GtkWidget			*tool_bar; //
 				GtkWidget			*tool_play_btn; //
 				GtkWidget			*tool_stop_btn; //
+				GtkWidget			*tool_render_btn; //
 				GtkWidget			*tool_export_btn; //
-				GtkWidget			*tool_separate; //
+				GtkWidget			*tool_about_btn; //
 				GtkWidget			*tool_fps_placeholder; //
 					GtkWidget			*tool_fps_label; //
 	
-	GtkWidget			*export_window; // WIP
+	GtkWidget			*export_window; //
+		GtkWidget			*export_box;
+			GtkWidget			*export_button_box;
+				GtkWidget			*export_cancel_btn;
+				GtkWidget			*export_save_btn;
+	GtkWidget			*about_window; //
+
+	GtkWidget			*color_window;
 
 }						t_ui;
 
+void					cb_about_btn(GtkButton *btn, gpointer data);
 
 gboolean				cb_ambient_red_update(GtkSpinButton *spin, \
 										gpointer data);
@@ -198,6 +207,7 @@ void					cb_postproc_none(GtkToggleButton *button, \
 										gpointer data);
 void					cb_postproc_sepia(GtkToggleButton *button, \
 										gpointer data);
+void					cb_render_btn(GtkButton *btn, gpointer data);
 gboolean				cb_render_btnpress(GtkWidget *widget, GdkEvent *event, \
 										gpointer data);
 gboolean				cb_render_draw(GtkWidget *widget, cairo_t *cr, \
