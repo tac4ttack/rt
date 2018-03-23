@@ -19,6 +19,7 @@ void		cb_cam_nav_prev(GtkButton *btn, gpointer data)
 	e = data;
 	e->scene->active_cam = ((int)e->scene->active_cam - 1 \
 	< 0 ? e->scene->n_cams - 1 : e->scene->active_cam - 1);
+	printf("active cam is %d\n", e->scene->active_cam);
 	ui_cam_set_id(e);	
 	ui_cam_update(e);
 }
@@ -31,22 +32,7 @@ void		cb_cam_nav_next(GtkButton *btn, gpointer data)
 	e = data;
 	e->scene->active_cam = (e->scene->active_cam + 1 \
 		< e->scene->n_cams ? e->scene->active_cam + 1 : 0);
+		printf("active cam is %d\n", e->scene->active_cam);
 	ui_cam_set_id(e);
 	ui_cam_update(e);
-}
-
-void		cb_cam_nav_add(GtkButton *btn, gpointer data)
-{
-	t_env	*e;
-
-	(void)btn;
-	e = data;
-}
-
-void		cb_cam_nav_del(GtkButton *btn, gpointer data)
-{
-	t_env	*e;
-
-	(void)btn;
-	e = data;
 }

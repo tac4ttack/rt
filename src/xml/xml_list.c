@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:46:52 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/23 18:33:33 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ t_node		*xml_list_new(char type)
 }
 
 void		xml_list_add_first(t_node **begin, t_node *node)
+{
+	if (node != NULL)
+	{
+		node->next = *begin;
+		*begin = node;
+	}
+}
+
+void		xml_list_del(t_node **begin, t_node *node)
 {
 	if (node != NULL)
 	{
