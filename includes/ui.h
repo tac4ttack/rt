@@ -158,7 +158,7 @@ typedef	struct			s_ui
 				GtkWidget			*tool_fps_placeholder; //
 					GtkWidget			*tool_fps_label; //
 	
-GtkWidget			*file_export_window; // WIP
+	GtkWidget			*export_window; // WIP
 
 }						t_ui;
 

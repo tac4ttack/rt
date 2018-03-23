@@ -42,8 +42,8 @@ void		cb_export_btn(GtkButton *btn, gpointer data)
 	(void)btn;
 	e = data;
 	ft_putendl("expoooooorteu");
-	e->ui->file_export_window = gtk_file_chooser_dialog_new("Export render to...", GTK_WINDOW(e->ui->main_window), \
-								GTK_FILE_CHOOSER_ACTION_SAVE, "NULL", GTK_RESPONSE_OK, NULL);
-	gtk_dialog_run (GTK_DIALOG(e->ui->file_export_window));
+	
+	gtk_dialog_run(GTK_DIALOG(e->ui->file_export_window));
+	gtk_widget_destroy(e->ui->file_export_window);
 	
 }

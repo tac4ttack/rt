@@ -208,6 +208,13 @@ void		init_gtk(GtkApplication* app, gpointer data)
 ////STATUS BAR
 	e->ui->status_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "status_bar"));
 
+////EXPORT DIALOG
+e->ui->export_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "export_window"));
+// e->ui->file_export_window = gtk_file_chooser_dialog_new("Export render to...", \
+// 							GTK_WINDOW(e->ui->main_window), \
+// 							GTK_FILE_CHOOSER_ACTION_SAVE, \
+// 							"Cancel", GTK_RESPONSE_CLOSE, \
+// 							"Export", GTK_RESPONSE_OK, NULL);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 	
