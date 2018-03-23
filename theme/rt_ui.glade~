@@ -210,6 +210,12 @@
     <property name="upper">9999</property>
     <property name="step_increment">1</property>
   </object>
+  <object class="GtkAdjustment" id="supersampling_adjustement">
+    <property name="lower">1</property>
+    <property name="upper">5</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
   <object class="GtkApplicationWindow" id="main_window">
     <property name="can_focus">False</property>
     <property name="has_resize_grip">True</property>
@@ -338,7 +344,7 @@
             </child>
             <child>
               <object class="GtkScrolledWindow" id="right_panel_scroll">
-                <property name="width_request">580</property>
+                <property name="width_request">550</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="margin_left">5</property>
@@ -550,6 +556,7 @@
                                     </child>
                                     <child>
                                       <object class="GtkBox" id="scene_depth_ss_box">
+                                        <property name="width_request">400</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="margin_top">3</property>
@@ -607,18 +614,19 @@ Higher values decrease a lot the rendering speed.</property>
                                         </child>
                                         <child>
                                           <object class="GtkScale" id="scene_supersampling_scale">
+                                            <property name="width_request">180</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
-                                            <property name="hexpand">True</property>
                                             <property name="adjustment">supersampling_adjustement</property>
                                             <property name="digits">0</property>
                                             <property name="value_pos">right</property>
                                           </object>
                                           <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
                                             <property name="position">3</property>
                                           </packing>
                                         </child>
@@ -1689,11 +1697,5 @@ Higher values decrease a lot the rendering speed.</property>
     <child type="titlebar">
       <placeholder/>
     </child>
-  </object>
-  <object class="GtkAdjustment" id="supersampling_adjustement">
-    <property name="lower">1</property>
-    <property name="upper">5</property>
-    <property name="step_increment">0.10000000000000001</property>
-    <property name="page_increment">1</property>
   </object>
 </interface>
