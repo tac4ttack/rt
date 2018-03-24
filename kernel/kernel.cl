@@ -31,6 +31,7 @@
 typedef struct			s_object
 {
 	int					size;
+	int					type;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -83,6 +84,7 @@ typedef struct			s_light
 typedef struct			s_cone
 {
 	int					size;
+	int					type;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -100,6 +102,7 @@ typedef struct			s_cone
 typedef struct			s_cylinder
 {
 	int					size;
+	int					type;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -118,6 +121,7 @@ typedef struct			s_cylinder
 typedef struct			s_plane
 {
 	int					size;
+	int					type;
 	int					id;
 	float3				pos;
 	float3				normal;
@@ -132,6 +136,7 @@ typedef struct			s_plane
 typedef struct			s_sphere
 {
 	int					size;
+	int					type;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -148,6 +153,7 @@ typedef struct			s_sphere
 typedef struct			s_ellipsoid
 {
 	int					size;
+	int					type;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -176,6 +182,7 @@ typedef	struct			s_tor
 	int					check_d;
 	size_t				mem_index;
 	int					id;
+	int					type;
 }						t_tor;
 
 typedef struct			s_scene
@@ -634,15 +641,15 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 	while (mem_index_obj < scene->mem_size_obj)
 	{
 		obj = scene->mem_obj + mem_index_obj;
-		if (obj->id == OBJ_SPHERE)
+		if (obj->type == OBJ_SPHERE)
 			dist = inter_sphere(obj, ray, origin);
-		else if (obj->id == OBJ_CYLINDER)
+		else if (obj->type == OBJ_CYLINDER)
 			dist = inter_cylinder(obj, ray, origin);
-		else if (obj->id == OBJ_PLANE)
+		else if (obj->type == OBJ_PLANE)
 			dist = inter_plan(obj, ray, origin);
-		else if (obj->id == OBJ_CONE)
+		else if (obj->type == OBJ_CONE)
 			dist = inter_cone(obj, ray, origin);
-		else if (obj->id == OBJ_ELLIPSOID)
+		else if (obj->type == OBJ_ELLIPSOID)
 			dist = inter_ellipsoid(obj, ray, origin);
 		if (lightdist > 0 && dist < lightdist && dist > EPSILON)
 			hit.opacity += obj->opacity;
@@ -661,15 +668,15 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 {
 	float3		res, save;
 
-	if (hit.obj->id == OBJ_SPHERE)
+	if (hit.obj->type == OBJ_SPHERE)
 		res = hit.pos - hit.obj->pos;
-	else if (hit.obj->id == OBJ_CYLINDER)
+	else if (hit.obj->type == OBJ_CYLINDER)
 		res = get_cylinder_normal(hit.obj, hit);
-	else if (hit.obj->id == OBJ_CONE)
+	else if (hit.obj->type == OBJ_CONE)
 		res = get_cone_normal(hit.obj, hit);
-	else if (hit.obj->id == OBJ_ELLIPSOID)
+	else if (hit.obj->type == OBJ_ELLIPSOID)
 		res = get_ellipsoid_normal(hit.obj, hit);
-	else if (hit.obj->id == OBJ_PLANE)
+	else if (hit.obj->type == OBJ_PLANE)
 	{
 		if (dot(hit.obj->dir, -ray) < 0)
 			res = -hit.obj->dir;
@@ -957,7 +964,7 @@ static float		reflect_ratio(float n1, float n2, float cos1, float sint)
 	return ((fr1 + fr2) / 2);
 }
 
-static t_tor		tor_push(float3 ray, float3 normale, float3 pos, float coef_ref, float coef_tra, float opacity, unsigned int color, size_t mem_index, int id)
+static t_tor		tor_push(float3 ray, float3 normale, float3 pos, float coef_ref, float coef_tra, float opacity, unsigned int color, size_t mem_index, int id, int type)
 {
 	t_tor			tor;
 
@@ -971,6 +978,7 @@ static t_tor		tor_push(float3 ray, float3 normale, float3 pos, float coef_ref, f
 	tor.mem_index = mem_index;
 	tor.activate = 1;
 	tor.id = id;
+	tor.type = type;
 	return (tor);
 }
 
@@ -1044,10 +1052,11 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 		tor[i].check_g = 0;
 		tor[i].mem_index = 0;
 		tor[i].id = 0;
+		tor[i].type = 0;
 		i++;
 	}
 	i = 0;
-	tor[i] = tor_push(ray, old_hit.normal, old_hit.pos, old_hit.obj->reflex, old_hit.obj->refract, old_hit.obj->opacity, color, old_hit.mem_index, old_hit.obj->id);
+	tor[i] = tor_push(ray, old_hit.normal, old_hit.pos, old_hit.obj->reflex, old_hit.obj->refract, old_hit.obj->opacity, color, old_hit.mem_index, old_hit.obj->id, old_hit.obj->type);
 	while (i < 63 && i < depth)
 	{
 		eta = 1 / tor[i].coef_tra;
@@ -1070,7 +1079,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 		if (fr < 1)
 		{
 			tor[i].check_g = 1;
-			if (tor[i].id != OBJ_PLANE)
+			if (tor[i].type != OBJ_PLANE)
 				refract = refract_ray(scene, tor[i].prim, tor[i].normale, tor[i].coef_tra);
 			else
 				refract = tor[i].prim;
@@ -1087,7 +1096,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 				new_hit.normal = get_hit_normal(scene, refract, new_hit);
 				new_hit.pos = new_hit.pos + (new_hit.dist / 10000 * new_hit.normal);
 				ncolor = blend_factor(phong(scene, new_hit, refract), ft);
-				tor[i * 2 + 1] = tor_push(refract, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id);
+				tor[i * 2 + 1] = tor_push(refract, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type);
 			}
 		}
 		else
@@ -1103,7 +1112,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 				new_hit.normal = get_hit_normal(scene, bounce, new_hit);
 				new_hit.pos = new_hit.pos + (new_hit.dist / 10000 * new_hit.normal);
 				ncolor = blend_factor(phong(scene, new_hit, bounce), fr);
-				tor[i * 2 + 2] = tor_push(bounce, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id);
+				tor[i * 2 + 2] = tor_push(bounce, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type);
 			}
 		}
 		i = i + 1;

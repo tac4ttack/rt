@@ -6,7 +6,7 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/03/24 19:56:23 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/24 20:58:16 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,31 +97,22 @@ void		xml_node_ellipsoid(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
-void		xml_allocate_ellipsoid(t_env *e)
-{
-	if (NELL > 0)
-	{
-		if (!(e->ellipsoids = malloc(sizeof(t_ellipsoid) * NELL)))
-			s_error("\x1b[1;31mCan't create ellipsoids array\x1b[0m", e);
-	}
-	else
-		e->ellipsoids = NULL;
-}
-
 void		xml_push_ellipsoid(t_env *e, t_node *list)
 {
-	e->ellipsoids[list->id].size = sizeof(t_ellipsoid);
-	e->ellipsoids[list->id].id = OBJ_ELLIPSOID;
-	//e->ellipsoids[list->id].type = OBJ_ELLIPSOID;
-	e->ellipsoids[list->id].pos = list->pos;
-	e->ellipsoids[list->id].dir = list->dir;
-	e->ellipsoids[list->id].radius = list->radius;
-	e->ellipsoids[list->id].color = list->color;
-	e->ellipsoids[list->id].diff = list->diff;
-	e->ellipsoids[list->id].spec = list->spec;
-	e->ellipsoids[list->id].reflex = list->reflex;
-	e->ellipsoids[list->id].refract = list->refract;
-	e->ellipsoids[list->id].opacity = list->opacity;
-	e->ellipsoids[list->id].axis_size = list->axis_size;
-	e->gen_objects->add(e->gen_objects, (void*)&e->ellipsoids[list->id]);
+	t_ellipsoid ellipsoid;
+
+	ellipsoid.size = sizeof(t_ellipsoid);
+	ellipsoid.id = e->current_index_objects;
+	ellipsoid.type = OBJ_ELLIPSOID;
+	ellipsoid.pos = list->pos;
+	ellipsoid.dir = list->dir;
+	ellipsoid.radius = list->radius;
+	ellipsoid.color = list->color;
+	ellipsoid.diff = list->diff;
+	ellipsoid.spec = list->spec;
+	ellipsoid.reflex = list->reflex;
+	ellipsoid.refract = list->refract;
+	ellipsoid.opacity = list->opacity;
+	ellipsoid.axis_size = list->axis_size;
+	e->gen_objects->add(e->gen_objects, (void*)&ellipsoid);
 }

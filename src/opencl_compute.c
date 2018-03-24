@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/24 20:08:38 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/24 20:53:08 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,7 @@ int			opencl_draw(t_env *e)
 	t_cl *cl = e->cl;
 	opencl_set_args(e, cl); // si decommenté alors commenter les autres appels et vice versa
 	cl->compute(cl);
-	size_t			mem_index;
-	t_ellipsoid	*object;
 
-	mem_index = 0;
-	while (mem_index < e->gen_objects->mem_size)
-	{
-		object = (t_ellipsoid *)(e->gen_objects->mem + mem_index);
-		/* DO NICE THINGS :D*/
-		printf("%.2f %.2f %.2f\n",
-					object->axis_size.x,
-					object->axis_size.y,
-					object->axis_size.z);
-		mem_index += object->size;
-	}
 	cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[0], CL_TRUE, 0,
 			e->scene->win_w * e->scene->win_h * 4,
 			e->pixel_data, 0, NULL, NULL);

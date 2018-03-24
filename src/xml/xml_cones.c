@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/24 19:51:18 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/24 20:58:02 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,29 +93,22 @@ void		xml_node_cone(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
-void		xml_allocate_cone(t_env *e)
-{
-	if (NCON > 0)
-	{
-		if (!(e->cones = malloc(sizeof(t_cone) * NCON)))
-			s_error("\x1b[1;31mCan't create cones array\x1b[0m", e);
-	}
-	else
-		e->cones = NULL;
-}
-
 void		xml_push_cone(t_env *e, t_node *list)
 {
-	e->cones[list->id].size = sizeof(t_cone);
-	e->cones[list->id].id = OBJ_CONE;
-	e->cones[list->id].pos = list->pos;
-	e->cones[list->id].dir = list->dir;
-	e->cones[list->id].angle = list->angle;
-	e->cones[list->id].color = list->color;
-	e->cones[list->id].diff = list->diff;
-	e->cones[list->id].spec = list->spec;
-	e->cones[list->id].reflex = list->reflex;
-	e->cones[list->id].refract = list->refract;
-	e->cones[list->id].opacity = list->opacity;
-	e->gen_objects->add(e->gen_objects, (void*)&e->cones[list->id]);
+	t_cone cone;
+
+	cone.size = sizeof(t_cone);
+	cone.type = e->current_index_objects;
+	cone.id = OBJ_CONE;
+	cone.pos = list->pos;
+	cone.dir = list->dir;
+	cone.angle = list->angle;
+	cone.color = list->color;
+	cone.diff = list->diff;
+	cone.spec = list->spec;
+	cone.reflex = list->reflex;
+	cone.refract = list->refract;
+	cone.opacity = list->opacity;
+
+	e->gen_objects->add(e->gen_objects, (void*)&cone);
 }

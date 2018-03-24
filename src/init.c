@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/24 19:56:04 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/24 20:57:34 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,6 @@ void		load_obj(t_env *e)
 {
 	ft_putendl("\x1b[1;29mFetching scene objects...\x1b[0m");
 	xml_allocate_cam(e);
-	xml_allocate_cone(e);
-	xml_allocate_cyl(e);
-	xml_allocate_light(e);
-	xml_allocate_plane(e);
-	xml_allocate_sphere(e);
-	xml_allocate_ellipsoid(e);
 	ft_putendl("\x1b[1;29mScene objects fetched!\x1b[0m");
 }
 
@@ -49,6 +43,7 @@ void		load_scene(t_env *e)
 	list = XML->node_lst;
 	while (list != NULL)
 	{
+		e->current_index_objects++;
 		if (list->type == OBJ_CAM)
 			xml_push_cam(e, list);
 		if (list->type == OBJ_CONE)

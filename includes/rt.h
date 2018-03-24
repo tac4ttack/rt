@@ -71,6 +71,7 @@
 typedef struct			s_object
 {
 	cl_int				size;
+	cl_int				type;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -138,6 +139,7 @@ typedef struct			s_light
 typedef struct			s_cone
 {
 	cl_int				size;
+	cl_int				type;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -154,6 +156,7 @@ typedef struct			s_cone
 typedef struct			s_cylinder
 {
 	cl_int				size;
+	cl_int				type;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -171,6 +174,7 @@ typedef struct			s_cylinder
 typedef struct			s_plane
 {
 	cl_int				size;
+	cl_int				type;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			normale;
@@ -185,6 +189,7 @@ typedef struct			s_plane
 typedef struct			s_sphere
 {
 	cl_int				size;
+	cl_int				type;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -200,6 +205,7 @@ typedef struct			s_sphere
 typedef struct			s_ellipsoid
 {
 	cl_int				size;
+	cl_int				type;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -300,12 +306,6 @@ typedef	struct			s_env
 
 	t_xml				*xml;
 	t_cam				*cameras;
-	t_cone				*cones;
-	t_cylinder			*cylinders;
-	t_light				*lights;
-	t_plane				*planes;
-	t_sphere			*spheres;
-	t_ellipsoid			*ellipsoids;
 
 	cl_mem				gen_mem;
 	t_gen				*gen_objects;
@@ -317,6 +317,7 @@ typedef	struct			s_env
 
 	int					*pixel_data; // raw pixel image
 	int					target;
+	int					current_index_objects;
 }						t_env;
 
 cl_float4				add_cl_float(cl_float4 v1, cl_float4 v2);

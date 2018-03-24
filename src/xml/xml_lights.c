@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/24 19:50:21 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/24 20:57:38 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,26 +81,17 @@ void		xml_node_light(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
-void		xml_allocate_light(t_env *e)
-{
-	if (NLIG > 0)
-	{
-		if (!(e->lights = malloc(sizeof(t_light) * NLIG)))
-			s_error("\x1b[1;31mCan't create lights array\x1b[0m", e);
-	}
-	else
-		e->lights = NULL;
-}
-
 void		xml_push_light(t_env *e, t_node *list)
 {
-	e->lights[list->id].size = sizeof(t_light);
+	t_light light;
+
+	light.size = sizeof(t_light);
 	//e->lights[list->id].id = list->light; //
-	e->lights[list->id].type = list->light;
-	e->lights[list->id].pos = list->pos;
-	e->lights[list->id].dir = list->dir;
-	e->lights[list->id].brightness = list->brightness;
-	e->lights[list->id].shrink = list->shrink;
-	e->lights[list->id].color = list->color;
-	e->gen_lights->add(e->gen_lights, (void *)&e->lights[list->id]);
+	light.type = list->light;
+	light.pos = list->pos;
+	light.dir = list->dir;
+	light.brightness = list->brightness;
+	light.shrink = list->shrink;
+	light.color = list->color;
+	e->gen_lights->add(e->gen_lights, (void *)&light);
 }

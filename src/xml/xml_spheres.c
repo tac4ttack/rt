@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/24 19:50:48 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/24 20:57:42 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,29 +93,20 @@ void		xml_node_sphere(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
-void		xml_allocate_sphere(t_env *e)
-{
-	if (NSPH > 0)
-	{
-		if (!(e->spheres = malloc(sizeof(t_sphere) * NSPH)))
-			s_error("\x1b[1;31mCan't create spheres array\x1b[0m", e);
-	}
-	else
-		e->spheres = NULL;
-}
-
 void		xml_push_sphere(t_env *e, t_node *list)
 {
-	e->spheres[list->id].size = sizeof(t_sphere);
-	e->spheres[list->id].id = OBJ_SPHERE;
-	e->spheres[list->id].pos = list->pos;
-	e->spheres[list->id].dir = list->dir;
-	e->spheres[list->id].radius = list->radius;
-	e->spheres[list->id].color = list->color;
-	e->spheres[list->id].diff = list->diff;
-	e->spheres[list->id].spec = list->spec;
-	e->spheres[list->id].reflex = list->reflex;
-	e->spheres[list->id].refract = list->refract;
-	e->spheres[list->id].opacity = list->opacity;
-	e->gen_objects->add(e->gen_objects, (void*)&e->spheres[list->id]);
+	t_sphere sphere;
+	sphere.size = sizeof(t_sphere);
+	sphere.id = e->current_index_objects;
+	sphere.type = OBJ_SPHERE;
+	sphere.pos = list->pos;
+	sphere.dir = list->dir;
+	sphere.radius = list->radius;
+	sphere.color = list->color;
+	sphere.diff = list->diff;
+	sphere.spec = list->spec;
+	sphere.reflex = list->reflex;
+	sphere.refract = list->refract;
+	sphere.opacity = list->opacity;
+	e->gen_objects->add(e->gen_objects, (void*)&sphere);
 }

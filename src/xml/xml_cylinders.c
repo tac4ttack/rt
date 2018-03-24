@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/24 19:51:08 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/24 20:57:50 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,31 +99,23 @@ void		xml_node_cylinder(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
-void		xml_allocate_cyl(t_env *e)
-{
-	if (NCYL > 0)
-	{
-		if (!(e->cylinders = malloc(sizeof(t_cylinder) * NCYL)))
-			s_error("\x1b[1;31mCan't create cylinders array\x1b[0m", e);
-	}
-	else
-		e->cylinders = NULL;
-}
-
 void		xml_push_cyl(t_env *e, t_node *list)
 {
-	e->cylinders[list->id].size = sizeof(t_cylinder);
-	e->cylinders[list->id].id = OBJ_CYLINDER;
-	e->cylinders[list->id].pos = list->pos;
-	e->cylinders[list->id].base_dir = normalize_vect(list->dir);
-	e->cylinders[list->id].dir = normalize_vect(list->dir);
-	e->cylinders[list->id].radius = list->radius;
-	e->cylinders[list->id].color = list->color;
-	e->cylinders[list->id].height = list->height;
-	e->cylinders[list->id].diff = list->diff;
-	e->cylinders[list->id].spec = list->spec;
-	e->cylinders[list->id].reflex = list->reflex;
-	e->cylinders[list->id].refract = list->refract;
-	e->cylinders[list->id].opacity = list->opacity;
-	e->gen_objects->add(e->gen_objects, (void*)&e->cylinders[list->id]);
+	t_cylinder cylinder;
+
+	cylinder.size = sizeof(t_cylinder);
+	cylinder.id = e->current_index_objects;
+	cylinder.type = OBJ_CYLINDER;
+	cylinder.pos = list->pos;
+	cylinder.base_dir = normalize_vect(list->dir);
+	cylinder.dir = normalize_vect(list->dir);
+	cylinder.radius = list->radius;
+	cylinder.color = list->color;
+	cylinder.height = list->height;
+	cylinder.diff = list->diff;
+	cylinder.spec = list->spec;
+	cylinder.reflex = list->reflex;
+	cylinder.refract = list->refract;
+	cylinder.opacity = list->opacity;
+	e->gen_objects->add(e->gen_objects, (void*)&cylinder);
 }

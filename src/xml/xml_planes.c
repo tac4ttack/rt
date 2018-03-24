@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/24 19:50:42 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/24 20:57:47 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,28 +89,20 @@ void		xml_node_plane(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
-void		xml_allocate_plane(t_env *e)
-{
-	if (NPLA > 0)
-	{
-		if (!(e->planes = malloc(sizeof(t_plane) * NPLA)))
-			s_error("\x1b[1;31mCan't create planes array\x1b[0m", e);
-	}
-	else
-		e->planes = NULL;
-}
-
 void		xml_push_plane(t_env *e, t_node *list)
 {
-	e->planes[list->id].size = sizeof(t_plane);
-	e->planes[list->id].id = OBJ_PLANE;
-	e->planes[list->id].pos = list->pos;
-	e->planes[list->id].normale = list->normale;
-	e->planes[list->id].color = list->color;
-	e->planes[list->id].diff = list->diff;
-	e->planes[list->id].spec = list->spec;
-	e->planes[list->id].reflex = list->reflex;
-	e->planes[list->id].refract = list->refract;
-	e->planes[list->id].opacity = list->opacity;
-	e->gen_objects->add(e->gen_objects, (void*)&e->planes[list->id]);
+	t_plane plane;
+
+	plane.size = sizeof(t_plane);
+	plane.id = e->current_index_objects;
+	plane.type = OBJ_PLANE;
+	plane.pos = list->pos;
+	plane.normale = list->normale;
+	plane.color = list->color;
+	plane.diff = list->diff;
+	plane.spec = list->spec;
+	plane.reflex = list->reflex;
+	plane.refract = list->refract;
+	plane.opacity = list->opacity;
+	e->gen_objects->add(e->gen_objects, (void*)&plane);
 }
