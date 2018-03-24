@@ -110,6 +110,7 @@ typedef struct			s_hit
 	t_object			*obj;
 	cl_int				mem_index;
 	cl_float			m;
+	cl_int				isin;
 }						t_hit;
 
 typedef struct			s_cam
