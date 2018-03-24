@@ -27,6 +27,7 @@
 # define OBJ_PLANE			5
 # define OBJ_SPHERE			6
 # define OBJ_ELLIPSOID		7
+# define OBJ_PARABOLOID		8
 
 typedef struct			s_object
 {
@@ -58,6 +59,7 @@ typedef struct			s_hit
 	void				*void1;
 	int					mem_index;
 	float				opacity;
+	float				m;
 }						t_hit;
 
 typedef struct			s_cam
@@ -117,6 +119,25 @@ typedef struct			s_cylinder
 	float3				base_dir;
 	float				radius;
 }						t_cylinder;
+
+typedef struct			s_paraboloid
+{
+	int					size;
+	int					type;
+	int					id;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+	float				refract;
+	float				opacity;
+
+	float				height;
+	float3				base_dir;
+	float				radius;
+}						t_paraboloid;
 
 typedef struct			s_plane
 {
@@ -200,6 +221,7 @@ typedef struct			s_scene
 	unsigned int		n_planes;
 	unsigned int		n_spheres;
 	unsigned int		n_ellipsoids;
+	unsigned int		n_paraboloids;
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
@@ -416,6 +438,62 @@ static t_hit			hit_init(void)
 	return (hit);
 }
 
+
+bool		solve_quadratic(const float a, const float b, const float c,
+								float *inter0, float *inter1)
+{
+	float discr;
+
+	discr = b * b - 4 * a * c;
+	if (discr < 0)
+		return (false);
+	else if (discr < EPSILON)
+	{
+		*inter0 = -0.5 * b / a;
+		*inter1 = *inter0;
+	}
+	else
+	{
+		float q = (b > 0) ? (-0.5 * (b + sqrt(discr))): (-0.5 * (b - sqrt(discr)));
+		*inter0 = q / a;
+		*inter1 = c / q;
+	}
+	if (*inter0 > *inter1)
+	{
+		float tmp;
+
+		tmp = *inter0;
+		*inter0 = *inter1;
+		*inter1 = tmp;
+	}
+	if (*inter0 < 0)
+	{
+		*inter0 = *inter1;
+		if (*inter0 < 0)
+			return (false);
+	}
+	return (true);
+}
+
+float		calculate_m_value(const __local t_cylinder *obj, t_hit *hit, const float3 *origin, const float3 *ray, float inter0, float inter1)
+{
+ 	float3 tmp;
+
+	tmp = *ray * inter0;
+	tmp = tmp + *origin;
+	hit->m = dot(tmp, obj->dir);
+	if (hit->m > obj->height || hit->m < -obj->height)
+	{
+		tmp = *ray * inter1;
+		tmp = tmp + *origin;
+		hit->m = dot(tmp, obj->dir);
+		if (hit->m > obj->height || hit->m < -obj->height)
+			return (0);
+		return (inter1);
+	}
+	return (inter0);
+}
+
 static float		inter_plan(const __local t_plane *plane, const float3 ray, const float3 origin)
 {
 	float	t;
@@ -440,42 +518,19 @@ static float3	get_cylinder_abc(const float radius, const float3 dir, const float
 	return (abc);
 }
 
-static float					inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin)
+static float					inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin, t_hit *hit)
 {
 	float3				abc;
 	float3				pos;
 	float				d;
-	float				res1 = 0;
-	float				res2 = 0;
-	float				m;
+	float				inter0, inter1;
 
 	pos = origin - cylinder->pos;
 	abc = get_cylinder_abc(cylinder->radius, fast_normalize(cylinder->dir), ray, pos);
-	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
-	if (d < 0)
+	if (!solve_quadratic(abc.x, abc.y, abc.z, &inter0, &inter1))
 		return (0);
-	if (d == 0)
-		res1 = (-abc[1]) / (2 * abc[0]);
-	else
-	{
-		res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
-		res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
-	}
-	if (res1 < 0 && res2 < 0)
-		return (0);
-	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
-	{
-		if (cylinder->height == 0 || (dot(ray, fast_normalize(cylinder->dir) * res1 +
-			dot(origin, fast_normalize(cylinder->dir))) < cylinder->height && dot(ray, fast_normalize(cylinder->dir) * res1 +
-			dot(origin, fast_normalize(cylinder->dir))) > 0))
-			return (res1);
-	}
-	if (cylinder->height ==  0 || (dot(ray, fast_normalize(cylinder->dir) * res2 +
-			dot(origin, fast_normalize(cylinder->dir))) < cylinder->height && dot(ray, fast_normalize(cylinder->dir) * res2 +
-			dot(origin, fast_normalize(cylinder->dir))) > 0))
-		return (res2);
-	else
-		return (0);
+	float3 rever = -pos;
+	return (calculate_m_value(cylinder, hit, &pos, &ray, inter0, inter1));
 }
 
 static float3			get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
@@ -644,7 +699,7 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 		if (obj->type == OBJ_SPHERE)
 			dist = inter_sphere(obj, ray, origin);
 		else if (obj->type == OBJ_CYLINDER)
-			dist = inter_cylinder(obj, ray, origin);
+			dist = inter_cylinder(obj, ray, origin, &hit);
 		else if (obj->type == OBJ_PLANE)
 			dist = inter_plan(obj, ray, origin);
 		else if (obj->type == OBJ_CONE)

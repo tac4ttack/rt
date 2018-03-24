@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/24 19:42:10 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/24 21:21:50 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int					xml_check_node_format(char **node, int mod)
 		i.y = (mod == 5 ? 22 : i.y);
 		i.y = (mod == 6 ? 23 : i.y);
 		i.y = (mod == 7 ? 26 : i.y);
+		i.y = (mod == 8 ? 24 : i.y);
 		while (i.x <= i.y)
 		{
 			if (i.x == i.y && node[i.x] != NULL)
@@ -87,6 +88,8 @@ void				xml_process_node(t_env *e, char *node)
 		xml_node_cone(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "cylinder") == 0)
 		xml_node_cylinder(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "paraboloid") == 0)
+		xml_node_paraboloid(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "light") == 0)
 		xml_node_light(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "plane") == 0)

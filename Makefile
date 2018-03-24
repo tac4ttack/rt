@@ -87,6 +87,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/xml_scene.c \
 						xml/xml_spheres.c \
 						xml/xml_ellipsoid.c \
+						xml/xml_paraboloid.c \
 						xml/xml_tools.c
 
 default: gpu

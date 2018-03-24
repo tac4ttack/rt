@@ -38,6 +38,7 @@
 # define NPLA					e->scene->n_planes
 # define NSPH					e->scene->n_spheres
 # define NELL					e->scene->n_ellipsoids
+# define NPAR					e->scene->n_paraboloids
 //# define ACTIVEOBJ				e->target_obj // DELETE
 # define CAM					e->cameras
 # define CONES					e->cones
@@ -67,6 +68,7 @@
 # define OBJ_PLANE			5
 # define OBJ_SPHERE			6
 # define OBJ_ELLIPSOID		7
+# define OBJ_PARABOLOID		8
 
 typedef struct			s_object
 {
@@ -107,6 +109,7 @@ typedef struct			s_hit
 	cl_float3			pos;
 	t_object			*obj;
 	cl_int				mem_index;
+	cl_float			m;
 }						t_hit;
 
 typedef struct			s_cam
@@ -170,6 +173,24 @@ typedef struct			s_cylinder
 	cl_float3			base_dir;
 	cl_float			radius;
 }						t_cylinder;
+
+typedef struct			s_paraboloid
+{
+	cl_int				size;
+	cl_int				type;
+	cl_int				id;
+	cl_float3			pos;
+	cl_float3			dir;
+	cl_float3			diff;
+	cl_float3			spec;
+	cl_int				color;
+	cl_float			reflex;
+	cl_float			refract;
+	cl_float			opacity;
+	cl_float			height;
+	cl_float3			base_dir;
+	cl_float			radius;
+}						t_paraboloid;
 
 typedef struct			s_plane
 {
@@ -272,6 +293,7 @@ typedef struct			s_scene
 	unsigned int		n_planes;
 	unsigned int		n_spheres;
 	unsigned int		n_ellipsoids;
+	unsigned int		n_paraboloids;
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
@@ -365,12 +387,6 @@ void					ui_obj(t_env *e);
 void					update_fps(t_fps *fps);
 
 void					xml_allocate_cam(t_env *e);
-void					xml_allocate_cone(t_env *e);
-void					xml_allocate_cyl(t_env *e);
-void					xml_allocate_light(t_env *e);
-void					xml_allocate_plane(t_env *e);
-void					xml_allocate_sphere(t_env *e);
-void					xml_allocate_ellipsoid(t_env *e);
 int						xml_check_attr(t_env *e, char **att);
 int						xml_check_float(cl_float3 *clf, float f, int mod);
 int						xml_check_char(char c);
@@ -417,6 +433,7 @@ void					xml_node_clean(char **target);
 void					xml_node_cam(t_env *e, char *node);
 void					xml_node_cone(t_env *e, char *node);
 void					xml_node_cylinder(t_env *e, char *node);
+void					xml_node_paraboloid(t_env *e, char *node);
 void					xml_node_light(t_env *e, char *node);
 void					xml_node_plane(t_env *e, char *node);
 void					xml_node_scene(t_env *e, char *node, char mod);
@@ -426,6 +443,7 @@ void					xml_parse_nodes(t_env *e);
 void					xml_push_cam(t_env *e, t_node *list);
 void					xml_push_cone(t_env *e, t_node *list);
 void					xml_push_cyl(t_env *e, t_node *list);
+void					xml_push_paraboloid(t_env *e, t_node *list);
 void					xml_push_light(t_env *e, t_node *list);
 void					xml_push_plane(t_env *e, t_node *list);
 void					xml_push_sphere(t_env *e, t_node *list);
