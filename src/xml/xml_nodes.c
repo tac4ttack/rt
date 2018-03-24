@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/15 18:48:30 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:42:10 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int					xml_check_node_format(char **node, int mod)
 		i.y = (mod == 4 ? 16 : i.y);
 		i.y = (mod == 5 ? 22 : i.y);
 		i.y = (mod == 6 ? 23 : i.y);
+		i.y = (mod == 7 ? 26 : i.y);
 		while (i.x <= i.y)
 		{
 			if (i.x == i.y && node[i.x] != NULL)
@@ -92,6 +93,8 @@ void				xml_process_node(t_env *e, char *node)
 		xml_node_plane(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "sphere") == 0)
 		xml_node_sphere(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "ellipsoid") == 0)
+		xml_node_ellipsoid(e, node);
 	else
 		s_error("\x1b[1;31mError wrong node type\x1b[0m", e);
 	xml_node_clean(XMLSUB);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/23 18:54:34 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:56:04 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void		load_obj(t_env *e)
 	xml_allocate_light(e);
 	xml_allocate_plane(e);
 	xml_allocate_sphere(e);
+	xml_allocate_ellipsoid(e);
 	ft_putendl("\x1b[1;29mScene objects fetched!\x1b[0m");
 }
 
@@ -48,18 +49,20 @@ void		load_scene(t_env *e)
 	list = XML->node_lst;
 	while (list != NULL)
 	{
-		if (list->type == 0)
+		if (list->type == OBJ_CAM)
 			xml_push_cam(e, list);
-		if (list->type == 1)
+		if (list->type == OBJ_CONE)
 			xml_push_cone(e, list);
-		if (list->type == 2)
+		if (list->type == OBJ_CYLINDER)
 			xml_push_cyl(e, list);
-		if (list->type == 3)
+		if (list->type == OBJ_LIGHT)
 			xml_push_light(e, list);
-		if (list->type == 4)
+		if (list->type == OBJ_PLANE)
 			xml_push_plane(e, list);
-		if (list->type == 5)
+		if (list->type == OBJ_SPHERE)
 			xml_push_sphere(e, list);
+		if (list->type == OBJ_ELLIPSOID)
+			xml_push_ellipsoid(e, list);
 		list = list->next;
 	}
 	xml_list_clean(e, &XML->node_lst);

@@ -37,6 +37,7 @@
 # define NLIG					e->scene->n_lights
 # define NPLA					e->scene->n_planes
 # define NSPH					e->scene->n_spheres
+# define NELL					e->scene->n_ellipsoids
 //# define ACTIVEOBJ				e->target_obj // DELETE
 # define CAM					e->cameras
 # define CONES					e->cones
@@ -59,11 +60,13 @@
 # define OPTION_DEBUG			(1 << 6)
 # define OPTION_INVERT			(1 << 7)
 
-# define OBJ_CONE			1
-# define OBJ_CYLINDER		2
-# define OBJ_PLANE			3
-# define OBJ_SPHERE			4
-# define OBJ_ELLIPSOID		5
+# define OBJ_CAM			1
+# define OBJ_LIGHT			2
+# define OBJ_CONE			3
+# define OBJ_CYLINDER		4
+# define OBJ_PLANE			5
+# define OBJ_SPHERE			6
+# define OBJ_ELLIPSOID		7
 
 typedef struct			s_object
 {

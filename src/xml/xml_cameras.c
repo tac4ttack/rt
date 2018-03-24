@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/18 18:56:04 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:51:25 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		xml_node_cam(t_env *e, char *node)
 	}
 	else if (ft_strcmp(tmp[i], "/>") != 0)
 		s_error("\x1b[1;31mError CAMERA node isn't closed\x1b[0m", e);
-	cam_node->type = 0;
+	cam_node->type = OBJ_CAM;
 	if (XML->node_lst == NULL)
 		XML->node_lst = cam_node;
 	else

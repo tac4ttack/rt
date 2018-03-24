@@ -6,7 +6,7 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/03/24 19:18:13 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:56:23 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ static void	xml_ellipsoid_data_n(t_env *e, char **att, t_node *ellipsoid_node, i
 
 static void	xml_ellipsoid_data(t_env *e, char **att, t_node *ellipsoid_node, int *i)
 {
-	if (xml_check_node_format(att, 6) != 0)
-		s_error("\x1b[1;31mError SPHERE format\x1b[0m", e);
+	if (xml_check_node_format(att, 7) != 0)
+		s_error("\x1b[1;31mError ELLIPSOID format\x1b[0m", e);
 	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
 		s_error("\x1b[1;31mError in ellipsoid, ID expected in #0\x1b[0m", e);
-	if (ft_atoi(att[(*i)] + 4) != (int)NSPH - 1)
+	if (ft_atoi(att[(*i)] + 4) != (int)NELL - 1)
 		s_error("\x1b[1;31mError in ellipsoid, ID is incorrect\x1b[0m", e);
 	else
 		ellipsoid_node->id = ft_atoi(att[(*i)++] + 4);
@@ -85,11 +85,11 @@ void		xml_node_ellipsoid(t_env *e, char *node)
 	if (tmp[i] == NULL)
 	{
 		if (ft_strstr(tmp[i - 1], "/>") == NULL)
-			s_error("\x1b[1;31mError SPHERE node isn't closed\x1b[0m", e);
+			s_error("\x1b[1;31mError ELLIPSOID node isn't closed\x1b[0m", e);
 	}
 	else if (ft_strcmp(tmp[i], "/>") != 0)
-		s_error("\x1b[1;31mError SPHERE node isn't closed\x1b[0m", e);
-	ellipsoid_node->type = 5;
+		s_error("\x1b[1;31mError ELLIPSOID node isn't closed\x1b[0m", e);
+	ellipsoid_node->type = OBJ_ELLIPSOID;
 	if (XML->node_lst == NULL)
 		XML->node_lst = ellipsoid_node;
 	else
@@ -99,9 +99,9 @@ void		xml_node_ellipsoid(t_env *e, char *node)
 
 void		xml_allocate_ellipsoid(t_env *e)
 {
-	if (NSPH > 0)
+	if (NELL > 0)
 	{
-		if (!(e->ellipsoids = malloc(sizeof(t_ellipsoid) * NSPH)))
+		if (!(e->ellipsoids = malloc(sizeof(t_ellipsoid) * NELL)))
 			s_error("\x1b[1;31mCan't create ellipsoids array\x1b[0m", e);
 	}
 	else
@@ -111,7 +111,7 @@ void		xml_allocate_ellipsoid(t_env *e)
 void		xml_push_ellipsoid(t_env *e, t_node *list)
 {
 	e->ellipsoids[list->id].size = sizeof(t_ellipsoid);
-	e->ellipsoids[list->id].id = OBJ_CONE;
+	e->ellipsoids[list->id].id = OBJ_ELLIPSOID;
 	//e->ellipsoids[list->id].type = OBJ_ELLIPSOID;
 	e->ellipsoids[list->id].pos = list->pos;
 	e->ellipsoids[list->id].dir = list->dir;
