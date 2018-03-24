@@ -579,6 +579,45 @@ static float			inter_sphere(const __local t_sphere *sphere, const float3 ray, co
 	return (res2);
 }
 
+float3					get_ellipsoid_normal(const __local t_ellipsoid *ellipsoid, const t_hit hit)
+{
+	float3 res;
+
+	res.x = (hit.pos.x - hit.obj->pos.x) / (ellipsoid->axis_size.x * ellipsoid->axis_size.x);
+	res.y = (hit.pos.y - hit.obj->pos.y) / (ellipsoid->axis_size.y * ellipsoid->axis_size.y);
+	res.z = (hit.pos.z - hit.obj->pos.z) / (ellipsoid->axis_size.z * ellipsoid->axis_size.z);
+	return (res);
+}
+
+static float			inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, float3 origin)
+{
+	float3		abc = 0;
+	float		d = 0;
+	float		res1 = 0;
+	float		res2 = 0;
+	float3		pos = 0;
+
+
+	pos = origin - ellipsoid->pos;
+
+	ray /= ellipsoid->axis_size;
+	pos /= ellipsoid->axis_size;
+
+	abc.x = dot(ray, ray);
+	abc.y = 2 * dot(ray, pos);
+	abc.z = dot(pos, pos) - (ellipsoid->radius * ellipsoid->radius);
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	if (d < 0)
+		return (0);
+	if (d == 0)
+		return ((-abc[1]) / (2 * abc[0]));
+	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		return (res1);
+	return (res2);
+}
+
 static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const float3 ray, float lightdist)
 {
 	t_hit						hit;
@@ -603,6 +642,8 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 			dist = inter_plan(obj, ray, origin);
 		else if (obj->id == OBJ_CONE)
 			dist = inter_cone(obj, ray, origin);
+		else if (obj->id == OBJ_ELLIPSOID)
+			dist = inter_ellipsoid(obj, ray, origin);
 		if (lightdist > 0 && dist < lightdist && dist > EPSILON)
 			hit.opacity += obj->opacity;
 		if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
@@ -626,6 +667,8 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 		res = get_cylinder_normal(hit.obj, hit);
 	else if (hit.obj->id == OBJ_CONE)
 		res = get_cone_normal(hit.obj, hit);
+	else if (hit.obj->id == OBJ_ELLIPSOID)
+		res = get_ellipsoid_normal(hit.obj, hit);
 	else if (hit.obj->id == OBJ_PLANE)
 	{
 		if (dot(hit.obj->dir, -ray) < 0)
