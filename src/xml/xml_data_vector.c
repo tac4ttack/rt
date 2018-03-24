@@ -6,11 +6,27 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 11:05:41 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:27:22 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+void		xml_data_axis_size(t_env *e, char **attributes, int *i, t_node *node)
+{
+	if (node && attributes && e)
+	{
+		if (attributes[(*i)] == NULL)
+			s_error("\x1b[1;31mError reading POS value\x1b[0m", e);
+		node->axis_size.x = ft_atof(attributes[(*i)++] + 5);
+		node->axis_size.y = ft_atof(attributes[(*i)++]);
+		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
+			s_error("\x1b[1;31mError in POS vector from scene\x1b[0m", e);
+		node->axis_size.z = ft_atof(attributes[(*i)++]);
+	}
+	else
+		s_error("\x1b[1;31mError reading POS vector from scene\x1b[0m", e);
+}
 
 void		xml_data_pos(t_env *e, char **attributes, int *i, t_node *node)
 {

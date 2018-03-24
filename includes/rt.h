@@ -63,6 +63,7 @@
 # define OBJ_CYLINDER		2
 # define OBJ_PLANE			3
 # define OBJ_SPHERE			4
+# define OBJ_ELLIPSOID		5
 
 typedef struct			s_object
 {
@@ -193,6 +194,23 @@ typedef struct			s_sphere
 	cl_float			radius;
 }						t_sphere;
 
+typedef struct			s_ellipsoid
+{
+	cl_int				size;
+	cl_int				id;
+	cl_float3			pos;
+	cl_float3			dir;
+	cl_float3			diff;
+	cl_float3			spec;
+	cl_int				color;
+	cl_float			reflex;
+	cl_float			refract;
+	cl_float			opacity;
+	cl_float			radius;
+	cl_float3			axis_size;
+}						t_ellipsoid;
+
+
 typedef struct			s_node
 {
 	int					id;
@@ -201,6 +219,7 @@ typedef struct			s_node
 	cl_float3			dir;
 	cl_float3			pos;
 	cl_float3			normale;
+	cl_float3			axis_size;
 	cl_float			radius;
 	cl_float			angle;
 	cl_int				color;
@@ -243,6 +262,7 @@ typedef struct			s_scene
 	unsigned int		n_lights;
 	unsigned int		n_planes;
 	unsigned int		n_spheres;
+	unsigned int		n_ellipsoids;
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
@@ -282,6 +302,7 @@ typedef	struct			s_env
 	t_light				*lights;
 	t_plane				*planes;
 	t_sphere			*spheres;
+	t_ellipsoid			*ellipsoids;
 
 	cl_mem				gen_mem;
 	t_gen				*gen_objects;
@@ -345,6 +366,7 @@ void					xml_allocate_cyl(t_env *e);
 void					xml_allocate_light(t_env *e);
 void					xml_allocate_plane(t_env *e);
 void					xml_allocate_sphere(t_env *e);
+void					xml_allocate_ellipsoid(t_env *e);
 int						xml_check_attr(t_env *e, char **att);
 int						xml_check_float(cl_float3 *clf, float f, int mod);
 int						xml_check_char(char c);
@@ -363,6 +385,8 @@ void					xml_data_dir(t_env *e, char **attributes, \
 void					xml_data_height(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_normale(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_axis_size(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_pos(t_env *e, char **attributes, \
 										int *i, t_node *node);
@@ -393,6 +417,7 @@ void					xml_node_light(t_env *e, char *node);
 void					xml_node_plane(t_env *e, char *node);
 void					xml_node_scene(t_env *e, char *node, char mod);
 void					xml_node_sphere(t_env *e, char *node);
+void					xml_node_ellipsoid(t_env *e, char *node);
 void					xml_parse_nodes(t_env *e);
 void					xml_push_cam(t_env *e, t_node *list);
 void					xml_push_cone(t_env *e, t_node *list);
@@ -400,5 +425,6 @@ void					xml_push_cyl(t_env *e, t_node *list);
 void					xml_push_light(t_env *e, t_node *list);
 void					xml_push_plane(t_env *e, t_node *list);
 void					xml_push_sphere(t_env *e, t_node *list);
+void					xml_push_ellipsoid(t_env *e, t_node *list);
 
 #endif

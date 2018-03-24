@@ -24,6 +24,7 @@
 # define OBJ_CYLINDER		2
 # define OBJ_PLANE			3
 # define OBJ_SPHERE			4
+# define OBJ_ELLIPSOID		5
 
 typedef struct			s_object
 {
@@ -142,6 +143,23 @@ typedef struct			s_sphere
 	float				radius;
 }						t_sphere;
 
+typedef struct			s_ellipsoid
+{
+	int					size;
+	int					id;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+	float				refract;
+	float				opacity;
+
+	float				radius;
+	float3				axis_size;
+}						t_ellipsoid;
+
 typedef	struct			s_tor
 {
 	int					activate;
@@ -161,17 +179,18 @@ typedef	struct			s_tor
 typedef struct			s_scene
 {
 	t_cam				__local *cameras;
-//	void				*void1;
+	void				*void1;
 	void				__local *mem_lights;
-//	void				*void4;
+	void				*void4;
 	void				__local *mem_obj;
-//	void				*void7;
+	void				*void7;
 	unsigned int		n_cams;
 	unsigned int		n_cones;
 	unsigned int		n_cylinders;
 	unsigned int		n_lights;
 	unsigned int		n_planes;
 	unsigned int		n_spheres;
+	unsigned int		n_ellipsoids;
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
@@ -895,7 +914,7 @@ static float		reflect_ratio(float n1, float n2, float cos1, float sint)
 
 static t_tor		tor_push(float3 ray, float3 normale, float3 pos, float coef_ref, float coef_tra, float opacity, unsigned int color, size_t mem_index, int id)
 {
-	__local t_tor			tor;
+	t_tor			tor;
 
 	tor.prim = ray;
 	tor.pos = pos;

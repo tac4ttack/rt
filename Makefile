@@ -86,6 +86,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/xml_planes.c \
 						xml/xml_scene.c \
 						xml/xml_spheres.c \
+						xml/xml_ellipsoid.c \
 						xml/xml_tools.c
 
 default: gpu
@@ -171,7 +172,7 @@ clean:
 	@echo "$(GREEN)Deleting .obj files$(EOC)"
 	@rm -rf $(OBJ_PATH)
 
-fclean: fcleanlibft clean 
+fclean: fcleanlibft clean
 	@echo "$(GREEN)Full cleaning...$(EOC)"
 	@echo "$(GREEN)Deleting $(NAME) binary$(EOC)"
 	@rm -rf $(NAME)
@@ -200,7 +201,7 @@ norme:
 
 usage:
 	@echo "\n$(B_RED)A REDIGER!!!!$(EOC)\n"
-	
+
 
 .PHONY: all clean fclean re libft cpu gpu cleanlibft fcleanlibft debug usage norme
 

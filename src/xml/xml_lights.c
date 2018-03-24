@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/07 18:42:14 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:18:20 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void		xml_allocate_light(t_env *e)
 void		xml_push_light(t_env *e, t_node *list)
 {
 	e->lights[list->id].size = sizeof(t_light);
+	//e->lights[list->id].id = list->light; //
 	e->lights[list->id].type = list->light;
 	e->lights[list->id].pos = list->pos;
 	e->lights[list->id].dir = list->dir;
