@@ -9,6 +9,7 @@
 
 # include "cl.h"
 # include "ui.h"
+# include "gen.h"
 
 
 # ifdef GPU
@@ -310,14 +311,6 @@ typedef struct			s_scene
 	int					over_sampling;
 }						t_scene;
 
-typedef struct			s_gen
-{
-	bool				(*add)(struct s_gen *, void *);
-	size_t				mem_size;
-	size_t				unit_size;
-	void				*mem;
-}						t_gen;
-
 typedef	struct			s_env
 {
 	t_cl				*cl;
@@ -350,17 +343,11 @@ cl_float3				roty(cl_float3 dir, float yaw);
 cl_float3				rotx(cl_float3 dir, float pitch);
 cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
 
-void					*gen_construct();
-bool					gen_add(t_gen *gen, void *elem);
-void					*gen_destruct(t_gen **gen);
-
 void					display_hud(t_env *e);
 int						opencl_draw(t_env *e);
 
 cl_float3				*get_target_dir(t_env *e);
 cl_float3				*get_target_pos(t_env *e);
-
-
 
 void					init(GtkApplication* app, gpointer data);
 

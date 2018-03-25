@@ -21,7 +21,9 @@ GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 OPENCL :=				-framework OpenCL
 
 INC_NAMES = 			$(NAME).h \
-						cl.h
+						cl.h \
+						ui.h \
+						gen.h
 
 OBJ =					$(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 OBJ_PATH =				./obj
@@ -36,6 +38,10 @@ SRC_NAME =	 			cl/cl_compute.c \
 						cl/cl_print_error.c \
 						init.c \
 						gen/gen_add.c \
+						gen/gen_remove_mem_index.c \
+						gen/gen_remove_index.c \
+						gen/gen_get_index.c \
+						gen/gen_print.c \
 						gen/gen_construct.c \
 						gen/gen_destruct.c \
 						main.c \

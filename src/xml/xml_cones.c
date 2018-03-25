@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/24 20:58:02 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/25 16:22:09 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ void		xml_push_cone(t_env *e, t_node *list)
 	t_cone cone;
 
 	cone.size = sizeof(t_cone);
-	cone.type = e->current_index_objects;
-	cone.id = OBJ_CONE;
+	cone.type = OBJ_CONE;
+	cone.id = e->current_index_objects;
 	cone.pos = list->pos;
 	cone.dir = list->dir;
 	cone.angle = list->angle;

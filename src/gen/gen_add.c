@@ -1,4 +1,4 @@
-#include "rt.h"
+#include "gen.h"
 
 bool		gen_add(t_gen *gen, void *elem)
 {
