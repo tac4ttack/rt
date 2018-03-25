@@ -195,7 +195,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->light_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_next_btn"));
 	e->ui->light_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_add_btn"));
 	e->ui->light_nav_del_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_del_btn"));
-	if (e->gen_lights->unit_size < 2)
+	if (e->scene->n_lights < 2)
 	{	
 		gtk_widget_set_sensitive(e->ui->light_nav_prev_btn, FALSE);
 		gtk_widget_set_sensitive(e->ui->light_nav_next_btn, FALSE);

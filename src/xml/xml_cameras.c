@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 14:48:44 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:51:25 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ static void	xml_cam_data(t_env *e, char **att, t_node *cam_node, int *i)
 {
 	if (xml_check_node_format(att, 1) != 0)
 		s_error("\x1b[1;31mError CAM format\x1b[0m", e);
-	// if (ft_strncmp(att[*i], "id=\"", 4) != 0)
-	// 	s_error("\x1b[1;31mError in camera, ID expected in #0\x1b[0m", e);
-	// if (ft_atoi(att[(*i)] + 4) != (int)NCAM - 1)
-	// 	s_error("\x1b[1;31mError in camera, ID is incorrect\x1b[0m", e);
-	// else
-	// 	cam_node->id = ft_atoi(att[(*i)++] + 4);
+	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
+		s_error("\x1b[1;31mError in camera, ID expected in #0\x1b[0m", e);
+	if (ft_atoi(att[(*i)] + 4) != (int)NCAM - 1)
+		s_error("\x1b[1;31mError in camera, ID is incorrect\x1b[0m", e);
+	else
+		cam_node->id = ft_atoi(att[(*i)++] + 4);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
 		s_error("\x1b[1;31mError in camera, POS expected in #1\x1b[0m", e);
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xml_ellipsoid.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/03/25 14:43:57 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/24 20:58:16 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ static void	xml_ellipsoid_data(t_env *e, char **att, t_node *ellipsoid_node, int
 {
 	if (xml_check_node_format(att, 7) != 0)
 		s_error("\x1b[1;31mError ELLIPSOID format\x1b[0m", e);
-//	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
-//		s_error("\x1b[1;31mError in ellipsoid, ID expected in #0\x1b[0m", e);
-//	if (ft_atoi(att[(*i)] + 4) != (int)NELL - 1)
-//		s_error("\x1b[1;31mError in ellipsoid, ID is incorrect\x1b[0m", e);
-//	else
-//		ellipsoid_node->id = ft_atoi(att[(*i)++] + 4);
+	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
+		s_error("\x1b[1;31mError in ellipsoid, ID expected in #0\x1b[0m", e);
+	if (ft_atoi(att[(*i)] + 4) != (int)NELL - 1)
+		s_error("\x1b[1;31mError in ellipsoid, ID is incorrect\x1b[0m", e);
+	else
+		ellipsoid_node->id = ft_atoi(att[(*i)++] + 4);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
 		s_error("\x1b[1;31mError in ellipsoid, POS expected in #1\x1b[0m", e);
 	else
@@ -77,6 +77,7 @@ void		xml_node_ellipsoid(t_env *e, char *node)
 
 	if (XML->in_scene != 1)
 		s_error("\x1b[1;31mError node is outside scene\x1b[0m", e);
+	e->scene->n_ellipsoids++;
 	ellipsoid_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;

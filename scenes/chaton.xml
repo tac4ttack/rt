@@ -4,12 +4,14 @@
 
 <scene		res="1024, 768" ambient="0.1, 0.1, 0.1">
 
-<cam		pos="0, 0, -80"
+<cam		id="0"
+			pos="0, 0, -80"
 			dir="0, 0, 1"
 			fov="30"
 			/>
 
-<plane		pos="0, 20, 0"
+<plane		id="0"
+			pos="0, 20, 0"
 			normale="0, 1, 0"
 			color="0, 255, 255, 255"
 			diff="0.42, 0.42, 0.42"
@@ -19,7 +21,8 @@
 			opacity="1"
 			/>
 
-<plane		pos="0, -20, 0"
+<plane		id="1"
+			pos="0, -20, 0"
 			normale="0, 1, 0"
 			color="0, 80, 0, 144"
 			diff="0.42, 0.42, 0.42"
@@ -29,7 +32,8 @@
 			opacity="1"
 			/>
 
-<plane		pos="0, 0, 40"
+<plane		id="2"
+			pos="0, 0, 40"
 			normale="0, 0, -1"
 			color="0, 0, 80, 144"
 			diff="0.42, 0.42, 0.42"
@@ -39,7 +43,8 @@
 			opacity="1"
 			/>
 
-<plane		pos="0, 0, -140"
+<plane		id="3"
+			pos="0, 0, -140"
 			normale="0, 0, -1"
 			color="0, 0, 80, 144"
 			diff="0.42, 0.42, 0.42"
@@ -49,7 +54,8 @@
 			opacity="1"
 			/>
 
-<plane		pos="20, 0, 0"
+<plane		id="4"
+			pos="20, 0, 0"
 			normale="-1, 0, 0"
 			color="0, 0, 0, 255"
 			diff="0.42, 0.42, 0.42"
@@ -59,7 +65,8 @@
 			opacity="1"
 			/>
 
-<plane		pos="-20, 0, 0"
+<plane		id="5"
+			pos="-20, 0, 0"
 			normale="1, 0, 0"
 			color="0, 144, 0, 144"
 			diff="0.42, 0.42, 0.42"
@@ -69,7 +76,8 @@
 			opacity="0"
 			/>
 
-<sphere		pos="0, -5, -8"
+<sphere		id="0"
+			pos="0, -5, -8"
 			dir="0, 0, 1"
 			radius="2"
 			color="0, 255, 0, 0"
@@ -80,7 +88,8 @@
 			opacity="1"
 			/>
 
-<sphere		pos="0, 0, -50"
+<sphere		id="1"
+			pos="0, 0, -50"
 			dir="0, 0, 1"
 			radius="10"
 			color="0, 255, 0, 0"
@@ -91,7 +100,8 @@
 			opacity="0.2"
 			/>
 
-<light		type="1"
+<light		id="0"
+			type="1"
 			pos="5, 8, 9"
 			dir="0, 0, 0"
 			brightness="0.51"
@@ -99,7 +109,8 @@
 			color="0, 255, 255, 255"
 			/>
 
-<light		type="1"
+<light		id="1"
+			type="1"
 			pos="0, 0, -20"
 			dir="0, 0, 0"
 			brightness="0.51"
@@ -107,7 +118,8 @@
 			color="0, 255, 255, 255"
 			/>
 
-<cone		pos="5, 0, 0"
+<cone		id="0"
+			pos="5, 0, 0"
 			dir="0, 1, 0"
 			angle="10"
 			color="0, 255, 80, 0"
@@ -118,7 +130,8 @@
 			opacity="1"
 			/>
 
-<cone		pos="-5, -5, 2"
+<cone		id="1"
+			pos="-5, -5, 2"
 			dir="1, 0, 0"
 			angle="20"
 			color="0, 0, 144, 144"
@@ -129,7 +142,8 @@
 			opacity="1"
 			/>
 
-<cylinder	pos="-5, 0, 10"
+<cylinder	id="0"
+			pos="-5, 0, 10"
 			dir="0, 1, 0"
 			radius="3.0"
 			color="0, 0, 51, 255"

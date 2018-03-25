@@ -5,6 +5,11 @@
 #define SHADOW_BIAS 1000
 
 #define CAM scene->cameras
+#define CONES scene->cones
+#define CYLIND scene->cylinders
+#define LIGHT scene->lights
+#define PLANE scene->planes
+#define SPHERE scene->spheres
 #define ACTIVECAM scene->cameras[scene->active_cam]
 
 #define OPTION_WAVE 	(1 << 1)
@@ -210,6 +215,13 @@ typedef struct			s_scene
 	void				__local *mem_obj;
 	void				*void7;
 	unsigned int		n_cams;
+	unsigned int		n_cones;
+	unsigned int		n_cylinders;
+	unsigned int		n_lights;
+	unsigned int		n_planes;
+	unsigned int		n_spheres;
+	unsigned int		n_ellipsoids;
+	unsigned int		n_paraboloids;
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
@@ -219,6 +231,7 @@ typedef struct			s_scene
 	int					depth;
 	float				u_time;
 	int					flag;
+	int					tor_count;
 	size_t				mem_size_obj;
 	size_t				mem_size_lights;
 	int					over_sampling;
