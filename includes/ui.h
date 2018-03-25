@@ -148,6 +148,7 @@ typedef	struct			s_ui
 										GtkWidget			*light_nav_next_btn; //
 										GtkWidget			*light_nav_add_btn; //
 										GtkWidget			*light_nav_del_btn; //
+						
 
 
 			GtkWidget			*status_bar; //
