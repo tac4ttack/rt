@@ -60,6 +60,8 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_export_dialog.c \
 						ui/callback/cb_light_manager.c \
 						ui/callback/cb_light_nav.c \
+						ui/callback/cb_light_params.c \
+						ui/callback/cb_light_pos.c \
 						ui/callback/cb_postproc_radio.c \
 						ui/callback/cb_render_btnpress.c \
 						ui/callback/cb_render_draw.c \
@@ -72,9 +74,10 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/gtk.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
-						ui/ui_light_update.c \
 						ui/ui_cam.c \
 						ui/ui_cam_update.c \
+						ui/ui_gdkrgba_to_int.c \
+						ui/ui_light_update.c \
 						ui/ui_obj.c \
 						update_fps.c \
 						vectors.c \

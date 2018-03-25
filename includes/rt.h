@@ -48,6 +48,7 @@
 # define PLANE					e->planes
 # define SPHERE					e->spheres
 # define ACTIVECAM				e->cameras[e->scene->active_cam]
+# define ACTIVELIGHT			((t_light*)e->gen_lights->mem)[e->ui->light_selector]
 
 # define XMLSUB					e->xml->sub_node
 # define XML					e->xml
@@ -289,13 +290,6 @@ typedef struct			s_scene
 	void				*mem_lights;
 	void				*mem_obj;
 	unsigned int		n_cams;
-	unsigned int		n_cones;
-	unsigned int		n_cylinders;
-	unsigned int		n_lights;
-	unsigned int		n_planes;
-	unsigned int		n_spheres;
-	unsigned int		n_ellipsoids;
-	unsigned int		n_paraboloids;
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;

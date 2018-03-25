@@ -13,13 +13,7 @@
 
 GUI made with GTK+3 and Glade
 Optimized with OpenCL
-
-Proudly brought to you by:
-
-adalenco - Arthur DALENÇON
-anroche - Antoine ROCHE
-fmessina - Florian MESSINA
-ntoniolo - Noé TONIOLO</property>
+</property>
     <property name="website">https://github.com/tac4ttack/rt</property>
     <property name="website_label" translatable="yes">https://github.com/tac4ttack/rt</property>
     <property name="license" translatable="yes">This is free and unencumbered software released into the public domain.
@@ -46,6 +40,10 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to &lt;https://unlicense.org&gt;</property>
+    <property name="authors">adalenco - Arthur DALENÇON
+anroche - Antoine ROCHE
+fmessina - Florian MESSINA
+ntoniolo - Noé TONIOLO</property>
     <property name="logo">logo.png</property>
     <property name="license_type">custom</property>
     <child internal-child="vbox">
@@ -1269,7 +1267,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="activatable">False</property>
                                             <property name="selectable">False</property>
                                             <child>
-                                              <object class="GtkLabel" id="light_list_label">
+                                              <object class="GtkLabel" id="light_list_id_label">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">LIGHT n / N</property>

@@ -26,6 +26,36 @@ static void	cam_remove(t_env *e, int target)
 	e->cameras = new_array;
 }
 
+void	cb_cam_manage_del(GtkButton *btn, gpointer data)
+{
+	t_env	*e;
+
+	(void)btn;
+	e = data;
+	if (e->scene->n_cams == 1)
+		ft_putendl("why did u du dis? :(((((");
+	else
+	{
+		cam_remove(e, e->scene->active_cam);
+		if (--e->scene->n_cams == 1)
+		{
+			gtk_widget_set_sensitive(e->ui->cam_nav_prev_btn, FALSE);
+			gtk_widget_set_sensitive(e->ui->cam_nav_next_btn, FALSE);
+			gtk_widget_set_sensitive(e->ui->cam_nav_del_btn, FALSE);
+		}
+		if (!(cl_replace_buffer(e->cl, sizeof(t_cam) * NCAM, 3)))
+			s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
+		if (e->scene->n_cams == 1)
+			e->scene->active_cam = 0;
+		else if (e->scene->active_cam == 0)
+			e->scene->active_cam = 0;
+		else
+			e->scene->active_cam -= 1;
+		ui_cam_set_id(e);	
+		ui_cam_update(e);
+	}
+}
+
 static void	cam_add(t_env *e)
 {
 	t_cam		*new_array;
@@ -70,30 +100,4 @@ void	cb_cam_manage_add(GtkButton *btn, gpointer data)
 	e->scene->active_cam = e->scene->n_cams - 1;
 	ui_cam_set_id(e);	
 	ui_cam_update(e);
-	ft_putendl("cam added");
-}
-
-void	cb_cam_manage_del(GtkButton *btn, gpointer data)
-{
-	t_env	*e;
-
-	(void)btn;
-	e = data;
-	if (e->scene->n_cams == 1)
-		ft_putendl("why did u du dis? :(((((");
-	else
-	{
-		cam_remove(e, e->scene->active_cam);
-		if (--e->scene->n_cams == 1)
-		{
-			gtk_widget_set_sensitive(e->ui->cam_nav_prev_btn, FALSE);
-			gtk_widget_set_sensitive(e->ui->cam_nav_next_btn, FALSE);
-			gtk_widget_set_sensitive(e->ui->cam_nav_del_btn, FALSE);
-		}
-		if (!(cl_replace_buffer(e->cl, sizeof(t_cam) * NCAM, 3)))
-			s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
-		e->scene->active_cam = 0;
-		ui_cam_set_id(e);	
-		ui_cam_update(e);
-	}
 }
