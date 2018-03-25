@@ -80,18 +80,21 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/xml_cones.c \
 						xml/xml_cylinders.c \
 						xml/xml_data_angle.c \
+						xml/xml_data_axis_size.c \
 						xml/xml_data_brightness.c \
 						xml/xml_data_color.c \
 						xml/xml_data_diffuse.c \
+						xml/xml_data_dir.c \
 						xml/xml_data_height.c \
+						xml/xml_data_normale.c \
 						xml/xml_data_opacity.c \
+						xml/xml_data_pos.c \
 						xml/xml_data_radius.c \
 						xml/xml_data_reflex.c \
 						xml/xml_data_refrac.c \
 						xml/xml_data_shrink.c \
 						xml/xml_data_specular.c \
 						xml/xml_data_type.c \
-						xml/xml_data_vector.c \
 						xml/xml_ellipsoid.c \
 						xml/xml_lights.c \
 						xml/xml_list.c \

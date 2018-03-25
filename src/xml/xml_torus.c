@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 16:13:55 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/25 16:33:01 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	xml_sphere_data_n(t_env *e, char **att, t_node *torus_node, int *i)
+static void	xml_torus_data_n(t_env *e, char **att, t_node *torus_node, int *i)
 {
 	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
 		s_error("\x1b[1;31mError in torus, COLOR expected in #5\x1b[0m", e);
@@ -40,7 +40,7 @@ static void	xml_sphere_data_n(t_env *e, char **att, t_node *torus_node, int *i)
 		xml_data_opacity(e, att, i, torus_node);
 }
 
-static void	xml_sphere_data(t_env *e, char **att, t_node *torus_node, int *i)
+static void	xml_torus_data(t_env *e, char **att, t_node *torus_node, int *i)
 {
 	if (xml_check_node_format(att, 6) != 0)
 		s_error("\x1b[1;31mError TORUS format\x1b[0m", e);
@@ -60,7 +60,7 @@ static void	xml_sphere_data(t_env *e, char **att, t_node *torus_node, int *i)
 		s_error("\x1b[1;31mError in torus, BIGRADIUS expected in #3\x1b[0m", e);
 	else
 		xml_data_big_radius(e, att, i, torus_node);
-	xml_sphere_data_n(e, att, torus_node, i);
+	xml_torus_data_n(e, att, torus_node, i);
 }
 
 void		xml_node_torus(t_env *e, char *node)
@@ -74,7 +74,7 @@ void		xml_node_torus(t_env *e, char *node)
 	torus_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
-	xml_sphere_data(e, tmp, torus_node, &i);
+	xml_torus_data(e, tmp, torus_node, &i);
 	if (tmp[i] == NULL)
 	{
 		if (ft_strstr(tmp[i - 1], "/>") == NULL)
@@ -90,7 +90,7 @@ void		xml_node_torus(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
-void		xml_push_sphere(t_env *e, t_node *list)
+void		xml_push_torus(t_env *e, t_node *list)
 {
 	t_torus torus;
 	

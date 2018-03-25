@@ -239,7 +239,7 @@ typedef struct			s_torus
 	cl_float			refract;
 	cl_float			opacity;
 	cl_float			lil_radius;
-	cl_float			bug_radius;
+	cl_float			big_radius;
 }						t_torus;
 
 typedef struct			s_ellipsoid
@@ -401,11 +401,15 @@ void					update_fps(t_fps *fps);
 
 void					xml_allocate_cam(t_env *e);
 int						xml_check_attr(t_env *e, char **att);
-int						xml_check_float(cl_float3 *clf, float f, int mod);
 int						xml_check_char(char c);
+int						xml_check_float(cl_float3 *clf, float f, int mod);
 char					*xml_check_line(t_env *e, char *buf);
 int						xml_check_node_format(char **node, int mod);
 void					xml_data_angle(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_axis_size(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_big_radius(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_brightness(t_env *e, char **attributes, \
 										int *i, t_node *node);
@@ -417,24 +421,21 @@ void					xml_data_dir(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_height(t_env *e, char **attributes, \
 										int *i, t_node *node);
+void					xml_data_lil_radius(t_env *e, char **attributes, \
+										int *i, t_node *node);
 void					xml_data_normale(t_env *e, char **attributes, \
 										int *i, t_node *node);
-void					xml_data_axis_size(t_env *e, char **attributes, \
+void					xml_data_opacity(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_pos(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_radius(t_env *e, char **attributes, \
 										int *i, t_node *node);
-void					xml_data_lil_radius(t_env *e, char **attributes, \
-										int *i, t_node *node);
-void					xml_data_big_radius(t_env *e, char **attributes, \
-										int *i, t_node *node);
 void					xml_data_reflex(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_refract(t_env *e, char **attributes, \
 										int *i, t_node *node);
-void					xml_data_opacity(t_env *e, char **attributes, \
-										int *i, t_node *node);
+
 void					xml_data_shrink(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_speculos(t_env *e, char **attributes, \
@@ -446,24 +447,27 @@ void					xml_get_file(t_env *e);
 void					xml_list_add_first(t_node **begin, t_node *node);
 void					xml_list_clean(t_env *e, t_node **list);
 t_node					*xml_list_new(char type);
-void					xml_node_clean(char **target);
+
 void					xml_node_cam(t_env *e, char *node);
+void					xml_node_clean(char **target);
 void					xml_node_cone(t_env *e, char *node);
 void					xml_node_cylinder(t_env *e, char *node);
-void					xml_node_paraboloid(t_env *e, char *node);
+void					xml_node_ellipsoid(t_env *e, char *node);
 void					xml_node_light(t_env *e, char *node);
+void					xml_node_paraboloid(t_env *e, char *node);
 void					xml_node_plane(t_env *e, char *node);
 void					xml_node_scene(t_env *e, char *node, char mod);
 void					xml_node_sphere(t_env *e, char *node);
-void					xml_node_ellipsoid(t_env *e, char *node);
+void					xml_node_torus(t_env *e, char *node);
+
 void					xml_parse_nodes(t_env *e);
 void					xml_push_cam(t_env *e, t_node *list);
 void					xml_push_cone(t_env *e, t_node *list);
 void					xml_push_cyl(t_env *e, t_node *list);
-void					xml_push_paraboloid(t_env *e, t_node *list);
+void					xml_push_ellipsoid(t_env *e, t_node *list);
 void					xml_push_light(t_env *e, t_node *list);
+void					xml_push_paraboloid(t_env *e, t_node *list);
 void					xml_push_plane(t_env *e, t_node *list);
 void					xml_push_sphere(t_env *e, t_node *list);
-void					xml_push_ellipsoid(t_env *e, t_node *list);
 
 #endif
