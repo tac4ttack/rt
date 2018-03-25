@@ -28,14 +28,12 @@ void	cb_stop_btn(GtkButton *btn, gpointer data)
 void	cb_render_btn(GtkButton *btn, gpointer data)
 {
 	t_env	*e;
-	cairo_t	*cr;
 
 	(void)btn;
-	cr = NULL;
 	e = data;
 	opencl_draw(e);
-	gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 0, 0);
-	cairo_paint(cr);
+//	gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 0, 0);
+//	cairo_paint(cr);
 //	e->ui->redraw = 0;
 //	gtk_widget_set_sensitive(e->ui->tool_play_btn, TRUE);
 //	gtk_widget_set_sensitive(e->ui->tool_stop_btn, FALSE);

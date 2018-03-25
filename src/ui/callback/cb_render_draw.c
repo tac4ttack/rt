@@ -7,9 +7,6 @@ gboolean cb_render_draw(GtkWidget *widget, cairo_t *cr, gpointer data)
 	(void)widget;
 	e = data;
 
-	if (e->ui->redraw == 1)
-	{
-	ft_putendl("drawww");
 //	1ere methode
 	gdk_cairo_set_source_pixbuf(cr, e->ui->pixbuf, 0, 0);
 //	2nde methode
@@ -19,7 +16,5 @@ gboolean cb_render_draw(GtkWidget *widget, cairo_t *cr, gpointer data)
 	// cairo_set_source_surface(cr, e->ui->surface, 0, 0);
 
 	cairo_paint(cr);
-
-	}
 	return FALSE;
 }
