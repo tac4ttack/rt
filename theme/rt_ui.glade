@@ -236,18 +236,18 @@ ntoniolo - Noé TONIOLO</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_diff_adjustement_b">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_diff_adjustement_g">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_diff_adjustement_r">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_dir_adjustement_x">
@@ -266,8 +266,8 @@ ntoniolo - Noé TONIOLO</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_opacity_adjustement">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_pos_adjustement_x">
@@ -286,28 +286,27 @@ ntoniolo - Noé TONIOLO</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_reflex_adjustement">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_refrac_adjustement">
     <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="step_increment">0.10000000000000001</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_spec_adjustement_b">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="upper">1</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_spec_adjustement_g">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_spec_adjustement_r">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="red_ambient_adjustement">
@@ -1084,7 +1083,7 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_dir_adjustement_x</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
+                                                    <property name="digits">3</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -1106,9 +1105,10 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_dir_adjustement_y</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
+                                                    <property name="digits">3</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
+                                                    <property name="value">0.01</property>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">True</property>
@@ -1128,7 +1128,7 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">cam_dir_adjustement_z</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
+                                                    <property name="digits">3</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -1940,7 +1940,7 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">obj_dir_adjustement_x</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
+                                                    <property name="digits">3</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -1962,7 +1962,7 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">obj_dir_adjustement_y</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
+                                                    <property name="digits">3</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -1984,7 +1984,7 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">obj_dir_adjustement_z</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
+                                                    <property name="digits">3</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -2038,7 +2038,7 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">obj_diff_adjustement_r</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
+                                                    <property name="digits">2</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -2060,7 +2060,7 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">obj_diff_adjustement_g</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
+                                                    <property name="digits">2</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -2082,7 +2082,7 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">obj_diff_adjustement_b</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
+                                                    <property name="digits">2</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -2136,7 +2136,7 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">obj_spec_adjustement_r</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
+                                                    <property name="digits">2</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -2158,7 +2158,7 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">obj_spec_adjustement_g</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
+                                                    <property name="digits">2</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -2180,7 +2180,7 @@ High setting decreases a lot the rendering speed</property>
                                                     <property name="input_purpose">number</property>
                                                     <property name="adjustment">obj_spec_adjustement_b</property>
                                                     <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
+                                                    <property name="digits">2</property>
                                                     <property name="wrap">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                   </object>
@@ -2288,7 +2288,7 @@ High setting decreases a lot the rendering speed</property>
                                           </object>
                                         </child>
                                         <child>
-                                          <object class="GtkListBoxRow" id="obj_list_color">
+                                          <object class="GtkListBoxRow" id="obj_list_opacolor">
                                             <property name="height_request">35</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
@@ -2397,6 +2397,8 @@ High setting decreases a lot the rendering speed</property>
                                                 <property name="receives_default">True</property>
                                                 <property name="tooltip_text" translatable="yes">Select previous object</property>
                                                 <property name="valign">start</property>
+                                                <property name="margin_left">5</property>
+                                                <property name="margin_right">5</property>
                                                 <property name="image">img_obj_prev</property>
                                                 <property name="always_show_image">True</property>
                                               </object>
@@ -2416,6 +2418,8 @@ High setting decreases a lot the rendering speed</property>
                                                 <property name="tooltip_text" translatable="yes">Select next object
 </property>
                                                 <property name="valign">start</property>
+                                                <property name="margin_left">5</property>
+                                                <property name="margin_right">5</property>
                                                 <property name="image">img_obj_next</property>
                                                 <property name="always_show_image">True</property>
                                               </object>
@@ -2434,6 +2438,8 @@ High setting decreases a lot the rendering speed</property>
                                                 <property name="receives_default">True</property>
                                                 <property name="tooltip_text" translatable="yes">Delete current object</property>
                                                 <property name="valign">start</property>
+                                                <property name="margin_left">5</property>
+                                                <property name="margin_right">5</property>
                                                 <property name="image">img_obj_delete</property>
                                                 <property name="always_show_image">True</property>
                                               </object>
@@ -2494,6 +2500,8 @@ High setting decreases a lot the rendering speed</property>
                                                 <property name="receives_default">True</property>
                                                 <property name="tooltip_text" translatable="yes">Add a new light</property>
                                                 <property name="valign">start</property>
+                                                <property name="margin_left">5</property>
+                                                <property name="margin_right">5</property>
                                                 <property name="image">img_obj_add</property>
                                                 <property name="always_show_image">True</property>
                                               </object>
@@ -2537,6 +2545,7 @@ High setting decreases a lot the rendering speed</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="margin_left">10</property>
+                                                <property name="margin_right">5</property>
                                               </object>
                                               <packing>
                                                 <property name="expand">True</property>
