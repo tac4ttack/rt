@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:02:45 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/25 15:24:04 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/19 17:25:41 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,6 @@ void		ui_cam(t_env *e)
 		free(cam_id);
 	}
 	ui_cam_update(e);
-//	opencl_set_args(e, e->cl);  // si decommenté alors commenter l'appel dans opencl_compute
+	opencl_set_args(e, e->cl);
 }
 

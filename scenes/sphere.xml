@@ -1,14 +1,17 @@
 <?xml version="1.0"?>
 <scene res="800, 600" ambient="0.1, 0.1, 0.1">
-<cam 		pos="0, 0, -30"
+<cam 	id="0"
+			pos="0, 0, -30"
 			dir="0, 0, 1"
 			fov="30"
 			/>
-<cam 		pos="30, 0, 0"
+<cam 	id="1"
+			pos="30, 0, 0"
 			dir="0, 0, 1"
 			fov="90"
 			/>
-<cam 		pos="-30, 0, 0"
+<cam 	id="2"
+			pos="-30, 0, 0"
 			dir="0, 0, 1"
 			fov="60"
 			/> 

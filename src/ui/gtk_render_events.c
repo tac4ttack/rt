@@ -14,7 +14,10 @@ void	gtk_render_events(t_env *e)
 		if (KEY_STATE_NPLU)
 			e->scene->depth++;
 		if (KEY_STATE_NMIN)
+		{
 			(e->scene->depth > 0 ? e->scene->depth-- : 0);
+			e->scene->tor_count = pow(2, e->scene->depth + 1) - 1;
+		}
 		gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_depth_spin, (gdouble)e->scene->depth);
 	}
 	if (e->ui->redraw == 1)
@@ -27,6 +30,6 @@ void	gtk_render_events(t_env *e)
 			KEY_STATE_D || KEY_STATE_SPC || KEY_STATE_Z || KEY_STATE_UA || \
 			KEY_STATE_DA || KEY_STATE_LA || KEY_STATE_RA)
 			ui_cam(e);
-//		opencl_set_args(e, e->cl); // si decommenté alors commenter l'appel dans opencl_compute
+		opencl_set_args(e, e->cl);
 	}
 }

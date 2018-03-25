@@ -1271,7 +1271,6 @@ __kernel void		ray_trace(	__global	char		*output,
 	final_color = 0;
 	if (scene->over_sampling > 1)
 	{
-		printf("oversampling in kernel is %d\n", scene->over_sampling);
 		int i = 0;
 		pix.x *= scene->over_sampling;
 		pix.y *= scene->over_sampling;
