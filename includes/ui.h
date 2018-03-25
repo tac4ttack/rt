@@ -126,7 +126,7 @@ typedef	struct			s_ui
 								GtkWidget			*light_frame_box; // 
 									GtkWidget			*light_list_box; // 
 										GtkWidget			*light_list_id; //
-											GtkWidget			*light_list_label; //
+											GtkWidget			*light_list_id_label; //
 										GtkWidget			*light_list_pos; //
 											GtkWidget			*light_list_pos_box; //
 												GtkWidget			*light_list_pos_label; //
@@ -142,7 +142,8 @@ typedef	struct			s_ui
 												GtkWidget			*light_list_color_label; //
 												GtkWidget			*light_list_color_button; //
 									GtkWidget			*light_nav_box; //
-										int					light_selector; // 
+										unsigned int		light_selector;
+										GdkRGBA				light_color; 
 										GtkWidget			*light_nav_prev_btn; //
 										GtkWidget			*light_nav_next_btn; //
 										GtkWidget			*light_nav_add_btn; //
@@ -162,8 +163,6 @@ typedef	struct			s_ui
 	GtkWidget			*export_window; //
 	
 	GtkWidget			*about_window; //
-
-	GtkWidget			*color_window;
 
 }						t_ui;
 
@@ -187,13 +186,19 @@ gboolean				cb_configure_draw_area(GtkWidget *widget, \
 									GdkEventConfigure *event, gpointer data);
 gboolean				cb_depth_update(GtkSpinButton *spin, gpointer data);
 void					cb_export_btn(GtkButton *btn, gpointer data);
-gboolean				cb_height_update(GtkSpinButton *spin, gpointer data);
+
+gboolean				cb_light_brightness(GtkSpinButton *spin, gpointer data);
+void					cb_light_color(GtkColorButton *button, gpointer data);
 void					cb_light_manage_del(GtkButton *btn, gpointer data);
 void					cb_light_manage_add(GtkButton *btn, gpointer data);
 void					cb_light_nav_prev(GtkButton *btn, gpointer data);
 void					cb_light_nav_next(GtkButton *btn, gpointer data);
 void					cb_light_nav_add(GtkButton *btn, gpointer data);
 void					cb_light_nav_del(GtkButton *btn, gpointer data);
+gboolean				cb_light_pos_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_light_pos_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_light_pos_z(GtkSpinButton *spin, gpointer data);
+gboolean				cb_light_shrink(GtkSpinButton *spin, gpointer data);
 void					cb_play_btn(GtkButton *btn, gpointer data);
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
 void					cb_postproc_invert(GtkToggleButton *button, \
@@ -212,12 +217,15 @@ gboolean				cb_render_keypress(GtkWidget *widget, GdkEvent *event, \
 gboolean				cb_render_keyrelease(GtkWidget *widget, \
 										GdkEvent *event, gpointer data);
 void					cb_render_update_size(GtkContainer *box, gpointer data);
+gboolean				cb_res_height_update(GtkSpinButton *spin, gpointer data);
+gboolean				cb_res_width_update(GtkSpinButton *spin, gpointer data);
 void					cb_stop_btn(GtkButton *btn, gpointer data);
 gboolean				cb_supersampling_update(GtkScale *scale, gpointer data);
-gboolean				cb_width_update(GtkSpinButton *spin, gpointer data);
 gboolean				gtk_main_loop(gpointer data);
 int						gtk_quit(GtkApplication *app, gpointer data);
 void					init_gtk(GtkApplication* app, gpointer data);
+GdkRGBA					ui_int_to_gdkrbga(int color);
+int						ui_gdkrgba_to_int(GdkRGBA color);
 
 # define KEY_STATE_UA		e->ui->keys.k_up
 # define KEY_STATE_DA		e->ui->keys.k_down

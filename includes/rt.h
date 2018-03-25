@@ -47,6 +47,7 @@
 # define PLANE					e->planes
 # define SPHERE					e->spheres
 # define ACTIVECAM				e->cameras[e->scene->active_cam]
+# define ACTIVELIGHT			((t_light*)e->gen_lights->mem)[e->ui->light_selector]
 
 # define XMLSUB					e->xml->sub_node
 # define XML					e->xml

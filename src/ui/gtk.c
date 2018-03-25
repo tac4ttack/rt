@@ -113,7 +113,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	// cam list id
 	e->ui->cam_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_id"));
 	e->ui->cam_list_id_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_id_label"));
-	gtk_label_set_text(GTK_LABEL(e->ui->cam_list_id_label), "CAMERA #1");
+	ui_cam_set_id(e);
 	// cam list pos
 	e->ui->cam_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos"));
 	e->ui->cam_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_box"));
@@ -138,7 +138,6 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->cam_list_fov = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov"));
 	e->ui->cam_list_fov_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_box"));
 	e->ui->cam_list_fov_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_label"));
-	ui_cam_set_id(e);
 	e->ui->cam_list_fov_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_fov_spin, (guint)ACTIVECAM.fov);
 	// cam nav box
@@ -165,23 +164,31 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->light_list_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_box"));
 	//light id
 	e->ui->light_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_id"));
-	e->ui->light_list_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_label"));
+	e->ui->light_list_id_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_id_label"));
+	ui_light_set_id(e);
 	//light pos
 	e->ui->light_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos"));
 	e->ui->light_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_box"));
 	e->ui->light_list_pos_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_label"));
 	e->ui->light_list_pos_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_spin_x"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_pos_spin_x, (gdouble)ACTIVELIGHT.pos.x);
 	e->ui->light_list_pos_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_spin_y"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_pos_spin_y, (gdouble)ACTIVELIGHT.pos.y);
 	e->ui->light_list_pos_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_spin_z"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_pos_spin_z, (gdouble)ACTIVELIGHT.pos.z);
 	//light params
 	e->ui->light_list_params = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_params"));
 	e->ui->light_list_params_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_params_box"));
 	e->ui->light_list_bright_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_bright_label"));
 	e->ui->light_list_bright_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_bright_spin"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_bright_spin, (gdouble)ACTIVELIGHT.brightness);
 	e->ui->light_list_shrink_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_shrink_label"));
 	e->ui->light_list_shrink_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_shrink_spin"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	e->ui->light_list_color_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_color_label"));
 	e->ui->light_list_color_button = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_color_button"));
+	e->ui->light_color = ui_int_to_gdkrbga((gint)ACTIVELIGHT.color);
+	gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(e->ui->light_list_color_button), &e->ui->light_color);
 	//light nav
 	e->ui->light_nav_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_box"));
 	e->ui->light_nav_prev_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_prev_btn"));
@@ -236,8 +243,8 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	gtk_widget_grab_focus(e->ui->render);
 
 	//scene resolution spinbuttons
-	g_signal_connect(GTK_WIDGET(e->ui->scene_resolution_width_spin), "value-changed", G_CALLBACK(cb_width_update), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->scene_resolution_height_spin), "value-changed", G_CALLBACK(cb_height_update), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->scene_resolution_width_spin), "value-changed", G_CALLBACK(cb_res_width_update), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->scene_resolution_height_spin), "value-changed", G_CALLBACK(cb_res_height_update), (gpointer)e);
 	//scene ambient spinbuttons
 	g_signal_connect(GTK_WIDGET(e->ui->scene_ambient_red_spin), "value-changed", G_CALLBACK(cb_ambient_red_update), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->scene_ambient_green_spin), "value-changed", G_CALLBACK(cb_ambient_green_update), (gpointer)e);
@@ -262,6 +269,14 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_next_btn), "clicked", G_CALLBACK(cb_cam_nav_next), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_add_btn), "clicked", G_CALLBACK(cb_cam_manage_add), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->cam_nav_del_btn), "clicked", G_CALLBACK(cb_cam_manage_del), (gpointer)e);
+	//light pos spinbuttons
+	g_signal_connect(GTK_WIDGET(e->ui->light_list_pos_spin_x), "value-changed", G_CALLBACK(cb_light_pos_x), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->light_list_pos_spin_y), "value-changed", G_CALLBACK(cb_light_pos_y), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->light_list_pos_spin_z), "value-changed", G_CALLBACK(cb_light_pos_z), (gpointer)e);
+	//light param buttons
+	g_signal_connect(GTK_WIDGET(e->ui->light_list_bright_spin), "value-changed", G_CALLBACK(cb_light_brightness), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->light_list_shrink_spin), "value-changed", G_CALLBACK(cb_light_shrink), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->light_list_color_button), "color-set", G_CALLBACK(cb_light_color), (gpointer)e);
 	//light nav buttons
 	g_signal_connect(GTK_WIDGET(e->ui->light_nav_prev_btn), "clicked", G_CALLBACK(cb_light_nav_prev), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->light_nav_next_btn), "clicked", G_CALLBACK(cb_light_nav_next), (gpointer)e);
