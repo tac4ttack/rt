@@ -32,21 +32,11 @@
 
 # define KRT					e->cl.kernel
 # define NCAM					e->scene->n_cams
-# define NCON					e->scene->n_cones
-# define NCYL					e->scene->n_cylinders
-# define NLIG					e->scene->n_lights
-# define NPLA					e->scene->n_planes
-# define NSPH					e->scene->n_spheres
-# define NELL					e->scene->n_ellipsoids
 # define NPAR					e->scene->n_paraboloids
-//# define ACTIVEOBJ				e->target_obj // DELETE
+
 # define CAM					e->cameras
-# define CONES					e->cones
-# define CYLIND					e->cylinders
-# define LIGHT					e->lights
-# define PLANE					e->planes
-# define SPHERE					e->spheres
 # define ACTIVECAM				e->cameras[e->scene->active_cam]
+
 # define ACTIVELIGHT			((t_light*)e->gen_lights->mem)[e->ui->light_selector]
 
 # define XMLSUB					e->xml->sub_node
@@ -288,13 +278,6 @@ typedef struct			s_scene
 	void				*mem_lights;
 	void				*mem_obj;
 	unsigned int		n_cams;
-	unsigned int		n_cones;
-	unsigned int		n_cylinders;
-	unsigned int		n_lights;
-	unsigned int		n_planes;
-	unsigned int		n_spheres;
-	unsigned int		n_ellipsoids;
-	unsigned int		n_paraboloids;
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
@@ -304,7 +287,6 @@ typedef struct			s_scene
 	int					depth;
 	float				u_time;
 	int					flag;
-	int					tor_count;
 	size_t				mem_size_obj;
 	size_t				mem_size_lights;
 	int					over_sampling;

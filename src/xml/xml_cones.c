@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/24 20:58:02 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/25 14:55:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ static void	xml_cone_data(t_env *e, char **att, t_node *cone_node, int *i)
 {
 	if (xml_check_node_format(att, 2) != 0)
 		s_error("\x1b[1;31mError CONE format\x1b[0m", e);
-	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
-		s_error("\x1b[1;31mError in cone, ID expected in #0\x1b[0m", e);
-	if (ft_atoi(att[(*i)] + 4) != (int)NCON - 1)
-		s_error("\x1b[1;31mError in cone, ID is incorrect\x1b[0m", e);
-	else
-		cone_node->id = ft_atoi(att[(*i)++] + 4);
+//	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
+//		s_error("\x1b[1;31mError in cone, ID expected in #0\x1b[0m", e);
+//	if (ft_atoi(att[(*i)] + 4) != (int)NCON - 1)
+//		s_error("\x1b[1;31mError in cone, ID is incorrect\x1b[0m", e);
+//	else
+//		cone_node->id = ft_atoi(att[(*i)++] + 4);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
 		s_error("\x1b[1;31mError in cone, POS expected in #1\x1b[0m", e);
 	else
@@ -73,7 +73,6 @@ void		xml_node_cone(t_env *e, char *node)
 
 	if (XML->in_scene != 1)
 		s_error("\x1b[1;31mError node is outside scene\x1b[0m", e);
-	e->scene->n_cones++;
 	cone_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
@@ -98,8 +97,8 @@ void		xml_push_cone(t_env *e, t_node *list)
 	t_cone cone;
 
 	cone.size = sizeof(t_cone);
-	cone.type = e->current_index_objects;
-	cone.id = OBJ_CONE;
+	cone.id = e->current_index_objects;
+	cone.type = OBJ_CONE;
 	cone.pos = list->pos;
 	cone.dir = list->dir;
 	cone.angle = list->angle;
