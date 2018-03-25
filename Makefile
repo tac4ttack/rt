@@ -45,6 +45,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						gen/gen_construct.c \
 						gen/gen_destruct.c \
 						main.c \
+						print_obj.c \
 						opencl_compute.c \
 						rotations.c \
 						tools.c \

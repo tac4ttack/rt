@@ -8,6 +8,7 @@ void		*gen_construct()
 		return (NULL);
 	gen->add = &gen_add;
 	gen->remove_mem_index = &gen_remove_mem_index;
+	gen->remove_index = &gen_remove_index;
 	gen->print = &gen_print;
 	return (gen);
 }

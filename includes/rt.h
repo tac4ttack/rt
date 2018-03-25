@@ -362,6 +362,7 @@ void					print_usage();
 int						quit(t_env *e);
 
 void					refresh(t_env *e);
+void					print_obj(t_gen *gen, void *data);
 
 
 void					clear_surface(t_env *e);

@@ -44,20 +44,20 @@ bool		gen_remove_mem_index(t_gen *gen, size_t mem_remove_index)
 	size_t			mem_index;
 	int				*current_mem_size;
 
-	if (mem_remove_index > gen->mem_size)
+	if (mem_remove_index >= gen->mem_size)
 		return (false);
 	current_mem_size = gen->mem;
 	if (!mem_remove_index)
 		return (gen_remove_mem_index_0(gen, *current_mem_size));
 	mem_index = 0;
-	while (mem_index < gen->mem_size)
+	while (mem_index <= gen->mem_size)
 	{
+		current_mem_size = (int *)(gen->mem + mem_index);
 		if (mem_index == mem_remove_index)
 		{
 			return (gen_remove_mem_index_other(gen,
 											*current_mem_size, mem_index));
 		}
-		current_mem_size = (int *)(gen->mem + mem_index);
 		mem_index += *current_mem_size;
 	}
 	return (false);

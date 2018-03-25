@@ -3,8 +3,10 @@
 void		gen_print(t_gen *gen, void (*print)(t_gen *, void *))
 {
 	size_t			mem_index;
+	size_t			unit_index;
 
 	mem_index = 0;
+	unit_index = 0;
 	ft_putstr("PRINT_GEN:\n");
 	while (mem_index < gen->mem_size)
 	{
@@ -15,6 +17,8 @@ void		gen_print(t_gen *gen, void (*print)(t_gen *, void *))
 		ft_putstr("\n");
 		print(gen, (gen->mem + mem_index));
 		mem_index += *((int *)(gen->mem + mem_index));
+
+		unit_index++;
 	}
 	ft_putchar('\n');
 }
