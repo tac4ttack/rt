@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 15:50:46 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/25 16:05:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,16 @@ int					xml_check_node_format(char **node, int mod)
 	i.y = 0;
 	if (node)
 	{
-		i.y = (mod == 0 ? 6 : i.y);
-		i.y = (mod == 1 ? 9 : i.y);
-		i.y = (mod == 2 ? 22 : i.y);
-		i.y = (mod == 3 ? 23 : i.y);
-		i.y = (mod == 4 ? 15 : i.y);
-		i.y = (mod == 5 ? 21 : i.y);
-		i.y = (mod == 6 ? 22 : i.y);
-		i.y = (mod == 7 ? 25 : i.y);
-		i.y = (mod == 8 ? 23 : i.y);
+		i.y = (mod == 0 ? 6 : i.y); // scene
+		i.y = (mod == 1 ? 9 : i.y); // cam
+		i.y = (mod == 2 ? 22 : i.y); // cone
+		i.y = (mod == 3 ? 23 : i.y); // cylinder
+		i.y = (mod == 4 ? 15 : i.y); // light
+		i.y = (mod == 5 ? 21 : i.y); // plane
+		i.y = (mod == 6 ? 22 : i.y); // sphere
+		i.y = (mod == 7 ? 25 : i.y); // ellips
+		i.y = (mod == 8 ? 23 : i.y); // parabo
+		i.y = (mod == 9 ? 23 : i.y); // torus
 		while (i.x <= i.y)
 		{
 			if (i.x == i.y && node[i.x] != NULL)
@@ -98,6 +99,8 @@ void				xml_process_node(t_env *e, char *node)
 		xml_node_sphere(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "ellipsoid") == 0)
 		xml_node_ellipsoid(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "torus") == 0)
+		xml_node_torus(e, node);
 	else
 		s_error("\x1b[1;31mError wrong node type\x1b[0m", e);
 	xml_node_clean(XMLSUB);

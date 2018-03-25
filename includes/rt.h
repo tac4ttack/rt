@@ -70,6 +70,7 @@
 # define OBJ_SPHERE			6
 # define OBJ_ELLIPSOID		7
 # define OBJ_PARABOLOID		8
+# define OBJ_TORUS			9
 
 typedef struct			s_object
 {
@@ -224,6 +225,23 @@ typedef struct			s_sphere
 	cl_float			radius;
 }						t_sphere;
 
+typedef struct			s_torus
+{
+	cl_int				size;
+	cl_int				type;
+	cl_int				id;
+	cl_float3			pos;
+	cl_float3			dir;
+	cl_float3			diff;
+	cl_float3			spec;
+	cl_int				color;
+	cl_float			reflex;
+	cl_float			refract;
+	cl_float			opacity;
+	cl_float			lil_radius;
+	cl_float			bug_radius;
+}						t_torus;
+
 typedef struct			s_ellipsoid
 {
 	cl_int				size;
@@ -252,6 +270,7 @@ typedef struct			s_node
 	cl_float3			normale;
 	cl_float3			axis_size;
 	cl_float			radius;
+	cl_float			radius2;
 	cl_float			angle;
 	cl_int				color;
 	cl_int				light;
@@ -405,6 +424,10 @@ void					xml_data_axis_size(t_env *e, char **attributes, \
 void					xml_data_pos(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_radius(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_lil_radius(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_big_radius(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_reflex(t_env *e, char **attributes, \
 										int *i, t_node *node);
