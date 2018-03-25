@@ -143,6 +143,24 @@ typedef struct			s_light
 **|							**!
 */
 
+typedef struct			s_box
+{
+	cl_int				size;
+	cl_int				type;
+	cl_int				id;
+	cl_float3			pos;
+	cl_float3			dir;
+	cl_float3			diff;
+	cl_float3			spec;
+	cl_int				color;
+	cl_float			reflex;
+	cl_float			refract;
+	cl_float			opacity;
+
+	cl_float3			min;
+	cl_float3			max;
+}						t_box;
+
 typedef struct			s_cone
 {
 	cl_int				size;
@@ -319,9 +337,9 @@ typedef struct			s_scene
 	float				u_time;
 	int					flag;
 	int					tor_count;
+	int					over_sampling;
 	size_t				mem_size_obj;
 	size_t				mem_size_lights;
-	int					over_sampling;
 }						t_scene;
 
 typedef	struct			s_env
