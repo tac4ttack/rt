@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/25 14:31:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/25 15:19:16 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void		env_init(t_env *e)
 	e->scene->depth = 0;
 	e->scene->over_sampling = 1;
 	e->target = -1;
-	e->scene->tor_count = pow(2, e->scene->depth + 1) - 1; // USELESS?
 	e->debug = DBUG;
 	e->gpu = IS_GPU;
 	if (e->gpu == 1)
