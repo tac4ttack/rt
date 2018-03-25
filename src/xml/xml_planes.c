@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 15:51:23 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/25 16:35:43 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
 {
 	if (xml_check_node_format(att, 5) != 0)
-		s_error("\x1b[1;31mError PLANE format\x1b[0m", e);
+		s_error("\x1b[1;31mError in PLANE format\x1b[0m", e);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
 		s_error("\x1b[1;31mError in plane, POS expected in #1\x1b[0m", e);
 	else

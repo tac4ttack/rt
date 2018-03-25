@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/03/25 15:52:06 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/25 16:35:34 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	xml_ellipsoid_data_n(t_env *e, char **att, t_node *ellipsoid_node, i
 static void	xml_ellipsoid_data(t_env *e, char **att, t_node *ellipsoid_node, int *i)
 {
 	if (xml_check_node_format(att, 7) != 0)
-		s_error("\x1b[1;31mError ELLIPSOID format\x1b[0m", e);
+		s_error("\x1b[1;31mError in ELLIPSOID format\x1b[0m", e);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
 		s_error("\x1b[1;31mError in ellipsoid, POS expected in #1\x1b[0m", e);
 	else

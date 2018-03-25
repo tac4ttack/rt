@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 15:51:49 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/25 16:35:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	xml_light_data_v(t_env *e, char **att, t_node *light_node, int *i)
 static void	xml_light_data(t_env *e, char **att, t_node *light_node, int *i)
 {
 	if (xml_check_node_format(att, 4) != 0)
-		s_error("\x1b[1;31mError LIGHT format\x1b[0m", e);
+		s_error("\x1b[1;31mError in LIGHT format\x1b[0m", e);
 	if (ft_strncmp(att[*i], "type=\"", 6) != 0)
 		s_error("\x1b[1;31mError in light, TYPE expected in #1\x1b[0m", e);
 	else

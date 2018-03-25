@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 17:11:29 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/05 15:09:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/25 16:35:45 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	xml_scene_parse(t_env *e, char *node)
 	i = 1;
 	tmp = ft_strsplit(node, ' ');
 	if (xml_check_node_format(tmp, 0) != 0)
-		s_error("\x1b[1;31mError CAM format\x1b[0m", e);
+		s_error("\x1b[1;31mError in CAM format\x1b[0m", e);
 	if (ft_strncmp(tmp[i], "res=\"", 5) != 0 || tmp[i] == NULL)
 		s_error("\x1b[1;31mError in scene RESOLUTION expected in #0\x1b[0m", e);
 	else
