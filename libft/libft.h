@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 19:26:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/28 23:52:06 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/25 15:22:46 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void				*ft_memcpy(void *dst, void const *src, size_t n);
 void				*ft_memccpy(void *dst, void const *src, int c, size_t n);
 void				*ft_memchr(void const *s, int c, size_t n);
 void				*ft_memmove(void *dst, void const *src, size_t len);
+void				*ft_memnew(void *ptr, size_t mem_size);
 
 void				ft_putnbr(int n);
 void				ft_putchar(char c);

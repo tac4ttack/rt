@@ -6,7 +6,7 @@
 #    By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/05 23:18:40 by fmessina          #+#    #+#              #
-#    Updated: 2018/03/20 17:40:26 by fmessina         ###   ########.fr        #
+#    Updated: 2018/03/25 15:22:26 by ntoniolo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ SRC =		ft_abs.c \
 			ft_memdel.c \
 			ft_memmove.c \
 			ft_memset.c \
+			ft_memnew.c \
 			ft_pow.c \
 			ft_putchar_fd.c \
 			ft_putchar.c \

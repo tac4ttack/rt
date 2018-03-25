@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<scene res="800, 600" ambient="0.1, 0.1, 0.1">
+<cam 		pos="0, 0, -30"
+			dir="0, 0, 1"
+			fov="30"
+			/>
+<sphere		pos="-5, 0, 0"
+			dir="0, 0, 0"
+			radius="2"
+			color="0, 255, 255, 255"
+			diff="0.5, 0.5, 0.5"
+			spec="0.5, 0.5, 0.5"
+			reflex="0.42"
+			refract="0"
+			opacity="0"
+			/>
+<light 		type="0"
+			pos="-2, 0, -10"
+			dir="0, 0, 0"
+			brightness="0.21"
+			shrink="21"
+			color="0, 255, 0, 0"
+			/>
+<light 		type="0"
+			pos="0, 0, -10"
+			dir="0, 0, 0"
+			brightness="0.21"
+			shrink="21"
+			color="0, 0, 255, 0"
+			/>
+<light 		type="0"
+			pos="2, 0, -10"
+			dir="0, 0, 0"
+			brightness="0.21"
+			shrink="21"
+			color="0, 0, 0, 255"
+			/>
+</scene>

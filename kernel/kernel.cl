@@ -60,6 +60,7 @@ typedef struct			s_hit
 	int					mem_index;
 	float				opacity;
 	float				m;
+	int					isin;
 }						t_hit;
 
 typedef struct			s_cam
@@ -428,12 +429,14 @@ static t_hit			hit_init(void)
 	hit.pos = 0.f;
 	hit.mem_index = 0;
 	hit.opacity = 0;
+	hit.m = 0;
+	hit.isin = 0;
 	return (hit);
 }
 
 
 bool		solve_quadratic(const float a, const float b, const float c,
-								float *inter0, float *inter1)
+								float *inter0, float *inter1, t_hit *hit)
 {
 	float discr;
 
@@ -482,6 +485,7 @@ float		calculate_m_value(const __local t_cylinder *obj, t_hit *hit, const float3
 		hit->m = dot(tmp, obj->dir);
 		if (hit->m > obj->height || hit->m < -obj->height)
 			return (0);
+		hit->isin = 1;
 		return (inter1);
 	}
 	return (inter0);
@@ -520,7 +524,7 @@ static float					inter_cylinder(const __local t_cylinder *cylinder, const float3
 
 	pos = origin - cylinder->pos;
 	abc = get_cylinder_abc(cylinder->radius, fast_normalize(cylinder->dir), ray, pos);
-	if (!solve_quadratic(abc.x, abc.y, abc.z, &inter0, &inter1))
+	if (!solve_quadratic(abc.x, abc.y, abc.z, &inter0, &inter1, hit))
 		return (0);
 	float3 rever = -pos;
 	return (calculate_m_value(cylinder, hit, &pos, &ray, inter0, inter1));
@@ -709,6 +713,14 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 		}
 		mem_index_obj += obj->size;
 	}
+	if (hit.isin && hit.obj->type == OBJ_CYLINDER)
+	{
+		float3 posdi = hit.obj->dir * hit.m;
+		posdi = (hit.obj->pos - origin) + posdi;
+		hit.dist = fast_length(posdi);
+	}
+	else
+		hit.isin = 0;
 	return (hit);
 }
 
@@ -719,9 +731,21 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	if (hit.obj->type == OBJ_SPHERE)
 		res = hit.pos - hit.obj->pos;
 	else if (hit.obj->type == OBJ_CYLINDER)
+	{
+		if (hit.isin)
+		{
+			if (dot(hit.obj->dir, -ray) < 0)
+				res = -hit.obj->dir;
+			else
+				res = hit.obj->dir;
+		}
+		else
 		res = get_cylinder_normal(hit.obj, hit);
+	}
 	else if (hit.obj->type == OBJ_CONE)
-		res = get_cone_normal(hit.obj, hit);
+	{
+			res = get_cone_normal(hit.obj, hit);
+	}
 	else if (hit.obj->type == OBJ_ELLIPSOID)
 		res = get_ellipsoid_normal(hit.obj, hit);
 	else if (hit.obj->type == OBJ_PLANE)

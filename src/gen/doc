@@ -42,13 +42,18 @@ stru.size_of_stru = sizeof(t_stru);
 --
 	gen->add(gen, (void)*stru);
 
+[get_index] <NON TESTE>
+	get_index permet de récuperer le pointeur a l'index X des gen.
+--
+	gen->get_index(gem , 10); // Récupère le pointeur du 10ème objets
+
 [remove_index]
 	remove_index permet de supprimer l'object a l'index X
 --
 	gen->remove_index(gen, 10); // Supprime l'object a l'index X
 
-[remove_mem_size]
-	remove_mem_size permet de supprimer l'object ce trouvant a tel Octet.
+[remove_mem_index]
+	remove_mem_index permet de supprimer l'object ce trouvant a tel Octet.
 	(WARNING) Dans le cas ou vous vous trompez d'octet ... Aie 🔥
 
 	RET

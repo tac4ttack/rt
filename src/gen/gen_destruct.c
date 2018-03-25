@@ -1,4 +1,4 @@
-#include "rt.h"
+#include "gen.h"
 
 void		*gen_destruct(t_gen **gen)
 {
