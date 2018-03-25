@@ -215,13 +215,6 @@ typedef struct			s_scene
 	void				__local *mem_obj;
 	void				*void7;
 	unsigned int		n_cams;
-	unsigned int		n_cones;
-	unsigned int		n_cylinders;
-	unsigned int		n_lights;
-	unsigned int		n_planes;
-	unsigned int		n_spheres;
-	unsigned int		n_ellipsoids;
-	unsigned int		n_paraboloids;
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
