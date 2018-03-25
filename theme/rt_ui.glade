@@ -121,11 +121,13 @@ ntoniolo - Noé TONIOLO</property>
   <object class="GtkImage" id="img_about_btn">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="yes">About this program</property>
     <property name="stock">gtk-dialog-question</property>
   </object>
   <object class="GtkImage" id="img_cam_add">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="yes">Add a new camera</property>
     <property name="stock">gtk-add</property>
   </object>
   <object class="GtkImage" id="img_cam_delete">
@@ -146,6 +148,7 @@ ntoniolo - Noé TONIOLO</property>
   <object class="GtkImage" id="img_export_btn">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="yes">Export render to PNG image file</property>
     <property name="stock">gtk-select-color</property>
   </object>
   <object class="GtkImage" id="img_light_add">
@@ -156,6 +159,7 @@ ntoniolo - Noé TONIOLO</property>
   <object class="GtkImage" id="img_light_del">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="yes">Delete current light</property>
     <property name="stock">gtk-delete</property>
   </object>
   <object class="GtkImage" id="img_light_next">
@@ -171,16 +175,19 @@ ntoniolo - Noé TONIOLO</property>
   <object class="GtkImage" id="img_play_btn">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="yes">Enable "Realtime" rendering</property>
     <property name="stock">gtk-media-play</property>
   </object>
   <object class="GtkImage" id="img_render_btn">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="yes">Render scene with current settings</property>
     <property name="stock">gtk-refresh</property>
   </object>
   <object class="GtkImage" id="img_stop_btn">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="yes">Disable "Realtime" rendering</property>
     <property name="stock">gtk-media-stop</property>
   </object>
   <object class="GtkAdjustment" id="light_brightness_adjustement">
@@ -204,6 +211,7 @@ ntoniolo - Noé TONIOLO</property>
     <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="light_shrink_adjustement">
+    <property name="lower">1</property>
     <property name="upper">999</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -320,7 +328,9 @@ ntoniolo - Noé TONIOLO</property>
                 <child>
                   <object class="GtkLabel" id="tool_fps_label">
                     <property name="visible">True</property>
+                    <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Average framerate</property>
                     <property name="label" translatable="yes">label</property>
                   </object>
                 </child>
@@ -427,7 +437,9 @@ ntoniolo - Noé TONIOLO</property>
                                           <object class="GtkLabel" id="scene_resolution_label">
                                             <property name="width_request">90</property>
                                             <property name="visible">True</property>
+                                            <property name="sensitive">False</property>
                                             <property name="can_focus">False</property>
+                                            <property name="tooltip_text" translatable="yes">Current scene render resolution</property>
                                             <property name="label" translatable="yes">Resolution</property>
                                             <property name="single_line_mode">True</property>
                                           </object>
@@ -442,6 +454,7 @@ ntoniolo - Noé TONIOLO</property>
                                             <property name="width_request">50</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="max_length">4</property>
@@ -462,6 +475,7 @@ ntoniolo - Noé TONIOLO</property>
                                             <property name="width_request">50</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">Resolution's height (between 5 and 9999)</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="max_length">4</property>
@@ -494,8 +508,9 @@ ntoniolo - Noé TONIOLO</property>
                                           <object class="GtkLabel" id="scene_ambient_label">
                                             <property name="width_request">90</property>
                                             <property name="visible">True</property>
+                                            <property name="sensitive">False</property>
                                             <property name="can_focus">False</property>
-                                            <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
+                                            <property name="tooltip_text" translatable="yes">Current scene ambient light settings</property>
                                             <property name="label" translatable="yes">Ambient light
 </property>
                                             <property name="single_line_mode">True</property>
@@ -510,8 +525,7 @@ ntoniolo - Noé TONIOLO</property>
                                           <object class="GtkSpinButton" id="scene_ambient_red_spin">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">
-</property>
+                                            <property name="tooltip_text" translatable="yes">Red channel (between 0 and 1)</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="max_length">4</property>
@@ -534,8 +548,7 @@ ntoniolo - Noé TONIOLO</property>
                                           <object class="GtkSpinButton" id="scene_ambient_green_spin">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">GREEN
- component, must be between 0 and 1</property>
+                                            <property name="tooltip_text" translatable="yes">Green channel (between 0 and 1)</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="max_length">4</property>
@@ -558,8 +571,7 @@ ntoniolo - Noé TONIOLO</property>
                                           <object class="GtkSpinButton" id="scene_ambient_blue_spin">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">BLUE
- component, must be between 0 and 1</property>
+                                            <property name="tooltip_text" translatable="yes">Blue channel (between 0 and 1)</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="max_length">4</property>
@@ -596,7 +608,9 @@ ntoniolo - Noé TONIOLO</property>
                                           <object class="GtkLabel" id="scene_depth_label">
                                             <property name="width_request">90</property>
                                             <property name="visible">True</property>
+                                            <property name="sensitive">False</property>
                                             <property name="can_focus">False</property>
+                                            <property name="tooltip_text" translatable="yes">Current scene rays depth settings, determine how far light rays will bounce</property>
                                             <property name="label" translatable="yes">Ray Depth</property>
                                             <property name="single_line_mode">True</property>
                                           </object>
@@ -610,8 +624,8 @@ ntoniolo - Noé TONIOLO</property>
                                           <object class="GtkSpinButton" id="scene_depth_spin">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">Enter the maximum number of rebound a ray can make.
-Higher values decrease a lot the rendering speed.</property>
+                                            <property name="tooltip_text" translatable="yes">Enter the maximum number of bounces a ray can make (between 0 and 6)
+High setting decreases a lot the rendering speed</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="max_length">2</property>
@@ -633,7 +647,9 @@ Higher values decrease a lot the rendering speed.</property>
                                           <object class="GtkLabel" id="scene_supersampling_label">
                                             <property name="width_request">90</property>
                                             <property name="visible">True</property>
+                                            <property name="sensitive">False</property>
                                             <property name="can_focus">False</property>
+                                            <property name="tooltip_text" translatable="yes">Current scene supersampling setting used to apply antialiasing on render</property>
                                             <property name="label" translatable="yes">Supersampling</property>
                                             <property name="single_line_mode">True</property>
                                           </object>
@@ -648,6 +664,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="width_request">180</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">High setting decreases a lot the rendering speed</property>
                                             <property name="halign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="adjustment">supersampling_adjustement</property>
@@ -677,7 +694,9 @@ Higher values decrease a lot the rendering speed.</property>
                                           <object class="GtkLabel" id="scene_postproc_label">
                                             <property name="width_request">90</property>
                                             <property name="visible">True</property>
+                                            <property name="sensitive">False</property>
                                             <property name="can_focus">False</property>
+                                            <property name="tooltip_text" translatable="yes">Current scene postprocessing setting, used to apply color filter on render</property>
                                             <property name="label" translatable="yes">Postprocessing:
 </property>
                                             <property name="single_line_mode">True</property>
@@ -822,7 +841,9 @@ Higher values decrease a lot the rendering speed.</property>
                                             <child>
                                               <object class="GtkLabel" id="cam_list_id_label">
                                                 <property name="visible">True</property>
+                                                <property name="sensitive">False</property>
                                                 <property name="can_focus">False</property>
+                                                <property name="tooltip_text" translatable="yes">Selected camera</property>
                                                 <property name="label" translatable="yes">CAMERA n / N</property>
                                               </object>
                                             </child>
@@ -844,8 +865,9 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkLabel" id="cam_list_pos_label">
                                                     <property name="width_request">60</property>
                                                     <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
+                                                    <property name="tooltip_text" translatable="yes">Current camera's position</property>
                                                     <property name="label" translatable="yes">Position
 </property>
                                                     <property name="single_line_mode">True</property>
@@ -860,8 +882,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="cam_list_pos_spin_x">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">
-</property>
+                                                    <property name="tooltip_text" translatable="yes">position.X</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -883,8 +904,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="cam_list_pos_spin_y">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">GREEN
- component, must be between 0 and 1</property>
+                                                    <property name="tooltip_text" translatable="yes">position.Y</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -906,8 +926,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="cam_list_pos_spin_z">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">BLUE
- component, must be between 0 and 1</property>
+                                                    <property name="tooltip_text" translatable="yes">position.Y</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -945,8 +964,9 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkLabel" id="cam_list_dir_label">
                                                     <property name="width_request">60</property>
                                                     <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
+                                                    <property name="tooltip_text" translatable="yes">Current camera's look at direction</property>
                                                     <property name="label" translatable="yes">Direction
 
 </property>
@@ -962,8 +982,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="cam_list_dir_spin_x">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">
-</property>
+                                                    <property name="tooltip_text" translatable="yes">direction.X</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -985,8 +1004,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="cam_list_dir_spin_y">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">GREEN
- component, must be between 0 and 1</property>
+                                                    <property name="tooltip_text" translatable="yes">direction.Y</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1008,8 +1026,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="cam_list_dir_spin_z">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">BLUE
- component, must be between 0 and 1</property>
+                                                    <property name="tooltip_text" translatable="yes">direction.Z</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1048,7 +1065,9 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkLabel" id="cam_list_fov_label">
                                                     <property name="width_request">60</property>
                                                     <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
+                                                    <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
                                                     <property name="label" translatable="yes">FOV</property>
                                                     <property name="single_line_mode">True</property>
                                                   </object>
@@ -1062,8 +1081,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="cam_list_fov_spin">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Enter the maximum number of rebound a ray can make.
-Higher values decrease a lot the rendering speed.</property>
+                                                    <property name="tooltip_text" translatable="yes">FOV angle (between 5 and 120)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="max_length">3</property>
@@ -1106,6 +1124,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Select previous camera</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
@@ -1125,6 +1144,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Select next camera</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
@@ -1163,6 +1183,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Delete current camera</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
@@ -1242,7 +1263,9 @@ Higher values decrease a lot the rendering speed.</property>
                                             <child>
                                               <object class="GtkLabel" id="light_list_id_label">
                                                 <property name="visible">True</property>
+                                                <property name="sensitive">False</property>
                                                 <property name="can_focus">False</property>
+                                                <property name="tooltip_text" translatable="yes">Selected light</property>
                                                 <property name="label" translatable="yes">LIGHT n / N</property>
                                               </object>
                                             </child>
@@ -1261,8 +1284,9 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkLabel" id="light_list_pos_label">
                                                     <property name="width_request">60</property>
                                                     <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Please enter the ambient light values for each components</property>
+                                                    <property name="tooltip_text" translatable="yes">Current light's position</property>
                                                     <property name="label" translatable="yes">Position
 </property>
                                                     <property name="single_line_mode">True</property>
@@ -1277,8 +1301,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="light_list_pos_spin_x">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">
-</property>
+                                                    <property name="tooltip_text" translatable="yes">position.X</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1300,8 +1323,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="light_list_pos_spin_y">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">GREEN
- component, must be between 0 and 1</property>
+                                                    <property name="tooltip_text" translatable="yes">position.Y</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1323,8 +1345,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="light_list_pos_spin_z">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">BLUE
- component, must be between 0 and 1</property>
+                                                    <property name="tooltip_text" translatable="yes">position.Z</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1362,7 +1383,9 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkLabel" id="light_list_bright_label">
                                                     <property name="width_request">60</property>
                                                     <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
+                                                    <property name="tooltip_text" translatable="yes">Current light's brightness, determine light's intensity</property>
                                                     <property name="label" translatable="yes">Brightness</property>
                                                   </object>
                                                   <packing>
@@ -1375,6 +1398,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="light_list_bright_spin">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">Light's brightness (between 0 and 1)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="max_length">5</property>
@@ -1393,7 +1417,9 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkLabel" id="light_list_shrink_label">
                                                     <property name="width_request">60</property>
                                                     <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
+                                                    <property name="tooltip_text" translatable="yes">Current light's "Shrink" setting, determine the specular spot size on objects</property>
                                                     <property name="label" translatable="yes">Shrink</property>
                                                   </object>
                                                   <packing>
@@ -1406,6 +1432,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                   <object class="GtkSpinButton" id="light_list_shrink_spin">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">Light's shrink (between 1 and 999)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="max_length">3</property>
@@ -1425,6 +1452,7 @@ Higher values decrease a lot the rendering speed.</property>
                                                     <property name="width_request">60</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
+                                                    <property name="tooltip_text" translatable="yes">Current light's color</property>
                                                     <property name="label" translatable="yes">Color</property>
                                                   </object>
                                                   <packing>
@@ -1475,6 +1503,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Select previous light</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
@@ -1494,6 +1523,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Select next light</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
@@ -1513,6 +1543,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Add a new light</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
@@ -1532,6 +1563,7 @@ Higher values decrease a lot the rendering speed.</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Delete current light</property>
                                             <property name="valign">start</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>

@@ -2423,9 +2423,10 @@ separator {
   min-height: 1px; }
 
 list {
-  background-color: #4a4a4a;
+  background-color: #404040;
   border-color: #313131; }
   list row {
+    color: #dbdbdb;
     padding: 2px; }
 
 row:not(:hover) {
