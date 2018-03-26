@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/21 16:18:34 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/26 21:13:24 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void			ui_obj(t_env *e)
 			(KEY_STATE_N7 ? target->z -= 0.1 : 0);
 			(KEY_STATE_N9 ? target->z += 0.1 : 0);
 		}
+		ui_obj_set_id(e, obj);
+		ui_obj_update(e, obj);
 		opencl_set_args(e, e->cl);
 	}
 }

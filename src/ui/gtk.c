@@ -195,12 +195,107 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->light_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_next_btn"));
 	e->ui->light_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_add_btn"));
 	e->ui->light_nav_del_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_del_btn"));
-	if (e->gen_lights->unit_size < 2)
+	if (e->gen_lights->length < 2)
 	{	
 		gtk_widget_set_sensitive(e->ui->light_nav_prev_btn, FALSE);
 		gtk_widget_set_sensitive(e->ui->light_nav_next_btn, FALSE);
 		gtk_widget_set_sensitive(e->ui->light_nav_del_btn, FALSE);
 	}
+
+
+
+
+////OBJECT////
+	e->ui->object_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame"));
+	e->ui->object_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame_label"));
+	e->ui->object_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame_align"));
+	e->ui->object_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame_box"));
+	e->ui->obj_list_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_box"));
+	//object id
+	e->ui->obj_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_id"));
+	e->ui->obj_list_id_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_id_label"));
+	ui_obj_set_id(e, e->gen_objects->mem + e->target);
+	//object pos
+	e->ui->obj_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos"));
+	e->ui->obj_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_box"));
+	e->ui->obj_list_pos_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_label"));
+	e->ui->obj_list_pos_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_spin_x"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	e->ui->obj_list_pos_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_spin_y"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	e->ui->obj_list_pos_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_spin_z"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	//object dir
+	e->ui->obj_list_dir = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir"));
+	e->ui->obj_list_dir_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_box"));
+	e->ui->obj_list_dir_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_label"));
+	e->ui->obj_list_dir_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_spin_x"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	e->ui->obj_list_dir_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_spin_y"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	e->ui->obj_list_dir_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_spin_z"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	//object diffuse
+	e->ui->obj_list_diff = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff"));
+	e->ui->obj_list_diff_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_box"));
+	e->ui->obj_list_diff_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_label"));
+	e->ui->obj_list_diff_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_spin_x"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	e->ui->obj_list_diff_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_spin_y"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	e->ui->obj_list_diff_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_spin_z"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	//object specular
+	e->ui->obj_list_spec = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec"));
+	e->ui->obj_list_spec_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_box"));
+	e->ui->obj_list_spec_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_label"));
+	e->ui->obj_list_spec_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_spin_x"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	e->ui->obj_list_spec_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_spin_y"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	e->ui->obj_list_spec_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_spin_z"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	//object reflex and refract
+	e->ui->obj_list_ref = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ref"));
+	e->ui->obj_list_ref_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ref_box"));
+	e->ui->obj_list_reflex_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_reflex_label"));
+	e->ui->obj_list_reflex_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_reflex_spin"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	e->ui->obj_list_refrac_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_refrac_label"));
+	e->ui->obj_list_refrac_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_refrac_spin"));
+//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	//object color opacity
+	e->ui->obj_list_opacolor = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacolor"));
+	e->ui->obj_list_opacolor_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacolor_box"));
+	e->ui->obj_list_opacity_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacity_label"));
+	e->ui->obj_list_opacity_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacity_spin"));
+	//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+	e->ui->obj_list_color_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_color_label"));
+	e->ui->obj_list_color_button = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_color_button"));
+//	e->ui->obj_color = ui_int_to_gdkrbga((gint)ACTIVELIGHT.color);
+	//object navigation
+	e->ui->obj_nav_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_box"));
+	e->ui->obj_nav_first = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_first"));
+	e->ui->obj_nav_prev_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_prev_btn"));
+	e->ui->obj_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_next_btn"));
+	e->ui->obj_nav_del_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_del_btn"));
+	if (e->gen_objects->length < 2)
+	{	
+		gtk_widget_set_sensitive(e->ui->obj_nav_prev_btn, FALSE);
+		gtk_widget_set_sensitive(e->ui->obj_nav_next_btn, FALSE);
+		gtk_widget_set_sensitive(e->ui->obj_nav_del_btn, FALSE);
+	}
+	e->ui->obj_nav_second = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_second"));
+	e->ui->obj_nav_add_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_label"));
+	e->ui->obj_nav_add_type_combo = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_type_combo"));
+	e->ui->obj_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_btn"));
+	e->ui->obj_nav_third = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_third"));
+	e->ui->obj_nav_jump_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_jump_label"));
+	e->ui->obj_nav_jump_combo = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_jump_combo"));
+	
+
+
+
 
 ////TOOL BAR
 	e->ui->tool_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_bar"));
@@ -296,6 +391,7 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	// free the builder
 	g_object_unref(e->ui->builder);
 	gtk_widget_show_all(e->ui->main_window);
+	gtk_widget_hide(e->ui->object_frame);
 	g_idle_add(gtk_main_loop, (gpointer)e);
 	gtk_main();
 }

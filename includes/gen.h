@@ -7,7 +7,7 @@
 typedef struct			s_gen
 {
 	size_t				mem_size;
-	size_t				unit_size;
+	size_t				length;
 	void				*mem;
 	bool				(*add)(struct s_gen *, void *);
 	bool				(*remove_mem_index)(struct s_gen *, size_t);

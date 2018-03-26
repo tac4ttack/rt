@@ -6,11 +6,11 @@ static bool	gen_remove_index_0(t_gen *gen, const int current_mem_size)
 
 	gen->mem_size -= current_mem_size;
 	tmp = gen->mem;
-	if (!gen->unit_size)
+	if (!gen->length)
 		gen->mem = NULL;
 	else
 		gen->mem = ft_memnew(gen->mem + current_mem_size, gen->mem_size);
-	gen->unit_size--;
+	gen->length--;
 	if (tmp)
 		ft_memdel((void**)&tmp);
 	if (!gen->mem)
@@ -25,7 +25,7 @@ static bool	gen_remove_index_other(t_gen *gen,
 	void			*tmp;
 
 	gen->mem_size -= current_mem_size;
-	gen->unit_size--;
+	gen->length--;
 	tmp = gen->mem;
 	if (!(gen->mem = ft_memalloc(gen->mem_size)))
 	{
@@ -45,7 +45,7 @@ bool		gen_remove_index(t_gen *gen, size_t remove_index)
 	int				*current_mem_size;
 	size_t			unit_index;
 
-	if (remove_index >= gen->unit_size)
+	if (remove_index >= gen->length)
 		return (false);
 	current_mem_size = gen->mem;
 	if (!remove_index)

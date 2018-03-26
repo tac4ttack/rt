@@ -39,6 +39,7 @@ typedef	struct			s_ui
 {
 	int					gtkstatus;
 	int					redraw;
+	unsigned int		light_selector;
 	cl_int4				render_pos;
 	t_keystate			keys;
 
@@ -120,7 +121,7 @@ typedef	struct			s_ui
 										GtkWidget			*cam_nav_add_btn; //
 										GtkWidget			*cam_nav_del_btn; //
 
-						GtkWidget			*light_frame; //
+						GtkWidget			*light_frame; //		
 							GtkWidget			*light_frame_label; //
 							GtkWidget			*light_frame_align; //
 								GtkWidget			*light_frame_box; // 
@@ -141,69 +142,69 @@ typedef	struct			s_ui
 												GtkWidget			*light_list_shrink_spin; //
 												GtkWidget			*light_list_color_label; //
 												GtkWidget			*light_list_color_button; //
+												GdkRGBA				light_color; //
 									GtkWidget			*light_nav_box; //
-										unsigned int		light_selector;
-										GdkRGBA				light_color; 
 										GtkWidget			*light_nav_prev_btn; //
 										GtkWidget			*light_nav_next_btn; //
 										GtkWidget			*light_nav_add_btn; //
 										GtkWidget			*light_nav_del_btn; //
 						
-						GtkWidget			*object_frame;
-							GtkWidget			*object_frame_label;
-							GtkWidget			*object_frame_align;
-								GtkWidget			*object_frame_box;
-									GtkWidget			*obj_list_box;
-										GtkWidget			*obj_list_id;
-											GtkWidget			*obj_list_id_labe;
-										GtkWidget			*obj_list_pos;
-											GtkWidget			*obj_list_pos_box;
-												GtkWidget			*obj_list_pos_label;
-												GtkWidget			*obj_list_pos_spin_x;
-												GtkWidget			*obj_list_pos_spin_y;
-												GtkWidget			*obj_list_pos_spin_z;
-										GtkWidget			*obj_list_dir;
-											GtkWidget			*obj_list_dir_box;
-												GtkWidget			*obj_list_dir_label;
-												GtkWidget			*obj_list_dir_spin_x;
-												GtkWidget			*obj_list_dir_spin_y;
-												GtkWidget			*obj_list_dir_spin_z;
-										GtkWidget			*obj_list_diff;
-											GtkWidget			*obj_list_diff_box;
-												GtkWidget			*obj_list_diff_label;
-												GtkWidget			*obj_list_diff_spin_x;
-												GtkWidget			*obj_list_diff_spin_y;
-												GtkWidget			*obj_list_diff_spin_z;
-										GtkWidget			*obj_list_spec;
-											GtkWidget			*obj_list_spec_box;
-												GtkWidget			*obj_list_spec_label;
-												GtkWidget			*obj_list_spec_spin_x;
-												GtkWidget			*obj_list_spec_spin_y;
-												GtkWidget			*obj_list_spec_spin_z;
-										GtkWidget			*obj_list_ref;
-											GtkWidget			*obj_list_ref_box;
-												GtkWidget			*obj_list_reflex_label;
-												GtkWidget			*obj_list_reflex_spin;
-												GtkWidget			*obj_list_refrac_label;
-												GtkWidget			*obj_list_refrac_spin;
-										GtkWidget			*obj_list_opacolor;
-											GtkWidget			*obj_list_opacolor_box;
-												GtkWidget			*obj_list_opacity_label;
-												GtkWidget			*obj_list_opacity_spin;
-												GtkWidget			*obj_list_color_label;
-												GtkWidget			*obj_list_color_button;
-									GtkWidget			*obj_nav_box;
-										GtkWidget			*obj_nav_first;
-											GtkWidget			*obj_nav_prev_btn;
-											GtkWidget			*obj_nav_next_btn;
-											GtkWidget			*obj_nav_del_btn;
-										GtkWidget			*obj_nav_second;
-											GtkWidget			*obj_nav_add_label;
-											GtkWidget			*obj_nav_add_type_combo;
-											GtkWidget			*obj_nav_add_btn;
-										GtkWidget			*obj_nav_third;
-											GtkWidget			*obj_nav_jump_label;
-											GtkWidget			*obj_nav_jump_combo;
+						GtkWidget			*object_frame; //
+							GtkWidget			*object_frame_label; //
+							GtkWidget			*object_frame_align; //
+								GtkWidget			*object_frame_box; //
+									GtkWidget			*obj_list_box; //
+										GtkWidget			*obj_list_id; //
+											GtkWidget			*obj_list_id_label; //
+										GtkWidget			*obj_list_pos; //
+											GtkWidget			*obj_list_pos_box; //
+												GtkWidget			*obj_list_pos_label; //
+												GtkWidget			*obj_list_pos_spin_x; //
+												GtkWidget			*obj_list_pos_spin_y; //
+												GtkWidget			*obj_list_pos_spin_z; //
+										GtkWidget			*obj_list_dir; //
+											GtkWidget			*obj_list_dir_box; //
+												GtkWidget			*obj_list_dir_label; //
+												GtkWidget			*obj_list_dir_spin_x; //
+												GtkWidget			*obj_list_dir_spin_y; //
+												GtkWidget			*obj_list_dir_spin_z;  //
+										GtkWidget			*obj_list_diff; //
+											GtkWidget			*obj_list_diff_box; //
+												GtkWidget			*obj_list_diff_label; //
+												GtkWidget			*obj_list_diff_spin_x; //
+												GtkWidget			*obj_list_diff_spin_y; //
+												GtkWidget			*obj_list_diff_spin_z; //
+										GtkWidget			*obj_list_spec; //
+											GtkWidget			*obj_list_spec_box; //
+												GtkWidget			*obj_list_spec_label; //
+												GtkWidget			*obj_list_spec_spin_x; //
+												GtkWidget			*obj_list_spec_spin_y; //
+												GtkWidget			*obj_list_spec_spin_z; //
+										GtkWidget			*obj_list_ref; //
+											GtkWidget			*obj_list_ref_box; //
+												GtkWidget			*obj_list_reflex_label; //
+												GtkWidget			*obj_list_reflex_spin; //
+												GtkWidget			*obj_list_refrac_label; //
+												GtkWidget			*obj_list_refrac_spin; //
+										GtkWidget			*obj_list_opacolor; //
+											GtkWidget			*obj_list_opacolor_box; //
+												GtkWidget			*obj_list_opacity_label; //
+												GtkWidget			*obj_list_opacity_spin; //
+												GtkWidget			*obj_list_color_label; //
+												GtkWidget			*obj_list_color_button; //
+												GdkRGBA				obj_color; //
+									GtkWidget			*obj_nav_box; //
+										GtkWidget			*obj_nav_first; //
+											GtkWidget			*obj_nav_prev_btn; //
+											GtkWidget			*obj_nav_next_btn; //
+											GtkWidget			*obj_nav_del_btn; //
+										GtkWidget			*obj_nav_second; //
+											GtkWidget			*obj_nav_add_label; //
+											GtkWidget			*obj_nav_add_type_combo; //
+											GtkWidget			*obj_nav_add_btn; //
+										GtkWidget			*obj_nav_third; //
+											GtkWidget			*obj_nav_jump_label; //
+											GtkWidget			*obj_nav_jump_combo; //
 											
 
 

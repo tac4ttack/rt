@@ -140,6 +140,7 @@ typedef struct			s_cylinder
 	float				radius;
 }						t_cylinder;
 
+
 typedef struct			s_paraboloid
 {
 	int					size;
@@ -229,11 +230,11 @@ typedef	struct			s_tor
 typedef struct			s_scene
 {
 	t_cam				__local *cameras;
-	void				*dummy_pedro;
+//	void				*dummy_pedro;
 	void				__local *mem_lights;
-	void				*dummy_gomez;
+//	void				*dummy_gomez;
 	void				__local *mem_obj;
-	void				*dummy_ramon;
+//	void				*dummy_ramon;
 	unsigned int		n_cams;
 	unsigned int		active_cam;
 	unsigned int		win_w;
@@ -508,13 +509,17 @@ static t_hit			hit_init(void)
 	return (hit);
 }
 
-
+// NEW
 bool		solve_quadratic(const float a, const float b, const float c,
 								float *inter0, float *inter1)
 {
 	float discr;
+	float tmp;
+	float q;
 
+	q = 0;
 	discr = b * b - 4 * a * c;
+	tmp = 0;
 	if (discr < 0)
 		return (false);
 	else if (discr < EPSILON)
@@ -524,13 +529,13 @@ bool		solve_quadratic(const float a, const float b, const float c,
 	}
 	else
 	{
-		float q = (b > 0) ? (-0.5 * (b + sqrt(discr))): (-0.5 * (b - sqrt(discr)));
+		q = (b > 0) ? (-0.5 * (b + sqrt(discr))): (-0.5 * (b - sqrt(discr)));
 		*inter0 = q / a;
 		*inter1 = c / q;
 	}
 	if (*inter0 > *inter1)
 	{
-		float tmp;
+		
 
 		tmp = *inter0;
 		*inter0 = *inter1;
@@ -630,31 +635,77 @@ static float3	get_cylinder_abc(const float radius, const float3 dir, const float
 	return (abc);
 }
 
-static float					inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin, t_hit *hit)
+// NEW CYLINDER
+// static float					inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin, t_hit *hit)
+// {
+// 	float3				abc;
+// 	float3				pos;
+// 	float				inter0;
+// 	float				inter1;
+
+// 	pos = origin - cylinder->pos;
+// 	abc = get_cylinder_abc(cylinder->radius, fast_normalize(cylinder->dir), ray, pos);
+// 	if (!solve_quadratic(abc.x, abc.y, abc.z, &inter0, &inter1))
+// 		return (0);
+// 	return (calculate_m_value(cylinder, hit, &pos, &ray, inter0, inter1));
+// }
+
+
+// OLD
+static float					inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin)
 {
 	float3				abc;
 	float3				pos;
 	float				d;
-	float				inter0, inter1;
+	float				res1 = 0;
+	float				res2 = 0;
+	float				m;
 
 	pos = origin - cylinder->pos;
 	abc = get_cylinder_abc(cylinder->radius, fast_normalize(cylinder->dir), ray, pos);
-	if (!solve_quadratic(abc.x, abc.y, abc.z, &inter0, &inter1))
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	if (d < 0)
 		return (0);
-	return (calculate_m_value(cylinder, hit, &pos, &ray, inter0, inter1));
+	if (d == 0)
+		res1 = (-abc[1]) / (2 * abc[0]);
+	else
+	{
+		res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+		res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	}
+	if (res1 < 0 && res2 < 0)
+		return (0);
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+	{
+		if (cylinder->height == 0 || (dot(ray, fast_normalize(cylinder->dir) * res1 +
+			dot(origin, fast_normalize(cylinder->dir))) < cylinder->height && dot(ray, fast_normalize(cylinder->dir) * res1 +
+			dot(origin, fast_normalize(cylinder->dir))) > 0))
+			return (res1);
+	}
+	if (cylinder->height ==  0 || (dot(ray, fast_normalize(cylinder->dir) * res2 +
+			dot(origin, fast_normalize(cylinder->dir))) < cylinder->height && dot(ray, fast_normalize(cylinder->dir) * res2 +
+			dot(origin, fast_normalize(cylinder->dir))) > 0))
+		return (res2);
+	else
+		return (0);
 }
 
 static float3			get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
 {
-	float3 res = 0;
-	float3 v = 0;
-	float3 project = 0;
-	float doty = 0;
+	float3 res;
+	float3 v;
+	float3 project;
+	float3 cyl_dir;
+	float doty;
 
+	res = 0;
+	v = 0;
+	project = 0;
+	doty = 0;
+	cyl_dir = fast_normalize(cylinder->dir);
 	v = hit.pos - cylinder->pos;
-	doty = dot(v, fast_normalize(cylinder->dir));
-
-	project = doty * fast_normalize(cylinder->dir);
+	doty = dot(v, cyl_dir);
+	project = doty * cyl_dir;
 	res = v - project;
 	return (fast_normalize(res));
 }
@@ -811,26 +862,33 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 	if (lightdist == 0)
 		hit.opacity = 1;
 	while (mem_index_obj < scene->mem_size_obj)
-	{
+	{	
 		obj = scene->mem_obj + mem_index_obj;
 		if (obj->type == OBJ_SPHERE)
 			dist = inter_sphere(obj, ray, origin);
+	
+		//	OLD  CYLINDER
 		else if (obj->type == OBJ_CYLINDER)
-		{
-			dist = inter_cylinder(obj, ray, origin, &hit);
-			if (hit.isin)
-			{
-				float3 posdi = obj->dir * hit.m;
-				posdi = (obj->pos - origin) + posdi;
-				dist = fast_length(posdi);
-			}
-		}
+		 	dist = inter_cylinder(obj, ray, origin);
+		//	NEW  CYLINDER
+		//  else if (obj->type == OBJ_CYLINDER)
+		//  {
+		//  	dist = inter_cylinder(obj, ray, origin, &hit);
+		//  	if (hit.isin)
+		//  	{
+		//  		float3 posdi = obj->dir * hit.m;
+		//  		posdi = (obj->pos - origin) + posdi;
+		//  		dist = fast_length(posdi);
+		//  	}
+		//  }
+
 		else if (obj->type == OBJ_PLANE)
-			dist = inter_plan(obj, ray, origin);
-		else if (obj->type == OBJ_CONE)
-			dist = inter_cone(obj, ray, origin);
-		else if (obj->type == OBJ_ELLIPSOID)
-			dist = inter_ellipsoid(obj, ray, origin);
+		 	dist = inter_plan(obj, ray, origin);
+
+		 else if (obj->type == OBJ_CONE)
+		 	dist = inter_cone(obj, ray, origin);
+		 else if (obj->type == OBJ_ELLIPSOID)
+		 	dist = inter_ellipsoid(obj, ray, origin);
 		if (lightdist > 0 && dist < lightdist && dist > EPSILON)
 			hit.opacity += obj->opacity;
 		if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
@@ -841,8 +899,11 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 		}
 		mem_index_obj += obj->size;
 	}
+
+//  NEW  CYLINDER
 	if (hit.isin && !hit.obj->type == OBJ_CYLINDER)
 		hit.isin = 0;
+
 	return (hit);
 }
 
@@ -852,18 +913,26 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 
 	if (hit.obj->type == OBJ_SPHERE)
 		res = hit.pos - hit.obj->pos;
+
+// OLD CYLINDER
 	else if (hit.obj->type == OBJ_CYLINDER)
-	{
-		if (hit.isin)
-		{
-			if (dot(hit.obj->dir, -ray) < 0)
-				res = -hit.obj->dir;
-			else
-				res = hit.obj->dir;
-		}
-		else
-			res = get_cylinder_normal(hit.obj, hit);
-	}
+		res = get_cylinder_normal(hit.obj, hit);
+// NEW 	 CYLINDER
+	// else if (hit.obj->type == OBJ_CYLINDER)
+	// {
+	// 	if (hit.isin)
+	// 	{
+	// 		if (dot(hit.obj->dir, -ray) < 0)
+	// 			res = -hit.obj->dir;
+	// 		else
+	// 			res = hit.obj->dir;
+	// 	}
+	// 	else
+	// 		res = get_cylinder_normal(hit.obj, hit);
+	// }
+
+
+
 	else if (hit.obj->type == OBJ_CONE)
 	{
 			res = get_cone_normal(hit.obj, hit);

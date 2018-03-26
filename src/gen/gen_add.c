@@ -9,6 +9,6 @@ bool		gen_add(t_gen *gen, void *elem)
 		return (false);
 	ft_memcpy(gen->mem + gen->mem_size, elem, size);
 	gen->mem_size += size;
-	gen->unit_size++;
+	gen->length++;
 	return (true);
 }
