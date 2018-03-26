@@ -251,18 +251,21 @@ ntoniolo - Noé TONIOLO</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_dir_adjustement_x">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">-999</property>
+    <property name="upper">999</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_dir_adjustement_y">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">-999</property>
+    <property name="upper">999</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_dir_adjustement_z">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">-999</property>
+    <property name="upper">999</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_opacity_adjustement">
@@ -300,6 +303,7 @@ ntoniolo - Noé TONIOLO</property>
   </object>
   <object class="GtkAdjustment" id="obj_spec_adjustement_b">
     <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="obj_spec_adjustement_g">

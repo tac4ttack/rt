@@ -220,59 +220,44 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->obj_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_box"));
 	e->ui->obj_list_pos_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_label"));
 	e->ui->obj_list_pos_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_spin_x"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	e->ui->obj_list_pos_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_spin_y"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	e->ui->obj_list_pos_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_spin_z"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	//object dir
 	e->ui->obj_list_dir = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir"));
 	e->ui->obj_list_dir_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_box"));
 	e->ui->obj_list_dir_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_label"));
 	e->ui->obj_list_dir_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_spin_x"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	e->ui->obj_list_dir_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_spin_y"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	e->ui->obj_list_dir_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_spin_z"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	//object diffuse
 	e->ui->obj_list_diff = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff"));
 	e->ui->obj_list_diff_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_box"));
 	e->ui->obj_list_diff_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_label"));
 	e->ui->obj_list_diff_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_spin_x"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	e->ui->obj_list_diff_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_spin_y"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	e->ui->obj_list_diff_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_spin_z"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	//object specular
 	e->ui->obj_list_spec = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec"));
 	e->ui->obj_list_spec_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_box"));
 	e->ui->obj_list_spec_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_label"));
 	e->ui->obj_list_spec_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_spin_x"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	e->ui->obj_list_spec_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_spin_y"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	e->ui->obj_list_spec_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_spin_z"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	//object reflex and refract
 	e->ui->obj_list_ref = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ref"));
 	e->ui->obj_list_ref_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ref_box"));
 	e->ui->obj_list_reflex_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_reflex_label"));
 	e->ui->obj_list_reflex_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_reflex_spin"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	e->ui->obj_list_refrac_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_refrac_label"));
 	e->ui->obj_list_refrac_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_refrac_spin"));
-//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
 	//object color opacity
 	e->ui->obj_list_opacolor = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacolor"));
 	e->ui->obj_list_opacolor_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacolor_box"));
 	e->ui->obj_list_opacity_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacity_label"));
 	e->ui->obj_list_opacity_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacity_spin"));
-	//	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
+
 	e->ui->obj_list_color_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_color_label"));
 	e->ui->obj_list_color_button = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_color_button"));
-//	e->ui->obj_color = ui_int_to_gdkrbga((gint)ACTIVELIGHT.color);
 	//object navigation
 	e->ui->obj_nav_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_box"));
 	e->ui->obj_nav_first = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_first"));
@@ -377,6 +362,34 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	g_signal_connect(GTK_WIDGET(e->ui->light_nav_next_btn), "clicked", G_CALLBACK(cb_light_nav_next), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->light_nav_add_btn), "clicked", G_CALLBACK(cb_light_manage_add), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->light_nav_del_btn), "clicked", G_CALLBACK(cb_light_manage_del), (gpointer)e);
+	
+	
+	//objects
+	// obj pos spinbuttons
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_pos_spin_x), "value-changed", G_CALLBACK(cb_obj_pos_x), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_pos_spin_y), "value-changed", G_CALLBACK(cb_obj_pos_y), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_pos_spin_z), "value-changed", G_CALLBACK(cb_obj_pos_z), (gpointer)e);
+	// obj dir spinbuttons
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_dir_spin_x), "value-changed", G_CALLBACK(cb_obj_dir_x), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_dir_spin_y), "value-changed", G_CALLBACK(cb_obj_dir_y), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_dir_spin_z), "value-changed", G_CALLBACK(cb_obj_dir_z), (gpointer)e);
+	// obj diff spinbuttons
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_diff_spin_x), "value-changed", G_CALLBACK(cb_obj_diff_x), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_diff_spin_y), "value-changed", G_CALLBACK(cb_obj_diff_y), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_diff_spin_z), "value-changed", G_CALLBACK(cb_obj_diff_z), (gpointer)e);
+	// obj spec spinbuttons
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_spec_spin_x), "value-changed", G_CALLBACK(cb_obj_spec_x), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_spec_spin_y), "value-changed", G_CALLBACK(cb_obj_spec_y), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_spec_spin_z), "value-changed", G_CALLBACK(cb_obj_spec_z), (gpointer)e);
+	// obj ref spinbutton
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_reflex_spin), "value-changed", G_CALLBACK(cb_obj_reflex), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_refrac_spin), "value-changed", G_CALLBACK(cb_obj_refrac), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_opacity_spin), "value-changed", G_CALLBACK(cb_obj_opacity), (gpointer)e);
+	// obj colorbutton
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_color_button), "color-set", G_CALLBACK(cb_obj_color), (gpointer)e);
+
+
+
 	//tool bar buttons
 	g_signal_connect(GTK_WIDGET(e->ui->tool_play_btn), "clicked", G_CALLBACK(cb_play_btn), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->tool_stop_btn), "clicked", G_CALLBACK(cb_stop_btn), (gpointer)e);

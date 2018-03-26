@@ -258,6 +258,28 @@ gboolean				cb_light_pos_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_light_pos_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_light_pos_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_light_shrink(GtkSpinButton *spin, gpointer data);
+
+void					cb_obj_color(GtkColorButton *button, gpointer data);
+gboolean				cb_obj_diff_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_diff_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_diff_z(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_dir_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_dir_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_dir_z(GtkSpinButton *spin, gpointer data);
+void					cb_obj_nav_add(GtkButton *btn, gpointer data);
+void					cb_obj_nav_del(GtkButton *btn, gpointer data);
+void					cb_obj_nav_next(GtkButton *btn, gpointer data);
+void					cb_obj_nav_prev(GtkButton *btn, gpointer data);
+gboolean				cb_obj_opacity(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_pos_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_pos_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_pos_z(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_reflex(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_refrac(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_spec_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_spec_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_spec_z(GtkSpinButton *spin, gpointer data);
+
 void					cb_play_btn(GtkButton *btn, gpointer data);
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
 void					cb_postproc_invert(GtkToggleButton *button, \
