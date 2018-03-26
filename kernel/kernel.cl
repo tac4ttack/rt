@@ -56,7 +56,7 @@ typedef struct			s_hit
 	float3				normal;
 	float3				pos;
 	t_object __local	*obj;
-	void				*dummy_pedro;
+//	void				*dummy_pedro;
 	int					mem_index;
 	float				opacity;
 	float				m;
@@ -209,6 +209,23 @@ typedef struct			s_ellipsoid
 	float3				axis_size;
 }						t_ellipsoid;
 
+typedef struct			s_torus
+{
+	int				size;
+	int				type;
+	int				id;
+	float3			pos;
+	float3			dir;
+	float3			diff;
+	float3			spec;
+	int				color;
+	float			reflex;
+	float			refract;
+	float			opacity;
+	float			lil_radius;
+	float			big_radius;
+}						t_torus;
+
 typedef	struct			s_tor
 {
 	int					activate;
@@ -246,8 +263,8 @@ typedef struct			s_scene
 	int					flag;
 	int					tor_count;
 	int					over_sampling;
-	size_t				mem_size_obj;
-	size_t				mem_size_lights;
+	int				mem_size_obj;
+	int				mem_size_lights;
 }						t_scene;
 
 static unsigned int	sepiarize(const unsigned int color)
@@ -1370,7 +1387,7 @@ __kernel void		ray_trace(	__global	char		*output,
 
 								__global	char		*global_mem_objects,
 								__local		char		*mem_objects,
-								__private	size_t		mem_size_objects,
+								__private	int		mem_size_objects,
 
 								__private	float		u_time,
 
@@ -1382,7 +1399,7 @@ __kernel void		ray_trace(	__global	char		*output,
 
 								__global	char		*global_mem_lights,
 								__local		char		*mem_lights,
-								__private	size_t		mem_size_lights,
+								__private	int		mem_size_lights,
 
 								__global	int			*target)
 {

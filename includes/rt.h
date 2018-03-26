@@ -112,8 +112,10 @@ typedef struct			s_hit
 	cl_float3			pos;
 	t_object			*obj;
 	cl_int				mem_index;
+	cl_float			opacity;
 	cl_float			m;
 	cl_int				isin;
+	cl_int				mein;
 }						t_hit;
 
 typedef struct			s_cam
@@ -220,7 +222,7 @@ typedef struct			s_plane
 	cl_int				type;
 	cl_int				id;
 	cl_float3			pos;
-	cl_float3			normale;
+	cl_float3			normal;
 	cl_float3			diff;
 	cl_float3			spec;
 	cl_int				color;
@@ -326,20 +328,20 @@ typedef struct			s_scene
 	t_cam				*cameras;
 	void				*mem_lights;
 	void				*mem_obj;
-	unsigned int		n_cams;
-	unsigned int		active_cam;
-	unsigned int		win_w;
-	unsigned int		win_h;
+	cl_uint				n_cams;
+	cl_uint				active_cam;
+	cl_uint				win_w;
+	cl_uint				win_h;
 	cl_float3			ambient;
-	int					mou_x;
-	int					mou_y;
-	int					depth;
-	float				u_time;
-	int					flag;
-	int					tor_count;
-	int					over_sampling;
-	size_t				mem_size_obj;
-	size_t				mem_size_lights;
+	cl_int				mou_x;
+	cl_int				mou_y;
+	cl_int				depth;
+	cl_float			u_time;
+	cl_int				flag;
+	cl_int				tor_count;
+	cl_int				over_sampling;
+	cl_int				mem_size_obj;
+	cl_int				mem_size_lights;
 }						t_scene;
 
 typedef	struct			s_env
