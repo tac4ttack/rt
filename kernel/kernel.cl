@@ -56,7 +56,7 @@ typedef struct			s_hit
 	float3				normal;
 	float3				pos;
 	t_object __local	*obj;
-	void				*void1;
+	void				*dummy_pedro;
 	int					mem_index;
 	float				opacity;
 	float				m;
@@ -229,11 +229,11 @@ typedef	struct			s_tor
 typedef struct			s_scene
 {
 	t_cam				__local *cameras;
-	void				*void1;
+	void				*dummy_pedro;
 	void				__local *mem_lights;
-	void				*void4;
+	void				*dummy_gomez;
 	void				__local *mem_obj;
-	void				*void7;
+	void				*dummy_ramon;
 	unsigned int		n_cams;
 	unsigned int		active_cam;
 	unsigned int		win_w;
