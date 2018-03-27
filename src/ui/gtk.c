@@ -404,7 +404,7 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	// free the builder
 	g_object_unref(e->ui->builder);
 	gtk_widget_show_all(e->ui->main_window);
-	gtk_widget_hide(e->ui->object_frame);
+	gtk_widget_hide(e->ui->obj_list_box);
 	g_idle_add(gtk_main_loop, (gpointer)e);
 	gtk_main();
 }

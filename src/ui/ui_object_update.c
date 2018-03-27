@@ -6,7 +6,7 @@ void			ui_obj_set_id(t_env *e, t_object *obj)
 
 	if (e->target > -1)
 	{
-		gtk_widget_show(e->ui->object_frame);
+		gtk_widget_show(e->ui->obj_list_box);
 		object_id = ft_strjoin_frs1(ft_itoa(obj->id - NCAM), "# ");
 		if (obj->type == OBJ_CYLINDER)
 			object_id = ft_strjoin_frs1(object_id, " CYLINDER");
@@ -24,7 +24,7 @@ void			ui_obj_set_id(t_env *e, t_object *obj)
 		free(object_id);
 	}
 	else
-		gtk_widget_hide(e->ui->object_frame);
+		gtk_widget_hide(e->ui->obj_list_box);
 }
 
 void		ui_obj_update(t_env *e, t_object *obj)
