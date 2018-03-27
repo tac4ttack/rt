@@ -87,6 +87,10 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	(void)app;
 	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 
+
+	printf("base target is %d\n", e->target);
+
+
 ////CSS STYLING
 	e->ui->css_provider = gtk_css_provider_new();
 	gtk_css_provider_load_from_path(e->ui->css_provider, "theme/bidou/gtk.css", NULL);
@@ -214,7 +218,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	//object id
 	e->ui->obj_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_id"));
 	e->ui->obj_list_id_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_id_label"));
-	ui_obj_set_id(e, e->gen_objects->mem + e->target);
+	
 	//object pos
 	e->ui->obj_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos"));
 	e->ui->obj_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_box"));
@@ -263,13 +267,9 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->obj_nav_first = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_first"));
 	e->ui->obj_nav_prev_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_prev_btn"));
 	e->ui->obj_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_next_btn"));
-	e->ui->obj_nav_del_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_del_btn"));
-	if (e->gen_objects->length < 2)
-	{	
-		gtk_widget_set_sensitive(e->ui->obj_nav_prev_btn, FALSE);
-		gtk_widget_set_sensitive(e->ui->obj_nav_next_btn, FALSE);
-		gtk_widget_set_sensitive(e->ui->obj_nav_del_btn, FALSE);
-	}
+	e->ui->obj_nav_del_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_del_btn"));	
+
+
 	e->ui->obj_nav_second = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_second"));
 	e->ui->obj_nav_add_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_label"));
 	e->ui->obj_nav_add_type_combo = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_type_combo"));
@@ -387,7 +387,9 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	g_signal_connect(GTK_WIDGET(e->ui->obj_list_opacity_spin), "value-changed", G_CALLBACK(cb_obj_opacity), (gpointer)e);
 	// obj colorbutton
 	g_signal_connect(GTK_WIDGET(e->ui->obj_list_color_button), "color-set", G_CALLBACK(cb_obj_color), (gpointer)e);
-
+	// obj nav buttons
+	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_prev_btn), "clicked", G_CALLBACK(cb_obj_nav_prev), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_next_btn), "clicked", G_CALLBACK(cb_obj_nav_next), (gpointer)e);
 
 
 	//tool bar buttons
@@ -404,7 +406,14 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	// free the builder
 	g_object_unref(e->ui->builder);
 	gtk_widget_show_all(e->ui->main_window);
-	gtk_widget_hide(e->ui->obj_list_box);
+
+	// init obj manager hiding shit
+	ui_obj_set_id(e, e->gen_objects->mem + e->target);
+//	gtk_widget_hide(e->ui->obj_list_box);
+//	gtk_widget_hide(e->ui->obj_nav_prev_btn);
+//	gtk_widget_hide(e->ui->obj_nav_next_btn);
+//	gtk_widget_hide(e->ui->obj_nav_del_btn);
+
 	g_idle_add(gtk_main_loop, (gpointer)e);
 	gtk_main();
 }
