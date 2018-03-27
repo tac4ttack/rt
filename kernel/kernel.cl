@@ -28,6 +28,7 @@
 # define OBJ_SPHERE			6
 # define OBJ_ELLIPSOID		7
 # define OBJ_PARABOLOID		8
+# define OBJ_THOR			9
 
 typedef struct			s_object
 {
@@ -210,6 +211,23 @@ typedef struct			s_ellipsoid
 	float3				axis_size;
 }						t_ellipsoid;
 
+typedef struct			s_thor
+{
+	int				size;
+	int				type;
+	int				id;
+	float3			pos;
+	float3			dir;
+	float3			diff;
+	float3			spec;
+	int				color;
+	float			reflex;
+	float			refract;
+	float			opacity;
+	float			lil_radius;
+	float			big_radius;
+}						t_thor;
+
 typedef	struct			s_tor
 {
 	int					activate;
@@ -250,6 +268,24 @@ typedef struct			s_scene
 	size_t				mem_size_obj;
 	size_t				mem_size_lights;
 }						t_scene;
+
+float ft_ret(float *tab)
+{
+	float ret;
+	ret = -1.0;
+	int i = 0;
+	while(i < 4)
+	{
+		if(tab[i] > 0.0001 && ret == -1)
+			ret = tab[i];
+			if (tab[i] < ret && tab[i] > 0.0001 )
+			ret = tab[i];
+		i++;
+	}
+	if (ret == -1.0)
+		ret = 0.0;
+	return (ret);
+}
 
 static unsigned int	sepiarize(const unsigned int color)
 {
@@ -551,6 +587,112 @@ bool		solve_quadratic(const float a, const float b, const float c,
 	return (true);
 }
 
+float3 ft_solve_3(float a, float b, float c, float d)
+    {
+
+       float a1 = c / d;
+       float a2 = b / d;
+       float a3 = a / d;
+
+       float3 Result;
+       	double theta;
+		double sqrtQ;
+		float e;
+        float Q = (a1 * a1 - 3.0 * a2) / 9.0;
+       	float R = (2.0 * a1 * a1 * a1 - 9.0 * a1 * a2 + 27.0 * a3) / 54.0;
+        float Qcubed = Q * Q * Q;
+        d = Qcubed - R * R;
+
+        if ( d >= 0.0001 )
+        {	
+            if ( Q < 0.0 )
+            {
+            	Result.x = 0;
+            	Result.y = 0;
+            	Result.z = 0;
+	                return (Result);
+            }
+
+            theta = acos(R / sqrt(Qcubed));
+            sqrtQ = sqrt(Q);
+
+            Result.x = -2.0 * sqrtQ * cos(theta / 3.0) - a1 / 3.0;
+            Result.y = -2.0 * sqrtQ * cos((theta + 2.0 * M_PI) / 3.0 ) - a1 / 3.0;
+            Result.z = -2.0 * sqrtQ * cos((theta + 4.0 * M_PI) / 3.0 ) - a1 / 3.0;
+
+        }
+
+        else
+        {	
+            e = pow(sqrt(-d) + fabs(R), 1.0f/ 3.0f);
+            
+            if ( R > 0 )
+                e = -e;
+
+            Result.x = Result.y = Result.z = (e + Q / e) - a1 / 3.0;
+        }
+
+        return (Result);
+    }
+
+float	ft_solve_4(float t[5])
+    {
+
+    	float Result[4];
+       
+    	float3 Roots;
+    	float Rsquare;
+		float Rrec;
+         float a0= t[0] / t[4];
+         float a1 = t[1] / t[4];
+         float a2 = t[2] / t[4];
+        float  a3 = t[3] / t[4];
+        float D;
+        float E;
+        //Result = malloc(sizeof(float) * 4.0);
+
+        float3 b;
+       
+        b.x = 4.0 * a2 * a0 - a1 * a1 - a3 * a3 * a0;
+       	b.y = a1 * a3 - 4.0 * a0;
+        b.z = -a2;
+
+	    Roots = ft_solve_3(b.x, b.y, b.z, 1.0);
+
+        float	y = max(Roots[0], max(Roots[1], Roots[2]));
+
+       
+
+
+        float R = 0.25 * a3 * a3 - a2 + y;
+        if ( R < 0.0 )
+            return (0);
+        R = sqrt( R );
+
+        if ( R == 0.0 )
+        {
+            D = sqrt( 0.75 * a3 * a3 - 2.0 * a2 + 2.0 * sqrt( y * y - 4.0 * a0 ) );
+            E = sqrt( 0.75 * a3 * a3 - 2.0 * a2 - 2.0 * sqrt( y * y - 4.0 * a0 ) );
+        }
+        else
+        {
+            Rsquare = R * R;
+            Rrec = 1.0 / R;
+            D = sqrt( 0.75 * a3 * a3 - Rsquare - 2.0 * a2 + 0.25 * Rrec * (4.0 * a3 * a2 - 8.0 * a1 - a3 * a3 * a3) );
+            E = sqrt( 0.75 * a3 * a3 - Rsquare - 2.0 * a2 - 0.25 * Rrec * (4.0 * a3 * a2 - 8.0 * a1 - a3 * a3 * a3) );
+        }
+
+      
+        Result[0] = -0.25 * a3 + 0.5 * R + 0.5 * D;
+        Result[1] = -0.25 * a3 + 0.5 * R - 0.5 * D;
+        Result[2] =  -0.25 * a3 - 0.5 * R + 0.5 * E;
+        Result[3] = -0.25 * a3 - 0.5 * R - 0.5 * E;
+
+        return(ft_ret(Result));
+	return (0);
+
+    }
+
 float		calculate_m_value(const __local t_cylinder *obj, t_hit *hit, const float3 *origin, const float3 *ray, float inter0, float inter1)
 {
 	float3 tmp;
@@ -708,6 +850,48 @@ static float3			get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hi
 	project = doty * cyl_dir;
 	res = v - project;
 	return (fast_normalize(res));
+}
+
+float		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
+{
+	float		c[5];
+	float3	k;
+	float		e;
+	float r = thor->big_radius;
+
+
+	k.x = ray.x * ray.x + ray.y * ray.y + ray.z * ray.z;
+	e = (origin.x - thor->pos.x) * (origin.x - thor->pos.x) + (origin.y - thor->pos.y) *
+	(origin.y - thor->pos.y) + (origin.z - thor->pos.z) * (origin.z - thor->pos.z) -
+	r * r - thor->lil_radius * thor->lil_radius;
+	k.z = (origin.x - thor->pos.x) * ray.x + (origin.y - thor->pos.y) * ray.y +
+	(origin.z - thor->pos.z) * ray.z;
+
+	k.y = 4.0 * r * r;
+	c[0] = e * e - k.y * (thor->lil_radius * thor->lil_radius - (origin.y - thor->pos.y) *
+	(origin.y - thor->pos.y));
+	c[1] = 4.0 * k.z * e + 2.0 * k.y * (origin.y - thor->pos.y) * ray.y;
+	c[2] = 2.0 * k.x * e + 4.0 * k.z * k.z + k.y * ray.y * ray.y;
+	c[3] = 4.0 * k.x * k.z;
+	c[4] = k.x * k.x;
+
+	return (ft_solve_4(c));
+}
+
+float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
+{
+	float3	res;
+	float		c;
+	float R = thor->lil_radius;
+	float r = thor->big_radius;
+
+	c = ((hit.pos.x - thor->pos.x) * (hit.pos.x - thor->pos.x) + (hit.pos.y - thor->pos.y) * (hit.pos.y
+				- thor->pos.y) + (hit.pos.z - thor->pos.z) * (hit.pos.z - thor->pos.z)
+			- r * r - R * R);
+	res.x = 4.0 * c * (hit.pos.x - thor->pos.x);
+	res.y = 4.0 * (hit.pos.y - thor->pos.y) * (c + 2.0 * r * r);
+	res.z = 4.0 * c * (hit.pos.z - thor->pos.z);
+	return (res);
 }
 
 static float3	get_sphere_abc(const float radius, const float3 ray, const float3 origin)
@@ -889,6 +1073,8 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 		 	dist = inter_cone(obj, ray, origin);
 		 else if (obj->type == OBJ_ELLIPSOID)
 		 	dist = inter_ellipsoid(obj, ray, origin);
+		 else if (obj->type == OBJ_THOR)
+		 	dist = inter_thor(obj, ray, origin);
 		if (lightdist > 0 && dist < lightdist && dist > EPSILON)
 			hit.opacity += obj->opacity;
 		if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
@@ -939,6 +1125,8 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	}
 	else if (hit.obj->type == OBJ_ELLIPSOID)
 		res = get_ellipsoid_normal(hit.obj, hit);
+	else if (hit.obj->type == OBJ_THOR)
+		res = get_ellipsoid_thor(hit.obj, hit);
 	else if (hit.obj->type == OBJ_PLANE)
 	{
 		if (dot(hit.obj->dir, -ray) < 0)
