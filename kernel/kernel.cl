@@ -852,7 +852,7 @@ static float3			get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hi
 	return (fast_normalize(res));
 }
 
-float		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
+static float		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
 {
 	float		c[5];
 	float3	k;
@@ -878,7 +878,7 @@ float		inter_thor(const __local t_thor *thor, const float3 ray, const float3 ori
 	return (ft_solve_4(c));
 }
 
-float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
+static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 {
 	float3	res;
 	float		c;
@@ -1097,6 +1097,7 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 {
 	float3		res, save;
 
+	res = 0;
 	if (hit.obj->type == OBJ_SPHERE)
 		res = hit.pos - hit.obj->pos;
 
@@ -1126,7 +1127,7 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	else if (hit.obj->type == OBJ_ELLIPSOID)
 		res = get_ellipsoid_normal(hit.obj, hit);
 	else if (hit.obj->type == OBJ_THOR)
-		res = get_ellipsoid_thor(hit.obj, hit);
+		res = get_thor_normal(hit.obj, hit);
 	else if (hit.obj->type == OBJ_PLANE)
 	{
 		if (dot(hit.obj->dir, -ray) < 0)

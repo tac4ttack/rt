@@ -474,5 +474,6 @@ void					xml_push_light(t_env *e, t_node *list);
 void					xml_push_paraboloid(t_env *e, t_node *list);
 void					xml_push_plane(t_env *e, t_node *list);
 void					xml_push_sphere(t_env *e, t_node *list);
+void					xml_push_torus(t_env *e, t_node *list);
 
 #endif
