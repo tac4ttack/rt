@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 16:35:43 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/26 13:43:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void		xml_push_plane(t_env *e, t_node *list)
 	plane.id = e->current_index_objects;
 	plane.type = OBJ_PLANE;
 	plane.pos = list->pos;
-	plane.normale = list->normale;
+	plane.normal = list->normale;
 	plane.color = list->color;
 	plane.diff = list->diff;
 	plane.spec = list->spec;
