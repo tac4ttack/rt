@@ -270,6 +270,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->obj_nav_add_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_label"));
 	e->ui->obj_nav_add_type_combo = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_type_combo"));
 	e->ui->obj_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_btn"));
+	gtk_widget_set_sensitive(e->ui->obj_nav_add_btn, FALSE);
 	e->ui->obj_nav_third = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_third"));
 	e->ui->obj_nav_jump_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_jump_label"));
 	e->ui->obj_nav_jump_combo = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_jump_combo"));
@@ -388,6 +389,8 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_next_btn), "clicked", G_CALLBACK(cb_obj_nav_next), (gpointer)e);
 	// obj manage buttons
 	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_del_btn), "clicked", G_CALLBACK(cb_obj_nav_del), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_add_type_combo), "changed", G_CALLBACK(cb_obj_combo_type), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_add_btn), "clicked", G_CALLBACK(cb_obj_nav_add), (gpointer)e);
 
 	//tool bar buttons
 	g_signal_connect(GTK_WIDGET(e->ui->tool_play_btn), "clicked", G_CALLBACK(cb_play_btn), (gpointer)e);

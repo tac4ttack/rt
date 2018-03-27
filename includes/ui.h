@@ -260,6 +260,7 @@ gboolean				cb_light_pos_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_light_shrink(GtkSpinButton *spin, gpointer data);
 
 void					cb_obj_color(GtkColorButton *button, gpointer data);
+void					cb_obj_combo_type(GtkComboBox *box, gpointer data);
 gboolean				cb_obj_diff_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_diff_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_diff_z(GtkSpinButton *spin, gpointer data);

@@ -40,7 +40,8 @@ SRC_NAME =	 			cl/cl_compute.c \
 						gen/gen_add.c \
 						gen/gen_remove_mem_index.c \
 						gen/gen_remove_index.c \
-						gen/gen_get_index.c \
+						gen/gen_get_index_ptr.c \
+						gen/gen_get_ptr_index.c \
 						gen/gen_print.c \
 						gen/gen_construct.c \
 						gen/gen_destruct.c \
@@ -63,6 +64,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_light_params.c \
 						ui/callback/cb_light_pos.c \
 						ui/callback/cb_obj_color.c \
+						ui/callback/cb_obj_combo_type.c \
 						ui/callback/cb_obj_diff.c \
 						ui/callback/cb_obj_dir.c \
 						ui/callback/cb_obj_nav_add.c \

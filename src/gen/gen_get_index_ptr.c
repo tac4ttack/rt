@@ -1,6 +1,6 @@
 #include "gen.h"
 
-void		*gen_get_index(t_gen *gen, int index)
+void		*gen_get_index_ptr(t_gen *gen, int index)
 {
 	size_t			mem_index;
 	int				current_index;

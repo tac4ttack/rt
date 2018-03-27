@@ -18,7 +18,8 @@ typedef struct			s_gen
 void					*gen_construct();
 bool					gen_add(t_gen *gen, void *elem);
 void					*gen_destruct(t_gen **gen);
-void					*gen_get_index(t_gen *gen, int index);
+void					*gen_get_index_ptr(t_gen *gen, int index);
+int						gen_get_ptr_index(t_gen *gen, void *obj);
 bool					gen_remove_mem_index(t_gen *gen, size_t mem_remove_index);
 bool					gen_remove_index(t_gen *gen, size_t remove_index);
 void					gen_print(t_gen *gen, void (*print)(t_gen *, void *));

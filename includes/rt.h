@@ -387,6 +387,13 @@ void					print_obj(t_gen *gen, void *data);
 
 void					clear_surface(t_env *e);
 void					gtk_render_events(t_env *e);
+void					ui_add_cone(t_env *e);
+void					ui_add_cylinder(t_env *e);
+void					ui_add_ellipsoid(t_env *e);
+void					ui_add_paraboloid(t_env *e);
+void					ui_add_plane(t_env *e);
+void					ui_add_sphere(t_env *e);
+void					ui_add_torus(t_env *e);
 void					ui_cam(t_env *e);
 void					ui_cam_set_id(t_env *e);
 void					ui_cam_update(t_env *e);

@@ -1237,13 +1237,23 @@ ntoniolo - Noé TONIOLO</property>
                                             </child>
                                             <child>
                                               <object class="GtkComboBoxText" id="obj_nav_add_type_combo">
+                                                <property name="width_request">120</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="margin_left">10</property>
                                                 <property name="margin_right">5</property>
+                                                <items>
+                                                  <item translatable="yes">Cone</item>
+                                                  <item translatable="yes">Cylinder</item>
+                                                  <item translatable="yes">Ellipsoid</item>
+                                                  <item translatable="yes">Paraboloid</item>
+                                                  <item translatable="yes">Plane</item>
+                                                  <item translatable="yes">Sphere</item>
+                                                  <item translatable="yes">Torus</item>
+                                                </items>
                                               </object>
                                               <packing>
-                                                <property name="expand">True</property>
+                                                <property name="expand">False</property>
                                                 <property name="fill">True</property>
                                                 <property name="position">1</property>
                                               </packing>
