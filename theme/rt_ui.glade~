@@ -526,7 +526,6 @@ ntoniolo - Noé TONIOLO</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="orientation">vertical</property>
-                                    <property name="homogeneous">True</property>
                                     <child>
                                       <object class="GtkListBox" id="obj_list_box">
                                         <property name="visible">True</property>
@@ -1126,6 +1125,83 @@ ntoniolo - Noé TONIOLO</property>
                                             </child>
                                           </object>
                                         </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_cone">
+                                            <property name="width_request">100</property>
+                                            <property name="height_request">80</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_cylinder">
+                                            <property name="width_request">100</property>
+                                            <property name="height_request">80</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_ellipsoid">
+                                            <property name="width_request">100</property>
+                                            <property name="height_request">80</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_paraboloid">
+                                            <property name="width_request">100</property>
+                                            <property name="height_request">80</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_plane">
+                                            <property name="width_request">100</property>
+                                            <property name="height_request">80</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_sphere">
+                                            <property name="width_request">100</property>
+                                            <property name="height_request">80</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_torus">
+                                            <property name="width_request">100</property>
+                                            <property name="height_request">80</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                        </child>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -1237,13 +1313,24 @@ ntoniolo - Noé TONIOLO</property>
                                             </child>
                                             <child>
                                               <object class="GtkComboBoxText" id="obj_nav_add_type_combo">
+                                                <property name="width_request">120</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="margin_left">10</property>
                                                 <property name="margin_right">5</property>
+                                                <property name="active">0</property>
+                                                <items>
+                                                  <item translatable="yes">Cone</item>
+                                                  <item translatable="yes">Cylinder</item>
+                                                  <item translatable="yes">Ellipsoid</item>
+                                                  <item translatable="yes">Paraboloid</item>
+                                                  <item translatable="yes">Plane</item>
+                                                  <item translatable="yes">Sphere</item>
+                                                  <item translatable="yes">Torus</item>
+                                                </items>
                                               </object>
                                               <packing>
-                                                <property name="expand">True</property>
+                                                <property name="expand">False</property>
                                                 <property name="fill">True</property>
                                                 <property name="position">1</property>
                                               </packing>
@@ -1320,7 +1407,7 @@ ntoniolo - Noé TONIOLO</property>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
-                                        <property name="fill">True</property>
+                                        <property name="fill">False</property>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>

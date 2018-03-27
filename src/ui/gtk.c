@@ -270,7 +270,6 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->obj_nav_add_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_label"));
 	e->ui->obj_nav_add_type_combo = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_type_combo"));
 	e->ui->obj_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_btn"));
-	gtk_widget_set_sensitive(e->ui->obj_nav_add_btn, FALSE);
 	e->ui->obj_nav_third = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_third"));
 	e->ui->obj_nav_jump_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_jump_label"));
 	e->ui->obj_nav_jump_combo = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_jump_combo"));
@@ -408,11 +407,8 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	gtk_widget_show_all(e->ui->main_window);
 
 	// init obj manager hiding shit
-	ui_obj_set_id(e, e->gen_objects->mem + e->target);
-//	gtk_widget_hide(e->ui->obj_list_box);
-//	gtk_widget_hide(e->ui->obj_nav_prev_btn);
-//	gtk_widget_hide(e->ui->obj_nav_next_btn);
-//	gtk_widget_hide(e->ui->obj_nav_del_btn);
+//	ui_obj_set_id(e, e->gen_objects->mem + e->target);
+	ui_obj_update(e, e->gen_objects->mem + e->target);
 
 	g_idle_add(gtk_main_loop, (gpointer)e);
 	gtk_main();

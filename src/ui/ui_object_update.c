@@ -10,7 +10,9 @@ void			ui_obj_set_id(t_env *e, t_object *obj)
 		gtk_widget_show(e->ui->obj_nav_prev_btn);
 		gtk_widget_show(e->ui->obj_nav_next_btn);
 		gtk_widget_show(e->ui->obj_nav_del_btn);
-		object_id = ft_strjoin_frs1(ft_itoa(obj->id - NCAM), "# ");
+		object_id = ft_strjoin_frs1(ft_itoa(gen_get_ptr_index(e->gen_objects, obj) + 1), "# ");
+		if (obj->type == OBJ_CONE)
+			object_id = ft_strjoin_frs1(object_id, " CONE");
 		if (obj->type == OBJ_CYLINDER)
 			object_id = ft_strjoin_frs1(object_id, " CYLINDER");
 		else if (obj->type == OBJ_PLANE)
@@ -37,8 +39,33 @@ void			ui_obj_set_id(t_env *e, t_object *obj)
 
 void		ui_obj_update(t_env *e, t_object *obj)
 {
+	char		*object_id;
+	
 	if (e->target > -1)
 	{
+				gtk_widget_show(e->ui->obj_list_box);
+		gtk_widget_show(e->ui->obj_nav_prev_btn);
+		gtk_widget_show(e->ui->obj_nav_next_btn);
+		gtk_widget_show(e->ui->obj_nav_del_btn);
+		object_id = ft_strjoin_frs1(ft_itoa(gen_get_ptr_index(e->gen_objects, obj) + 1), "# ");
+		if (obj->type == OBJ_CONE)
+			object_id = ft_strjoin_frs1(object_id, " CONE");
+		if (obj->type == OBJ_CYLINDER)
+			object_id = ft_strjoin_frs1(object_id, " CYLINDER");
+		else if (obj->type == OBJ_PLANE)
+			object_id = ft_strjoin_frs1(object_id, " PLANE");
+		else if (obj->type == OBJ_SPHERE)
+			object_id = ft_strjoin_frs1(object_id, " SPHERE");
+		else if (obj->type == OBJ_ELLIPSOID)
+			object_id = ft_strjoin_frs1(object_id, " ELLIPSOID");
+		else if (obj->type == OBJ_PARABOLOID)
+			object_id = ft_strjoin_frs1(object_id, " PARABOLOID");
+		else if (obj->type == OBJ_TORUS)
+			object_id = ft_strjoin_frs1(object_id, " TORUS");
+		gtk_label_set_text(GTK_LABEL(e->ui->obj_list_id_label), object_id);
+		free(object_id);
+		
+		
 		gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_list_pos_spin_x, (gdouble)obj->pos.x);
 		gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_list_pos_spin_y, (gdouble)obj->pos.y);
 		gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_list_pos_spin_z, (gdouble)obj->pos.z);
@@ -56,7 +83,15 @@ void		ui_obj_update(t_env *e, t_object *obj)
 		gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_list_opacity_spin, (gdouble)obj->opacity);
 		e->ui->obj_color = ui_int_to_gdkrbga((gint)obj->color);
 		gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(e->ui->obj_list_color_button), &e->ui->obj_color);
+
+		// puis appel a la fonction specialisee
 	}
-	// puis appel a la fonction specialisee
+	else
+	{
+		gtk_widget_hide(e->ui->obj_list_box);
+		gtk_widget_hide(e->ui->obj_nav_prev_btn);
+		gtk_widget_hide(e->ui->obj_nav_next_btn);
+		gtk_widget_hide(e->ui->obj_nav_del_btn);
+	}
 }
 

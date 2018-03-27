@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 16:35:48 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/27 18:51:45 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void		xml_node_sphere(t_env *e, char *node)
 void		xml_push_sphere(t_env *e, t_node *list)
 {
 	t_sphere sphere;
+	
 	sphere.size = sizeof(t_sphere);
 	sphere.id = e->current_index_objects;
 	sphere.type = OBJ_SPHERE;

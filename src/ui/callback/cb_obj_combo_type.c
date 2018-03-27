@@ -8,6 +8,8 @@ void	cb_obj_combo_type(GtkComboBox *box, gpointer data)
 
 	e = data;
 	index = gtk_combo_box_get_active(box);
-	if (index >= 0)
+	if (index == -1)
+		gtk_widget_set_sensitive(e->ui->obj_nav_add_btn, FALSE);
+	else if (index >= 0)
 		gtk_widget_set_sensitive(e->ui->obj_nav_add_btn, TRUE);
 }

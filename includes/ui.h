@@ -193,6 +193,14 @@ typedef	struct			s_ui
 												GtkWidget			*obj_list_color_label; //
 												GtkWidget			*obj_list_color_button; //
 												GdkRGBA				obj_color; //
+										GtkWidget			*obj_list_cone;
+										GtkWidget			*obj_list_cylinder;
+										GtkWidget			*obj_list_ellipsoid;
+										GtkWidget			*obj_list_paraboloid;
+										GtkWidget			*obj_list_plane;
+										GtkWidget			*obj_list_sphere;
+										GtkWidget			*obj_list_torus;
+
 									GtkWidget			*obj_nav_box; //
 										GtkWidget			*obj_nav_first; //
 											GtkWidget			*obj_nav_prev_btn; //

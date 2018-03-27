@@ -21,5 +21,5 @@ void			cb_obj_nav_prev(GtkButton *btn, gpointer data)
 		obj = e->gen_objects->mem + e->target;
 	}
 	ui_obj_update(e, obj);
-	ui_obj_set_id(e, obj);
+//	ui_obj_set_id(e, obj);
 }

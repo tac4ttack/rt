@@ -50,6 +50,13 @@ SRC_NAME =	 			cl/cl_compute.c \
 						opencl_compute.c \
 						rotations.c \
 						tools.c \
+						ui/add/ui_add_cone.c \
+						ui/add/ui_add_cylinder.c \
+						ui/add/ui_add_ellipsoid.c \
+						ui/add/ui_add_paraboloid.c \
+						ui/add/ui_add_plane.c \
+						ui/add/ui_add_sphere.c \
+						ui/add/ui_add_torus.c \
 						ui/callback/cb_about_dialog.c \
 						ui/callback/cb_ambient_update.c \
 						ui/callback/cb_cam_fov_update.c \
@@ -148,6 +155,7 @@ $(OBJ_PATH):
 	@mkdir $(OBJ_PATH)/xml
 	@mkdir $(OBJ_PATH)/gen
 	@mkdir $(OBJ_PATH)/ui
+	@mkdir $(OBJ_PATH)/ui/add
 	@mkdir $(OBJ_PATH)/ui/callback
 	@mkdir $(OBJ_PATH)/event
 
