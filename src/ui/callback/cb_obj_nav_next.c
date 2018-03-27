@@ -8,7 +8,6 @@ void		cb_obj_nav_next(GtkButton *btn, gpointer data)
 	(void)btn;
 	e = data;
 	obj = e->gen_objects->mem + e->target;
-	printf("obj id %d | length %zu\n", obj->id, e->gen_objects->length);
 	if (obj->id + 1 > (int)(e->gen_objects->length + NCAM))
 		e->target = 0;
 	else

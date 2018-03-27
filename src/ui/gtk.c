@@ -87,10 +87,6 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	(void)app;
 	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 
-
-	printf("base target is %d\n", e->target);
-
-
 ////CSS STYLING
 	e->ui->css_provider = gtk_css_provider_new();
 	gtk_css_provider_load_from_path(e->ui->css_provider, "theme/bidou/gtk.css", NULL);
@@ -390,7 +386,8 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	// obj nav buttons
 	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_prev_btn), "clicked", G_CALLBACK(cb_obj_nav_prev), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_next_btn), "clicked", G_CALLBACK(cb_obj_nav_next), (gpointer)e);
-
+	// obj manage buttons
+	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_del_btn), "clicked", G_CALLBACK(cb_obj_nav_del), (gpointer)e);
 
 	//tool bar buttons
 	g_signal_connect(GTK_WIDGET(e->ui->tool_play_btn), "clicked", G_CALLBACK(cb_play_btn), (gpointer)e);
