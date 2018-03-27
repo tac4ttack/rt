@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/24 21:18:21 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/25 22:34:19 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void		load_scene(t_env *e)
 			xml_push_sphere(e, list);
 		if (list->type == OBJ_ELLIPSOID)
 			xml_push_ellipsoid(e, list);
+		if (list->type == OBJ_BOX)
+			xml_push_box(e, list);
 		list = list->next;
 	}
 	xml_list_clean(e, &XML->node_lst);

@@ -72,6 +72,7 @@
 # define OBJ_ELLIPSOID		7
 # define OBJ_PARABOLOID		8
 # define OBJ_TORUS			9
+# define OBJ_BOX			10
 
 typedef struct			s_object
 {
@@ -289,6 +290,8 @@ typedef struct			s_node
 	cl_float3			pos;
 	cl_float3			normale;
 	cl_float3			axis_size;
+	cl_float3			min;
+	cl_float3			max;
 	cl_float			radius;
 	cl_float			radius2;
 	cl_float			angle;
@@ -449,6 +452,8 @@ void					xml_data_speculos(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_type(t_env *e, char **attributes, \
 										int *i, t_node *node);
+void					xml_data_min_max(t_env *e, char **attributes, \
+										int *i, cl_float3 *f);
 void					xml_init(t_env *e);
 void					xml_get_file(t_env *e);
 void					xml_list_add_first(t_node **begin, t_node *node);
@@ -465,6 +470,7 @@ void					xml_node_paraboloid(t_env *e, char *node);
 void					xml_node_plane(t_env *e, char *node);
 void					xml_node_scene(t_env *e, char *node, char mod);
 void					xml_node_sphere(t_env *e, char *node);
+void					xml_node_box(t_env *e, char *node);
 void					xml_node_torus(t_env *e, char *node);
 
 void					xml_parse_nodes(t_env *e);
@@ -476,5 +482,6 @@ void					xml_push_light(t_env *e, t_node *list);
 void					xml_push_paraboloid(t_env *e, t_node *list);
 void					xml_push_plane(t_env *e, t_node *list);
 void					xml_push_sphere(t_env *e, t_node *list);
+void					xml_push_box(t_env *e, t_node *list);
 
 #endif
