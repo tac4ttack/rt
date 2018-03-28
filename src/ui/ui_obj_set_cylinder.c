@@ -13,6 +13,7 @@ static void		show_only_cylinder(t_env *e)
 
 void	ui_obj_set_cylinder(t_env *e, t_cylinder *obj)
 {
-	(void)obj;
 	show_only_cylinder(e);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_cylinder_radius_spin, \
+	(gdouble)obj->radius);
 }

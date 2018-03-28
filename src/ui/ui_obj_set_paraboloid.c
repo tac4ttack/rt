@@ -13,6 +13,20 @@ static void		show_only_paraboloid(t_env *e)
 
 void	ui_obj_set_paraboloid(t_env *e, t_paraboloid *obj)
 {
-	(void)obj;
 	show_only_paraboloid(e);
+	gtk_spin_button_set_value( \
+	(GtkSpinButton*)e->ui->obj_paraboloid_basedir_spin_x, \
+	(gdouble)obj->base_dir.x);
+	gtk_spin_button_set_value( \
+	(GtkSpinButton*)e->ui->obj_paraboloid_basedir_spin_y,\
+	(gdouble)obj->base_dir.y);
+	gtk_spin_button_set_value( \
+	(GtkSpinButton*)e->ui->obj_paraboloid_basedir_spin_z,\
+	(gdouble)obj->base_dir.z);
+	gtk_spin_button_set_value( \
+	(GtkSpinButton*)e->ui->obj_paraboloid_height_spin,\
+	(gdouble)obj->height);
+	gtk_spin_button_set_value( \
+	(GtkSpinButton*)e->ui->obj_paraboloid_radius_spin,\
+	(gdouble)obj->radius);
 }

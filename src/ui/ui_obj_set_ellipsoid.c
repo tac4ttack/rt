@@ -13,6 +13,13 @@ static void		show_only_ellipsoid(t_env *e)
 
 void	ui_obj_set_ellipsoid(t_env *e, t_ellipsoid *obj)
 {
-	(void)obj;
-	show_only_ellipsoid(e);	
+	show_only_ellipsoid(e);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_ellipsoid_radius_spin,\
+	(gdouble)obj->radius);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_ellipsoid_axis_spin_x,\
+	(gdouble)obj->axis_size.x);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_ellipsoid_axis_spin_y,\
+	(gdouble)obj->axis_size.y);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_ellipsoid_axis_spin_z,\
+	(gdouble)obj->axis_size.z);
 }

@@ -135,6 +135,11 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->obj_paraboloid_radius_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_radius_spin"));
 	e->ui->obj_paraboloid_second_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_second_box"));
 	e->ui->obj_paraboloid_basedir_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_basedir_label"));
+	e->ui->obj_paraboloid_basedir_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_basedir_spin_x"));
+	e->ui->obj_paraboloid_basedir_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_basedir_spin_y"));
+	e->ui->obj_paraboloid_basedir_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_basedir_spin_z"));
+
+	
 
 	e->ui->obj_list_plane = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_plane"));
 	e->ui->obj_list_plane_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_plane_box"));
@@ -425,7 +430,20 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	g_signal_connect(GTK_WIDGET(e->ui->obj_list_color_btn), "color-set", G_CALLBACK(cb_obj_color), (gpointer)e);
 
 	// obj custom params
+	g_signal_connect(GTK_WIDGET(e->ui->obj_cone_angle_spin), "value-changed", G_CALLBACK(cb_cone_angle), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_cylinder_radius_spin), "value-changed", G_CALLBACK(cb_cylinder_radius), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_ellipsoid_axis_spin_x), "value-changed", G_CALLBACK(cb_ellipsoid_axis_x), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_ellipsoid_axis_spin_y), "value-changed", G_CALLBACK(cb_ellipsoid_axis_y), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_ellipsoid_axis_spin_z), "value-changed", G_CALLBACK(cb_ellipsoid_axis_z), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_ellipsoid_radius_spin), "value-changed", G_CALLBACK(cb_ellipsoid_radius), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_paraboloid_basedir_spin_x), "value-changed", G_CALLBACK(cb_paraboloid_basedir_x), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_paraboloid_basedir_spin_y), "value-changed", G_CALLBACK(cb_paraboloid_basedir_y), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_paraboloid_basedir_spin_z), "value-changed", G_CALLBACK(cb_paraboloid_basedir_z), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_paraboloid_height_spin), "value-changed", G_CALLBACK(cb_paraboloid_height), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_paraboloid_radius_spin), "value-changed", G_CALLBACK(cb_paraboloid_radius), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_sphere_radius_spin), "value-changed", G_CALLBACK(cb_sphere_radius), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_torus_bigradius_spin), "value-changed", G_CALLBACK(cb_torus_radius_big), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_torus_lilradius_spin), "value-changed", G_CALLBACK(cb_torus_radius_lil), (gpointer)e);
 
 
 	// obj nav buttons

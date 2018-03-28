@@ -1294,46 +1294,6 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="position">1</property>
                                                   </packing>
                                                 </child>
-                                                <child>
-                                                  <object class="GtkLabel" id="obj_cylinder_height_label">
-                                                    <property name="width_request">60</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="sensitive">False</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
-                                                    <property name="label" translatable="yes">Height</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">2</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_cylinder_height_spin">
-                                                    <property name="width_request">133</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="max_length">4</property>
-                                                    <property name="width_chars">4</property>
-                                                    <property name="text" translatable="yes">6,00</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">cylinder_height_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="numeric">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">6</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">3</property>
-                                                  </packing>
-                                                </child>
                                               </object>
                                             </child>
                                           </object>

@@ -108,18 +108,19 @@ ntoniolo - Noé TONIOLO</property>
     <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="cone_angle_adjustement">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="upper">179</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="cylinder_height_adjustement">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="cylinder_radius_adjustement">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">0.25</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="depth_adjustement">
@@ -127,23 +128,27 @@ ntoniolo - Noé TONIOLO</property>
     <property name="step_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="ellipsoid_axis_adjustement_x">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">-1000</property>
+    <property name="upper">1000</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="ellipsoid_axis_adjustement_y">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">-1000</property>
+    <property name="upper">1000</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="ellipsoid_axis_adjustement_z">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">-1000</property>
+    <property name="upper">1000</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="ellipsoid_radius_adjustement">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">0.25</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="green_ambient_adjustement">
@@ -349,13 +354,14 @@ ntoniolo - Noé TONIOLO</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="paraboloid_height_adjustement">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="upper">1000</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="paraboloid_radius_adjustement">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">0.25</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="red_ambient_adjustement">
@@ -373,8 +379,9 @@ ntoniolo - Noé TONIOLO</property>
     <property name="step_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="sphere_radius_adjustement">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">0.25</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="supersampling_adjustement">
@@ -384,13 +391,15 @@ ntoniolo - Noé TONIOLO</property>
     <property name="page_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="torus_bigradius_adjustement">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">0.25</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="torus_lilradius_adjustement">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="lower">0.25</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkApplicationWindow" id="main_window">
@@ -1169,6 +1178,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">True</property>
+                                                    <property name="margin_left">3</property>
                                                     <property name="title" translatable="yes">Pick the object's base color</property>
                                                     <property name="show_editor">True</property>
                                                   </object>
@@ -1441,7 +1451,7 @@ ntoniolo - Noé TONIOLO</property>
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <object class="GtkSpinButton" id="obj_ellipsoid_axis_spin_">
+                                                  <object class="GtkSpinButton" id="obj_ellipsoid_axis_spin_z">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
@@ -1588,6 +1598,78 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="expand">False</property>
                                                         <property name="fill">True</property>
                                                         <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="obj_paraboloid_basedir_spin_x">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                        <property name="margin_left">5</property>
+                                                        <property name="margin_right">5</property>
+                                                        <property name="max_length">4</property>
+                                                        <property name="width_chars">4</property>
+                                                        <property name="text" translatable="yes">1,00</property>
+                                                        <property name="input_purpose">number</property>
+                                                        <property name="adjustment">ellipsoid_axis_adjustement_x</property>
+                                                        <property name="climb_rate">0.01</property>
+                                                        <property name="digits">2</property>
+                                                        <property name="numeric">True</property>
+                                                        <property name="update_policy">if-valid</property>
+                                                        <property name="value">1</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="obj_paraboloid_basedir_spin_y">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                        <property name="margin_left">5</property>
+                                                        <property name="margin_right">5</property>
+                                                        <property name="max_length">4</property>
+                                                        <property name="width_chars">4</property>
+                                                        <property name="text" translatable="yes">1,00</property>
+                                                        <property name="input_purpose">number</property>
+                                                        <property name="adjustment">ellipsoid_axis_adjustement_y</property>
+                                                        <property name="climb_rate">0.01</property>
+                                                        <property name="digits">2</property>
+                                                        <property name="numeric">True</property>
+                                                        <property name="update_policy">if-valid</property>
+                                                        <property name="value">1</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">2</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="obj_paraboloid_basedir_spin_z">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                        <property name="margin_left">5</property>
+                                                        <property name="margin_right">5</property>
+                                                        <property name="max_length">4</property>
+                                                        <property name="width_chars">4</property>
+                                                        <property name="text" translatable="yes">1,00</property>
+                                                        <property name="input_purpose">number</property>
+                                                        <property name="adjustment">ellipsoid_axis_adjustement_z</property>
+                                                        <property name="climb_rate">0.01</property>
+                                                        <property name="digits">2</property>
+                                                        <property name="numeric">True</property>
+                                                        <property name="update_policy">if-valid</property>
+                                                        <property name="value">1</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">3</property>
                                                       </packing>
                                                     </child>
                                                   </object>

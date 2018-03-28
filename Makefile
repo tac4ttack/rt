@@ -64,9 +64,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_cam_nav.c \
 						ui/callback/cb_cam_pos.c \
 						ui/callback/cb_cone_angle.c \
-						ui/callback/cb_cone_height.c \
 						ui/callback/cb_configure_draw_area.c \
-						ui/callback/cb_cylinder_height.c \
 						ui/callback/cb_cylinder_radius.c \
 						ui/callback/cb_depth_update.c \
 						ui/callback/cb_ellipsoid_axis.c \

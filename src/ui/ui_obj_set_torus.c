@@ -13,6 +13,9 @@ static void		show_only_torus(t_env *e)
 
 void	ui_obj_set_torus(t_env *e, t_torus *obj)
 {
-	(void)obj;
-	show_only_torus(e);	
+	show_only_torus(e);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_torus_lilradius_spin, \
+	(gdouble)obj->lil_radius);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_torus_bigradius_spin, \
+	(gdouble)obj->big_radius);
 }
