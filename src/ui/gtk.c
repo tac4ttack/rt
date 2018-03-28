@@ -447,6 +447,7 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 
 
 	// obj nav buttons
+	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_jump_combo), "changed", G_CALLBACK(cb_obj_jump_combo), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_prev_btn), "clicked", G_CALLBACK(cb_obj_nav_prev), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_next_btn), "clicked", G_CALLBACK(cb_obj_nav_next), (gpointer)e);
 	// obj manage buttons
@@ -470,6 +471,7 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	gtk_widget_show_all(e->ui->main_window);
 
 	// init obj manager hiding shit
+	ui_obj_jump_list(e);
 	ui_obj_update(e, e->gen_objects->mem + e->target);
 
 	g_idle_add(gtk_main_loop, (gpointer)e);

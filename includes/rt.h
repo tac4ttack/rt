@@ -410,6 +410,7 @@ void					ui_cam_update(t_env *e);
 void					ui_light_set_id(t_env *e);
 void					ui_light_update(t_env *e);
 void					ui_obj(t_env *e);
+void					ui_obj_jump_list(t_env *e);
 void					ui_obj_set_cone(t_env *e, t_cone *obj);
 void					ui_obj_set_cylinder(t_env *e, t_cylinder *obj);
 void					ui_obj_set_ellipsoid(t_env *e, t_ellipsoid *obj);

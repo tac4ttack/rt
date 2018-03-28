@@ -23,6 +23,6 @@ void			cb_obj_nav_del(GtkButton *btn, gpointer data)
 			s_error("\x1b[2;31mFailed replacing objects buffer\x1b[0m", e);
 		e->target = -1;
 		ui_obj_update(e, obj);
-		// fonction maj combolist
+		ui_obj_jump_list(e);
 	}
 }

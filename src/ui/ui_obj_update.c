@@ -8,7 +8,7 @@ static void		ui_obj_get_id(t_env *e, t_object *obj)
 														+ 1), "# ");
 	if (obj->type == OBJ_CONE)
 			obj_label = ft_strjoin_frs1(obj_label, " CONE");
-	if (obj->type == OBJ_CYLINDER)
+	else if (obj->type == OBJ_CYLINDER)
 		obj_label = ft_strjoin_frs1(obj_label, " CYLINDER");
 	else if (obj->type == OBJ_PLANE)
 		obj_label = ft_strjoin_frs1(obj_label, " PLANE");
@@ -91,6 +91,8 @@ void			ui_obj_update(t_env *e, t_object *obj)
 		gtk_widget_show(e->ui->obj_nav_prev_btn);
 		gtk_widget_show(e->ui->obj_nav_next_btn);
 		gtk_widget_show(e->ui->obj_nav_del_btn);
+		gtk_combo_box_set_active((GtkComboBox*)e->ui->obj_nav_jump_combo,
+                          gen_get_ptr_index(e->gen_objects, obj));
 		ui_obj_get_id(e, obj);
 		ui_obj_set_base(e, obj);
 		ui_obj_set_aux(e, obj);

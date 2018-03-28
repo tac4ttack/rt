@@ -1,6 +1,5 @@
 #include "rt.h"
 
-
 void	cb_obj_combo_type(GtkComboBox *box, gpointer data)
 {
 	t_env		*e;

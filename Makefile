@@ -78,6 +78,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_combo_type.c \
 						ui/callback/cb_obj_diff.c \
 						ui/callback/cb_obj_dir.c \
+						ui/callback/cb_obj_jump.c \
 						ui/callback/cb_obj_nav_add.c \
 						ui/callback/cb_obj_nav_del.c \
 						ui/callback/cb_obj_nav_jump.c \
@@ -110,6 +111,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/ui_cam_update.c \
 						ui/ui_light_update.c \
 						ui/ui_obj.c \
+						ui/ui_obj_jump.c \
 						ui/ui_obj_set_cone.c \
 						ui/ui_obj_set_cylinder.c \
 						ui/ui_obj_set_ellipsoid.c \

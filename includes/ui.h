@@ -333,6 +333,7 @@ gboolean				cb_obj_diff_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_z(GtkSpinButton *spin, gpointer data);
+void					cb_obj_jump_combo(GtkComboBox *box, gpointer data);
 void					cb_obj_nav_add(GtkButton *btn, gpointer data);
 void					cb_obj_nav_del(GtkButton *btn, gpointer data);
 void					cb_obj_nav_next(GtkButton *btn, gpointer data);
