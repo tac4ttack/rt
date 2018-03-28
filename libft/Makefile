@@ -6,12 +6,12 @@
 #    By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/05 23:18:40 by fmessina          #+#    #+#              #
-#    Updated: 2018/03/25 15:22:26 by ntoniolo         ###   ########.fr        #
+#    Updated: 2018/03/28 16:19:04 by fmessina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME =		libft.a
+NAME = libft.a
 
 CC =		clang
 CFLAGS +=	-Wall -Wextra -Werror $(ASANFLAGS) $(DEBUGFLAGS)
@@ -111,10 +111,14 @@ SRC =		ft_abs.c \
 			ft_wstrlen_false.c \
 			get_next_line.c
 
-OFILES =	$(SRC:.c=.o)
+OFILES = $(SRC:.c=.o)
 
+ifeq  ($(PLATFORM),Linux)
+all: $(NAME)
+else
 all: Makefile
 	@make -j $(NAME)
+endif
 
 $(NAME): libft.h get_next_line.h $(SRC) $(OFILES)
 	@echo "Object files successfully created"

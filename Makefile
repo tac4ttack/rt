@@ -1,19 +1,19 @@
-NAME = 					rt
+NAME = rt
 
 CC = 					clang
 CFLAGS +=				-Wall -Wextra -Werror
 OFLAGS := 				-O2
 RM := 					rm -rf
 
-INC = 					$(addprefix $(INC_PATH)/,$(INC_NAMES))
-INC_PATH =				./includes
+INC = $(addprefix $(INC_PATH)/,$(INC_NAMES))
+INC_PATH = ./includes
 
-LIBFT :=				$(LIBFT_PATH)/libft.a
-LIBFT_PATH :=			./libft
-LIBFT_INC_PATH :=		./libft
-LIBFTFLAGS :=			-lft
+LIBFT := $(LIBFT_PATH)/libft.a
+LIBFT_PATH := ./libft
+LIBFT_INC_PATH := ./libft
+LIBFTFLAGS := -lft
 
-LIBMATHFLAGS :=			-lm
+LIBMATHFLAGS := -lm
 
 GTK_CFLAGS	=	$(shell pkg-config --cflags gtk+-3.0)
 GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
