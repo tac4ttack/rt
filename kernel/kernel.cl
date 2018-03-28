@@ -885,7 +885,7 @@ void	fswap(float *a, float *b)
 	*b = tmp;
 }
 
-static float			inter_box(const __local t_box *box, float3 ray, float3 origin, t_hit *hit)
+static float			inter_box(const __local t_box *box, float3 ray, float3 origin)
 {
 	int side = SIDE_POSITIF_X;
 
@@ -945,7 +945,6 @@ static float			inter_box(const __local t_box *box, float3 ray, float3 origin, t_
 		return ((-abc[1]) / (2 * abc[0]));
 	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
 	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
-	hit->side = side;
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		return (res1);
 	return (res2);
@@ -971,8 +970,8 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 		 	dist = inter_sphere(obj, ray, origin);
 
 		//	ABORT
-		//  if (obj->type == OBJ_BOX)
-		// 	dist = inter_box(obj, ray, origin, &hit);
+		if (obj->type == OBJ_BOX)
+			dist = inter_box(obj, ray, origin);
 
 		//	OLD  CYLINDER
 		 if (obj->type == OBJ_CYLINDER)
@@ -1016,10 +1015,10 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 
 static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit hit)
 {
-	float3		res, save;
+	float3		res = 0, save;
 
 //	OLD SPHERE
-	if (hit.obj->type == OBJ_SPHERE)
+	if (hit.obj->type == OBJ_SPHERE || hit.obj->type == OBJ_BOX)
 	 	res = hit.pos - hit.obj->pos;
 	//	ABORT
 //	NEW SPHERE
