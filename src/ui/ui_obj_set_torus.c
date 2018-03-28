@@ -11,7 +11,7 @@ static void		show_only_torus(t_env *e)
 	gtk_widget_show(e->ui->obj_list_torus);	
 }
 
-void	ui_obj_set_torus(t_env *e, t_object *obj)
+void	ui_obj_set_torus(t_env *e, t_torus *obj)
 {
 	(void)obj;
 	show_only_torus(e);	

@@ -11,7 +11,7 @@ static void		show_only_cone(t_env *e)
 	gtk_widget_hide(e->ui->obj_list_torus);
 }
 
-void	ui_obj_set_cone(t_env *e, t_object *obj)
+void	ui_obj_set_cone(t_env *e, t_cone *obj)
 {
 	(void)obj;
 	show_only_cone(e);

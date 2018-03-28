@@ -11,9 +11,9 @@ static void		show_only_sphere(t_env *e)
 	gtk_widget_hide(e->ui->obj_list_torus);	
 }
 
-void	ui_obj_set_sphere(t_env *e, t_object *obj)
+void	ui_obj_set_sphere(t_env *e, t_sphere *obj)
 {
-	(void)obj;
-	ft_putendl("showing sphere");
 	show_only_sphere(e);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_sphere_radius_spin, \
+	(gdouble)obj->radius);
 }

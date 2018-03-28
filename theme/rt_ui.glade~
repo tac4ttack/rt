@@ -1212,6 +1212,8 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
                                                     <property name="width_chars">4</property>
                                                     <property name="text" translatable="yes">6,00</property>
@@ -1263,6 +1265,8 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
                                                     <property name="width_chars">4</property>
                                                     <property name="text" translatable="yes">6,00</property>
@@ -1301,6 +1305,8 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
                                                     <property name="width_chars">4</property>
                                                     <property name="text" translatable="yes">1,00</property>
@@ -1352,6 +1358,8 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
                                                     <property name="width_chars">4</property>
                                                     <property name="text" translatable="yes">6,00</property>
@@ -1389,6 +1397,8 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
                                                     <property name="width_chars">4</property>
                                                     <property name="text" translatable="yes">1,00</property>
@@ -1411,6 +1421,8 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
                                                     <property name="width_chars">4</property>
                                                     <property name="text" translatable="yes">1,00</property>
@@ -1433,6 +1445,8 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
                                                     <property name="width_chars">4</property>
                                                     <property name="text" translatable="yes">1,00</property>
@@ -1466,6 +1480,7 @@ ntoniolo - Noé TONIOLO</property>
                                                 <property name="orientation">vertical</property>
                                                 <child>
                                                   <object class="GtkBox" id="obj_paraboloid_first_box">
+                                                    <property name="height_request">35</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
                                                     <child>
@@ -1489,6 +1504,8 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                        <property name="margin_left">5</property>
+                                                        <property name="margin_right">5</property>
                                                         <property name="max_length">4</property>
                                                         <property name="width_chars">4</property>
                                                         <property name="text" translatable="yes">6,00</property>
@@ -1527,6 +1544,8 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                        <property name="margin_left">5</property>
+                                                        <property name="margin_right">5</property>
                                                         <property name="max_length">4</property>
                                                         <property name="width_chars">4</property>
                                                         <property name="text" translatable="yes">1,00</property>
@@ -1553,6 +1572,7 @@ ntoniolo - Noé TONIOLO</property>
                                                 </child>
                                                 <child>
                                                   <object class="GtkBox" id="obj_paraboloid_second_box">
+                                                    <property name="height_request">35</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
                                                     <child>
@@ -1639,6 +1659,8 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
                                                     <property name="width_chars">4</property>
                                                     <property name="text" translatable="yes">6,00</property>
@@ -1671,7 +1693,7 @@ ntoniolo - Noé TONIOLO</property>
                                                 <property name="can_focus">False</property>
                                                 <child>
                                                   <object class="GtkLabel" id="obj_torus_bigradius_label">
-                                                    <property name="width_request">60</property>
+                                                    <property name="width_request">90</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
@@ -1690,6 +1712,8 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
                                                     <property name="width_chars">4</property>
                                                     <property name="text" translatable="yes">6,00</property>
@@ -1709,7 +1733,7 @@ ntoniolo - Noé TONIOLO</property>
                                                 </child>
                                                 <child>
                                                   <object class="GtkLabel" id="obj_torus_lilradius_label">
-                                                    <property name="width_request">60</property>
+                                                    <property name="width_request">90</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
@@ -1728,6 +1752,8 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
                                                     <property name="width_chars">4</property>
                                                     <property name="text" translatable="yes">1,00</property>
@@ -3039,7 +3065,7 @@ High setting decreases a lot the rendering speed</property>
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <object class="GtkColorButton" id=" light_list_color_btn">
+                                                  <object class="GtkColorButton" id="light_list_color_btn">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">True</property>

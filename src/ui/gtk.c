@@ -423,6 +423,11 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	g_signal_connect(GTK_WIDGET(e->ui->obj_list_opacity_spin), "value-changed", G_CALLBACK(cb_obj_opacity), (gpointer)e);
 	// obj colorbutton
 	g_signal_connect(GTK_WIDGET(e->ui->obj_list_color_btn), "color-set", G_CALLBACK(cb_obj_color), (gpointer)e);
+
+	// obj custom params
+	g_signal_connect(GTK_WIDGET(e->ui->obj_sphere_radius_spin), "value-changed", G_CALLBACK(cb_sphere_radius), (gpointer)e);
+
+
 	// obj nav buttons
 	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_prev_btn), "clicked", G_CALLBACK(cb_obj_nav_prev), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_next_btn), "clicked", G_CALLBACK(cb_obj_nav_next), (gpointer)e);

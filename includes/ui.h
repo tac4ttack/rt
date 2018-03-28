@@ -292,9 +292,21 @@ void					cb_cam_nav_next(GtkButton *btn, gpointer data);
 gboolean				cb_cam_pos_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_z(GtkSpinButton *spin, gpointer data);
+
+gboolean				cb_cone_angle(GtkSpinButton *spin, gpointer data);
+gboolean				cb_cone_height(GtkSpinButton *spin, gpointer data); // DELETE?
+
 gboolean				cb_configure_draw_area(GtkWidget *widget, \
 									GdkEventConfigure *event, gpointer data);
+
+gboolean				cb_cylinder_height(GtkSpinButton *spin, gpointer data); // DELETE?
+gboolean				cb_cylinder_radius(GtkSpinButton *spin, gpointer data);
+
 gboolean				cb_depth_update(GtkSpinButton *spin, gpointer data);
+
+gboolean				cb_ellipsoid_axis(GtkSpinButton *spin, gpointer data);
+gboolean				cb_ellipsoid_radius(GtkSpinButton *spin, gpointer data);
+
 void					cb_export_btn(GtkButton *btn, gpointer data);
 
 gboolean				cb_light_brightness(GtkSpinButton *spin, gpointer data);
@@ -332,6 +344,12 @@ gboolean				cb_obj_spec_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_z(GtkSpinButton *spin, gpointer data);
 
+gboolean				cb_paraboloid_basedir_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_paraboloid_basedir_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_paraboloid_basedir_z(GtkSpinButton *spin, gpointer data);
+gboolean				cb_paraboloid_height(GtkSpinButton *spin, gpointer data); // DELETE?
+gboolean				cb_paraboloid_radius(GtkSpinButton *spin, gpointer data);
+
 void					cb_play_btn(GtkButton *btn, gpointer data);
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
 void					cb_postproc_invert(GtkToggleButton *button, \
@@ -352,8 +370,15 @@ gboolean				cb_render_keyrelease(GtkWidget *widget, \
 void					cb_render_update_size(GtkContainer *box, gpointer data);
 gboolean				cb_res_height_update(GtkSpinButton *spin, gpointer data);
 gboolean				cb_res_width_update(GtkSpinButton *spin, gpointer data);
+
+gboolean				cb_sphere_radius(GtkSpinButton *spin, gpointer data);
+
 void					cb_stop_btn(GtkButton *btn, gpointer data);
 gboolean				cb_supersampling_update(GtkScale *scale, gpointer data);
+
+gboolean				cb_torus_radius_lil(GtkSpinButton *spin, gpointer data);
+gboolean				cb_torus_radius_big(GtkSpinButton *spin, gpointer data);
+
 gboolean				gtk_main_loop(gpointer data);
 int						gtk_quit(GtkApplication *app, gpointer data);
 void					init_gtk(GtkApplication* app, gpointer data);

@@ -68,19 +68,19 @@ static	void	ui_obj_set_aux(t_env *e, t_object *obj)
 static	void	ui_obj_set_custom(t_env *e, t_object *obj)
 {
 	if (obj->type == OBJ_CONE)
-		ui_obj_set_cone(e, obj);
+		ui_obj_set_cone(e, (t_cone*)obj);
 	if (obj->type == OBJ_CYLINDER)
-		ui_obj_set_cylinder(e, obj);
+		ui_obj_set_cylinder(e, (t_cylinder*)obj);
 	else if (obj->type == OBJ_PLANE)
-		ui_obj_set_plane(e, obj);
+		ui_obj_set_plane(e, (t_plane*)obj);
 	else if (obj->type == OBJ_SPHERE)
-		ui_obj_set_sphere(e, obj);
+		ui_obj_set_sphere(e, (t_sphere*)obj);
 	else if (obj->type == OBJ_ELLIPSOID)
-		ui_obj_set_ellipsoid(e, obj);
+		ui_obj_set_ellipsoid(e, (t_ellipsoid*)obj);
 	else if (obj->type == OBJ_PARABOLOID)
-		ui_obj_set_paraboloid(e, obj);
+		ui_obj_set_paraboloid(e, (t_paraboloid*)obj);
 	else if (obj->type == OBJ_TORUS)
-		ui_obj_set_torus(e, obj);
+		ui_obj_set_torus(e, (t_torus*)obj);
 }
 
 void			ui_obj_update(t_env *e, t_object *obj)

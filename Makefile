@@ -63,8 +63,14 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_cam_manager.c \
 						ui/callback/cb_cam_nav.c \
 						ui/callback/cb_cam_pos.c \
+						ui/callback/cb_cone_angle.c \
+						ui/callback/cb_cone_height.c \
 						ui/callback/cb_configure_draw_area.c \
+						ui/callback/cb_cylinder_height.c \
+						ui/callback/cb_cylinder_radius.c \
 						ui/callback/cb_depth_update.c \
+						ui/callback/cb_ellipsoid_axis.c \
+						ui/callback/cb_ellipsoid_radius.c \
 						ui/callback/cb_export_dialog.c \
 						ui/callback/cb_light_manager.c \
 						ui/callback/cb_light_nav.c \
@@ -84,6 +90,9 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_reflex.c \
 						ui/callback/cb_obj_refrac.c \
 						ui/callback/cb_obj_spec.c \
+						ui/callback/cb_paraboloid_basedir.c \
+						ui/callback/cb_paraboloid_height.c \
+						ui/callback/cb_paraboloid_radius.c \
 						ui/callback/cb_postproc_radio.c \
 						ui/callback/cb_render_btnpress.c \
 						ui/callback/cb_render_draw.c \
@@ -91,8 +100,10 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_render_keyrelease.c \
 						ui/callback/cb_render_update_size.c \
 						ui/callback/cb_resolution_update.c \
+						ui/callback/cb_sphere_radius.c \
 						ui/callback/cb_supersampling_update.c \
 						ui/callback/cb_tool_bar.c \
+						ui/callback/cb_torus_radius.c \
 						ui/gdkrgba_to_int.c \
 						ui/gtk.c \
 						ui/gtk_main_loop.c \
