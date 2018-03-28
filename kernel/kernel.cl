@@ -563,7 +563,7 @@ bool		solve_quadratic(const float a, const float b, const float c,
 	}
 	if (*inter0 > *inter1)
 	{
-		
+
 
 		tmp = *inter0;
 		*inter0 = *inter1;
@@ -831,10 +831,10 @@ static float			inter_sphere(const __local t_sphere *sphere, const float3 ray, co
 	return (res2);
 }
 
-float3					get_ellipsoid_normal(const __local t_ellipsoid *ellipsoid, const t_hit hit)
+float3					get_ellipsoid_normal(const __local t_ellipsoid *ellipsoid, const t_hit *hit)
 {
 
-	float3 pos = hit.pos - ellipsoid->pos;
+	float3 pos = hit->pos - ellipsoid->pos;
 	pos = vector_get_rotate(&pos, &ellipsoid->dir);
 
 	float3 res;
@@ -965,15 +965,15 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 	if (lightdist == 0)
 		hit.opacity = 1;
 	while (mem_index_obj < scene->mem_size_obj)
-	{	
+	{
 		obj = scene->mem_obj + mem_index_obj;
 		if (obj->type == OBJ_SPHERE)
 		 	dist = inter_sphere(obj, ray, origin);
-	
+
 		//	ABORT
 		//  if (obj->type == OBJ_BOX)
 		// 	dist = inter_box(obj, ray, origin, &hit);
-		
+
 		//	OLD  CYLINDER
 		 if (obj->type == OBJ_CYLINDER)
 		 	dist = inter_cylinder(obj, ray, origin);
@@ -995,8 +995,8 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 		else if (obj->type == OBJ_CONE)
 		 	dist = inter_cone(obj, ray, origin);
 		//ABORT
-		//else if (obj->type == OBJ_ELLIPSOID)
-		//   	dist = inter_ellipsoid(obj, ray, origin);
+		else if (obj->type == OBJ_ELLIPSOID)
+		   	dist = inter_ellipsoid(obj, ray, origin);
 
 		if (lightdist > 0 && dist < lightdist && dist > EPSILON)
 			hit.opacity += obj->opacity;
@@ -1070,7 +1070,7 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 			res = get_cone_normal(hit.obj, hit);
 	}
 	else if (hit.obj->type == OBJ_ELLIPSOID)
-		res = get_ellipsoid_normal(hit.obj, hit);
+		res = get_ellipsoid_normal(hit.obj, &hit);
 	else if (hit.obj->type == OBJ_PLANE)
 	{
 		if (dot(hit.obj->dir, -ray) < 0)
