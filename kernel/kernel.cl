@@ -20,6 +20,8 @@
 
 #define FLAG_DEBUG		(1 << 2)
 
+#define PI 3.14159265359f
+
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2
 # define OBJ_CONE			3
@@ -29,6 +31,13 @@
 # define OBJ_ELLIPSOID		7
 # define OBJ_PARABOLOID		8
 # define OBJ_THOR			9
+
+float ft_max(float u, float v)
+{
+	if (u >= v)
+		return (u);
+	return (v);
+}
 
 typedef struct			s_object
 {
@@ -594,31 +603,31 @@ float3 ft_solve_3(float a, float b, float c, float d)
        float a2 = b / d;
        float a3 = a / d;
 
-       float3 Result;
-       	double theta;
-		double sqrtQ;
+       	float3 Result;
+       	float theta;
+		float sqrtQ;
 		float e;
-        float Q = (a1 * a1 - 3.0 * a2) / 9.0;
-       	float R = (2.0 * a1 * a1 * a1 - 9.0 * a1 * a2 + 27.0 * a3) / 54.0;
+        float Q = (a1 * a1 - 3.0f * a2) / 9.0f;
+       	float R = (2.0f * a1 * a1 * a1 - 9.0f * a1 * a2 + 27.0f * a3) / 54.0f;
         float Qcubed = Q * Q * Q;
         d = Qcubed - R * R;
 
-        if ( d >= 0.0001 )
+        if ( d >= 0.0001f )
         {	
-            if ( Q < 0.0 )
+            if ( Q < 0.0f )
             {
-            	Result.x = 0;
-            	Result.y = 0;
-            	Result.z = 0;
+            	Result.x = 0.0f;
+            	Result.y = 0.0f;
+            	Result.z = 0.0f;
 	                return (Result);
             }
 
             theta = acos(R / sqrt(Qcubed));
             sqrtQ = sqrt(Q);
 
-            Result.x = -2.0 * sqrtQ * cos(theta / 3.0) - a1 / 3.0;
-            Result.y = -2.0 * sqrtQ * cos((theta + 2.0 * M_PI) / 3.0 ) - a1 / 3.0;
-            Result.z = -2.0 * sqrtQ * cos((theta + 4.0 * M_PI) / 3.0 ) - a1 / 3.0;
+            Result.x = -2.0f * sqrtQ * cos(theta / 3.0f) - a1 / 3.0f;
+            Result.y = -2.0f * sqrtQ * cos((theta + 2.0f * M_PI) / 3.0f ) - a1 / 3.0f;
+            Result.z = -2.0f * sqrtQ * cos((theta + 4.0f * M_PI) / 3.0f ) - a1 / 3.0f;
 
         }
 
@@ -626,10 +635,10 @@ float3 ft_solve_3(float a, float b, float c, float d)
         {	
             e = pow(sqrt(-d) + fabs(R), 1.0f/ 3.0f);
             
-            if ( R > 0 )
+            if ( R > 0.0001f )
                 e = -e;
 
-            Result.x = Result.y = Result.z = (e + Q / e) - a1 / 3.0;
+            Result.x = Result.y = Result.z = (e + Q / e) - a1 / 3.0f;
         }
 
         return (Result);
@@ -649,47 +658,46 @@ float	ft_solve_4(float t[5])
         float  a3 = t[3] / t[4];
         float D;
         float E;
-        //Result = malloc(sizeof(float) * 4.0);
 
         float3 b;
        
-        b.x = 4.0 * a2 * a0 - a1 * a1 - a3 * a3 * a0;
-       	b.y = a1 * a3 - 4.0 * a0;
+        b.x = 4.0f * a2 * a0 - a1 * a1 - a3 * a3 * a0;
+       	b.y = a1 * a3 - 4.0f * a0;
         b.z = -a2;
 
-	    Roots = ft_solve_3(b.x, b.y, b.z, 1.0);
+	    Roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
 
-        float	y = max(Roots[0], max(Roots[1], Roots[2]));
+        float	y = ft_max(Roots.x, ft_max(Roots.y, Roots.z));
 
        
 
 
-        float R = 0.25 * a3 * a3 - a2 + y;
-        if ( R < 0.0 )
-            return (0);
-        R = sqrt( R );
+        float R = 0.25f * a3 * a3 - a2 + y;
+        if ( R < 0.0001f)
+            return (0.0f);
+        R = sqrt(R);
 
-        if ( R == 0.0 )
+        if ( R == 0.0001f )
         {
-            D = sqrt( 0.75 * a3 * a3 - 2.0 * a2 + 2.0 * sqrt( y * y - 4.0 * a0 ) );
-            E = sqrt( 0.75 * a3 * a3 - 2.0 * a2 - 2.0 * sqrt( y * y - 4.0 * a0 ) );
+            D = sqrt( 0.75f * a3 * a3 - 2.0f * a2 + 2.0f * sqrt( y * y - 4.0f * a0 ) );
+            E = sqrt( 0.75f * a3 * a3 - 2.0f * a2 - 2.0f * sqrt( y * y - 4.0f * a0 ) );
         }
         else
         {
             Rsquare = R * R;
-            Rrec = 1.0 / R;
-            D = sqrt( 0.75 * a3 * a3 - Rsquare - 2.0 * a2 + 0.25 * Rrec * (4.0 * a3 * a2 - 8.0 * a1 - a3 * a3 * a3) );
-            E = sqrt( 0.75 * a3 * a3 - Rsquare - 2.0 * a2 - 0.25 * Rrec * (4.0 * a3 * a2 - 8.0 * a1 - a3 * a3 * a3) );
+            Rrec = 1.0f / R;
+            D = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 + 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
+            E = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 - 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
         }
 
       
-        Result[0] = -0.25 * a3 + 0.5 * R + 0.5 * D;
-        Result[1] = -0.25 * a3 + 0.5 * R - 0.5 * D;
-        Result[2] =  -0.25 * a3 - 0.5 * R + 0.5 * E;
-        Result[3] = -0.25 * a3 - 0.5 * R - 0.5 * E;
+        Result[0] = -0.25f * a3 + 0.5f * R + 0.5f * D;
+        Result[1] = -0.25f * a3 + 0.5f * R - 0.5f * D;
+        Result[2] =  -0.25f * a3 - 0.5f * R + 0.5f * E;
+        Result[3] = -0.25f * a3 - 0.5f * R - 0.5f * E;
 
         return(ft_ret(Result));
-	return (0);
+	return (0.0f);
 
     }
 
@@ -867,17 +875,17 @@ static float		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 	k.z = (origin.x - thor->pos.x) * ray.x + (origin.y - thor->pos.y) * ray.y +
 	(origin.z - thor->pos.z) * ray.z;
 
-	k.y = 4.0 * r * r;
+	k.y = 4.0f * r * r;
 	c[0] = e * e - k.y * (thor->lil_radius * thor->lil_radius - (origin.y - thor->pos.y) *
 	(origin.y - thor->pos.y));
-	c[1] = 4.0 * k.z * e + 2.0 * k.y * (origin.y - thor->pos.y) * ray.y;
-	c[2] = 2.0 * k.x * e + 4.0 * k.z * k.z + k.y * ray.y * ray.y;
-	c[3] = 4.0 * k.x * k.z;
+	c[1] = 4.0f * k.z * e + 2.0f * k.y * (origin.y - thor->pos.y) * ray.y;
+	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * ray.y * ray.y;
+	c[3] = 4.0f * k.x * k.z;
 	c[4] = k.x * k.x;
 
 	return (ft_solve_4(c));
 }
-
+/*
 static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 {
 	float3	res;
@@ -893,7 +901,7 @@ static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 	res.z = 4.0 * c * (hit.pos.z - thor->pos.z);
 	return (res);
 }
-
+*/
 static float3	get_sphere_abc(const float radius, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
@@ -1126,8 +1134,8 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	}
 	else if (hit.obj->type == OBJ_ELLIPSOID)
 		res = get_ellipsoid_normal(hit.obj, hit);
-	else if (hit.obj->type == OBJ_THOR)
-		res = get_thor_normal(hit.obj, hit);
+	//else if (hit.obj->type == OBJ_THOR)
+	//	res = get_thor_normal(hit.obj, hit);
 	else if (hit.obj->type == OBJ_PLANE)
 	{
 		if (dot(hit.obj->dir, -ray) < 0)

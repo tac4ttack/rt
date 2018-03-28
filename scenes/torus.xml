@@ -15,7 +15,7 @@
 
 <torus	 	pos="5, 5, 0"
 			dir="0, 0, 0"
-			lil_radius="2"
+			lil_radius="1"
 			big_radius="10"
 			color="0, 0, 0, 255"
 			diff="0.42, 0.42, 0.42"
@@ -31,19 +31,5 @@
 			brightness="0.21"
 			shrink="21"
 			color="0, 255, 0, 0"
-			/>
-<light 		type="0"
-			pos="0, 0, -10"
-			dir="0, 0, 0"
-			brightness="0.21"
-			shrink="21"
-			color="0, 0, 255, 0"
-			/>
-<light 		type="0"
-			pos="2, 0, -10"
-			dir="0, 0, 0"
-			brightness="0.21"
-			shrink="21"
-			color="0, 0, 0, 255"
 			/>
 </scene>
