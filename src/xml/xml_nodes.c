@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 16:36:02 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/25 22:43:24 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int					xml_check_node_format(char **node, int mod)
 		i.y = (mod == 7 ? 25 : i.y); // ellips
 		i.y = (mod == 8 ? 23 : i.y); // parabo
 		i.y = (mod == 9 ? 23 : i.y); // torus
+		i.y = (mod == 10 ? 27 : i.y); // box
 		while (i.x <= i.y)
 		{
 			if (i.x == i.y && node[i.x] != NULL)
@@ -101,6 +102,8 @@ void				xml_process_node(t_env *e, char *node)
 		xml_node_ellipsoid(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "torus") == 0)
 		xml_node_torus(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "box") == 0)
+		xml_node_box(e, node);
 	else
 		s_error("\x1b[1;31mError wrong node type\x1b[0m", e);
 	xml_node_clean(XMLSUB);

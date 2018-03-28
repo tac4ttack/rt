@@ -10,9 +10,9 @@ void	ui_add_plane(t_env *e)
 	plane.pos.x = 0;
 	plane.pos.y = 0;
 	plane.pos.z = 0;
-	plane.normale.x = 0;
-	plane.normale.y = 0;
-	plane.normale.z = 1;
+	plane.normal.x = 0;
+	plane.normal.y = 0;
+	plane.normal.z = 1;
 	plane.color = rand();
 	plane.diff.x = 0.42;
 	plane.diff.y = 0.42;

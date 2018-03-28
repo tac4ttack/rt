@@ -40,13 +40,13 @@
 # define NSPH					e->scene->n_spheres
 # define NELL					e->scene->n_ellipsoids
 # define NPAR					e->scene->n_paraboloids
-//# define ACTIVEOBJ				e->target_obj // DELETE
-# define CAM					e->cameras
-# define CONES					e->cones
-# define CYLIND					e->cylinders
-# define LIGHT					e->lights
-# define PLANE					e->planes
-# define SPHERE					e->spheres
+
+// # define CAM					e->cameras
+// # define CONES					e->cones
+// # define CYLIND					e->cylinders
+// # define LIGHT					e->lights
+// # define PLANE					e->planes
+// # define SPHERE					e->spheres
 # define ACTIVECAM				e->cameras[e->scene->active_cam]
 # define ACTIVELIGHT			((t_light*)e->gen_lights->mem)[e->ui->light_selector]
 
@@ -72,6 +72,7 @@
 # define OBJ_ELLIPSOID		7
 # define OBJ_PARABOLOID		8
 # define OBJ_TORUS			9
+# define OBJ_BOX			10
 
 typedef struct			s_object
 {
@@ -104,6 +105,19 @@ typedef struct			s_p2i
 	int					x;
 	int					y;
 }						t_p2i;
+
+typedef struct			s_hit
+{
+	cl_float			dist;
+	cl_float3			normale;
+	cl_float3			pos;
+	t_object			*obj;
+	cl_int				mem_index;
+	cl_float			opacity;
+	cl_float			m;
+	cl_int				isin;
+	cl_int				mein;
+}						t_hit;
 
 typedef struct			s_cam
 {
@@ -209,7 +223,7 @@ typedef struct			s_plane
 	cl_int				type;
 	cl_int				id;
 	cl_float3			pos;
-	cl_float3			normale;
+	cl_float3			normal;
 	cl_float3			diff;
 	cl_float3			spec;
 	cl_int				color;
@@ -278,6 +292,8 @@ typedef struct			s_node
 	cl_float3			pos;
 	cl_float3			normale;
 	cl_float3			axis_size;
+	cl_float3			min;
+	cl_float3			max;
 	cl_float			radius;
 	cl_float			radius2;
 	cl_float			angle;
@@ -315,20 +331,20 @@ typedef struct			s_scene
 	t_cam				*cameras;
 	void				*mem_lights;
 	void				*mem_obj;
-	cl_uint		n_cams;
-	cl_uint		active_cam;
-	cl_uint		win_w;
-	cl_uint		win_h;
+	cl_uint				n_cams;
+	cl_uint				active_cam;
+	cl_uint				win_w;
+	cl_uint				win_h;
 	cl_float3			ambient;
-	cl_int					mou_x;
-	cl_int					mou_y;
-	cl_int					depth;
-	cl_float				u_time;
-	cl_int					flag;
-	cl_int					tor_count;
-	cl_int					over_sampling;
-	size_t				mem_size_obj;
-	size_t				mem_size_lights;
+	cl_int				mou_x;
+	cl_int				mou_y;
+	cl_int				depth;
+	cl_float			u_time;
+	cl_int				flag;
+	cl_int				tor_count;
+	cl_int				over_sampling;
+	cl_int				mem_size_obj;
+	cl_int				mem_size_lights;
 }						t_scene;
 
 typedef	struct			s_env
@@ -447,6 +463,8 @@ void					xml_data_speculos(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_type(t_env *e, char **attributes, \
 										int *i, t_node *node);
+void					xml_data_min_max(t_env *e, char **attributes, \
+										int *i, cl_float3 *f);
 void					xml_init(t_env *e);
 void					xml_get_file(t_env *e);
 void					xml_list_add_first(t_node **begin, t_node *node);
@@ -463,6 +481,7 @@ void					xml_node_paraboloid(t_env *e, char *node);
 void					xml_node_plane(t_env *e, char *node);
 void					xml_node_scene(t_env *e, char *node, char mod);
 void					xml_node_sphere(t_env *e, char *node);
+void					xml_node_box(t_env *e, char *node);
 void					xml_node_torus(t_env *e, char *node);
 
 void					xml_parse_nodes(t_env *e);
@@ -474,5 +493,6 @@ void					xml_push_light(t_env *e, t_node *list);
 void					xml_push_paraboloid(t_env *e, t_node *list);
 void					xml_push_plane(t_env *e, t_node *list);
 void					xml_push_sphere(t_env *e, t_node *list);
+void					xml_push_box(t_env *e, t_node *list);
 
 #endif

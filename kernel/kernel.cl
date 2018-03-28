@@ -28,6 +28,8 @@
 # define OBJ_SPHERE			6
 # define OBJ_ELLIPSOID		7
 # define OBJ_PARABOLOID		8
+# define OBJ_TORUS			9
+# define OBJ_BOX			10
 
 typedef struct			s_object
 {
@@ -56,13 +58,21 @@ typedef struct			s_hit
 	float3				normal;
 	float3				pos;
 	t_object __local	*obj;
-	void				*dummy_pedro;
+//	void				*dummy_pedro;
 	int					mem_index;
 	float				opacity;
 	float				m;
 	int					isin;
 	int					mein;
+	int					side;
 }						t_hit;
+
+# define SIDE_POSITIF_X		1
+# define SIDE_NEGATIF_X		2
+# define SIDE_POSITIF_Y		3
+# define SIDE_NEGATIF_Y		4
+# define SIDE_POSITIF_Z		5
+# define SIDE_NEGATIF_Z		6
 
 typedef struct			s_cam
 {
@@ -210,6 +220,23 @@ typedef struct			s_ellipsoid
 	float3				axis_size;
 }						t_ellipsoid;
 
+typedef struct			s_torus
+{
+	int				size;
+	int				type;
+	int				id;
+	float3			pos;
+	float3			dir;
+	float3			diff;
+	float3			spec;
+	int				color;
+	float			reflex;
+	float			refract;
+	float			opacity;
+	float			lil_radius;
+	float			big_radius;
+}						t_torus;
+
 typedef	struct			s_tor
 {
 	int					activate;
@@ -247,8 +274,8 @@ typedef struct			s_scene
 	int					flag;
 	int					tor_count;
 	int					over_sampling;
-	size_t				mem_size_obj;
-	size_t				mem_size_lights;
+	int				mem_size_obj;
+	int				mem_size_lights;
 }						t_scene;
 
 static unsigned int	sepiarize(const unsigned int color)
@@ -506,6 +533,7 @@ static t_hit			hit_init(void)
 	hit.m = 0;
 	hit.isin = 0;
 	hit.mein = 0;
+	hit.side = 0;
 	return (hit);
 }
 
@@ -848,6 +876,81 @@ static float			inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray,
 	return (inter0);
 }
 
+void	fswap(float *a, float *b)
+{
+	float tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+static float			inter_box(const __local t_box *box, float3 ray, float3 origin, t_hit *hit)
+{
+	int side = SIDE_POSITIF_X;
+
+    float tmin = (box->pos.x + box->min.x - origin.x) / ray.x;
+    float tmax = (box->pos.x + box->max.x - origin.x) / ray.x;
+    if (tmin > tmax)
+		fswap(&tmin, &tmax);
+    float tymin = (box->pos.y + box->min.y - origin.y) / ray.y;
+    float tymax = (box->pos.y + box->max.y - origin.y) / ray.y;
+    if (tymin > tymax)
+		fswap(&tymin, &tymax);
+    if ((tmin > tymax) || (tymin > tmax))
+        return 0;
+    if (tymin > tmin)
+	{
+        tmin = tymin;
+	}
+    if (tymax < tmax)
+	{
+        tmax = tymax;
+	}
+
+    float tzmin = (box->pos.z + box->min.z - origin.z) / ray.z;
+    float tzmax = (box->pos.z + box->max.z - origin.z) / ray.z;
+    if (tzmin > tzmax)
+		fswap(&tzmin, &tzmax);
+    if ((tmin > tzmax) || (tzmin > tmax))
+        return 0;
+    if (tzmin > tmin)
+	{
+        tmin = tzmin;
+	}
+    if (tzmax < tmax)
+	{
+        tmax = tzmax;
+	}
+
+	;
+
+	/*float3 t;
+	t = ray * tmin + (origin + box->min);
+	return (fast_length(t));*/
+	//return true;
+
+	float3		abc = 0;
+	float		d = 0;
+	float		res1 = 0;
+	float		res2 = 0;
+	float3		pos = 0;
+
+	pos = origin - box->pos;
+	abc = get_sphere_abc(2, ray, pos);
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	if (d < 0)
+		return (0);
+	if (d == 0)
+		return ((-abc[1]) / (2 * abc[0]));
+	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	hit->side = side;
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		return (res1);
+	return (res2);
+}
+
 static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const float3 ray, float lightdist)
 {
 	t_hit						hit;
@@ -865,12 +968,17 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 	{	
 		obj = scene->mem_obj + mem_index_obj;
 		if (obj->type == OBJ_SPHERE)
-			dist = inter_sphere(obj, ray, origin);
+		 	dist = inter_sphere(obj, ray, origin);
 	
+		//	ABORT
+		//  if (obj->type == OBJ_BOX)
+		// 	dist = inter_box(obj, ray, origin, &hit);
+		
 		//	OLD  CYLINDER
-		else if (obj->type == OBJ_CYLINDER)
+		 if (obj->type == OBJ_CYLINDER)
 		 	dist = inter_cylinder(obj, ray, origin);
 		//	NEW  CYLINDER
+		//	ABORT
 		//  else if (obj->type == OBJ_CYLINDER)
 		//  {
 		//  	dist = inter_cylinder(obj, ray, origin, &hit);
@@ -884,11 +992,12 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 
 		else if (obj->type == OBJ_PLANE)
 		 	dist = inter_plan(obj, ray, origin);
-
-		 else if (obj->type == OBJ_CONE)
+		else if (obj->type == OBJ_CONE)
 		 	dist = inter_cone(obj, ray, origin);
-		 else if (obj->type == OBJ_ELLIPSOID)
-		 	dist = inter_ellipsoid(obj, ray, origin);
+		//ABORT
+		//else if (obj->type == OBJ_ELLIPSOID)
+		//   	dist = inter_ellipsoid(obj, ray, origin);
+
 		if (lightdist > 0 && dist < lightdist && dist > EPSILON)
 			hit.opacity += obj->opacity;
 		if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
@@ -899,11 +1008,9 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 		}
 		mem_index_obj += obj->size;
 	}
-
 //  NEW  CYLINDER
 	if (hit.isin && !hit.obj->type == OBJ_CYLINDER)
 		hit.isin = 0;
-
 	return (hit);
 }
 
@@ -911,13 +1018,41 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 {
 	float3		res, save;
 
+//	OLD SPHERE
 	if (hit.obj->type == OBJ_SPHERE)
-		res = hit.pos - hit.obj->pos;
+	 	res = hit.pos - hit.obj->pos;
+	//	ABORT
+//	NEW SPHERE
+	// if (hit.obj->type == OBJ_SPHERE)// || hit.obj->type == OBJ_BOX)
+	// {
+	// 	if (hit.side)
+	// 	{
+	// 		res.xyz = (float3)( 1.f,  0.f,  0.f);
+	// 		if (hit.side == SIDE_POSITIF_X)
+	// 			res.xyz = (float3)( 1.f,  0.f,  0.f);
+	// 		else if (hit.side == SIDE_NEGATIF_X)
+	// 			res.xyz = (float3)(-1.f,  0.f,  0.f);
+	// 		else if (hit.side == SIDE_POSITIF_Y)
+	// 			res.xyz = (float3)( 0.f,  1.f,  0.f);
+	// 		else if (hit.side == SIDE_NEGATIF_Y)
+	// 			res.xyz = (float3)( 0.f, -1.f,  0.f);
+	// 		else if (hit.side == SIDE_POSITIF_Z)
+	// 			res.xyz = (float3)( 0.f,  0.f,  1.f);
+	// 		else if (hit.side == SIDE_NEGATIF_Z)
+	// 			res.xyz = (float3)( 0.f,  0.f, -1.f);
+	// 		return (fast_normalize(res));
+	// 		/*else
+	// 			res = hit.pos - hit.obj->pos;*/
+	// 	}
+	// 	else
+	// 		res = hit.pos - hit.obj->pos;
+	// }
 
 // OLD CYLINDER
 	else if (hit.obj->type == OBJ_CYLINDER)
 		res = get_cylinder_normal(hit.obj, hit);
 // NEW 	 CYLINDER
+	//	ABORT
 	// else if (hit.obj->type == OBJ_CYLINDER)
 	// {
 	// 	if (hit.isin)
@@ -930,9 +1065,6 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	// 	else
 	// 		res = get_cylinder_normal(hit.obj, hit);
 	// }
-
-
-
 	else if (hit.obj->type == OBJ_CONE)
 	{
 			res = get_cone_normal(hit.obj, hit);
@@ -946,17 +1078,16 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 		else
 			res = hit.obj->dir;
 
-		if (scene->flag & OPTION_WAVE)
-		{
-			/*					VAGUELETTE						*/
-			save = res;
-			save.y = res.y + 0.8 * sin((hit.pos.x + scene->u_time));
-			return (fast_normalize(save));
-		}
+		// if (scene->flag & OPTION_WAVE)
+		// {
+		// 	/*					VAGUELETTE						*/
+		// 	save = res;
+		// 	save.y = res.y + 0.8 * sin((hit.pos.x + scene->u_time));
+		// 	return (fast_normalize(save));
+		// }
 	}
 	save = res;
 	if (scene->flag & OPTION_WAVE)
-//	if (1)
 	{
 		/*						VAGUELETTE							*/
 		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
@@ -1439,7 +1570,7 @@ __kernel void		ray_trace(	__global	char		*output,
 
 								__global	char		*global_mem_objects,
 								__local		char		*mem_objects,
-								__private	size_t		mem_size_objects,
+								__private	int		mem_size_objects,
 
 								__private	float		u_time,
 
@@ -1451,7 +1582,7 @@ __kernel void		ray_trace(	__global	char		*output,
 
 								__global	char		*global_mem_lights,
 								__local		char		*mem_lights,
-								__private	size_t		mem_size_lights,
+								__private	int		mem_size_lights,
 
 								__global	int			*target)
 {
@@ -1478,6 +1609,10 @@ __kernel void		ray_trace(	__global	char		*output,
 
 	pix.x = get_global_id(0);// % scene->win_w;
 	pix.y = get_global_id(1);// / scene->win_w;
+
+
+	 // if (!pix.x && !pix.y) printf("%zu\n", sizeof(size_t));
+
 	id = pix.x + (scene->win_w * pix.y);
 	scene->cameras = cameras;
 	scene->mem_lights = mem_lights;

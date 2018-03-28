@@ -107,6 +107,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/xml_cameras.c \
 						xml/xml_check_attr.c \
 						xml/xml_cones.c \
+						xml/xml_box.c \
 						xml/xml_cylinders.c \
 						xml/xml_data_angle.c \
 						xml/xml_data_axis_size.c \
@@ -125,6 +126,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/xml_data_specular.c \
 						xml/xml_data_type.c \
 						xml/xml_ellipsoid.c \
+						xml/xml_data_min_max.c \
 						xml/xml_lights.c \
 						xml/xml_list.c \
 						xml/xml_nodes.c \
