@@ -1,6 +1,6 @@
 #include "rt.h"
 
-GdkRGBA		ui_int_to_gdkrbga(int color)
+GdkRGBA		int_to_gdkrbga(int color)
 {
 	GdkRGBA res;
 
@@ -11,7 +11,7 @@ GdkRGBA		ui_int_to_gdkrbga(int color)
 	return (res);
 }
 
-int			ui_gdkrgba_to_int(GdkRGBA color)
+int			gdkrgba_to_int(GdkRGBA color)
 {
 	cl_int4		swap;
 

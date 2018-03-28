@@ -76,6 +76,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_dir.c \
 						ui/callback/cb_obj_nav_add.c \
 						ui/callback/cb_obj_nav_del.c \
+						ui/callback/cb_obj_nav_jump.c \
 						ui/callback/cb_obj_nav_next.c \
 						ui/callback/cb_obj_nav_prev.c \
 						ui/callback/cb_obj_opacity.c \
@@ -92,15 +93,22 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_resolution_update.c \
 						ui/callback/cb_supersampling_update.c \
 						ui/callback/cb_tool_bar.c \
+						ui/gdkrgba_to_int.c \
 						ui/gtk.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
 						ui/ui_cam.c \
 						ui/ui_cam_update.c \
-						ui/ui_gdkrgba_to_int.c \
 						ui/ui_light_update.c \
 						ui/ui_obj.c \
-						ui/ui_object_update.c \
+						ui/ui_obj_set_cone.c \
+						ui/ui_obj_set_cylinder.c \
+						ui/ui_obj_set_ellipsoid.c \
+						ui/ui_obj_set_paraboloid.c \
+						ui/ui_obj_set_plane.c \
+						ui/ui_obj_set_sphere.c \
+						ui/ui_obj_set_torus.c \
+						ui/ui_obj_update.c \
 						update_fps.c \
 						vectors.c \
 						xml/xml.c \
@@ -173,7 +181,7 @@ $(eval GPU_MACRO = )
 GPU:
 	@echo "$(GREEN)Checking for GPU accelerated RT$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make -j gpu_flags $(NAME)
+	@make gpu_flags $(NAME)
 
 gpu: libft GPU
 gpu_flags:

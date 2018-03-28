@@ -41,12 +41,6 @@
 # define NELL					e->scene->n_ellipsoids
 # define NPAR					e->scene->n_paraboloids
 
-// # define CAM					e->cameras
-// # define CONES					e->cones
-// # define CYLIND					e->cylinders
-// # define LIGHT					e->lights
-// # define PLANE					e->planes
-// # define SPHERE					e->spheres
 # define ACTIVECAM				e->cameras[e->scene->active_cam]
 # define ACTIVELIGHT			((t_light*)e->gen_lights->mem)[e->ui->light_selector]
 
@@ -416,7 +410,13 @@ void					ui_cam_update(t_env *e);
 void					ui_light_set_id(t_env *e);
 void					ui_light_update(t_env *e);
 void					ui_obj(t_env *e);
-void					ui_obj_set_id(t_env *e, t_object *obj);
+void					ui_obj_set_cone(t_env *e, t_object *obj);
+void					ui_obj_set_cylinder(t_env *e, t_object *obj);
+void					ui_obj_set_ellipsoid(t_env *e, t_object *obj);
+void					ui_obj_set_paraboloid(t_env *e, t_object *obj);
+void					ui_obj_set_plane(t_env *e, t_object *obj);
+void					ui_obj_set_sphere(t_env *e, t_object *obj);
+void					ui_obj_set_torus(t_env *e, t_object *obj);
 void					ui_obj_update(t_env *e, t_object *obj);
 void					update_fps(t_fps *fps);
 

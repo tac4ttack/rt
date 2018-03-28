@@ -16,5 +16,4 @@ void			cb_obj_nav_next(GtkButton *btn, gpointer data)
 	 	e->target = e->target + obj->size;
 	obj = e->gen_objects->mem + e->target;
 	ui_obj_update(e, obj);
-	ui_obj_set_id(e, obj);
 }
