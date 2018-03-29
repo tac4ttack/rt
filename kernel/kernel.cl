@@ -1139,7 +1139,7 @@ static float	inter_cone(const __local t_cone *cone, const float3 ray, const floa
 
 
 
-static float	inter_box(const __local t_box *box, float3 ray, float3 origin, t_hit *hit)
+static float			inter_box(const __local t_box *box, float3 ray, float3 origin, t_hit *hit)
 {
 	int side = SIDE_POSITIF_X;
 
@@ -1336,23 +1336,22 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 			res = -hit.obj->dir;
 		else
 			res = hit.obj->dir;
-
-		// if (scene->flag & OPTION_WAVE)
-		// {
-		// 	/*					VAGUELETTE						*/
-		// 	save = res;
-		// 	save.y = res.y + 0.8 * sin((hit.pos.x + scene->u_time));
-		// 	return (fast_normalize(save));
-		// }
 	}
 	save = res;
 	if (scene->flag & OPTION_WAVE)
 	{
 		/*						VAGUELETTE							*/
-		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
-		//save.z = res.z + 0.8 * sin(res.x * 10 + scene->u_time);
-		save.z = res.z + 0.8 * sin(save.x * 10 + scene->u_time);
-		save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
+		if (hit.obj->type == OBJ_PLANE)
+		{
+			save.y = res.y + 0.8 * sin((hit.pos.x + scene->u_time));
+		}
+		else
+		{
+			save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
+			//save.z = res.z + 0.8 * sin(res.x * 10 + scene->u_time);
+			save.z = res.z + 0.8 * sin(save.x * 10 + scene->u_time);
+			save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
+		}
 	}
 
 	return (fast_normalize(save));
