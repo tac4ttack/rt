@@ -18,10 +18,6 @@
 #define OPTION_RUN		(1 << 4)
 #define OPTION_INVERT	(1 << 7)
 
-#define FLAG_DEBUG		(1 << 2)
-
-#define PI 3.14159265359f
-
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2
 # define OBJ_CONE			3
@@ -33,49 +29,6 @@
 # define OBJ_THOR			9
 # define OBJ_BOX			10
 
-float ft_max(float u, float v)
-{
-	if (u >= v)
-		return (u);
-	return (v);
-}
-
-typedef struct			s_object
-{
-	int					size;
-	int					type;
-	int					id;
-	float3				pos;
-	float3				dir;
-	float3				diff;
-	float3				spec;
-	int					color;
-	float				reflex;
-	float				refract;
-	float				opacity;
-}						t_object;
-
-typedef struct			s_light_ray
-{
-	float3				dir;
-	float				dist;
-}						t_light_ray;
-
-typedef struct			s_hit
-{
-	float				dist;
-	float3				normal;
-	float3				pos;
-	t_object __local	*obj;
-//	void				*dummy_pedro;
-	int					mem_index;
-	float				opacity;
-	float				m;
-	int					isin;
-	int					mein;
-	int					side;
-}						t_hit;
-
 # define SIDE_POSITIF_X		1
 # define SIDE_NEGATIF_X		2
 # define SIDE_POSITIF_Y		3
@@ -83,6 +36,9 @@ typedef struct			s_hit
 # define SIDE_POSITIF_Z		5
 # define SIDE_NEGATIF_Z		6
 
+/*
+** CAM AND LIGHT STRUCTS ///////////////////////////////////////////////////////
+*/
 typedef struct			s_cam
 {
 	float3				pos;
@@ -103,23 +59,42 @@ typedef struct			s_light
 	float				brightness;
 	int					color;
 }						t_light;
+////////////////////////////////////////////////////////////////////////////////
+
+/*
+** OBJECTS STRUCTURES //////////////////////////////////////////////////////////
+*/
+typedef struct			s_object
+{
+	int					size;
+	int					type;
+	int					id;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+	float				refract;
+	float				opacity;
+}						t_object;
 
 typedef struct			s_box
 {
-	int				size;
-	int				type;
-	int				id;
-	float3			pos;
-	float3			dir;
-	float3			diff;
-	float3			spec;
-	int				color;
-	float			reflex;
-	float			refract;
-	float			opacity;
+	int					size;
+	int					type;
+	int					id;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+	float				refract;
+	float				opacity;
 
-	float3			min;
-	float3			max;
+	float3				min;
+	float3				max;
 }						t_box;
 
 typedef struct			s_cone
@@ -137,7 +112,6 @@ typedef struct			s_cone
 	float				opacity;
 
 	float				angle;
-
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -158,7 +132,6 @@ typedef struct			s_cylinder
 	float3				base_dir;
 	float				radius;
 }						t_cylinder;
-
 
 typedef struct			s_paraboloid
 {
@@ -231,21 +204,26 @@ typedef struct			s_ellipsoid
 
 typedef struct			s_thor
 {
-	int				size;
-	int				type;
-	int				id;
-	float3			pos;
-	float3			dir;
-	float3			diff;
-	float3			spec;
-	int				color;
-	float			reflex;
-	float			refract;
-	float			opacity;
-	float			lil_radius;
-	float			big_radius;
-}						t_thor;
+	int					size;
+	int					type;
+	int					id;
+	float3				pos;
+	float3				dir;
+	float3				diff;
+	float3				spec;
+	int					color;
+	float				reflex;
+	float				refract;
+	float				opacity;
 
+	float				lil_radius;
+	float				big_radius;
+}						t_thor;
+////////////////////////////////////////////////////////////////////////////////
+
+/*
+** TREE OF RAYS STRUCT /////////////////////////////////////////////////////////
+*/
 typedef	struct			s_tor
 {
 	int					activate;
@@ -262,6 +240,31 @@ typedef	struct			s_tor
 	int					id;
 	int					type;
 }						t_tor;
+////////////////////////////////////////////////////////////////////////////////
+
+/*
+** CORE STRUCTS ////////////////////////////////////////////////////////////////
+*/
+typedef struct			s_light_ray
+{
+	float3				dir;
+	float				dist;
+}						t_light_ray;
+
+typedef struct			s_hit
+{
+	float				dist;
+	float3				normal;
+	float3				pos;
+	t_object __local	*obj;
+//	void				*dummy_pedro;
+	int					mem_index;
+	float				opacity;
+	float				m;
+	int					isin;
+	int					mein;
+	int					side;
+}						t_hit;
 
 typedef struct			s_scene
 {
@@ -283,15 +286,23 @@ typedef struct			s_scene
 	int					flag;
 	int					tor_count;
 	int					over_sampling;
-	int				mem_size_obj;
-	int				mem_size_lights;
+	int					mem_size_obj;
+	int					mem_size_lights;
 }						t_scene;
+////////////////////////////////////////////////////////////////////////////////
 
-float ft_ret(float *tab)
+
+
+/*
+** UNCLASSIFIED FUNCTIONS
+*/
+static float	ft_ret(float *tab)
 {
-	float ret;
+	float		ret;
+	int			i;
+	
 	ret = -1.0;
-	int i = 0;
+	i = 0;
 	while(i < 4)
 	{
 		if(tab[i] > 0.0001 && ret == -1)
@@ -305,6 +316,61 @@ float ft_ret(float *tab)
 	return (ret);
 }
 
+static float	ft_max(float u, float v)
+{
+	if (u >= v)
+		return (u);
+	return (v);
+}
+
+static t_hit	hit_init(void)
+{
+	t_hit		hit;
+
+	hit.dist = 0.f;
+	hit.normal = 0.f;
+	hit.obj = -1;
+	hit.pos = 0.f;
+	hit.mem_index = 0;
+	hit.opacity = 0;
+	hit.m = 0;
+	hit.isin = 0;
+	hit.mein = 0;
+	hit.side = 0;
+	return (hit);
+}
+
+void	fswap(float *a, float *b)
+{
+	float tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+/*
+** PRINT FUNCTIONS /////////////////////////////////////////////////////////////
+*/
+static void			print_mem(__local t_cone *cone)
+{
+	printf("dir : x = %f, y = %f, z = %f\npos : x = %f, y = %f, z = %f\nangle = %f\n\n", cone->dir.x, cone->dir.y, cone->dir.z, cone->pos.x, cone->pos.y, cone->pos.z, cone->angle);
+}
+
+static void			print_vect(float3 v)
+{
+	printf("ray : x = %f, y = %f, z = %f\n\n", v.x, v.y, v.z);
+}
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+/*
+** COLOR FUNCTIONS /////////////////////////////////////////////////////////////
+*/
 static unsigned int	sepiarize(const unsigned int color)
 {
 	uint3	base, cooking_pot = 0;
@@ -432,14 +498,19 @@ static unsigned int	get_ambient(const __local t_scene *scene, const unsigned int
 	b = (0.01 + b * scene->ambient.z > 255 ? 255 : 0.01 + b * scene->ambient.z);
 	return ((r << 16) + (g << 8) + b);
 }
+////////////////////////////////////////////////////////////////////////////////
 
 
-static float3						rotat_zyx(const float3 vect, const float pitch, const float yaw, const float roll)
+
+/*
+** ROTATION AND MATRIX SHIT FUNCTIONS //////////////////////////////////////////
+*/
+static float3	rotat_zyx(const float3 vect, const float pitch, const float yaw, const float roll)
 {
-	float3					res;
-	float					rad_pitch = radians(pitch);
-	float					rad_yaw = radians(yaw);
-	float					rad_roll = radians(roll);
+	float3		res;
+	float		rad_pitch = radians(pitch);
+	float		rad_yaw = radians(yaw);
+	float		rad_roll = radians(roll);
 
 	res.x = vect.x * cos(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_pitch) * -sin(rad_roll) + cos(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (-sin(rad_roll) * -sin(rad_pitch) + cos(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
 	res.y = vect.x * sin(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_roll) * cos(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (cos(rad_roll) * -sin(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
@@ -447,12 +518,12 @@ static float3						rotat_zyx(const float3 vect, const float pitch, const float y
 	return (res);
 }
 
-static float3						rotat_xyz(const float3 vect, const float pitch, const float yaw, const float roll)
+static float3	rotat_xyz(const float3 vect, const float pitch, const float yaw, const float roll)
 {
-	float3					res;
-	float					rad_pitch = radians(pitch);
-	float					rad_yaw = radians(yaw);
-	float					rad_roll = radians(roll);
+	float3		res;
+	float		rad_pitch = radians(pitch);
+	float		rad_yaw = radians(yaw);
+	float		rad_roll = radians(roll);
 
 	res.x = vect.x * cos(rad_yaw) * cos(rad_roll) + vect.y * cos(rad_yaw) * -sin(rad_roll) + vect.z * sin(rad_yaw);
 	res.y = vect.x * (-sin(rad_pitch) * -sin(rad_yaw) * cos(rad_roll) + cos(rad_pitch) * sin(rad_roll)) + vect.y * (-sin(rad_pitch) * -sin(rad_yaw) * -sin(rad_roll) + cos(rad_pitch) * cos(rad_roll)) + vect.z * cos(rad_yaw) * -sin(rad_pitch);
@@ -460,10 +531,10 @@ static float3						rotat_xyz(const float3 vect, const float pitch, const float y
 	return (res);
 }
 
-static float3						rotat_x(const float3 vect, const float angle)
+static float3	rotat_x(const float3 vect, const float angle)
 {
-	float3 					res = 0;
-	float					teta = radians(angle);
+	float3 		res = 0;
+	float		teta = radians(angle);
 
 	res.x = (vect.x * 1) + (vect.y * 0) + (vect.z * 0);
 	res.y = (vect.x * 0) + (vect.y * cos(teta)) + (vect.z * -sin(teta));
@@ -471,10 +542,10 @@ static float3						rotat_x(const float3 vect, const float angle)
 	return (res);
 }
 
-static float3						rotat_y(const float3 vect, const float angle)
+static float3	rotat_y(const float3 vect, const float angle)
 {
-	float3 					res = 0;
-	float					teta = radians(angle);
+	float3 		res = 0;
+	float		teta = radians(angle);
 
 	res.x = (vect.x * cos(teta)) + (vect.y * 0) + (vect.z * sin(teta));
 	res.y = (vect.x * 0) + (vect.y * 1) + (vect.z * 0);
@@ -482,20 +553,26 @@ static float3						rotat_y(const float3 vect, const float angle)
 	return (res);
 }
 
-static float3						rotat_z(const float3 vect, const float angle)
+static float3	rotat_z(const float3 vect, const float angle)
 {
-	float3 					res = 0;
-	float					teta = radians(angle);
+	float3 		res = 0;
+	float		teta = radians(angle);
 
 	res.x = (vect.x * cos(teta)) + (vect.y * -sin(teta)) + (vect.z * 0);
 	res.y = (vect.x * sin(teta)) + (vect.y * cos(teta)) + (vect.z * 0);
 	res.z = (vect.x * 0) + (vect.y * 0) + (vect.z * 1);
 	return (res);
 }
+////////////////////////////////////////////////////////////////////////////////
 
-float3	vector_get_rotate(const float3 *this, const __local float3 *rot)
+
+
+/*
+** ELLIPSOID FUNCTIONS
+*/
+static float3	vector_get_rotate(const float3 *this, const __local float3 *rot)
 {
-	float3	n;
+	float3		n;
 	float		tmp;
 
 	n = *this;
@@ -520,9 +597,9 @@ float3	vector_get_rotate(const float3 *this, const __local float3 *rot)
 	return (n);
 }
 
-float3	vector_get_inverse(const float3 *this, const __local float3 *rot)
+static float3	vector_get_inverse(const float3 *this, const __local float3 *rot)
 {
-	float3	n;
+	float3		n;
 	float		tmp;
 
 	n = *this;
@@ -547,30 +624,11 @@ float3	vector_get_inverse(const float3 *this, const __local float3 *rot)
 	return (n);
 }
 
-static t_hit			hit_init(void)
+static bool		solve_quadratic(const float a, const float b, const float c, float *inter0, float *inter1)
 {
-	t_hit		hit;
-
-	hit.dist = 0.f;
-	hit.normal = 0.f;
-	hit.obj = -1;
-	hit.pos = 0.f;
-	hit.mem_index = 0;
-	hit.opacity = 0;
-	hit.m = 0;
-	hit.isin = 0;
-	hit.mein = 0;
-	hit.side = 0;
-	return (hit);
-}
-
-// NEW
-bool		solve_quadratic(const float a, const float b, const float c,
-								float *inter0, float *inter1)
-{
-	float discr;
-	float tmp;
-	float q;
+	float 		discr;
+	float 		tmp;
+	float 		q;
 
 	q = 0;
 	discr = b * b - 4 * a * c;
@@ -606,111 +664,77 @@ bool		solve_quadratic(const float a, const float b, const float c,
 	return (true);
 }
 
-float3 ft_solve_3(float a, float b, float c, float d)
-    {
+float3			get_ellipsoid_normal(const __local t_ellipsoid *ellipsoid, const t_hit hit)
+{
 
-       float a1 = c / d;
-       float a2 = b / d;
-       float a3 = a / d;
+	float3 		pos = hit.pos - ellipsoid->pos;
+	pos = vector_get_rotate(&pos, &ellipsoid->dir);
 
-       	float3 Result;
-       	float theta;
-		float sqrtQ;
-		float e;
-        float Q = (a1 * a1 - 3.0f * a2) / 9.0f;
-       	float R = (2.0f * a1 * a1 * a1 - 9.0f * a1 * a2 + 27.0f * a3) / 54.0f;
-        float Qcubed = Q * Q * Q;
-        d = Qcubed - R * R;
+	float3 res;
 
-        if ( d >= 0.0001f )
-        {	
-            if ( Q < 0.0f )
-            {
-            	Result.x = 0.0f;
-            	Result.y = 0.0f;
-            	Result.z = 0.0f;
-	                return (Result);
-            }
+	res.x = (pos.x) / (ellipsoid->axis_size.x * ellipsoid->axis_size.x);
+	res.y = (pos.y) / (ellipsoid->axis_size.y * ellipsoid->axis_size.y);
+	res.z = (pos.z) / (ellipsoid->axis_size.z * ellipsoid->axis_size.z);
+	res = vector_get_inverse(&res, &ellipsoid->dir);
+	return (res);
+}
 
-            theta = acos(R / sqrt(Qcubed));
-            sqrtQ = sqrt(Q);
-
-            Result.x = -2.0f * sqrtQ * cos(theta / 3.0f) - a1 / 3.0f;
-            Result.y = -2.0f * sqrtQ * cos((theta + 2.0f * M_PI) / 3.0f ) - a1 / 3.0f;
-            Result.z = -2.0f * sqrtQ * cos((theta + 4.0f * M_PI) / 3.0f ) - a1 / 3.0f;
-
-        }
-
-        else
-        {	
-            e = pow(sqrt(-d) + fabs(R), 1.0f/ 3.0f);
-            
-            if ( R > 0.0001f )
-                e = -e;
-
-            Result.x = Result.y = Result.z = (e + Q / e) - a1 / 3.0f;
-        }
-
-        return (Result);
-    }
-
-float	ft_solve_4(float t[5])
-    {
-
-    	float Result[4];
-       
-    	float3 Roots;
-    	float Rsquare;
-		float Rrec;
-         float a0= t[0] / t[4];
-         float a1 = t[1] / t[4];
-         float a2 = t[2] / t[4];
-        float  a3 = t[3] / t[4];
-        float D;
-        float E;
-
-        float3 b;
-       
-        b.x = 4.0f * a2 * a0 - a1 * a1 - a3 * a3 * a0;
-       	b.y = a1 * a3 - 4.0f * a0;
-        b.z = -a2;
-
-	    Roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
-
-        float	y = ft_max(Roots.x, ft_max(Roots.y, Roots.z));
-
-       
+static float	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, float3 origin)
+{
+	float3		abc = 0;
+	float		inter0, inter1;
+	float3		pos = 0;
 
 
-        float R = 0.25f * a3 * a3 - a2 + y;
-        if ( R < 0.0001f)
-            return (0.0f);
-        R = sqrt(R);
+	pos = origin - ellipsoid->pos;
+	pos = vector_get_rotate(&pos, &ellipsoid->dir);
+	ray = vector_get_rotate(&ray, &ellipsoid->dir);
+	ray /= ellipsoid->axis_size;
+	pos /= ellipsoid->axis_size;
 
-        if ( R == 0.0001f )
-        {
-            D = sqrt( 0.75f * a3 * a3 - 2.0f * a2 + 2.0f * sqrt( y * y - 4.0f * a0 ) );
-            E = sqrt( 0.75f * a3 * a3 - 2.0f * a2 - 2.0f * sqrt( y * y - 4.0f * a0 ) );
-        }
-        else
-        {
-            Rsquare = R * R;
-            Rrec = 1.0f / R;
-            D = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 + 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
-            E = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 - 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
-        }
+	abc.x = (ray.x * ray.x +
+	 	ray.y * ray.y +
+	 	ray.z * ray.z);
+	abc.y = (2 * pos.x * ray.x +
+		 2 * pos.y * ray.y +
+		 2 * pos.z * ray.z);
+	abc.z = (pos.x * pos.x +
+		 pos.y * pos.y +
+		 pos.z * pos.z) - (ellipsoid->radius * ellipsoid->radius);
 
-      
-        Result[0] = -0.25f * a3 + 0.5f * R + 0.5f * D;
-        Result[1] = -0.25f * a3 + 0.5f * R - 0.5f * D;
-        Result[2] =  -0.25f * a3 - 0.5f * R + 0.5f * E;
-        Result[3] = -0.25f * a3 - 0.5f * R - 0.5f * E;
+	 if (!solve_quadratic(abc.x, abc.y, abc.z, &inter0, &inter1))
+		return (0);
+	if (inter0 < 0)
+		return (inter1);
+	return (inter0);
+}
+////////////////////////////////////////////////////////////////////////////////
 
-        return(ft_ret(Result));
-	return (0.0f);
 
-    }
 
+/*
+** PLANES FUNCTIONS ////////////////////////////////////////////////////////////
+*/
+static float	inter_plan(const __local t_plane *plane, const float3 ray, const float3 origin)
+{
+	float		t;
+
+	t = dot(fast_normalize(ray), fast_normalize(plane->normal));
+	if (fabs(t) < 0.0005)
+		return (0);
+	t = (dot(plane->pos - origin, fast_normalize(plane->normal))) / t;
+		if (t < 0.001)
+		return (0);
+	return (t);
+}
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+/*
+** CYLINDER FUNCTIONS //////////////////////////////////////////////////////////
+*/
 float		calculate_m_value(const __local t_cylinder *obj, t_hit *hit, const float3 *origin, const float3 *ray, float inter0, float inter1)
 {
 	float3 tmp;
@@ -771,19 +795,6 @@ float		calculate_m_value(const __local t_cylinder *obj, t_hit *hit, const float3
 	return (inter0);
 }
 
-static float		inter_plan(const __local t_plane *plane, const float3 ray, const float3 origin)
-{
-	float	t;
-
-	t = dot(fast_normalize(ray), fast_normalize(plane->normal));
-	if (fabs(t) < 0.0005)
-		return (0);
-	t = (dot(plane->pos - origin, fast_normalize(plane->normal))) / t;
-		if (t < 0.001)
-		return (0);
-	return (t);
-}
-
 static float3	get_cylinder_abc(const float radius, const float3 dir, const float3 ray, const float3 origin)
 {
 	float3		abc;
@@ -795,32 +806,55 @@ static float3	get_cylinder_abc(const float radius, const float3 dir, const float
 	return (abc);
 }
 
+static float3	get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
+{
+	float3		res;
+	float3		v;
+	float3		project;
+	float3		cyl_dir;
+	float		doty;
+
+	res = 0;
+	v = 0;
+	project = 0;
+	doty = 0;
+	cyl_dir = fast_normalize(cylinder->dir);
+	v = hit.pos - cylinder->pos;
+	doty = dot(v, cyl_dir);
+	project = doty * cyl_dir;
+	res = v - project;
+	return (fast_normalize(res));
+}
+
+/*
 // NEW CYLINDER
-// static float					inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin, t_hit *hit)
-// {
-// 	float3				abc;
-// 	float3				pos;
-// 	float				inter0;
-// 	float				inter1;
-
-// 	pos = origin - cylinder->pos;
-// 	abc = get_cylinder_abc(cylinder->radius, fast_normalize(cylinder->dir), ray, pos);
-// 	if (!solve_quadratic(abc.x, abc.y, abc.z, &inter0, &inter1))
-// 		return (0);
-// 	return (calculate_m_value(cylinder, hit, &pos, &ray, inter0, inter1));
-// }
-
-
-// OLD
-static float					inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin)
+static float	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin, t_hit *hit)
 {
 	float3				abc;
 	float3				pos;
-	float				d;
-	float				res1 = 0;
-	float				res2 = 0;
-	float				m;
+	float				inter0;
+	float				inter1;
 
+	pos = origin - cylinder->pos;
+	abc = get_cylinder_abc(cylinder->radius, fast_normalize(cylinder->dir), ray, pos);
+	if (!solve_quadratic(abc.x, abc.y, abc.z, &inter0, &inter1))
+		return (0);
+	return (calculate_m_value(cylinder, hit, &pos, &ray, inter0, inter1));
+}
+*/
+
+// OLD
+static float	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin)
+{
+	float3		abc;
+	float3		pos;
+	float		d;
+	float		res1;
+	float		res2;
+	float		m;
+
+	res1 = 0;
+	res2 = 0;
 	pos = origin - cylinder->pos;
 	abc = get_cylinder_abc(cylinder->radius, fast_normalize(cylinder->dir), ray, pos);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
@@ -849,25 +883,118 @@ static float					inter_cylinder(const __local t_cylinder *cylinder, const float3
 	else
 		return (0);
 }
+////////////////////////////////////////////////////////////////////////////////
 
-static float3			get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
+
+
+/*
+** TORUS FUNCTIONS /////////////////////////////////////////////////////////////
+*/
+static float3	ft_solve_3(float a, float b, float c, float d)
 {
-	float3 res;
-	float3 v;
-	float3 project;
-	float3 cyl_dir;
-	float doty;
 
-	res = 0;
-	v = 0;
-	project = 0;
-	doty = 0;
-	cyl_dir = fast_normalize(cylinder->dir);
-	v = hit.pos - cylinder->pos;
-	doty = dot(v, cyl_dir);
-	project = doty * cyl_dir;
-	res = v - project;
-	return (fast_normalize(res));
+	float 	a1;
+	a1 = c / d;
+	float a2;
+	a2 = b / d;
+	float a3;
+	a3 = a / d;
+
+	float3 Result;
+	float theta;
+	float sqrtQ;
+	float e;
+	float Q = (a1 * a1 - 3.0f * a2) / 9.0f;
+	float R = (2.0f * a1 * a1 * a1 - 9.0f * a1 * a2 + 27.0f * a3) / 54.0f;
+	float Qcubed = Q * Q * Q;
+	d = Qcubed - R * R;
+
+	if ( d >= 0.0001f )
+	{	
+		if ( Q < 0.0f )
+		{
+			Result.x = 0.0f;
+			Result.y = 0.0f;
+			Result.z = 0.0f;
+				return (Result);
+		}
+
+		theta = acos(R / sqrt(Qcubed));
+		sqrtQ = sqrt(Q);
+
+		Result.x = -2.0f * sqrtQ * cos(theta / 3.0f) - a1 / 3.0f;
+		Result.y = -2.0f * sqrtQ * cos((theta + 2.0f * M_PI) / 3.0f ) - a1 / 3.0f;
+		Result.z = -2.0f * sqrtQ * cos((theta + 4.0f * M_PI) / 3.0f ) - a1 / 3.0f;
+
+	}
+
+	else
+	{	
+		e = pow(sqrt(-d) + fabs(R), 1.0f/ 3.0f);
+		
+		if ( R > 0.0001f )
+			e = -e;
+
+		Result.x = Result.y = Result.z = (e + Q / e) - a1 / 3.0f;
+	}
+
+	return (Result);
+}
+
+static float	ft_solve_4(float t[5])
+{
+
+	float Result[4];
+	
+	float3 Roots;
+	float Rsquare;
+	float Rrec;
+		float a0= t[0] / t[4];
+		float a1 = t[1] / t[4];
+		float a2 = t[2] / t[4];
+	float  a3 = t[3] / t[4];
+	float D;
+	float E;
+
+	float3 b;
+	
+	b.x = 4.0f * a2 * a0 - a1 * a1 - a3 * a3 * a0;
+	b.y = a1 * a3 - 4.0f * a0;
+	b.z = -a2;
+
+	Roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
+
+	float	y = ft_max(Roots.x, ft_max(Roots.y, Roots.z));
+
+	
+
+
+	float R = 0.25f * a3 * a3 - a2 + y;
+	if ( R < 0.0001f)
+		return (0.0f);
+	R = sqrt(R);
+
+	if ( R == 0.0001f )
+	{
+		D = sqrt( 0.75f * a3 * a3 - 2.0f * a2 + 2.0f * sqrt( y * y - 4.0f * a0 ) );
+		E = sqrt( 0.75f * a3 * a3 - 2.0f * a2 - 2.0f * sqrt( y * y - 4.0f * a0 ) );
+	}
+	else
+	{
+		Rsquare = R * R;
+		Rrec = 1.0f / R;
+		D = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 + 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
+		E = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 - 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
+	}
+
+	
+	Result[0] = -0.25f * a3 + 0.5f * R + 0.5f * D;
+	Result[1] = -0.25f * a3 + 0.5f * R - 0.5f * D;
+	Result[2] =  -0.25f * a3 - 0.5f * R + 0.5f * E;
+	Result[3] = -0.25f * a3 - 0.5f * R - 0.5f * E;
+
+	return(ft_ret(Result));
+return (0.0f);
 }
 
 static float		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
@@ -895,6 +1022,7 @@ static float		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 
 	return (ft_solve_4(c));
 }
+
 /*
 static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 {
@@ -912,6 +1040,13 @@ static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 	return (res);
 }
 */
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+/*
+** SPHERES FUNCTIONS ///////////////////////////////////////////////////////////
+*/
 static float3	get_sphere_abc(const float radius, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
@@ -922,68 +1057,7 @@ static float3	get_sphere_abc(const float radius, const float3 ray, const float3 
 	return (abc);
 }
 
-static float3	get_cone_abc(const __local t_cone *cone, const float3 ray, const float3 origin)
-{
-	float3		abc = 0;
-	float		k = radians(cone->angle);
-
-	k = tan(k);
-	k = 1 + k * k;
-	abc.x = dot(ray, ray) - (k * (dot(ray, cone->dir) * dot(ray, cone->dir)));
-	abc.y = 2 * (dot(ray, origin) - (k * \
-			(dot(ray, cone->dir) * dot(origin, cone->dir))));
-	abc.z = (dot(origin, origin) - \
-			(k * (dot(origin, cone->dir) * dot(origin, cone->dir))));
-	return (abc);
-}
-
-static void			print_mem(__local t_cone *cone)
-{
-	printf("dir : x = %f, y = %f, z = %f\npos : x = %f, y = %f, z = %f\nangle = %f\n\n", cone->dir.x, cone->dir.y, cone->dir.z, cone->pos.x, cone->pos.y, cone->pos.z, cone->angle);
-}
-
-static void			print_vect(float3 v)
-{
-	printf("ray : x = %f, y = %f, z = %f\n\n", v.x, v.y, v.z);
-}
-
-static float			inter_cone(const __local t_cone *cone, const float3 ray, const float3 origin)
-{
-	float3		abc = 0;
-	float		d = 0;
-	float		res1 = 0;
-	float		res2 = 0;
-	float3		pos = 0;
-
-	pos = origin - cone->pos;
-	abc = get_cone_abc(cone, ray, pos);
-	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
-	if (d < 0)
-		return (0);
-	if (d == 0)
-		return (-abc[1]) / (2 * abc[0]);
-	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
-	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
-	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
-		return (res1);
-	return (res2);
-}
-
-static float3			get_cone_normal(const __local t_cone *cone, const t_hit hit)
-{
-	float3 res = 0;
-	float3 v = 0;
-	float3 project = 0;
-	float doty = 0;
-
-	v = hit.pos - cone->pos;
-	doty = dot(v, cone->dir);
-	project = doty * fast_normalize(cone->dir);
-	res = v - project;
-	return (fast_normalize(res));
-}
-
-static float			inter_sphere(const __local t_sphere *sphere, const float3 ray, const float3 origin)
+static float	inter_sphere(const __local t_sphere *sphere, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
 	float		d = 0;
@@ -1004,97 +1078,103 @@ static float			inter_sphere(const __local t_sphere *sphere, const float3 ray, co
 		return (res1);
 	return (res2);
 }
+////////////////////////////////////////////////////////////////////////////////
 
-float3					get_ellipsoid_normal(const __local t_ellipsoid *ellipsoid, const t_hit hit)
+
+
+/*
+** CONES FUNCTIONS /////////////////////////////////////////////////////////////
+*/
+static float3	get_cone_normal(const __local t_cone *cone, const t_hit hit)
 {
+	float3		res = 0;
+	float3		v = 0;
+	float3		project = 0;
+	float		doty = 0;
 
-	float3 pos = hit.pos - ellipsoid->pos;
-	pos = vector_get_rotate(&pos, &ellipsoid->dir);
-
-	float3 res;
-
-	res.x = (pos.x) / (ellipsoid->axis_size.x * ellipsoid->axis_size.x);
-	res.y = (pos.y) / (ellipsoid->axis_size.y * ellipsoid->axis_size.y);
-	res.z = (pos.z) / (ellipsoid->axis_size.z * ellipsoid->axis_size.z);
-	res = vector_get_inverse(&res, &ellipsoid->dir);
-	return (res);
+	v = hit.pos - cone->pos;
+	doty = dot(v, cone->dir);
+	project = doty * fast_normalize(cone->dir);
+	res = v - project;
+	return (fast_normalize(res));
 }
 
-static float			inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, float3 origin)
+static float3	get_cone_abc(const __local t_cone *cone, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
-	float		inter0, inter1;
+	float		k = radians(cone->angle);
+
+	k = tan(k);
+	k = 1 + k * k;
+	abc.x = dot(ray, ray) - (k * (dot(ray, cone->dir) * dot(ray, cone->dir)));
+	abc.y = 2 * (dot(ray, origin) - (k * \
+			(dot(ray, cone->dir) * dot(origin, cone->dir))));
+	abc.z = (dot(origin, origin) - \
+			(k * (dot(origin, cone->dir) * dot(origin, cone->dir))));
+	return (abc);
+}
+
+static float	inter_cone(const __local t_cone *cone, const float3 ray, const float3 origin)
+{
+	float3		abc = 0;
+	float		d = 0;
+	float		res1 = 0;
+	float		res2 = 0;
 	float3		pos = 0;
 
-
-	pos = origin - ellipsoid->pos;
-	pos = vector_get_rotate(&pos, &ellipsoid->dir);
-	ray = vector_get_rotate(&ray, &ellipsoid->dir);
-	ray /= ellipsoid->axis_size;
-	pos /= ellipsoid->axis_size;
-
-	abc.x = (ray.x * ray.x +
-	 	ray.y * ray.y +
-	 	ray.z * ray.z);
-	abc.y = (2 * pos.x * ray.x +
-		 2 * pos.y * ray.y +
-		 2 * pos.z * ray.z);
-	abc.z = (pos.x * pos.x +
-		 pos.y * pos.y +
-		 pos.z * pos.z) - (ellipsoid->radius * ellipsoid->radius);
-
-	 if (!solve_quadratic(abc.x, abc.y, abc.z, &inter0, &inter1))
+	pos = origin - cone->pos;
+	abc = get_cone_abc(cone, ray, pos);
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	if (d < 0)
 		return (0);
-	if (inter0 < 0)
-		return (inter1);
-	return (inter0);
+	if (d == 0)
+		return (-abc[1]) / (2 * abc[0]);
+	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		return (res1);
+	return (res2);
 }
+////////////////////////////////////////////////////////////////////////////////
 
-void	fswap(float *a, float *b)
-{
-	float tmp;
 
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
 
-static float			inter_box(const __local t_box *box, float3 ray, float3 origin, t_hit *hit)
+static float	inter_box(const __local t_box *box, float3 ray, float3 origin, t_hit *hit)
 {
 	int side = SIDE_POSITIF_X;
 
-    float tmin = (box->pos.x + box->min.x - origin.x) / ray.x;
-    float tmax = (box->pos.x + box->max.x - origin.x) / ray.x;
-    if (tmin > tmax)
+	float tmin = (box->pos.x + box->min.x - origin.x) / ray.x;
+	float tmax = (box->pos.x + box->max.x - origin.x) / ray.x;
+	if (tmin > tmax)
 		fswap(&tmin, &tmax);
-    float tymin = (box->pos.y + box->min.y - origin.y) / ray.y;
-    float tymax = (box->pos.y + box->max.y - origin.y) / ray.y;
-    if (tymin > tymax)
+	float tymin = (box->pos.y + box->min.y - origin.y) / ray.y;
+	float tymax = (box->pos.y + box->max.y - origin.y) / ray.y;
+	if (tymin > tymax)
 		fswap(&tymin, &tymax);
-    if ((tmin > tymax) || (tymin > tmax))
-        return 0;
-    if (tymin > tmin)
+	if ((tmin > tymax) || (tymin > tmax))
+		return 0;
+	if (tymin > tmin)
 	{
-        tmin = tymin;
+		tmin = tymin;
 	}
-    if (tymax < tmax)
+	if (tymax < tmax)
 	{
-        tmax = tymax;
+		tmax = tymax;
 	}
 
-    float tzmin = (box->pos.z + box->min.z - origin.z) / ray.z;
-    float tzmax = (box->pos.z + box->max.z - origin.z) / ray.z;
-    if (tzmin > tzmax)
+	float tzmin = (box->pos.z + box->min.z - origin.z) / ray.z;
+	float tzmax = (box->pos.z + box->max.z - origin.z) / ray.z;
+	if (tzmin > tzmax)
 		fswap(&tzmin, &tzmax);
-    if ((tmin > tzmax) || (tzmin > tmax))
-        return 0;
-    if (tzmin > tmin)
+	if ((tmin > tzmax) || (tzmin > tmax))
+		return 0;
+	if (tzmin > tmin)
 	{
-        tmin = tzmin;
+		tmin = tzmin;
 	}
-    if (tzmax < tmax)
+	if (tzmax < tmax)
 	{
-        tmax = tzmax;
+		tmax = tzmax;
 	}
 
 	;
