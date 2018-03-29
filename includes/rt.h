@@ -94,25 +94,6 @@ typedef struct			s_fps
 	unsigned int		ret_fps;
 }						t_fps;
 
-typedef struct			s_p2i
-{
-	int					x;
-	int					y;
-}						t_p2i;
-
-typedef struct			s_hit
-{
-	cl_float			dist;
-	cl_float3			normale;
-	cl_float3			pos;
-	t_object			*obj;
-	cl_int				mem_index;
-	cl_float			opacity;
-	cl_float			m;
-	cl_int				isin;
-	cl_int				mein;
-}						t_hit;
-
 typedef struct			s_cam
 {
 	cl_float3			pos;
