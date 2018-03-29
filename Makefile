@@ -262,6 +262,17 @@ fcleanlibft: cleanlibft
 
 re: fclean fcleanlibft default
 
+installbrewshit:
+	brew install -f gtk+
+	brew install -f gtk+
+	brew install -f gtk-chtheme
+	brew install -f gtk-mac-integration
+	brew install -f gtkdatabox
+	brew install -f gtkextra
+	brew install -f gtkspell3
+	brew install -f pygtk
+	brew install -f glade
+
 norme:
 	norminette $(SRC_PATH)
 	norminette $(INC_PATH)
