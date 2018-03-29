@@ -263,15 +263,29 @@ fcleanlibft: cleanlibft
 re: fclean fcleanlibft default
 
 installbrewshit:
-	brew install -f gtk+
-	brew install -f gtk+
+	@echo "$(B_GREEN)Updating $(EOC)$(B_RED)brew$(EOC)$(B_GREEN) database...$(EOC)"
+	@brew update
+	@echo "$(B_GREEN)Applying $(EOC)$(B_RED)brew$(EOC)$(B_GREEN) updates...$(EOC)"
+	@brew update
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtk+$(EOC)$(B_GREEN) from brew...$(EOC)"
+	@brew install -f gtk+
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtk+3$(EOC)$(B_GREEN) from brew...$(EOC)"
+	brew install -f gtk+3
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtk-chtheme$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f gtk-chtheme
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtk-mac-integration$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f gtk-mac-integration
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtkdatabox$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f gtkdatabox
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtkextra$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f gtkextra
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtkspell3$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f gtkspell3
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)pygtk$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f pygtk
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)glade$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f glade
+	
 
 norme:
 	norminette $(SRC_PATH)
