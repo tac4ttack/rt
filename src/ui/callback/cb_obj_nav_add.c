@@ -38,5 +38,5 @@ void			cb_obj_nav_add(GtkButton *btn, gpointer data)
 	if (!(cl_replace_buffer(e->cl, e->gen_objects->mem_size, 1)))
 			s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
 	ui_obj_update(e, obj);
-//	ui_obj_set_id(e, obj);
+	ui_obj_jump_list(e);
 }

@@ -30,7 +30,7 @@ void			cb_light_color(GtkColorButton *button, gpointer data)
 	e = data;
 	new_color.alpha = 1;
 	gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(button), &new_color);
-	ACTIVELIGHT.color = ui_gdkrgba_to_int(new_color);
+	ACTIVELIGHT.color = gdkrgba_to_int(new_color);
 	e->ui->light_color = new_color;
 	
 }

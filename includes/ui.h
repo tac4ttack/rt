@@ -67,6 +67,118 @@ typedef	struct			s_ui
 					GtkWidget			*right_panel_viewport; //
 						GtkWidget			*right_panel; //
 
+						GtkWidget			*object_frame; //
+							GtkWidget			*object_frame_label; //
+							GtkWidget			*object_frame_align; //
+								GtkWidget			*object_frame_box; //
+									GtkWidget			*obj_list_box; //
+										GtkWidget			*obj_list_id; //
+											GtkWidget			*obj_list_id_label; //
+										GtkWidget			*obj_list_pos; //
+											GtkWidget			*obj_list_pos_box; //
+												GtkWidget			*obj_list_pos_label; //
+												GtkWidget			*obj_list_pos_spin_x; //
+												GtkWidget			*obj_list_pos_spin_y; //
+												GtkWidget			*obj_list_pos_spin_z; //
+										GtkWidget			*obj_list_dir; //
+											GtkWidget			*obj_list_dir_box; //
+												GtkWidget			*obj_list_dir_label; //
+												GtkWidget			*obj_list_dir_spin_x; //
+												GtkWidget			*obj_list_dir_spin_y; //
+												GtkWidget			*obj_list_dir_spin_z;  //
+										GtkWidget			*obj_list_diff; //
+											GtkWidget			*obj_list_diff_box; //
+												GtkWidget			*obj_list_diff_label; //
+												GtkWidget			*obj_list_diff_spin_x; //
+												GtkWidget			*obj_list_diff_spin_y; //
+												GtkWidget			*obj_list_diff_spin_z; //
+										GtkWidget			*obj_list_spec; //
+											GtkWidget			*obj_list_spec_box; //
+												GtkWidget			*obj_list_spec_label; //
+												GtkWidget			*obj_list_spec_spin_x; //
+												GtkWidget			*obj_list_spec_spin_y; //
+												GtkWidget			*obj_list_spec_spin_z; //
+										GtkWidget			*obj_list_ref; //
+											GtkWidget			*obj_list_ref_box; //
+												GtkWidget			*obj_list_reflex_label; //
+												GtkWidget			*obj_list_reflex_spin; //
+												GtkWidget			*obj_list_refrac_label; //
+												GtkWidget			*obj_list_refrac_spin; //
+										GtkWidget			*obj_list_opacolor; //
+											GtkWidget			*obj_list_opacolor_box; //
+												GtkWidget			*obj_list_opacity_label; //
+												GtkWidget			*obj_list_opacity_spin; //
+												GtkWidget			*obj_list_color_label; //
+												GtkWidget			* obj_list_color_btn; //
+												GdkRGBA				obj_color; //
+
+										GtkWidget			*obj_list_cone; //
+											GtkWidget			*obj_list_cone_box; //
+												GtkWidget			*obj_cone_angle_label; //
+												GtkWidget			*obj_cone_angle_spin; //
+
+										GtkWidget			*obj_list_cylinder; //
+											GtkWidget			*obj_list_cylinder_box; //
+												GtkWidget			*obj_cylinder_radius_label; //
+												GtkWidget			*obj_cylinder_radius_spin; //
+												GtkWidget			*obj_cylinder_height_label; //
+												GtkWidget			*obj_cylinder_height_spin; //
+
+										GtkWidget			*obj_list_ellipsoid; //
+											GtkWidget			*obj_list_ellipsoid_box; //
+												GtkWidget			*obj_ellipsoid_axis_label; //
+												GtkWidget			*obj_ellipsoid_axis_spin_x; //
+												GtkWidget			*obj_ellipsoid_axis_spin_y; //
+												GtkWidget			*obj_ellipsoid_axis_spin_z; //
+												GtkWidget			*obj_ellipsoid_radius_label; //
+												GtkWidget			*obj_ellipsoid_radius_spin; //
+
+										GtkWidget			*obj_list_paraboloid; //
+											GtkWidget			*obj_list_paraboloid_box; //
+												GtkWidget			*obj_paraboloid_first_box; //
+													GtkWidget			*obj_paraboloid_height_label; //
+													GtkWidget			*obj_paraboloid_height_spin; //
+													GtkWidget			*obj_paraboloid_radius_label; //
+													GtkWidget			*obj_paraboloid_radius_spin; //
+												GtkWidget			*obj_paraboloid_second_box; //
+													GtkWidget			*obj_paraboloid_basedir_label; //
+													GtkWidget			*obj_paraboloid_basedir_spin_x; //
+													GtkWidget			*obj_paraboloid_basedir_spin_y; //
+													GtkWidget			*obj_paraboloid_basedir_spin_z; //
+
+										GtkWidget			*obj_list_plane; //
+											GtkWidget			*obj_list_plane_box; //
+												GtkWidget			*obj_plane_shit_label; //
+
+										GtkWidget			*obj_list_sphere; //
+											GtkWidget			*obj_list_sphere_box; //
+												GtkWidget			*obj_sphere_radius_label; //
+												GtkWidget			*obj_sphere_radius_spin; //
+
+										GtkWidget			*obj_list_torus; //
+											GtkWidget			*obj_list_torus_box; //
+												GtkWidget			*obj_torus_lilradius_label; //
+												GtkWidget			*obj_torus_lilradius_spin; //
+												GtkWidget			*obj_torus_bigradius_label; //
+												GtkWidget			*obj_torus_bigradius_spin; //
+
+
+									GtkWidget			*obj_nav_box; //
+										GtkWidget			*obj_nav_first; //
+											GtkWidget			*obj_nav_prev_btn; //
+											GtkWidget			*obj_nav_next_btn; //
+											GtkWidget			*obj_nav_del_btn; //
+										GtkWidget			*obj_nav_second; //
+											GtkWidget			*obj_nav_add_label; //
+											GtkWidget			*obj_nav_add_type_combo; //
+											GtkWidget			*obj_nav_add_btn; //
+										GtkWidget			*obj_nav_third; //
+											GtkWidget			*obj_nav_jump_label; //
+											GtkWidget			*obj_nav_jump_combo; //
+						
+						
+						
+						
 						GtkWidget			*scene_frame; //
 							GtkWidget			*scene_frame_label; //
 							GtkWidget			*scene_frame_align; //
@@ -141,78 +253,14 @@ typedef	struct			s_ui
 												GtkWidget			*light_list_shrink_label; //
 												GtkWidget			*light_list_shrink_spin; //
 												GtkWidget			*light_list_color_label; //
-												GtkWidget			*light_list_color_button; //
+												GtkWidget			* light_list_color_btn; //
 												GdkRGBA				light_color; //
 									GtkWidget			*light_nav_box; //
 										GtkWidget			*light_nav_prev_btn; //
 										GtkWidget			*light_nav_next_btn; //
 										GtkWidget			*light_nav_add_btn; //
 										GtkWidget			*light_nav_del_btn; //
-						
-						GtkWidget			*object_frame; //
-							GtkWidget			*object_frame_label; //
-							GtkWidget			*object_frame_align; //
-								GtkWidget			*object_frame_box; //
-									GtkWidget			*obj_list_box; //
-										GtkWidget			*obj_list_id; //
-											GtkWidget			*obj_list_id_label; //
-										GtkWidget			*obj_list_pos; //
-											GtkWidget			*obj_list_pos_box; //
-												GtkWidget			*obj_list_pos_label; //
-												GtkWidget			*obj_list_pos_spin_x; //
-												GtkWidget			*obj_list_pos_spin_y; //
-												GtkWidget			*obj_list_pos_spin_z; //
-										GtkWidget			*obj_list_dir; //
-											GtkWidget			*obj_list_dir_box; //
-												GtkWidget			*obj_list_dir_label; //
-												GtkWidget			*obj_list_dir_spin_x; //
-												GtkWidget			*obj_list_dir_spin_y; //
-												GtkWidget			*obj_list_dir_spin_z;  //
-										GtkWidget			*obj_list_diff; //
-											GtkWidget			*obj_list_diff_box; //
-												GtkWidget			*obj_list_diff_label; //
-												GtkWidget			*obj_list_diff_spin_x; //
-												GtkWidget			*obj_list_diff_spin_y; //
-												GtkWidget			*obj_list_diff_spin_z; //
-										GtkWidget			*obj_list_spec; //
-											GtkWidget			*obj_list_spec_box; //
-												GtkWidget			*obj_list_spec_label; //
-												GtkWidget			*obj_list_spec_spin_x; //
-												GtkWidget			*obj_list_spec_spin_y; //
-												GtkWidget			*obj_list_spec_spin_z; //
-										GtkWidget			*obj_list_ref; //
-											GtkWidget			*obj_list_ref_box; //
-												GtkWidget			*obj_list_reflex_label; //
-												GtkWidget			*obj_list_reflex_spin; //
-												GtkWidget			*obj_list_refrac_label; //
-												GtkWidget			*obj_list_refrac_spin; //
-										GtkWidget			*obj_list_opacolor; //
-											GtkWidget			*obj_list_opacolor_box; //
-												GtkWidget			*obj_list_opacity_label; //
-												GtkWidget			*obj_list_opacity_spin; //
-												GtkWidget			*obj_list_color_label; //
-												GtkWidget			*obj_list_color_button; //
-												GdkRGBA				obj_color; //
-										GtkWidget			*obj_list_cone;
-										GtkWidget			*obj_list_cylinder;
-										GtkWidget			*obj_list_ellipsoid;
-										GtkWidget			*obj_list_paraboloid;
-										GtkWidget			*obj_list_plane;
-										GtkWidget			*obj_list_sphere;
-										GtkWidget			*obj_list_torus;
-
-									GtkWidget			*obj_nav_box; //
-										GtkWidget			*obj_nav_first; //
-											GtkWidget			*obj_nav_prev_btn; //
-											GtkWidget			*obj_nav_next_btn; //
-											GtkWidget			*obj_nav_del_btn; //
-										GtkWidget			*obj_nav_second; //
-											GtkWidget			*obj_nav_add_label; //
-											GtkWidget			*obj_nav_add_type_combo; //
-											GtkWidget			*obj_nav_add_btn; //
-										GtkWidget			*obj_nav_third; //
-											GtkWidget			*obj_nav_jump_label; //
-											GtkWidget			*obj_nav_jump_combo; //
+					
 											
 
 
@@ -227,10 +275,8 @@ typedef	struct			s_ui
 				GtkWidget			*tool_fps_placeholder; //
 					GtkWidget			*tool_fps_label; //
 	
-	GtkWidget			*export_window; //
-	
+	GtkWidget			*export_window; //	
 	GtkWidget			*about_window; //
-
 }						t_ui;
 
 void					cb_about_btn(GtkButton *btn, gpointer data);
@@ -249,9 +295,21 @@ void					cb_cam_nav_next(GtkButton *btn, gpointer data);
 gboolean				cb_cam_pos_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_z(GtkSpinButton *spin, gpointer data);
+
+gboolean				cb_cone_angle(GtkSpinButton *spin, gpointer data);
+
 gboolean				cb_configure_draw_area(GtkWidget *widget, \
 									GdkEventConfigure *event, gpointer data);
+
+gboolean				cb_cylinder_radius(GtkSpinButton *spin, gpointer data);
+
 gboolean				cb_depth_update(GtkSpinButton *spin, gpointer data);
+
+gboolean				cb_ellipsoid_axis_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_ellipsoid_axis_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_ellipsoid_axis_z(GtkSpinButton *spin, gpointer data);
+gboolean				cb_ellipsoid_radius(GtkSpinButton *spin, gpointer data);
+
 void					cb_export_btn(GtkButton *btn, gpointer data);
 
 gboolean				cb_light_brightness(GtkSpinButton *spin, gpointer data);
@@ -275,6 +333,7 @@ gboolean				cb_obj_diff_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_z(GtkSpinButton *spin, gpointer data);
+void					cb_obj_jump_combo(GtkComboBox *box, gpointer data);
 void					cb_obj_nav_add(GtkButton *btn, gpointer data);
 void					cb_obj_nav_del(GtkButton *btn, gpointer data);
 void					cb_obj_nav_next(GtkButton *btn, gpointer data);
@@ -288,6 +347,12 @@ gboolean				cb_obj_refrac(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_z(GtkSpinButton *spin, gpointer data);
+
+gboolean				cb_paraboloid_basedir_x(GtkSpinButton *spin, gpointer data); // DELETE?
+gboolean				cb_paraboloid_basedir_y(GtkSpinButton *spin, gpointer data); // DELETE?
+gboolean				cb_paraboloid_basedir_z(GtkSpinButton *spin, gpointer data); // DELETE?
+gboolean				cb_paraboloid_height(GtkSpinButton *spin, gpointer data); // DELETE?
+gboolean				cb_paraboloid_radius(GtkSpinButton *spin, gpointer data);
 
 void					cb_play_btn(GtkButton *btn, gpointer data);
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
@@ -309,13 +374,20 @@ gboolean				cb_render_keyrelease(GtkWidget *widget, \
 void					cb_render_update_size(GtkContainer *box, gpointer data);
 gboolean				cb_res_height_update(GtkSpinButton *spin, gpointer data);
 gboolean				cb_res_width_update(GtkSpinButton *spin, gpointer data);
+
+gboolean				cb_sphere_radius(GtkSpinButton *spin, gpointer data);
+
 void					cb_stop_btn(GtkButton *btn, gpointer data);
 gboolean				cb_supersampling_update(GtkScale *scale, gpointer data);
+
+gboolean				cb_torus_radius_lil(GtkSpinButton *spin, gpointer data);
+gboolean				cb_torus_radius_big(GtkSpinButton *spin, gpointer data);
+
 gboolean				gtk_main_loop(gpointer data);
 int						gtk_quit(GtkApplication *app, gpointer data);
 void					init_gtk(GtkApplication* app, gpointer data);
-GdkRGBA					ui_int_to_gdkrbga(int color);
-int						ui_gdkrgba_to_int(GdkRGBA color);
+GdkRGBA					int_to_gdkrbga(int color);
+int						gdkrgba_to_int(GdkRGBA color);
 
 # define KEY_STATE_UA		e->ui->keys.k_up
 # define KEY_STATE_DA		e->ui->keys.k_down

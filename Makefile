@@ -63,8 +63,12 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_cam_manager.c \
 						ui/callback/cb_cam_nav.c \
 						ui/callback/cb_cam_pos.c \
+						ui/callback/cb_cone_angle.c \
 						ui/callback/cb_configure_draw_area.c \
+						ui/callback/cb_cylinder_radius.c \
 						ui/callback/cb_depth_update.c \
+						ui/callback/cb_ellipsoid_axis.c \
+						ui/callback/cb_ellipsoid_radius.c \
 						ui/callback/cb_export_dialog.c \
 						ui/callback/cb_light_manager.c \
 						ui/callback/cb_light_nav.c \
@@ -74,8 +78,10 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_combo_type.c \
 						ui/callback/cb_obj_diff.c \
 						ui/callback/cb_obj_dir.c \
+						ui/callback/cb_obj_jump.c \
 						ui/callback/cb_obj_nav_add.c \
 						ui/callback/cb_obj_nav_del.c \
+						ui/callback/cb_obj_nav_jump.c \
 						ui/callback/cb_obj_nav_next.c \
 						ui/callback/cb_obj_nav_prev.c \
 						ui/callback/cb_obj_opacity.c \
@@ -83,6 +89,9 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_reflex.c \
 						ui/callback/cb_obj_refrac.c \
 						ui/callback/cb_obj_spec.c \
+						ui/callback/cb_paraboloid_basedir.c \
+						ui/callback/cb_paraboloid_height.c \
+						ui/callback/cb_paraboloid_radius.c \
 						ui/callback/cb_postproc_radio.c \
 						ui/callback/cb_render_btnpress.c \
 						ui/callback/cb_render_draw.c \
@@ -90,17 +99,27 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_render_keyrelease.c \
 						ui/callback/cb_render_update_size.c \
 						ui/callback/cb_resolution_update.c \
+						ui/callback/cb_sphere_radius.c \
 						ui/callback/cb_supersampling_update.c \
 						ui/callback/cb_tool_bar.c \
+						ui/callback/cb_torus_radius.c \
+						ui/gdkrgba_to_int.c \
 						ui/gtk.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
 						ui/ui_cam.c \
 						ui/ui_cam_update.c \
-						ui/ui_gdkrgba_to_int.c \
 						ui/ui_light_update.c \
 						ui/ui_obj.c \
-						ui/ui_object_update.c \
+						ui/ui_obj_jump.c \
+						ui/ui_obj_set_cone.c \
+						ui/ui_obj_set_cylinder.c \
+						ui/ui_obj_set_ellipsoid.c \
+						ui/ui_obj_set_paraboloid.c \
+						ui/ui_obj_set_plane.c \
+						ui/ui_obj_set_sphere.c \
+						ui/ui_obj_set_torus.c \
+						ui/ui_obj_update.c \
 						update_fps.c \
 						vectors.c \
 						xml/xml.c \
@@ -173,7 +192,7 @@ $(eval GPU_MACRO = )
 GPU:
 	@echo "$(GREEN)Checking for GPU accelerated RT$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make -j gpu_flags $(NAME)
+	@make gpu_flags $(NAME)
 
 gpu: libft GPU
 gpu_flags:
@@ -242,6 +261,31 @@ fcleanlibft: cleanlibft
 	make -C $(LIBFT_PATH)/ fclean
 
 re: fclean fcleanlibft default
+
+installbrewshit:
+	@echo "$(B_GREEN)Updating $(EOC)$(B_RED)brew$(EOC)$(B_GREEN) database...$(EOC)"
+	@brew update
+	@echo "$(B_GREEN)Applying $(EOC)$(B_RED)brew$(EOC)$(B_GREEN) updates...$(EOC)"
+	@brew update
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtk+$(EOC)$(B_GREEN) from brew...$(EOC)"
+	@brew install -f gtk+
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtk+3$(EOC)$(B_GREEN) from brew...$(EOC)"
+	brew install -f gtk+3
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtk-chtheme$(EOC)$(B_GREEN) from brew...$(EOC)"
+	brew install -f gtk-chtheme
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtk-mac-integration$(EOC)$(B_GREEN) from brew...$(EOC)"
+	brew install -f gtk-mac-integration
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtkdatabox$(EOC)$(B_GREEN) from brew...$(EOC)"
+	brew install -f gtkdatabox
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtkextra$(EOC)$(B_GREEN) from brew...$(EOC)"
+	brew install -f gtkextra
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)gtkspell3$(EOC)$(B_GREEN) from brew...$(EOC)"
+	brew install -f gtkspell3
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)pygtk$(EOC)$(B_GREEN) from brew...$(EOC)"
+	brew install -f pygtk
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)glade$(EOC)$(B_GREEN) from brew...$(EOC)"
+	brew install -f glade
+	
 
 norme:
 	norminette $(SRC_PATH)
