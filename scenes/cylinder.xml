@@ -2,21 +2,18 @@
 
 <scene		res="1024, 768" ambient="0.1, 0.1, 0.1">
 
-<cam	 	id="0"
-			pos="0, -5, -10"
+<cam	 	pos="0, -5, -10"
 			dir="0, 0, 0"
 			fov="30"
 			/>
-<light 		id="0"
-			type="0"
+<light 		type="0"
 			pos="0, 5, 0"
 			dir="0, 0, 0"
 			brightness="0.51"
 			shrink="420"
 			color="0, 255, 255, 255"
 			/>
-<cylinder	id="0"
-			pos="-5, 0, 20"
+<cylinder	pos="-5, 0, 20"
 			dir="0, 1, 0"
 			radius="3"
 			color="0, 0, 0, 255"

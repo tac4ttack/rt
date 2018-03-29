@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<scene res="800, 600" ambient="0.1, 0.1, 0.1">
+<scene res="1024, 1" ambient="0.1, 0.1, 0.1">
 <cam 		pos="0, 0, -30"
 			dir="0, 0, 1"
 			fov="30"
