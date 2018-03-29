@@ -1342,9 +1342,7 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	{
 		/*						VAGUELETTE							*/
 		if (hit.obj->type == OBJ_PLANE)
-		{
 			save.y = res.y + 0.8 * sin((hit.pos.x + scene->u_time));
-		}
 		else
 		{
 			save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
