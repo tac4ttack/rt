@@ -3,7 +3,7 @@
 void	ui_add_sphere(t_env *e)
 {
 	t_sphere sphere;
-	
+
 	sphere.size = sizeof(t_sphere);
 	sphere.id = e->gen_objects->length;
 	sphere.type = OBJ_SPHERE;

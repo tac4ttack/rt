@@ -38,7 +38,7 @@ gboolean	cb_res_width_update(GtkSpinButton *spin, gpointer data)
 }
 
 
-gboolean	cb_res_height_update(GtkSpinButton *spin, gpointer data)
+gboolean	cb_res_heigh_update(GtkSpinButton *spin, gpointer data)
 {
 	gint 	value;
 	t_env *e;

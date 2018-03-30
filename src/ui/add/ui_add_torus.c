@@ -3,7 +3,7 @@
 void	ui_add_torus(t_env *e)
 {
 	t_torus torus;
-	
+
 	torus.size = sizeof(t_torus);
 	torus.id = e->gen_objects->length;
 	torus.type = OBJ_TORUS;

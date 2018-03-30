@@ -101,9 +101,21 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_tool_bar.c \
 						ui/callback/cb_torus_radius.c \
 						ui/gdkrgba_to_int.c \
-						ui/gtk.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
+						ui/init_cb_cam.c \
+						ui/init_cb_light.c \
+						ui/init_cb_main.c \
+						ui/init_cb_object.c \
+						ui/init_cb_scene.c \
+						ui/init_gtk_cam.c \
+						ui/init_gtk_css.c \
+						ui/init_gtk_light.c \
+						ui/init_gtk_object.c \
+						ui/init_gtk_scene.c \
+						ui/init_gtk_toolbar.c \
+						ui/init_gtk_win.c \
+						ui/init_gtk.c \
 						ui/ui_cam.c \
 						ui/ui_cam_update.c \
 						ui/ui_light_update.c \

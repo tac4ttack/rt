@@ -41,7 +41,7 @@ void		check_arguments(int ac, char **av)
 	ft_putendl("\x1b[1;29mGTK will check if options are valid...\x1b[0m\n");
 }
 
-void		print_usage()
+void		print_usage(void)
 {
 	ft_putendl("\n\x1b[1;31mScene file is missing!\x1b[0m");
 	ft_putendl("usage: rt <scene.xml> [options]\n\n\t--display\n\
@@ -66,11 +66,9 @@ int			main(int ac, char **av)
 		s_error("\x1b[1;31mCan't initialize UI data structure\x1b[0m", e);
 	ft_bzero(e->ui, sizeof(t_ui));
 	e->scene_file = ft_strdup(av[1]);
-
 	e->ui->app = gtk_application_new("ray.tracer", G_APPLICATION_FLAGS_NONE);
 	g_signal_connect(e->ui->app, "startup", G_CALLBACK(init), (gpointer)e);
 	g_signal_connect(e->ui->app, "activate", G_CALLBACK(init_gtk), (gpointer)e);
 	e->ui->gtkstatus = g_application_run(G_APPLICATION(e->ui->app), --ac, ++av);
-
 	return (0);
 }

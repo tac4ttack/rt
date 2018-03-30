@@ -341,6 +341,20 @@ cl_float3				*get_target_dir(t_env *e);
 cl_float3				*get_target_pos(t_env *e);
 
 void					init(GtkApplication* app, gpointer data);
+void					init_gtk(GtkApplication* app, gpointer data);
+void					init_cb_cam(t_env *e);
+void					init_cb_light(t_env *e);
+void 					init_cb_main(t_env *e);
+void					init_cb_object(t_env *e);
+void					init_cb_scene(t_env *e);
+void					init_gtk_cam(t_env *e);
+void					init_gtk_css(t_env *e);
+void					init_gtk_light(t_env *e);
+void					init_gtk_object(t_env *e);
+void					init_gtk_scene(t_env *e);
+void					init_gtk_toolbar(t_env *e);
+void					init_gtk_win(t_env *e);
+
 
 cl_float3				normalize_vect(cl_float3 v);
 

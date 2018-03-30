@@ -18,9 +18,8 @@ gboolean	gtk_main_loop(gpointer data)
 			free(fps);
 		}
 		else if (e->ui->redraw == 0)
-		{
-			gtk_label_set_text(GTK_LABEL(e->ui->tool_fps_label), "Realtime rendering paused");
-		}
+			gtk_label_set_text(GTK_LABEL(e->ui->tool_fps_label), \
+			"Realtime rendering paused");
 		gtk_render_events(e);
 		while (gtk_events_pending())
 		{
