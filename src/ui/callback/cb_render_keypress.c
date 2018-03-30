@@ -10,12 +10,12 @@ gboolean cb_render_keypress(GtkWidget *widget, GdkEvent *event, gpointer data)
 	if (!e)
 		exit(EXIT_FAILURE);
 	key = event->key.keyval;
-//	printf("key is %d\n", key);
 	(key == KEY_UA ? KEY_STATE_UA = 1 : 0 );
 	(key == KEY_DA ? KEY_STATE_DA = 1 : 0 );
 	(key == KEY_LA ? KEY_STATE_LA = 1 : 0 );
 	(key == KEY_RA ? KEY_STATE_RA = 1 : 0 );
-	(key == KEY_ESC ? KEY_STATE_ESC = 1 : 0 );
+	if (key == KEY_ESC)
+		gtk_quit(e->ui->app, e);
 	(key == KEY_SPC ? KEY_STATE_SPC = 1 : 0 );
 	(key == KEY_NPLU ? KEY_STATE_NPLU = 1 : 0 );
 	(key == KEY_NMIN ? KEY_STATE_NMIN = 1 : 0 );

@@ -108,7 +108,8 @@ ntoniolo - Noé TONIOLO</property>
     <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="cone_angle_adjustement">
-    <property name="upper">179</property>
+    <property name="lower">5</property>
+    <property name="upper">175</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
@@ -625,7 +626,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's position</property>
+                                                    <property name="tooltip_text" translatable="yes">Current objects's position</property>
                                                     <property name="label" translatable="yes">Position</property>
                                                     <property name="single_line_mode">True</property>
                                                   </object>
@@ -723,7 +724,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's look at direction</property>
+                                                    <property name="tooltip_text" translatable="yes">Current object's direction</property>
                                                     <property name="label" translatable="yes">Direction</property>
                                                     <property name="single_line_mode">True</property>
                                                   </object>
@@ -821,7 +822,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's position</property>
+                                                    <property name="tooltip_text" translatable="yes">Current object's diffuse setting</property>
                                                     <property name="label" translatable="yes">Diffuse</property>
                                                     <property name="single_line_mode">True</property>
                                                   </object>
@@ -835,7 +836,7 @@ ntoniolo - Noé TONIOLO</property>
                                                   <object class="GtkSpinButton" id="obj_list_diff_spin_x">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">position.X</property>
+                                                    <property name="tooltip_text" translatable="yes">diffuse.RED</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -857,7 +858,7 @@ ntoniolo - Noé TONIOLO</property>
                                                   <object class="GtkSpinButton" id="obj_list_diff_spin_y">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">position.Y</property>
+                                                    <property name="tooltip_text" translatable="yes">diffuse.GREEN</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -879,7 +880,7 @@ ntoniolo - Noé TONIOLO</property>
                                                   <object class="GtkSpinButton" id="obj_list_diff_spin_z">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">position.Y</property>
+                                                    <property name="tooltip_text" translatable="yes">diffuse.BLUE</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -919,7 +920,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's position</property>
+                                                    <property name="tooltip_text" translatable="yes">Current object's specular setting</property>
                                                     <property name="label" translatable="yes">Specular</property>
                                                     <property name="single_line_mode">True</property>
                                                   </object>
@@ -933,7 +934,7 @@ ntoniolo - Noé TONIOLO</property>
                                                   <object class="GtkSpinButton" id="obj_list_spec_spin_x">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">position.X</property>
+                                                    <property name="tooltip_text" translatable="yes">specular.RED</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -955,7 +956,7 @@ ntoniolo - Noé TONIOLO</property>
                                                   <object class="GtkSpinButton" id="obj_list_spec_spin_y">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">position.Y</property>
+                                                    <property name="tooltip_text" translatable="yes">specular.GREEN</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -977,7 +978,7 @@ ntoniolo - Noé TONIOLO</property>
                                                   <object class="GtkSpinButton" id="obj_list_spec_spin_z">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">position.Y</property>
+                                                    <property name="tooltip_text" translatable="yes">specular.BLUE</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1017,7 +1018,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
+                                                    <property name="tooltip_text" translatable="yes">Current object's reflexion setting</property>
                                                     <property name="label" translatable="yes">Reflexion</property>
                                                   </object>
                                                   <packing>
@@ -1031,7 +1032,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="width_request">133</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="tooltip_text" translatable="yes">Reflexion index (between 0 and 1)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
@@ -1057,7 +1058,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
+                                                    <property name="tooltip_text" translatable="yes">Current object's refraction setting</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="label" translatable="yes">Refraction</property>
                                                   </object>
@@ -1072,7 +1073,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="width_request">133</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="tooltip_text" translatable="yes">Refraction index (0 to disable, between 1 and 100)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
@@ -1114,7 +1115,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
+                                                    <property name="tooltip_text" translatable="yes">Current object's opacity</property>
                                                     <property name="label" translatable="yes">Opacity</property>
                                                   </object>
                                                   <packing>
@@ -1128,7 +1129,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="width_request">133</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="tooltip_text" translatable="yes">Opacity index (between 0 and 1)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="max_length">4</property>
@@ -1153,7 +1154,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
+                                                    <property name="tooltip_text" translatable="yes">Current object's color</property>
                                                     <property name="label" translatable="yes">Color</property>
                                                   </object>
                                                   <packing>
@@ -1196,7 +1197,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
+                                                    <property name="tooltip_text" translatable="yes">Current cone's appertue angle</property>
                                                     <property name="label" translatable="yes">Angle</property>
                                                   </object>
                                                   <packing>
@@ -1210,7 +1211,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="width_request">133</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="tooltip_text" translatable="yes">Aperture angle (between 5 and 175)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1248,8 +1249,8 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
-                                                    <property name="label" translatable="yes">Radius</property>
+                                                    <property name="tooltip_text" translatable="yes">Current cylinder's diameter</property>
+                                                    <property name="label" translatable="yes">Diameter</property>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -1262,7 +1263,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="width_request">133</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="tooltip_text" translatable="yes">Diameter (between 0.25 and 10000)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1290,6 +1291,7 @@ ntoniolo - Noé TONIOLO</property>
                                             <property name="height_request">35</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="margin_top">3</property>
                                             <child>
                                               <object class="GtkBox" id="obj_list_ellipsoid_box">
                                                 <property name="visible">True</property>
@@ -1305,7 +1307,7 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="visible">True</property>
                                                         <property name="sensitive">False</property>
                                                         <property name="can_focus">False</property>
-                                                        <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
+                                                        <property name="tooltip_text" translatable="yes">Current ellipsoid's axis size, used to control shape</property>
                                                         <property name="label" translatable="yes">Axis size</property>
                                                       </object>
                                                       <packing>
@@ -1318,7 +1320,7 @@ ntoniolo - Noé TONIOLO</property>
                                                       <object class="GtkSpinButton" id="obj_ellipsoid_axis_spin_x">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
-                                                        <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                        <property name="tooltip_text" translatable="yes">X axis size</property>
                                                         <property name="margin_left">5</property>
                                                         <property name="margin_right">5</property>
                                                         <property name="width_chars">0</property>
@@ -1341,7 +1343,7 @@ ntoniolo - Noé TONIOLO</property>
                                                       <object class="GtkSpinButton" id="obj_ellipsoid_axis_spin_y">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
-                                                        <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                        <property name="tooltip_text" translatable="yes">Y axis size</property>
                                                         <property name="margin_left">5</property>
                                                         <property name="margin_right">5</property>
                                                         <property name="width_chars">0</property>
@@ -1364,7 +1366,7 @@ ntoniolo - Noé TONIOLO</property>
                                                       <object class="GtkSpinButton" id="obj_ellipsoid_axis_spin_z">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
-                                                        <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                        <property name="tooltip_text" translatable="yes">Z axis size</property>
                                                         <property name="margin_left">5</property>
                                                         <property name="margin_right">5</property>
                                                         <property name="width_chars">0</property>
@@ -1401,7 +1403,7 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="visible">True</property>
                                                         <property name="sensitive">False</property>
                                                         <property name="can_focus">False</property>
-                                                        <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
+                                                        <property name="tooltip_text" translatable="yes">Current ellipsoid's radius</property>
                                                         <property name="label" translatable="yes">Radius</property>
                                                       </object>
                                                       <packing>
@@ -1415,7 +1417,7 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="width_request">133</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
-                                                        <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                        <property name="tooltip_text" translatable="yes">Radius (between 0.25 and 10000)</property>
                                                         <property name="margin_left">5</property>
                                                         <property name="margin_right">5</property>
                                                         <property name="width_chars">0</property>
@@ -1454,6 +1456,7 @@ ntoniolo - Noé TONIOLO</property>
                                               <object class="GtkBox" id="obj_list_plane_box">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
+                                                <property name="tooltip_text" translatable="yes">:(</property>
                                                 <child>
                                                   <object class="GtkLabel" id="obj_plane_shit_label">
                                                     <property name="width_request">60</property>

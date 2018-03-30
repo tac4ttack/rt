@@ -3,13 +3,9 @@ NEEEEEEEEED TO BE UPDATED!!!!
 * leaks gtk ok -> free à la fin du programme
 * leaks à la fin du programme, foutre while(1) avant le exit pour les trouver
 * problème selection objet à la souris, double clic chelou
-* infobulles objets à faire
-* raccourci clavier quit avec echap et pomku
 * ouverture fichier de scene
 * sauvegarde fichier de scene
 * top menu?
-* changement de resolution nique le redraw
-* axis size elipsoid dans gui trop large
 
 
 TODO LIST COMMON:

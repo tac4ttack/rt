@@ -24,141 +24,136 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	////MAIN WINDOW
 	// init and connect the main window
 	e->ui->main_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "main_window"));
-//	e->ui->main_window_accel = gtk_accel_group_new();
-//	gtk_window_add_accel_group(GTK_WINDOW(e->ui->main_window), e->ui->main_window_accel);
 
-//	e->ui->menu_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "menu_bar"));
-//	gtk_widget_hide(e->ui->menu_bar);
-//	gtk_mac_menu_set_menu_bar(GTK_MENU_SHELL(e->ui->menu_bar));
 
 ////MAIN PANEL	
 	// init all widget in order
-	e->ui->main_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "main_box"));
-	e->ui->main_panels = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "main_panels"));
+	// e->ui->main_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "main_box"));
+	// e->ui->main_panels = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "main_panels"));
 
 ////LEFT PANEL
-	e->ui->left_panel_scroll = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "left_panel_scroll"));
-	e->ui->left_panel_viewport = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "left_panel_viewport"));
+	// e->ui->left_panel_scroll = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "left_panel_scroll"));
+	// e->ui->left_panel_viewport = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "left_panel_viewport"));
 	// init render shit
 	e->ui->render = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "render"));
 	gtk_widget_set_size_request(e->ui->render, e->scene->win_w, e->scene->win_h);
 	e->ui->pixbuf = gdk_pixbuf_new_from_data((const guchar *)e->pixel_data, GDK_COLORSPACE_RGB, 1, 8, e->scene->win_w, e->scene->win_h, e->scene->win_w * 4, NULL, NULL);
 	e->ui->surface = NULL;
 ////RIGHT PANEL
-	e->ui->right_panel_scroll = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "right_panel_scroll"));
-	e->ui->right_panel_viewport = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "right_panel_viewport"));
-	e->ui->right_panel = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "right_panel"));
+	// e->ui->right_panel_scroll = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "right_panel_scroll"));
+	// e->ui->right_panel_viewport = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "right_panel_viewport"));
+	// e->ui->right_panel = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "right_panel"));
 
 
 
 ////OBJECT////
-	e->ui->object_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame"));
-	e->ui->object_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame_label"));
-	e->ui->object_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame_align"));
-	e->ui->object_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame_box"));
+	// e->ui->object_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame"));
+	// e->ui->object_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame_label"));
+	// e->ui->object_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame_align"));
+	// e->ui->object_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "object_frame_box"));
 	e->ui->obj_list_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_box"));
 	//object id
-	e->ui->obj_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_id"));
+	// e->ui->obj_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_id"));
 	e->ui->obj_list_id_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_id_label"));
 	
 	//object pos
-	e->ui->obj_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos"));
-	e->ui->obj_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_box"));
-	e->ui->obj_list_pos_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_label"));
+	//e->ui->obj_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos"));
+	// e->ui->obj_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_box"));
+	// e->ui->obj_list_pos_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_label"));
 	e->ui->obj_list_pos_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_spin_x"));
 	e->ui->obj_list_pos_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_spin_y"));
 	e->ui->obj_list_pos_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_pos_spin_z"));
 	//object dir
-	e->ui->obj_list_dir = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir"));
-	e->ui->obj_list_dir_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_box"));
-	e->ui->obj_list_dir_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_label"));
+	// e->ui->obj_list_dir = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir"));
+	// e->ui->obj_list_dir_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_box"));
+	// e->ui->obj_list_dir_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_label"));
 	e->ui->obj_list_dir_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_spin_x"));
 	e->ui->obj_list_dir_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_spin_y"));
 	e->ui->obj_list_dir_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_dir_spin_z"));
 	//object diffuse
-	e->ui->obj_list_diff = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff"));
-	e->ui->obj_list_diff_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_box"));
-	e->ui->obj_list_diff_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_label"));
+	// e->ui->obj_list_diff = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff"));
+	// e->ui->obj_list_diff_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_box"));
+	// e->ui->obj_list_diff_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_label"));
 	e->ui->obj_list_diff_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_spin_x"));
 	e->ui->obj_list_diff_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_spin_y"));
 	e->ui->obj_list_diff_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_diff_spin_z"));
 	//object specular
-	e->ui->obj_list_spec = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec"));
-	e->ui->obj_list_spec_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_box"));
-	e->ui->obj_list_spec_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_label"));
+	// e->ui->obj_list_spec = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec"));
+	// e->ui->obj_list_spec_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_box"));
+	// e->ui->obj_list_spec_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_label"));
 	e->ui->obj_list_spec_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_spin_x"));
 	e->ui->obj_list_spec_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_spin_y"));
 	e->ui->obj_list_spec_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_spec_spin_z"));
 	//object reflex and refract
-	e->ui->obj_list_ref = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ref"));
-	e->ui->obj_list_ref_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ref_box"));
-	e->ui->obj_list_reflex_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_reflex_label"));
+	// e->ui->obj_list_ref = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ref"));
+	// e->ui->obj_list_ref_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ref_box"));
+	// e->ui->obj_list_reflex_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_reflex_label"));
 	e->ui->obj_list_reflex_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_reflex_spin"));
-	e->ui->obj_list_refrac_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_refrac_label"));
+	// e->ui->obj_list_refrac_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_refrac_label"));
 	e->ui->obj_list_refrac_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_refrac_spin"));
 	//object color opacity
-	e->ui->obj_list_opacolor = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacolor"));
-	e->ui->obj_list_opacolor_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacolor_box"));
-	e->ui->obj_list_opacity_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacity_label"));
+	// e->ui->obj_list_opacolor = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacolor"));
+	// e->ui->obj_list_opacolor_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacolor_box"));
+	// e->ui->obj_list_opacity_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacity_label"));
 	e->ui->obj_list_opacity_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_opacity_spin"));
-	e->ui->obj_list_color_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_color_label"));
+	// e->ui->obj_list_color_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_color_label"));
 	e->ui->obj_list_color_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_color_btn"));
 	
 	//object custom box
 	e->ui->obj_list_cone = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_cone"));
-	e->ui->obj_list_cone_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_cone_box"));
-	e->ui->obj_cone_angle_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_cone_angle_label"));
+	// e->ui->obj_list_cone_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_cone_box"));
+	// e->ui->obj_cone_angle_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_cone_angle_label"));
 	e->ui->obj_cone_angle_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_cone_angle_spin"));
 
 	e->ui->obj_list_cylinder = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_cylinder"));
-	e->ui->obj_list_cylinder_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_cylinder_box"));
-	e->ui->obj_cylinder_radius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_cylinder_radius_label"));
+	// e->ui->obj_list_cylinder_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_cylinder_box"));
+	// e->ui->obj_cylinder_radius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_cylinder_radius_label"));
 	e->ui->obj_cylinder_radius_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_cylinder_radius_spin"));
-	e->ui->obj_cylinder_height_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_cylinder_height_label"));
+	// e->ui->obj_cylinder_height_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_cylinder_height_label"));
 	e->ui->obj_cylinder_height_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_cylinder_height_spin"));
 
 	e->ui->obj_list_ellipsoid = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ellipsoid"));
-	e->ui->obj_list_ellipsoid_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ellipsoid_box"));
-	e->ui->obj_list_ellipsoid_axis_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ellipsoid_axis_box"));
-	e->ui->obj_ellipsoid_axis_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_axis_label"));
+	// e->ui->obj_list_ellipsoid_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ellipsoid_box"));
+	// e->ui->obj_list_ellipsoid_axis_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ellipsoid_axis_box"));
+	// e->ui->obj_ellipsoid_axis_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_axis_label"));
 	e->ui->obj_ellipsoid_axis_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_axis_spin_x"));
 	e->ui->obj_ellipsoid_axis_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_axis_spin_y"));
 	e->ui->obj_ellipsoid_axis_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_axis_spin_z"));
-	e->ui->obj_list_ellipsoid_radius_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ellipsoid_radius_box"));
-	e->ui->obj_ellipsoid_radius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_radius_label"));
+	// e->ui->obj_list_ellipsoid_radius_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ellipsoid_radius_box"));
+	// e->ui->obj_ellipsoid_radius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_radius_label"));
 	e->ui->obj_ellipsoid_radius_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_radius_spin"));
 
 
 	e->ui->obj_list_plane = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_plane"));
-	e->ui->obj_list_plane_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_plane_box"));
-	e->ui->obj_plane_shit_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_plane_shit_label"));
+	// e->ui->obj_list_plane_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_plane_box"));
+	// e->ui->obj_plane_shit_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_plane_shit_label"));
 
 	e->ui->obj_list_sphere = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_sphere"));
-	e->ui->obj_list_sphere_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_sphere_box"));
-	e->ui->obj_sphere_radius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_sphere_radius_label"));
+	// e->ui->obj_list_sphere_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_sphere_box"));
+	// e->ui->obj_sphere_radius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_sphere_radius_label"));
 	e->ui->obj_sphere_radius_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_sphere_radius_spin"));
 
 	e->ui->obj_list_torus = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_torus"));	
-	e->ui->obj_list_torus_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_torus_box"));
-	e->ui->obj_torus_lilradius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_torus_lilradius_label"));
+	// e->ui->obj_list_torus_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_torus_box"));
+	// e->ui->obj_torus_lilradius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_torus_lilradius_label"));
 	e->ui->obj_torus_lilradius_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_torus_lilradius_spin"));
-	e->ui->obj_torus_bigradius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_torus_bigradius_label"));
+	// e->ui->obj_torus_bigradius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_torus_bigradius_label"));
 	e->ui->obj_torus_bigradius_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_torus_bigradius_spin"));
 
 
 	//object navigation
-	e->ui->obj_nav_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_box"));
-	e->ui->obj_nav_first = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_first"));
+	// e->ui->obj_nav_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_box"));
+	// e->ui->obj_nav_first = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_first"));
 	e->ui->obj_nav_prev_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_prev_btn"));
 	e->ui->obj_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_next_btn"));
 	e->ui->obj_nav_del_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_del_btn"));	
 
-	e->ui->obj_nav_second = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_second"));
-	e->ui->obj_nav_add_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_label"));
+	// e->ui->obj_nav_second = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_second"));
+	// e->ui->obj_nav_add_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_label"));
 	e->ui->obj_nav_add_type_combo = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_type_combo"));
 	e->ui->obj_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_add_btn"));
-	e->ui->obj_nav_third = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_third"));
-	e->ui->obj_nav_jump_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_jump_label"));
+	// e->ui->obj_nav_third = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_third"));
+	// e->ui->obj_nav_jump_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_jump_label"));
 	e->ui->obj_nav_jump_combo = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_jump_combo"));
 	if (e->gen_objects->length < 2)
 	{	
@@ -171,20 +166,20 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 
 /////SCENE/////
-	e->ui->scene_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame"));
-	e->ui->scene_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame_align"));
-	e->ui->scene_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame_label"));
-	e->ui->scene_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame_box"));
+	// e->ui->scene_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame"));
+	// e->ui->scene_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame_align"));
+	// e->ui->scene_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame_label"));
+	// e->ui->scene_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_frame_box"));
 	// scene resolution shit
-	e->ui->scene_resolution_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_box"));
-	e->ui->scene_resolution_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_label"));
+	// e->ui->scene_resolution_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_box"));
+	// e->ui->scene_resolution_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_label"));
 	e->ui->scene_resolution_width_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_width_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_resolution_width_spin, (gdouble)e->scene->win_w);
 	e->ui->scene_resolution_height_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_resolution_height_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_resolution_height_spin, (gdouble)e->scene->win_h);
 	// scene ambient shit
-	e->ui->scene_ambient_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_box"));
-	e->ui->scene_ambient_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_label"));
+	// e->ui->scene_ambient_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_box"));
+	// e->ui->scene_ambient_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_label"));
 	e->ui->scene_ambient_red_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_red_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_ambient_red_spin, (gdouble)e->scene->ambient.x);
 	e->ui->scene_ambient_green_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_ambient_green_spin"));
@@ -193,13 +188,13 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_ambient_blue_spin, (gdouble)e->scene->ambient.z);
 	
 	// scene supersampling & depth shit
-	e->ui->scene_depth_ss_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_ss_box"));
+	// e->ui->scene_depth_ss_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_ss_box"));
 	// scene depth shit
-	e->ui->scene_depth_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_label"));
+	// e->ui->scene_depth_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_label"));
 	e->ui->scene_depth_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_depth_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_depth_spin, (gdouble)e->scene->depth);
 	// scene supersampling shit
-	e->ui->scene_supersampling_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_supersampling_label"));
+	// e->ui->scene_supersampling_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_supersampling_label"));
 	e->ui->scene_supersampling_scale = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_supersampling_scale"));
 	gtk_scale_add_mark(GTK_SCALE(e->ui->scene_supersampling_scale), 1, GTK_POS_BOTTOM, "x1");
 	gtk_scale_add_mark(GTK_SCALE(e->ui->scene_supersampling_scale), 2, GTK_POS_BOTTOM, "x2");
@@ -208,8 +203,8 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	gtk_scale_add_mark(GTK_SCALE(e->ui->scene_supersampling_scale), 5, GTK_POS_BOTTOM, "x16");
 	
 	// scene post proc shit
-	e->ui->scene_postproc_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_box"));
-	e->ui->scene_postproc_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_label"));
+	// e->ui->scene_postproc_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_box"));
+	// e->ui->scene_postproc_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_label"));
 	e->ui->scene_postproc_bw_radio = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_bw_radio"));
 	e->ui->scene_postproc_sepia_radio = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_sepia_radio"));
 	e->ui->scene_postproc_none_radio = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "scene_postproc_none_radio"));
@@ -219,20 +214,20 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 
 	/////CAMERAS////
-	e->ui->cam_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame"));
-	e->ui->cam_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame_align"));
-	e->ui->cam_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame_label"));
-	e->ui->cam_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame_box"));
+	// e->ui->cam_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame"));
+	// e->ui->cam_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame_align"));
+	// e->ui->cam_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame_label"));
+	// e->ui->cam_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_frame_box"));
 	// cam list box
-	e->ui->cam_list_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_box"));
+	// e->ui->cam_list_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_box"));
 	// cam list id
-	e->ui->cam_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_id"));
+	// e->ui->cam_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_id"));
 	e->ui->cam_list_id_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_id_label"));
 	ui_cam_set_id(e);
 	// cam list pos
-	e->ui->cam_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos"));
-	e->ui->cam_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_box"));
-	e->ui->cam_list_pos_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_label"));
+	// e->ui->cam_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos"));
+	// e->ui->cam_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_box"));
+	// e->ui->cam_list_pos_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_label"));
 	e->ui->cam_list_pos_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_spin_x"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_pos_spin_x, (gdouble)ACTIVECAM.pos.x);
 	e->ui->cam_list_pos_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_spin_y"));
@@ -240,9 +235,9 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->cam_list_pos_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_pos_spin_z"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_pos_spin_z, (gdouble)ACTIVECAM.pos.z);
 	// cam list dir
-	e->ui->cam_list_dir = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir"));
-	e->ui->cam_list_dir_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_box"));
-	e->ui->cam_list_dir_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_label"));
+	// e->ui->cam_list_dir = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir"));
+	// e->ui->cam_list_dir_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_box"));
+	// e->ui->cam_list_dir_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_label"));
 	e->ui->cam_list_dir_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_spin_x"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_dir_spin_x, (gdouble)ACTIVECAM.dir.x);
 	e->ui->cam_list_dir_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_spin_y"));
@@ -250,13 +245,13 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->cam_list_dir_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_dir_spin_z"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_dir_spin_z, (gdouble)ACTIVECAM.dir.z);
 	// cam list fov
-	e->ui->cam_list_fov = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov"));
-	e->ui->cam_list_fov_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_box"));
-	e->ui->cam_list_fov_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_label"));
+	// e->ui->cam_list_fov = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov"));
+	// e->ui->cam_list_fov_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_box"));
+	// e->ui->cam_list_fov_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_label"));
 	e->ui->cam_list_fov_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_list_fov_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->cam_list_fov_spin, (guint)ACTIVECAM.fov);
 	// cam nav box
-	e->ui->cam_nav_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_box"));
+	// e->ui->cam_nav_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_box"));
 	e->ui->cam_nav_prev_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_prev_btn"));
 	e->ui->cam_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_next_btn"));
 	e->ui->cam_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "cam_nav_add_btn"));
@@ -272,19 +267,19 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 //	printf("selectore = %d\n", e->ui->light_selector);
 
-	e->ui->light_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame"));
-	e->ui->light_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_align"));
-	e->ui->light_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_label"));
-	e->ui->light_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_box"));
-	e->ui->light_list_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_box"));
+	// e->ui->light_frame = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame"));
+	// e->ui->light_frame_align = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_align"));
+	// e->ui->light_frame_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_label"));
+	// e->ui->light_frame_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_frame_box"));
+	// e->ui->light_list_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_box"));
 	//light id
-	e->ui->light_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_id"));
+	// e->ui->light_list_id = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_id"));
 	e->ui->light_list_id_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_id_label"));
 	ui_light_set_id(e);
 	//light pos
-	e->ui->light_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos"));
-	e->ui->light_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_box"));
-	e->ui->light_list_pos_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_label"));
+	// e->ui->light_list_pos = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos"));
+	// e->ui->light_list_pos_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_box"));
+	// e->ui->light_list_pos_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_label"));
 	e->ui->light_list_pos_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_spin_x"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_pos_spin_x, (gdouble)ACTIVELIGHT.pos.x);
 	e->ui->light_list_pos_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_spin_y"));
@@ -292,20 +287,20 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->light_list_pos_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_pos_spin_z"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_pos_spin_z, (gdouble)ACTIVELIGHT.pos.z);
 	//light params
-	e->ui->light_list_params = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_params"));
-	e->ui->light_list_params_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_params_box"));
-	e->ui->light_list_bright_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_bright_label"));
+	// e->ui->light_list_params = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_params"));
+	// e->ui->light_list_params_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_params_box"));
+	// e->ui->light_list_bright_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_bright_label"));
 	e->ui->light_list_bright_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_bright_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_bright_spin, (gdouble)ACTIVELIGHT.brightness);
-	e->ui->light_list_shrink_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_shrink_label"));
+	// e->ui->light_list_shrink_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_shrink_label"));
 	e->ui->light_list_shrink_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_shrink_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->light_list_shrink_spin, (gint)ACTIVELIGHT.shrink);
-	e->ui->light_list_color_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_color_label"));
+	// e->ui->light_list_color_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_color_label"));
 	e->ui->light_list_color_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_list_color_btn"));
 	e->ui->light_color = int_to_gdkrbga((gint)ACTIVELIGHT.color);
 	gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(e->ui->light_list_color_btn), &e->ui->light_color);
 	//light nav
-	e->ui->light_nav_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_box"));
+	// e->ui->light_nav_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_box"));
 	e->ui->light_nav_prev_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_prev_btn"));
 	e->ui->light_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_next_btn"));
 	e->ui->light_nav_add_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "light_nav_add_btn"));
@@ -318,8 +313,8 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	}
 
 ////TOOL BAR
-	e->ui->tool_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_bar"));
-	e->ui->tool_fps_placeholder = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_fps_placeholder"));
+	// e->ui->tool_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_bar"));
+	// e->ui->tool_fps_placeholder = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_fps_placeholder"));
 	e->ui->tool_fps_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_fps_label"));
 	e->ui->tool_play_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_play_btn"));
 	e->ui->tool_stop_btn = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "tool_stop_btn"));
@@ -331,7 +326,7 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	gtk_widget_set_sensitive(e->ui->tool_stop_btn, TRUE);
 
 ////STATUS BAR
-	e->ui->status_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "status_bar"));
+	// e->ui->status_bar = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "status_bar"));
 
 ////ABOUT DIALOG
 e->ui->about_window = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "about_window"));

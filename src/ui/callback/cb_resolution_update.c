@@ -33,9 +33,7 @@ gboolean	cb_res_width_update(GtkSpinButton *spin, gpointer data)
 
 	e = data;
 	value = gtk_spin_button_get_value_as_int(spin);
-	e->ui->redraw = 0;
 	ui_update_resolution(e, value, e->scene->win_h);
-	e->ui->redraw = 1;
 	return TRUE;
 }
 
@@ -47,8 +45,6 @@ gboolean	cb_res_height_update(GtkSpinButton *spin, gpointer data)
 
 	e = data;
 	value = gtk_spin_button_get_value_as_int(spin);
-	e->ui->redraw = 0;
 	ui_update_resolution(e, e->scene->win_w, value);
-	e->ui->redraw = 1;
 	return TRUE;
 }
