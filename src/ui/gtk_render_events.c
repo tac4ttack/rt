@@ -1,25 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   gtk_render_events.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 20:04:20 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 20:04:21 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
-void	gtk_render_events(t_env *e)
+static void	gtk_render_events_depth(t_env *e)
+{
+	if (KEY_STATE_NPLU)
+		e->scene->depth++;
+	if (KEY_STATE_NMIN)
+		(e->scene->depth > 0 ? e->scene->depth-- : 0);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_depth_spin,\
+	(gdouble)e->scene->depth);
+}
+
+static void	gtk_render_events_sinwave(t_env *e)
+{
+	if (e->scene->flag & OPTION_WAVE)
+		e->scene->flag ^= OPTION_WAVE;
+	else
+		e->scene->flag |= OPTION_WAVE;
+}
+
+void		gtk_render_events(t_env *e)
 {
 	if (KEY_STATE_1)
-	{
-		if (e->scene->flag & OPTION_WAVE)
-			e->scene->flag ^= OPTION_WAVE;
-		else
-			e->scene->flag |= OPTION_WAVE;
-	}
+		gtk_render_events_sinwave(e);
 	if (KEY_STATE_NPLU || KEY_STATE_NMIN)
-	{
-		if (KEY_STATE_NPLU)
-			e->scene->depth++;
-		if (KEY_STATE_NMIN)
-		{
-			(e->scene->depth > 0 ? e->scene->depth-- : 0);
-			e->scene->tor_count = pow(2, e->scene->depth + 1) - 1;
-		}
-		gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_depth_spin, (gdouble)e->scene->depth);
-	}
+		gtk_render_events_depth(e);
 	if (e->ui->redraw == 1)
 	{
 		if (KEY_STATE_I || KEY_STATE_J || KEY_STATE_K || KEY_STATE_L || \

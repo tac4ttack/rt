@@ -1,5 +1,16 @@
-#include "rt.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cb_configure_draw_area.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 20:16:48 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 20:49:31 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "rt.h"
 
 void		clear_surface(t_env *e)
 {
@@ -11,11 +22,11 @@ void		clear_surface(t_env *e)
 	cairo_destroy(cr);
 }
 
-gboolean		cb_configure_draw_area(GtkWidget *widget, \
+gboolean	cb_configure_draw_area(GtkWidget *widget, \
 									GdkEventConfigure *event, \
 									gpointer data)
 {
-	t_env *e;
+	t_env	*e;
 
 	e = data;
 	e->ui->render_pos.w = event->x;
@@ -30,5 +41,5 @@ gboolean		cb_configure_draw_area(GtkWidget *widget, \
 						gtk_widget_get_allocated_width(widget), \
 						gtk_widget_get_allocated_height(widget));
 	clear_surface(e);
-	return TRUE;
+	return (TRUE);
 }

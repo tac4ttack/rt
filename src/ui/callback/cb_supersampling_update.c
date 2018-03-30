@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cb_supersampling_update.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 20:17:49 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 20:19:49 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 gboolean	cb_supersampling_update(GtkScale *scale, gpointer data)
 {
-	gint 	value;
-	t_env 	*e;
+	gint	value;
+	t_env	*e;
 
 	e = data;
 	value = (gint)gtk_range_get_value(GTK_RANGE(scale));
@@ -17,5 +29,5 @@ gboolean	cb_supersampling_update(GtkScale *scale, gpointer data)
 		e->scene->over_sampling = 8;
 	else if (value == 5)
 		e->scene->over_sampling = 16;
-	return FALSE;
+	return (FALSE);
 }

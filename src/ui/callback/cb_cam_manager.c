@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cb_cam_manager.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 20:16:39 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 20:52:14 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
-static void	cam_remove(t_env *e, int target)
+static void		cam_remove(t_env *e, int target)
 {
 	t_cam		*new_array;
 	int			i;
@@ -26,37 +38,32 @@ static void	cam_remove(t_env *e, int target)
 	e->cameras = new_array;
 }
 
-void	cb_cam_manage_del(GtkButton *btn, gpointer data)
+void			cb_cam_manage_del(GtkButton *btn, gpointer data)
 {
-	t_env	*e;
+	t_env		*e;
 
 	(void)btn;
 	e = data;
-	if (e->scene->n_cams == 1)
-		ft_putendl("why did u du dis? :(((((");
-	else
+	cam_remove(e, e->scene->active_cam);
+	if (--e->scene->n_cams == 1)
 	{
-		cam_remove(e, e->scene->active_cam);
-		if (--e->scene->n_cams == 1)
-		{
-			gtk_widget_set_sensitive(e->ui->cam_nav_prev_btn, FALSE);
-			gtk_widget_set_sensitive(e->ui->cam_nav_next_btn, FALSE);
-			gtk_widget_set_sensitive(e->ui->cam_nav_del_btn, FALSE);
-		}
-		if (!(cl_replace_buffer(e->cl, sizeof(t_cam) * NCAM, 3)))
-			s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
-		if (e->scene->n_cams == 1)
-			e->scene->active_cam = 0;
-		else if (e->scene->active_cam == 0)
-			e->scene->active_cam = 0;
-		else
-			e->scene->active_cam -= 1;
-		ui_cam_set_id(e);	
-		ui_cam_update(e);
+		gtk_widget_set_sensitive(e->ui->cam_nav_prev_btn, FALSE);
+		gtk_widget_set_sensitive(e->ui->cam_nav_next_btn, FALSE);
+		gtk_widget_set_sensitive(e->ui->cam_nav_del_btn, FALSE);
 	}
+	if (!(cl_replace_buffer(e->cl, sizeof(t_cam) * NCAM, 3)))
+		s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
+	if (e->scene->n_cams == 1)
+		e->scene->active_cam = 0;
+	else if (e->scene->active_cam == 0)
+		e->scene->active_cam = 0;
+	else
+		e->scene->active_cam -= 1;
+	ui_cam_set_id(e);
+	ui_cam_update(e);
 }
 
-static void	cam_add(t_env *e)
+static void		cam_add(t_env *e)
 {
 	t_cam		*new_array;
 	int			i;
@@ -67,8 +74,8 @@ static void	cam_add(t_env *e)
 		s_error("\x1b[1;31mCan't recreate cameras array\x1b[0m", e);
 	while (i < (int)NCAM + 1)
 	{
-			ft_memcpy(&new_array[i], &e->cameras[i], sizeof(t_cam));
-			i++;
+		ft_memcpy(&new_array[i], &e->cameras[i], sizeof(t_cam));
+		i++;
 	}
 	new_array[i - 1].pos.x = 0;
 	new_array[i - 1].pos.y = 0;
@@ -84,9 +91,9 @@ static void	cam_add(t_env *e)
 	e->cameras = new_array;
 }
 
-void	cb_cam_manage_add(GtkButton *btn, gpointer data)
+void			cb_cam_manage_add(GtkButton *btn, gpointer data)
 {
-	t_env *e;
+	t_env		*e;
 
 	(void)btn;
 	e = data;
@@ -98,6 +105,6 @@ void	cb_cam_manage_add(GtkButton *btn, gpointer data)
 	if (!(cl_replace_buffer(e->cl, sizeof(t_cam) * NCAM, 3)))
 		s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
 	e->scene->active_cam = e->scene->n_cams - 1;
-	ui_cam_set_id(e);	
+	ui_cam_set_id(e);
 	ui_cam_update(e);
 }

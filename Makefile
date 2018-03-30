@@ -81,7 +81,6 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_jump.c \
 						ui/callback/cb_obj_nav_add.c \
 						ui/callback/cb_obj_nav_del.c \
-						ui/callback/cb_obj_nav_jump.c \
 						ui/callback/cb_obj_nav_next.c \
 						ui/callback/cb_obj_nav_prev.c \
 						ui/callback/cb_obj_opacity.c \

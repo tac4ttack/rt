@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cb_cam_nav.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 20:16:41 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 20:50:45 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 void		ui_cam_set_id(t_env *e)
 {
 	char	*cam_id;
-	
+
 	cam_id = ft_strjoin_frs2("CAMERA ", ft_itoa(e->scene->active_cam + 1));
 	cam_id = ft_strjoin_frs1(cam_id, " / ");
 	cam_id = ft_strjoin_free(cam_id, ft_itoa(e->scene->n_cams));
@@ -13,13 +25,13 @@ void		ui_cam_set_id(t_env *e)
 
 void		cb_cam_nav_prev(GtkButton *btn, gpointer data)
 {
-	t_env	*e; 
+	t_env	*e;
 
 	(void)btn;
 	e = data;
 	e->scene->active_cam = ((int)e->scene->active_cam - 1 \
 	< 0 ? e->scene->n_cams - 1 : e->scene->active_cam - 1);
-	ui_cam_set_id(e);	
+	ui_cam_set_id(e);
 	ui_cam_update(e);
 }
 

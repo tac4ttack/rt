@@ -254,7 +254,6 @@ typedef struct			s_scene
 	int					depth;
 	float				u_time;
 	int					flag;
-	int					tor_count;
 	int					over_sampling;
 	int					mem_size_obj;
 	int					mem_size_lights;
