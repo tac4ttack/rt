@@ -1,3 +1,4 @@
+
 NAME = 					rt
 
 CC = 					clang
@@ -192,7 +193,7 @@ $(eval GPU_MACRO = )
 GPU:
 	@echo "$(GREEN)Checking for GPU accelerated RT$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make gpu_flags $(NAME)
+	@make -j 8 gpu_flags $(NAME)
 
 gpu: libft GPU
 gpu_flags:
