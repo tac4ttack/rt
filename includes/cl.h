@@ -22,6 +22,7 @@ typedef struct			s_cl
 	cl_program			program;
 	cl_kernel			kernel;
 	cl_platform_id		platform_id;
+	cl_uint				num_platforms;
 	cl_int				err;
 	size_t				global_item_size;
 	size_t				local_item_size;

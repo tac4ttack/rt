@@ -7,13 +7,13 @@ static bool			cl_builderrors(t_cl *cl, int err, int errorcode)
 
 	cl_print_error(errorcode);
 	if (err == 1)
-		ft_putendl("Error: Failed to create device group!");
+		ft_putendl("\nError: Failed to create device group!");
 	else if (err == 2)
-		ft_putendl("Error: Failed to create compute context!");
+		ft_putendl("\nError: Failed to create compute context!");
 	else if (err == 3)
-		ft_putendl("Error: Failed to create commands queue!");
+		ft_putendl("\nError: Failed to create commands queue!");
 	else if (err == 4)
-		ft_putendl("Error: Failed to create compute program!");
+		ft_putendl("\nError: Failed to create compute program!");
 	else if (err == 5)
 	{
 		ft_putendl("\nError: Failed to build program executable!\n");
@@ -22,9 +22,11 @@ static bool			cl_builderrors(t_cl *cl, int err, int errorcode)
 		ft_putendl(buffer);
 	}
 	else if (err == 6)
-		ft_putendl("Error: Failed to create compute kernel!\n");
+		ft_putendl("\nError: Failed to create compute kernel!\n");
 	else if (err == 7)
-		ft_putendl("Error: Failed to allocate device memory!\n");
+		ft_putendl("\nError: Failed to allocate device memory!\n");
+	else if (err == 8)
+		ft_putendl("\nError: Failed to get platform id!\n");
 	return (false);
 }
 
@@ -46,14 +48,17 @@ static bool		cl_load_src(t_cl *cl, const char *path)
 
 static bool		cl_create_base(t_cl *cl, int type)
 {
+	if ((cl->err = clGetPlatformIDs(1, &cl->platform_id, &cl->num_platforms)) != CL_SUCCESS)
+		return (cl_builderrors(cl, 8, cl->err));
 	if ((cl->err = clGetDeviceIDs(NULL, type, 1, &cl->device_id, NULL)) != CL_SUCCESS)
-		return (cl_builderrors(cl, 1, cl->err));
-	if (!(cl->context = clCreateContext(0, 1, &cl->device_id, NULL, NULL, &cl->err)))
+	 	return (cl_builderrors(cl, 1, cl->err));
+	if (!(cl->context = clCreateContext(0, 1, (const cl_device_id *)&cl->device_id, NULL, NULL, &cl->err)))
 		return (cl_builderrors(cl, 2, cl->err));
 	if (!(cl->queue = clCreateCommandQueue(cl->context, cl->device_id, 0, &cl->err)))
 		return (cl_builderrors(cl, 3, cl->err));
 	if (!(cl->program = clCreateProgramWithSource(cl->context, 1, (const char **)&cl->kernel_src, NULL, &cl->err)))
 		return (cl_builderrors(cl, 4, cl->err));
+	(void)type;
 	return (true);
 }
 
