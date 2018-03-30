@@ -818,15 +818,15 @@ static double3	ft_solve_3(double a, double b, double c, double d)
 			result.z = 0.0f;
 			return (result);
 		}
-		theta = acosl(r / sqrtl(qcube));
-		sqrtq = sqrtl(q);
-		result.x = -2.0f * sqrtq * cosl(theta / 3.0f) - abc.x / 3.0f;
-		result.y = -2.0f * sqrtq * cosl((theta + 2.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
-		result.z = -2.0f * sqrtq * cosl((theta + 4.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
+		theta = acos(r / sqrt(qcube));
+		sqrtq = sqrt(q);
+		result.x = -2.0f * sqrtq * cos(theta / 3.0f) - abc.x / 3.0f;
+		result.y = -2.0f * sqrtq * cos((theta + 2.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
+		result.z = -2.0f * sqrtq * cos((theta + 4.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
 	}
 	else
 	{	
-		e = powl(sqrtl(-d) + fabsl(r), 1.0f/ 3.0f);		
+		e = pow(sqrt((double)-d) + fabs((double)r), (double)(1.0f / 3.0f));		
 		if (r > 0.0001f)
 			e = -e;
 		result.x = result.y = result.z = (e + q / e) - abc.x / 3.0f;
@@ -861,11 +861,11 @@ static double	ft_solve_4(double4 t, double wut)
 
 	if (r < 0.0001f)
 		return (0.0f);
-	r = sqrtl(r);
+	r = sqrt(r);
 	if (r == 0.0001f)
 	{
-		d = sqrtl(0.75f * a.z * a.z - 2.0f * a.y + 2.0f * sqrtl(y * y - 4.0f * a.w));
-		e = sqrtl(0.75f * a.z * a.z - 2.0f * a.y - 2.0f * sqrtl(y * y - 4.0f * a.w));
+		d = sqrt(0.75f * a.z * a.z - 2.0f * a.y + 2.0f * sqrt(y * y - 4.0f * a.w));
+		e = sqrt(0.75f * a.z * a.z - 2.0f * a.y - 2.0f * sqrt(y * y - 4.0f * a.w));
 	}
 	else
 	{
@@ -912,15 +912,15 @@ static float		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 
 	z.s0 = dot(double_thor_dir, q);
 	z.s1 = dot(double_thor_dir, double_ray_dir);
-	z.s2 = 1. - powl(z.s1, 2.);
+	z.s2 = 1. - pow(z.s1, 2.);
 	z.s3 = 2. * (dot(q, double_ray_dir) - z.s0 * z.s1);
-	z.s4 = dot(q, q) - powl(z.s0, 2.);
-	z.s5 = dot(q, q) + powl((double)thor->big_radius, 2.) - powl((double)thor->lil_radius, 2.);
+	z.s4 = dot(q, q) - pow(z.s0, 2.);
+	z.s5 = dot(q, q) + pow((double)thor->big_radius, 2.) - pow((double)thor->lil_radius, 2.);
 
 	res.w = 4. * dot(q, double_ray_dir);
-	res.x = 2. * z.s5 + powl(res.w, 2.) / 4. - 4. * powl((double)thor->big_radius, 2.) * z.s2;
-	res.y = res.w * z.s5 - 4. * powl((double)thor->big_radius, 2.) * z.s3;
-	res.z = powl(z.s5, 2.) - 4. * powl((double)thor->big_radius, 2.) * z.s4 + 1e-3;
+	res.x = 2. * z.s5 + pow(res.w, 2.) / 4. - 4. * pow((double)thor->big_radius, 2.) * z.s2;
+	res.y = res.w * z.s5 - 4. * pow((double)thor->big_radius, 2.) * z.s3;
+	res.z = pow(z.s5, 2.) - 4. * pow((double)thor->big_radius, 2.) * z.s4 + 1e-3;
 	
 	double wut = double_ray_dir.x * double_ray_dir.x + double_ray_dir.y * double_ray_dir.y + double_ray_dir.z * double_ray_dir.z;
 	
@@ -1801,7 +1801,7 @@ __kernel void		ray_trace(	__global	char		*output,
 
 								__global	char		*global_mem_objects,
 								__local		char		*mem_objects,
-								__private	int		mem_size_objects,
+								__private	int			mem_size_objects,
 
 								__private	float		u_time,
 
@@ -1813,7 +1813,7 @@ __kernel void		ray_trace(	__global	char		*output,
 
 								__global	char		*global_mem_lights,
 								__local		char		*mem_lights,
-								__private	int		mem_size_lights,
+								__private	int			mem_size_lights,
 
 								__global	int			*target)
 {
