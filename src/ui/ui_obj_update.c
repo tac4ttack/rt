@@ -16,8 +16,6 @@ static void		ui_obj_get_id(t_env *e, t_object *obj)
 		obj_label = ft_strjoin_frs1(obj_label, " SPHERE");
 	else if (obj->type == OBJ_ELLIPSOID)
 		obj_label = ft_strjoin_frs1(obj_label, " ELLIPSOID");
-	else if (obj->type == OBJ_PARABOLOID)
-		obj_label = ft_strjoin_frs1(obj_label, " PARABOLOID");
 	else if (obj->type == OBJ_TORUS)
 		obj_label = ft_strjoin_frs1(obj_label, " TORUS");
 	gtk_label_set_text(GTK_LABEL(e->ui->obj_list_id_label), obj_label);
@@ -77,8 +75,6 @@ static	void	ui_obj_set_custom(t_env *e, t_object *obj)
 		ui_obj_set_sphere(e, (t_sphere*)obj);
 	else if (obj->type == OBJ_ELLIPSOID)
 		ui_obj_set_ellipsoid(e, (t_ellipsoid*)obj);
-	else if (obj->type == OBJ_PARABOLOID)
-		ui_obj_set_paraboloid(e, (t_paraboloid*)obj);
 	else if (obj->type == OBJ_TORUS)
 		ui_obj_set_torus(e, (t_torus*)obj);
 }

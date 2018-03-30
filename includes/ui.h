@@ -126,26 +126,16 @@ typedef	struct			s_ui
 
 										GtkWidget			*obj_list_ellipsoid; //
 											GtkWidget			*obj_list_ellipsoid_box; //
-												GtkWidget			*obj_ellipsoid_axis_label; //
-												GtkWidget			*obj_ellipsoid_axis_spin_x; //
-												GtkWidget			*obj_ellipsoid_axis_spin_y; //
-												GtkWidget			*obj_ellipsoid_axis_spin_z; //
-												GtkWidget			*obj_ellipsoid_radius_label; //
-												GtkWidget			*obj_ellipsoid_radius_spin; //
+												GtkWidget			*obj_list_ellipsoid_axis_box; //
+													GtkWidget			*obj_ellipsoid_axis_label; //
+													GtkWidget			*obj_ellipsoid_axis_spin_x; //
+													GtkWidget			*obj_ellipsoid_axis_spin_y; //
+													GtkWidget			*obj_ellipsoid_axis_spin_z; //
+												GtkWidget			*obj_list_ellipsoid_radius_box; //
+													GtkWidget			*obj_ellipsoid_radius_label; //
+													GtkWidget			*obj_ellipsoid_radius_spin; //
 
-										GtkWidget			*obj_list_paraboloid; //
-											GtkWidget			*obj_list_paraboloid_box; //
-												GtkWidget			*obj_paraboloid_first_box; //
-													GtkWidget			*obj_paraboloid_height_label; //
-													GtkWidget			*obj_paraboloid_height_spin; //
-													GtkWidget			*obj_paraboloid_radius_label; //
-													GtkWidget			*obj_paraboloid_radius_spin; //
-												GtkWidget			*obj_paraboloid_second_box; //
-													GtkWidget			*obj_paraboloid_basedir_label; //
-													GtkWidget			*obj_paraboloid_basedir_spin_x; //
-													GtkWidget			*obj_paraboloid_basedir_spin_y; //
-													GtkWidget			*obj_paraboloid_basedir_spin_z; //
-
+										
 										GtkWidget			*obj_list_plane; //
 											GtkWidget			*obj_list_plane_box; //
 												GtkWidget			*obj_plane_shit_label; //
@@ -347,12 +337,6 @@ gboolean				cb_obj_refrac(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_z(GtkSpinButton *spin, gpointer data);
-
-gboolean				cb_paraboloid_basedir_x(GtkSpinButton *spin, gpointer data); // DELETE?
-gboolean				cb_paraboloid_basedir_y(GtkSpinButton *spin, gpointer data); // DELETE?
-gboolean				cb_paraboloid_basedir_z(GtkSpinButton *spin, gpointer data); // DELETE?
-gboolean				cb_paraboloid_height(GtkSpinButton *spin, gpointer data); // DELETE?
-gboolean				cb_paraboloid_radius(GtkSpinButton *spin, gpointer data);
 
 void					cb_play_btn(GtkButton *btn, gpointer data);
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);

@@ -54,7 +54,6 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/add/ui_add_cone.c \
 						ui/add/ui_add_cylinder.c \
 						ui/add/ui_add_ellipsoid.c \
-						ui/add/ui_add_paraboloid.c \
 						ui/add/ui_add_plane.c \
 						ui/add/ui_add_sphere.c \
 						ui/add/ui_add_torus.c \
@@ -90,9 +89,6 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_reflex.c \
 						ui/callback/cb_obj_refrac.c \
 						ui/callback/cb_obj_spec.c \
-						ui/callback/cb_paraboloid_basedir.c \
-						ui/callback/cb_paraboloid_height.c \
-						ui/callback/cb_paraboloid_radius.c \
 						ui/callback/cb_postproc_radio.c \
 						ui/callback/cb_render_btnpress.c \
 						ui/callback/cb_render_draw.c \
@@ -116,7 +112,6 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/ui_obj_set_cone.c \
 						ui/ui_obj_set_cylinder.c \
 						ui/ui_obj_set_ellipsoid.c \
-						ui/ui_obj_set_paraboloid.c \
 						ui/ui_obj_set_plane.c \
 						ui/ui_obj_set_sphere.c \
 						ui/ui_obj_set_torus.c \
@@ -150,7 +145,6 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/xml_lights.c \
 						xml/xml_list.c \
 						xml/xml_nodes.c \
-						xml/xml_paraboloid.c \
 						xml/xml_planes.c \
 						xml/xml_scene.c \
 						xml/xml_spheres.c \

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/29 17:37:39 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/30 17:53:26 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ void		load_scene(t_env *e)
 			xml_push_cone(e, list);
 		if (list->type == OBJ_CYLINDER)
 			xml_push_cyl(e, list);
-		if (list->type == OBJ_PARABOLOID)
-			xml_push_paraboloid(e, list);
 		if (list->type == OBJ_LIGHT)
 			xml_push_light(e, list);
 		if (list->type == OBJ_PLANE)

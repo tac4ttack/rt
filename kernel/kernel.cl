@@ -27,9 +27,8 @@
 # define OBJ_PLANE			5
 # define OBJ_SPHERE			6
 # define OBJ_ELLIPSOID		7
-# define OBJ_PARABOLOID		8
-# define OBJ_THOR			9
-# define OBJ_BOX			10
+# define OBJ_THOR			8
+# define OBJ_BOX			9
 
 /*
 ** CAM AND LIGHT STRUCTS ///////////////////////////////////////////////////////
@@ -127,25 +126,6 @@ typedef struct			s_cylinder
 	float3				base_dir;
 	float				radius;
 }						t_cylinder;
-
-typedef struct			s_paraboloid
-{
-	int					size;
-	int					type;
-	int					id;
-	float3				pos;
-	float3				dir;
-	float3				diff;
-	float3				spec;
-	int					color;
-	float				reflex;
-	float				refract;
-	float				opacity;
-
-	float				height;
-	float3				base_dir;
-	float				radius;
-}						t_paraboloid;
 
 typedef struct			s_plane
 {
@@ -282,6 +262,7 @@ typedef struct			s_scene
 ////////////////////////////////////////////////////////////////////////////////
 
 
+
 /*
 ** UNCLASSIFIED FUNCTIONS
 */
@@ -296,15 +277,6 @@ static t_hit	hit_init(void)
 	hit.mem_index = 0;
 	hit.opacity = 0;
 	return (hit);
-}
-
-void	fswap(float *a, float *b)
-{
-	float tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -765,189 +737,25 @@ static float	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray
 /*
 ** TORUS FUNCTIONS /////////////////////////////////////////////////////////////
 */
-static double	ft_max(double u, double v)
-{
-	if (u >= v)
-		return (u);
-	return (v);
-}
-
-static double	ft_ret(double4 tab)
-{
-	double		ret;
-	int			i;
-	
-	ret = -1.0;
-	i = 0;
-	while(i < 4)
-	{
-		if(tab[i] > 0.0001 && ret == -1)
-			ret = tab[i];
-		if (tab[i] < ret && tab[i] > 0.0001 )
-			ret = tab[i];
-		i++;
-	}
-	if (ret == -1.0)
-		ret = 0.0;
-	return (ret);
-}
-
-static double3	ft_solve_3(double a, double b, double c, double d)
-{
-	double3 result;
-	
-	double3 abc;
-	abc.x = c / d;
-	abc.y = b / d;
-	abc.z = a / d;
-	
-	double r = (2.0f * abc.x * abc.x * abc.x - 9.0f * abc.x * abc.y + 27.0f * abc.z) / 54.0f;
-	double q = (abc.x * abc.x - 3.0f * abc.y) / 9.0f;
-	double qcube = q * q * q;
-	double theta;
-	double sqrtq;
-	double e;
-	
-	d = qcube - r * r;
-	if (d >= 0.0001f)
-	{	
-		if (q < 0.0f)
-		{
-			result.x = 0.0f;
-			result.y = 0.0f;
-			result.z = 0.0f;
-			return (result);
-		}
-		theta = acos(r / sqrt(qcube));
-		sqrtq = sqrt(q);
-		result.x = -2.0f * sqrtq * cos(theta / 3.0f) - abc.x / 3.0f;
-		result.y = -2.0f * sqrtq * cos((theta + 2.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
-		result.z = -2.0f * sqrtq * cos((theta + 4.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
-	}
-	else
-	{	
-		e = pow(sqrt((double)-d) + fabs((double)r), (double)(1.0f / 3.0f));		
-		if (r > 0.0001f)
-			e = -e;
-		result.x = result.y = result.z = (e + q / e) - abc.x / 3.0f;
-	}
-	return (result);
-}
-
-static double	ft_solve_4(double4 t, double wut)
-{
-	double4 res;
-
-	double4 a;
-	a.w = t.w / wut;
-	a.x = t.x / wut;
-	a.y = t.y / wut;
-	a.z = t.z / wut;
-
-	double3 b;
-	b.x = 4.0f * a.y * a.w - a.x * a.x - a.z * a.z * a.w;
-	b.y = a.x * a.z - 4.0f * a.w;
-	b.z = -a.y;
-
-	double3 roots;
-	roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
-
-	double rsqrt;
-	double rrec;
-	double d;	
-	double e;
-	double y = ft_max(roots.x, ft_max(roots.y, roots.z));
-	double r = 0.25f * a.z * a.z - a.y + y;	
-
-	if (r < 0.0001f)
-		return (0.0f);
-	r = sqrt(r);
-	if (r == 0.0001f)
-	{
-		d = sqrt(0.75f * a.z * a.z - 2.0f * a.y + 2.0f * sqrt(y * y - 4.0f * a.w));
-		e = sqrt(0.75f * a.z * a.z - 2.0f * a.y - 2.0f * sqrt(y * y - 4.0f * a.w));
-	}
-	else
-	{
-		rsqrt = r * r;
-		rrec = 1.0f / r;
-		d = sqrt(0.75f * a.z * a.z - rsqrt - 2.0f * a.y + 0.25f * rrec * (4.0f * a.z * a.y - 8.0f * a.x - a.z * a.z * a.z));
-		e = sqrt(0.75f * a.z * a.z - rsqrt - 2.0f * a.y - 0.25f * rrec * (4.0f * a.z * a.y - 8.0f * a.x - a.z * a.z * a.z));
-	}
-
-	res.w = -0.25f * a.z + 0.5f * r + 0.5f * d;
-	res.x = -0.25f * a.z + 0.5f * r - 0.5f * d;
-	res.y = -0.25f * a.z - 0.5f * r + 0.5f * e;
-	res.z = -0.25f * a.z - 0.5f * r - 0.5f * e;
-
-	return(ft_ret(res));
-}
-
-static float		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
-{
-	double8 z;
-	double4	res;
-	double3	q;
-	float	dist;
-
-	double3	double_ray_origin;
-	double_ray_origin.x = (double)origin.x;
-	double_ray_origin.y = (double)origin.y;
-	double_ray_origin.z = (double)origin.z;
-	double3 double_ray_dir;
-	double_ray_dir.x = (double)ray.x;
-	double_ray_dir.y = (double)ray.y;
-	double_ray_dir.z = (double)ray.z;
-
-	double3 double_thor_dir;
-	double_thor_dir.x = (double)thor->dir.x;
-	double_thor_dir.y = (double)thor->dir.y;
-	double_thor_dir.z = (double)thor->dir.z;
-	double3 double_thor_pos;
-	double_thor_pos.x = (double)thor->pos.x;
-	double_thor_pos.y = (double)thor->pos.y;
-	double_thor_pos.z = (double)thor->pos.z;
-
-	q = double_ray_origin - double_thor_pos;
-
-	z.s0 = dot(double_thor_dir, q);
-	z.s1 = dot(double_thor_dir, double_ray_dir);
-	z.s2 = 1. - pow(z.s1, 2.);
-	z.s3 = 2. * (dot(q, double_ray_dir) - z.s0 * z.s1);
-	z.s4 = dot(q, q) - pow(z.s0, 2.);
-	z.s5 = dot(q, q) + pow((double)thor->big_radius, 2.) - pow((double)thor->lil_radius, 2.);
-
-	res.w = 4. * dot(q, double_ray_dir);
-	res.x = 2. * z.s5 + pow(res.w, 2.) / 4. - 4. * pow((double)thor->big_radius, 2.) * z.s2;
-	res.y = res.w * z.s5 - 4. * pow((double)thor->big_radius, 2.) * z.s3;
-	res.z = pow(z.s5, 2.) - 4. * pow((double)thor->big_radius, 2.) * z.s4 + 1e-3;
-	
-	double wut = double_ray_dir.x * double_ray_dir.x + double_ray_dir.y * double_ray_dir.y + double_ray_dir.z * double_ray_dir.z;
-	
-	dist = (float)ft_solve_4(res, wut);
-	return (dist);
-}
-
-
-// BACKUP
-// static float	ft_max(float u, float v)
+// static double	ft_max(double u, double v)
 // {
 // 	if (u >= v)
 // 		return (u);
 // 	return (v);
 // }
 
-// static float	ft_ret(float *tab)
+// static double	ft_ret(double4 tab)
 // {
-// 	float		ret;
+// 	double		ret;
 // 	int			i;
+	
 // 	ret = -1.0;
 // 	i = 0;
 // 	while(i < 4)
 // 	{
 // 		if(tab[i] > 0.0001 && ret == -1)
 // 			ret = tab[i];
-// 			if (tab[i] < ret && tab[i] > 0.0001 )
+// 		if (tab[i] < ret && tab[i] > 0.0001 )
 // 			ret = tab[i];
 // 		i++;
 // 	}
@@ -956,110 +764,273 @@ static float		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 // 	return (ret);
 // }
 
-// static float3	ft_solve_3(float a, float b, float c, float d)
+// static double3	ft_solve_3(double a, double b, double c, double d)
 // {
-// 	float 	a1;
-// 	a1 = c / d;
-// 	float a2;
-// 	a2 = b / d;
-// 	float a3;
-// 	a3 = a / d;
-// 	float3 Result;
-// 	float theta;
-// 	float sqrtQ;
-// 	float e;
-// 	float Q = (a1 * a1 - 3.0f * a2) / 9.0f;
-// 	float R = (2.0f * a1 * a1 * a1 - 9.0f * a1 * a2 + 27.0f * a3) / 54.0f;
-// 	float Qcubed = Q * Q * Q;
-// 	d = Qcubed - R * R;
-// 	if ( d >= 0.0001f )
+// 	double3 result;
+	
+// 	double3 abc;
+// 	abc.x = c / d;
+// 	abc.y = b / d;
+// 	abc.z = a / d;
+	
+// 	double r = (2.0f * abc.x * abc.x * abc.x - 9.0f * abc.x * abc.y + 27.0f * abc.z) / 54.0f;
+// 	double q = (abc.x * abc.x - 3.0f * abc.y) / 9.0f;
+// 	double qcube = q * q * q;
+// 	double theta;
+// 	double sqrtq;
+// 	double e;
+	
+// 	d = qcube - r * r;
+// 	if (d >= 0.0001f)
 // 	{	
-// 		if ( Q < 0.0f )
+// 		if (q < 0.0f)
 // 		{
-// 			Result.x = 0.0f;
-// 			Result.y = 0.0f;
-// 			Result.z = 0.0f;
-// 				return (Result);
+// 			result.x = 0.0f;
+// 			result.y = 0.0f;
+// 			result.z = 0.0f;
+// 			return (result);
 // 		}
-// 		theta = acos(R / sqrt(Qcubed));
-// 		sqrtQ = sqrt(Q);
-// 		Result.x = -2.0f * sqrtQ * cos(theta / 3.0f) - a1 / 3.0f;
-// 		Result.y = -2.0f * sqrtQ * cos((theta + 2.0f * M_PI) / 3.0f ) - a1 / 3.0f;
-// 		Result.z = -2.0f * sqrtQ * cos((theta + 4.0f * M_PI) / 3.0f ) - a1 / 3.0f;
+// 		theta = acos(r / sqrt(qcube));
+// 		sqrtq = sqrt(q);
+// 		result.x = -2.0f * sqrtq * cos(theta / 3.0f) - abc.x / 3.0f;
+// 		result.y = -2.0f * sqrtq * cos((theta + 2.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
+// 		result.z = -2.0f * sqrtq * cos((theta + 4.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
 // 	}
 // 	else
 // 	{	
-// 		e = pow(sqrt(-d) + fabs(R), 1.0f/ 3.0f);	
-// 		if ( R > 0.0001f )
+// 		e = pow(sqrt((double)-d) + fabs((double)r), (double)(1.0f / 3.0f));		
+// 		if (r > 0.0001f)
 // 			e = -e;
-// 		Result.x = Result.y = Result.z = (e + Q / e) - a1 / 3.0f;
+// 		result.x = result.y = result.z = (e + q / e) - abc.x / 3.0f;
 // 	}
-// 	return (Result);
+// 	return (result);
 // }
-// static float	ft_solve_4(float t[5])
+
+// static double	ft_solve_4(double4 t, double wut)
 // {
-// 	float Result[4];
-// 	float3 Roots;
-// 	float Rsquare;
-// 	float Rrec;
-// 	float a0= t[0] / t[4];
-// 	float a1 = t[1] / t[4];
-// 	float a2 = t[2] / t[4];
-// 	float  a3 = t[3] / t[4];
-// 	float D;
-// 	float E;
-// 	float3 b;
-// 	b.x = 4.0f * a2 * a0 - a1 * a1 - a3 * a3 * a0;
-// 	b.y = a1 * a3 - 4.0f * a0;
-// 	b.z = -a2;
-// 	Roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
-// 	float	y = ft_max(Roots.x, ft_max(Roots.y, Roots.z));
-// 	float R = 0.25f * a3 * a3 - a2 + y;
-// 	if ( R < 0.0001f)
+// 	double4 res;
+
+// 	double4 a;
+// 	a.w = t.w / wut;
+// 	a.x = t.x / wut;
+// 	a.y = t.y / wut;
+// 	a.z = t.z / wut;
+
+// 	double3 b;
+// 	b.x = 4.0f * a.y * a.w - a.x * a.x - a.z * a.z * a.w;
+// 	b.y = a.x * a.z - 4.0f * a.w;
+// 	b.z = -a.y;
+
+// 	double3 roots;
+// 	roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
+
+// 	double rsqrt;
+// 	double rrec;
+// 	double d;	
+// 	double e;
+// 	double y = ft_max(roots.x, ft_max(roots.y, roots.z));
+// 	double r = 0.25f * a.z * a.z - a.y + y;	
+
+// 	if (r < 0.0001f)
 // 		return (0.0f);
-// 	R = sqrt(R);
-// 	if ( R == 0.0001f )
+// 	r = sqrt(r);
+// 	if (r == 0.0001f)
 // 	{
-// 		D = sqrt( 0.75f * a3 * a3 - 2.0f * a2 + 2.0f * sqrt( y * y - 4.0f * a0 ) );
-// 		E = sqrt( 0.75f * a3 * a3 - 2.0f * a2 - 2.0f * sqrt( y * y - 4.0f * a0 ) );
+// 		d = sqrt(0.75f * a.z * a.z - 2.0f * a.y + 2.0f * sqrt(y * y - 4.0f * a.w));
+// 		e = sqrt(0.75f * a.z * a.z - 2.0f * a.y - 2.0f * sqrt(y * y - 4.0f * a.w));
 // 	}
 // 	else
 // 	{
-// 		Rsquare = R * R;
-// 		Rrec = 1.0f / R;
-// 		D = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 + 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
-// 		E = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 - 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
+// 		rsqrt = r * r;
+// 		rrec = 1.0f / r;
+// 		d = sqrt(0.75f * a.z * a.z - rsqrt - 2.0f * a.y + 0.25f * rrec * (4.0f * a.z * a.y - 8.0f * a.x - a.z * a.z * a.z));
+// 		e = sqrt(0.75f * a.z * a.z - rsqrt - 2.0f * a.y - 0.25f * rrec * (4.0f * a.z * a.y - 8.0f * a.x - a.z * a.z * a.z));
 // 	}
-// 	Result[0] = -0.25f * a3 + 0.5f * R + 0.5f * D;
-// 	Result[1] = -0.25f * a3 + 0.5f * R - 0.5f * D;
-// 	Result[2] =  -0.25f * a3 - 0.5f * R + 0.5f * E;
-// 	Result[3] = -0.25f * a3 - 0.5f * R - 0.5f * E;
-// 	return(ft_ret(Result));
-// return (0.0f);
+
+// 	res.w = -0.25f * a.z + 0.5f * r + 0.5f * d;
+// 	res.x = -0.25f * a.z + 0.5f * r - 0.5f * d;
+// 	res.y = -0.25f * a.z - 0.5f * r + 0.5f * e;
+// 	res.z = -0.25f * a.z - 0.5f * r - 0.5f * e;
+
+// 	return(ft_ret(res));
 // }
 
 // static float		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
 // {
-// 	float		c[5];
-// 	float3	k;
-// 	float		e;
-// 	float r = thor->big_radius;
-// 	k.x = ray.x * ray.x + ray.y * ray.y + ray.z * ray.z;
-// 	e = (origin.x - thor->pos.x) * (origin.x - thor->pos.x) + (origin.y - thor->pos.y) *
-// 	(origin.y - thor->pos.y) + (origin.z - thor->pos.z) * (origin.z - thor->pos.z) -
-// 	r * r - thor->lil_radius * thor->lil_radius;
-// 	k.z = (origin.x - thor->pos.x) * ray.x + (origin.y - thor->pos.y) * ray.y +
-// 	(origin.z - thor->pos.z) * ray.z;
-// 	k.y = 4.0f * r * r;
-// 	c[0] = e * e - k.y * (thor->lil_radius * thor->lil_radius - (origin.y - thor->pos.y) *
-// 	(origin.y - thor->pos.y));
-// 	c[1] = 4.0f * k.z * e + 2.0f * k.y * (origin.y - thor->pos.y) * ray.y;
-// 	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * ray.y * ray.y;
-// 	c[3] = 4.0f * k.x * k.z;
-// 	c[4] = k.x * k.x;
-// 	return (ft_solve_4(c));
+// 	double8 z;
+// 	double4	res;
+// 	double3	q;
+// 	float	dist;
+
+// 	double3	double_ray_origin;
+// 	double_ray_origin.x = (double)origin.x;
+// 	double_ray_origin.y = (double)origin.y;
+// 	double_ray_origin.z = (double)origin.z;
+// 	double3 double_ray_dir;
+// 	double_ray_dir.x = (double)ray.x;
+// 	double_ray_dir.y = (double)ray.y;
+// 	double_ray_dir.z = (double)ray.z;
+
+// 	double3 double_thor_dir;
+// 	double_thor_dir.x = (double)thor->dir.x;
+// 	double_thor_dir.y = (double)thor->dir.y;
+// 	double_thor_dir.z = (double)thor->dir.z;
+// 	double3 double_thor_pos;
+// 	double_thor_pos.x = (double)thor->pos.x;
+// 	double_thor_pos.y = (double)thor->pos.y;
+// 	double_thor_pos.z = (double)thor->pos.z;
+
+// 	q = double_ray_origin - double_thor_pos;
+
+// 	z.s0 = dot(double_thor_dir, q);
+// 	z.s1 = dot(double_thor_dir, double_ray_dir);
+// 	z.s2 = 1. - pow(z.s1, 2.);
+// 	z.s3 = 2. * (dot(q, double_ray_dir) - z.s0 * z.s1);
+// 	z.s4 = dot(q, q) - pow(z.s0, 2.);
+// 	z.s5 = dot(q, q) + pow((double)thor->big_radius, 2.) - pow((double)thor->lil_radius, 2.);
+
+// 	res.w = 4. * dot(q, double_ray_dir);
+// 	res.x = 2. * z.s5 + pow(res.w, 2.) / 4. - 4. * pow((double)thor->big_radius, 2.) * z.s2;
+// 	res.y = res.w * z.s5 - 4. * pow((double)thor->big_radius, 2.) * z.s3;
+// 	res.z = pow(z.s5, 2.) - 4. * pow((double)thor->big_radius, 2.) * z.s4 + 1e-3;
+	
+// 	double wut = double_ray_dir.x * double_ray_dir.x + double_ray_dir.y * double_ray_dir.y + double_ray_dir.z * double_ray_dir.z;
+	
+// 	dist = (float)ft_solve_4(res, wut);
+// 	return (dist);
 // }
 
+
+// BACKUP
+static float	ft_max(float u, float v)
+{
+	if (u >= v)
+		return (u);
+	return (v);
+}
+
+static float	ft_ret(float *tab)
+{
+	float		ret;
+	int			i;
+	ret = -1.0;
+	i = 0;
+	while(i < 4)
+	{
+		if(tab[i] > 0.0001 && ret == -1)
+			ret = tab[i];
+			if (tab[i] < ret && tab[i] > 0.0001 )
+			ret = tab[i];
+		i++;
+	}
+	if (ret == -1.0)
+		ret = 0.0;
+	return (ret);
+}
+
+static float3	ft_solve_3(float a, float b, float c, float d)
+{
+	float 	a1;
+	a1 = c / d;
+	float a2;
+	a2 = b / d;
+	float a3;
+	a3 = a / d;
+	float3 Result;
+	float theta;
+	float sqrtQ;
+	float e;
+	float Q = (a1 * a1 - 3.0f * a2) / 9.0f;
+	float R = (2.0f * a1 * a1 * a1 - 9.0f * a1 * a2 + 27.0f * a3) / 54.0f;
+	float Qcubed = Q * Q * Q;
+	d = Qcubed - R * R;
+	if ( d >= 0.0001f )
+	{	
+		if ( Q < 0.0f )
+		{
+			Result.x = 0.0f;
+			Result.y = 0.0f;
+			Result.z = 0.0f;
+				return (Result);
+		}
+		theta = acos(R / sqrt(Qcubed));
+		sqrtQ = sqrt(Q);
+		Result.x = -2.0f * sqrtQ * cos(theta / 3.0f) - a1 / 3.0f;
+		Result.y = -2.0f * sqrtQ * cos((theta + 2.0f * M_PI) / 3.0f ) - a1 / 3.0f;
+		Result.z = -2.0f * sqrtQ * cos((theta + 4.0f * M_PI) / 3.0f ) - a1 / 3.0f;
+	}
+	else
+	{	
+		e = pow(sqrt(-d) + fabs(R), 1.0f/ 3.0f);	
+		if ( R > 0.0001f )
+			e = -e;
+		Result.x = Result.y = Result.z = (e + Q / e) - a1 / 3.0f;
+	}
+	return (Result);
+}
+static float	ft_solve_4(float t[5])
+{
+	float Result[4];
+	float3 Roots;
+	float Rsquare;
+	float Rrec;
+	float a0= t[0] / t[4];
+	float a1 = t[1] / t[4];
+	float a2 = t[2] / t[4];
+	float  a3 = t[3] / t[4];
+	float D;
+	float E;
+	float3 b;
+	b.x = 4.0f * a2 * a0 - a1 * a1 - a3 * a3 * a0;
+	b.y = a1 * a3 - 4.0f * a0;
+	b.z = -a2;
+	Roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
+	float	y = ft_max(Roots.x, ft_max(Roots.y, Roots.z));
+	float R = 0.25f * a3 * a3 - a2 + y;
+	if ( R < 0.0001f)
+		return (0.0f);
+	R = sqrt(R);
+	if ( R == 0.0001f )
+	{
+		D = sqrt( 0.75f * a3 * a3 - 2.0f * a2 + 2.0f * sqrt( y * y - 4.0f * a0 ) );
+		E = sqrt( 0.75f * a3 * a3 - 2.0f * a2 - 2.0f * sqrt( y * y - 4.0f * a0 ) );
+	}
+	else
+	{
+		Rsquare = R * R;
+		Rrec = 1.0f / R;
+		D = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 + 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
+		E = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 - 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
+	}
+	Result[0] = -0.25f * a3 + 0.5f * R + 0.5f * D;
+	Result[1] = -0.25f * a3 + 0.5f * R - 0.5f * D;
+	Result[2] =  -0.25f * a3 - 0.5f * R + 0.5f * E;
+	Result[3] = -0.25f * a3 - 0.5f * R - 0.5f * E;
+	return(ft_ret(Result));
+return (0.0f);
+}
+
+static float		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
+{
+	float		c[5];
+	float3	k;
+	float		e;
+	float r = thor->big_radius;
+	k.x = ray.x * ray.x + ray.y * ray.y + ray.z * ray.z;
+	e = (origin.x - thor->pos.x) * (origin.x - thor->pos.x) + (origin.y - thor->pos.y) *
+	(origin.y - thor->pos.y) + (origin.z - thor->pos.z) * (origin.z - thor->pos.z) -
+	r * r - thor->lil_radius * thor->lil_radius;
+	k.z = (origin.x - thor->pos.x) * ray.x + (origin.y - thor->pos.y) * ray.y +
+	(origin.z - thor->pos.z) * ray.z;
+	k.y = 4.0f * r * r;
+	c[0] = e * e - k.y * (thor->lil_radius * thor->lil_radius - (origin.y - thor->pos.y) *
+	(origin.y - thor->pos.y));
+	c[1] = 4.0f * k.z * e + 2.0f * k.y * (origin.y - thor->pos.y) * ray.y;
+	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * ray.y * ray.y;
+	c[3] = 4.0f * k.x * k.z;
+	c[4] = k.x * k.x;
+	return (ft_solve_4(c));
+}
 
 static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 {
@@ -1179,6 +1150,15 @@ static float	inter_cone(const __local t_cone *cone, const float3 ray, const floa
 /*
 ** BOXES FUNCTIONS /////////////////////////////////////////////////////////////
 */
+void	fswap(float *a, float *b)
+{
+	float tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
 static float			inter_box(const __local t_box *box, float3 ray, float3 origin, t_hit *hit)
 {
 	float tmin = (box->pos.x + box->min.x - origin.x) / ray.x;

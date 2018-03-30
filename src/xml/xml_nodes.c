@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 22:43:24 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/30 17:54:43 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ void				xml_process_node(t_env *e, char *node)
 		xml_node_cone(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "cylinder") == 0)
 		xml_node_cylinder(e, node);
-	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "paraboloid") == 0)
-		xml_node_paraboloid(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "light") == 0)
 		xml_node_light(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "plane") == 0)

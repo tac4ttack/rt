@@ -119,27 +119,15 @@ void		init_gtk(GtkApplication* app, gpointer data)
 
 	e->ui->obj_list_ellipsoid = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ellipsoid"));
 	e->ui->obj_list_ellipsoid_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ellipsoid_box"));
+	e->ui->obj_list_ellipsoid_axis_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ellipsoid_axis_box"));
 	e->ui->obj_ellipsoid_axis_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_axis_label"));
 	e->ui->obj_ellipsoid_axis_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_axis_spin_x"));
 	e->ui->obj_ellipsoid_axis_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_axis_spin_y"));
 	e->ui->obj_ellipsoid_axis_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_axis_spin_z"));
+	e->ui->obj_list_ellipsoid_radius_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_ellipsoid_radius_box"));
 	e->ui->obj_ellipsoid_radius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_radius_label"));
 	e->ui->obj_ellipsoid_radius_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_ellipsoid_radius_spin"));
-	
-	e->ui->obj_list_paraboloid = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_paraboloid"));
-	e->ui->obj_list_paraboloid_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_paraboloid_box"));
-	e->ui->obj_paraboloid_first_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_first_box"));
-	e->ui->obj_paraboloid_height_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_height_label"));
-	e->ui->obj_paraboloid_height_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_height_spin"));
-	e->ui->obj_paraboloid_radius_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_radius_label"));
-	e->ui->obj_paraboloid_radius_spin = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_radius_spin"));
-	e->ui->obj_paraboloid_second_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_second_box"));
-	e->ui->obj_paraboloid_basedir_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_basedir_label"));
-	e->ui->obj_paraboloid_basedir_spin_x = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_basedir_spin_x"));
-	e->ui->obj_paraboloid_basedir_spin_y = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_basedir_spin_y"));
-	e->ui->obj_paraboloid_basedir_spin_z = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_paraboloid_basedir_spin_z"));
 
-	
 
 	e->ui->obj_list_plane = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_plane"));
 	e->ui->obj_list_plane_box = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_list_plane_box"));
@@ -172,6 +160,12 @@ void		init_gtk(GtkApplication* app, gpointer data)
 	e->ui->obj_nav_third = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_third"));
 	e->ui->obj_nav_jump_label = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_jump_label"));
 	e->ui->obj_nav_jump_combo = GTK_WIDGET(gtk_builder_get_object(e->ui->builder, "obj_nav_jump_combo"));
+	if (e->gen_objects->length < 2)
+	{	
+		gtk_widget_set_sensitive(e->ui->obj_nav_prev_btn, FALSE);
+		gtk_widget_set_sensitive(e->ui->obj_nav_next_btn, FALSE);
+		gtk_widget_set_sensitive(e->ui->obj_nav_del_btn, FALSE);
+	}
 	
 
 
@@ -436,11 +430,7 @@ gtk_window_set_transient_for(GTK_WINDOW(e->ui->about_window), GTK_WINDOW(e->ui->
 	g_signal_connect(GTK_WIDGET(e->ui->obj_ellipsoid_axis_spin_y), "value-changed", G_CALLBACK(cb_ellipsoid_axis_y), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_ellipsoid_axis_spin_z), "value-changed", G_CALLBACK(cb_ellipsoid_axis_z), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_ellipsoid_radius_spin), "value-changed", G_CALLBACK(cb_ellipsoid_radius), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->obj_paraboloid_basedir_spin_x), "value-changed", G_CALLBACK(cb_paraboloid_basedir_x), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->obj_paraboloid_basedir_spin_y), "value-changed", G_CALLBACK(cb_paraboloid_basedir_y), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->obj_paraboloid_basedir_spin_z), "value-changed", G_CALLBACK(cb_paraboloid_basedir_z), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->obj_paraboloid_height_spin), "value-changed", G_CALLBACK(cb_paraboloid_height), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->obj_paraboloid_radius_spin), "value-changed", G_CALLBACK(cb_paraboloid_radius), (gpointer)e);
+
 	g_signal_connect(GTK_WIDGET(e->ui->obj_sphere_radius_spin), "value-changed", G_CALLBACK(cb_sphere_radius), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_torus_bigradius_spin), "value-changed", G_CALLBACK(cb_torus_radius_big), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_torus_lilradius_spin), "value-changed", G_CALLBACK(cb_torus_radius_lil), (gpointer)e);

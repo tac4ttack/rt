@@ -16,8 +16,6 @@ static	char	*obj_jump_get_label(t_env *e, t_object *obj)
 		label = ft_strjoin_frs1(label, " SPHERE");
 	else if (obj->type == OBJ_ELLIPSOID)
 		label = ft_strjoin_frs1(label, " ELLIPSOID");
-	else if (obj->type == OBJ_PARABOLOID)
-		label = ft_strjoin_frs1(label, " PARABOLOID");
 	else if (obj->type == OBJ_TORUS)
 		label = ft_strjoin_frs1(label, " TORUS");
 	return (label);
