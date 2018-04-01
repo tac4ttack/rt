@@ -6,40 +6,18 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/30 21:02:36 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 12:07:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
-static void	init_print_structure_memory_size()
-{
-	printf("t_cam 				: %-20lu\n", sizeof(t_cam));
-	printf("t_cone 				: %-20lu\n", sizeof(t_cone));
-	printf("t_cylinder 			: %-20lu\n", sizeof(t_cylinder));
-	printf("t_light 			: %-20lu\n", sizeof(t_light));
-	printf("t_plane 			: %-20lu\n", sizeof(t_plane));
-	printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
-//	printf("t_tor 				: %-20lu\n", sizeof(t_tor));
-	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
-	printf("cl_int				: %-20lu\n", sizeof(cl_int));
-	printf("cl_float			: %-20lu\n", sizeof(cl_float));
-	printf("cl_float3			: %-20lu\n", sizeof(cl_float3));
-}
-
-void		load_obj(t_env *e)
-{
-	ft_putendl("\x1b[1;29mFetching scene objects...\x1b[0m");
-	xml_allocate_cam(e);
-	ft_putendl("\x1b[1;29mScene objects fetched!\x1b[0m");
-}
 
 void		load_scene(t_env *e)
 {
 	t_node	*list;
 
 	ft_putendl("\n\x1b[1;32m/\\ Loading scene /\\\x1b[0m\n");
-	load_obj(e);
+	xml_allocate_cam(e);
 	list = XML->node_lst;
 	while (list != NULL)
 	{
@@ -74,7 +52,8 @@ void		env_init(t_env *e)
 	e->scene->depth = 0;
 	e->scene->over_sampling = 1;
 	e->target = -1;
-	e->debug = DBUG;
+	if (DBUG == 1)
+		e->scene->flag |= OPTION_DEBUG;
 	e->gpu = IS_GPU;
 	if (e->gpu == 1)
 		e->scene->flag |= OPTION_GPU;
@@ -101,19 +80,9 @@ void		init(GtkApplication* app, gpointer data)
 		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
 	ft_bzero(e->pixel_data, sizeof(int) * e->scene->win_w * e->scene->win_h);
 	load_scene(e);
-
-
-
 	if (!(e->cl = cl_construct("./kernel/kernel.cl", "ray_trace", e->scene->win_w, e->scene->win_h,
 			(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
 		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
-
-	if (e->debug)
-	{
-		printf("%i %i %i\n", e->scene->win_w, e->scene->win_h, (e->scene->flag & OPTION_GPU));
-		init_print_structure_memory_size();
-	}
-
 	if (!(e->cl->add_buffer(e->cl, e->scene->win_w * e->scene->win_h * 4)))
 		s_error("\x1b[2;31mError creation FRAMEBUFFER cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, e->gen_objects->mem_size)))

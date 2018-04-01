@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt.h                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
+/*   Updated: 2018/04/01 12:08:30 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RT_H
 # define RT_H
 
@@ -11,7 +23,6 @@
 # include "ui.h"
 # include "gen.h"
 
-
 # ifdef GPU
 #  define IS_GPU			1
 # else
@@ -24,28 +35,28 @@
 #  define DBUG					0
 # endif
 
-# define DEG2RAD				(M_PI / 180)
-# define RAD2DEG				(180 / M_PI)
+# define DEG2RAD		(M_PI / 180)
+# define RAD2DEG		(180 / M_PI)
 
-# define WIDTH					e->scene->win_w
-# define HEIGHT					e->scene->win_h
-# define DEPTH					e->scene->depth
+# define WIDTH			e->scene->win_w
+# define HEIGHT			e->scene->win_h
+# define DEPTH			e->scene->depth
 
-# define KRT					e->cl.kernel
-# define NCAM					e->scene->n_cams
-# define NCON					e->scene->n_cones
-# define NCYL					e->scene->n_cylinders
-# define NLIG					e->scene->n_lights
-# define NPLA					e->scene->n_planes
-# define NSPH					e->scene->n_spheres
-# define NELL					e->scene->n_ellipsoids
+# define KRT			e->cl.kernel
+# define NCAM			e->scene->n_cams
+# define NCON			e->scene->n_cones
+# define NCYL			e->scene->n_cylinders
+# define NLIG			e->scene->n_lights
+# define NPLA			e->scene->n_planes
+# define NSPH			e->scene->n_spheres
+# define NELL			e->scene->n_ellipsoids
 
-# define ACTIVECAM				e->cameras[e->scene->active_cam]
-# define ACTIVELIGHT			((t_light*)e->gen_lights->mem)[e->ui->light_selector]
+# define A_CAM			e->cameras[e->scene->active_cam]
+# define A_LIG			((t_light*)e->gen_lights->mem)[e->ui->light_selector]
 
-# define XMLSUB					e->xml->sub_node
-# define XML					e->xml
-# define SCN					e->scene
+# define XMLSUB			e->xml->sub_node
+# define XML			e->xml
+# define SCN			e->scene
 
 # define RESERVED				(1 << 0)
 # define OPTION_WAVE			(1 << 1)
@@ -112,12 +123,6 @@ typedef struct			s_light
 	cl_float			brightness;
 	cl_int				color;
 }						t_light;
-
-/*							*\
-**|							**|
-**|			OBJECT			**|
-**|							**!
-*/
 
 typedef struct			s_box
 {
@@ -237,7 +242,6 @@ typedef struct			s_ellipsoid
 	cl_float3			axis_size;
 }						t_ellipsoid;
 
-
 typedef struct			s_node
 {
 	int					id;
@@ -321,7 +325,7 @@ typedef	struct			s_env
 	int					gpu;
 	t_fps				fps;
 
-	int					*pixel_data; // raw pixel image
+	int					*pixel_data;
 	int					target;
 	int					current_index_objects;
 }						t_env;
@@ -339,11 +343,11 @@ int						opencl_draw(t_env *e);
 cl_float3				*get_target_dir(t_env *e);
 cl_float3				*get_target_pos(t_env *e);
 
-void					init(GtkApplication* app, gpointer data);
-void					init_gtk(GtkApplication* app, gpointer data);
+void					init(GtkApplication *app, gpointer data);
+void					init_gtk(GtkApplication *app, gpointer data);
 void					init_cb_cam(t_env *e);
 void					init_cb_light(t_env *e);
-void 					init_cb_main(t_env *e);
+void					init_cb_main(t_env *e);
 void					init_cb_object(t_env *e);
 void					init_cb_scene(t_env *e);
 void					init_gtk_cam(t_env *e);
@@ -354,11 +358,9 @@ void					init_gtk_scene(t_env *e);
 void					init_gtk_toolbar(t_env *e);
 void					init_gtk_win(t_env *e);
 
-
 cl_float3				normalize_vect(cl_float3 v);
 
 void					opencl_set_args(t_env *e, t_cl *cl);
-
 
 void					p_error(char *str, t_env *e);
 void					s_error(char *str, t_env *e);
@@ -366,8 +368,6 @@ void					print_usage();
 int						quit(t_env *e);
 
 void					refresh(t_env *e);
-void					print_obj(t_gen *gen, void *data);
-
 
 void					clear_surface(t_env *e);
 void					gtk_render_events(t_env *e);

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:16:36 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:52:28 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 12:02:51 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@ gboolean	cb_cam_fov_update(GtkSpinButton *spin, gpointer data)
 
 	e = data;
 	value = gtk_spin_button_get_value_as_int(spin);
-	ACTIVECAM.fov = (int)value;
+	A_CAM.fov = (int)value;
 	return (FALSE);
 }

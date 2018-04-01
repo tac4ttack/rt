@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:05 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:46:37 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 12:03:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ gboolean		cb_light_shrink(GtkSpinButton *spin, gpointer data)
 
 	e = data;
 	value = gtk_spin_button_get_value_as_int(spin);
-	ACTIVELIGHT.shrink = value;
+	A_LIG.shrink = value;
 	return (TRUE);
 }
 
@@ -30,7 +30,7 @@ gboolean		cb_light_brightness(GtkSpinButton *spin, gpointer data)
 
 	e = data;
 	value = gtk_spin_button_get_value(spin);
-	ACTIVELIGHT.brightness = (float)value;
+	A_LIG.brightness = (float)value;
 	return (TRUE);
 }
 
@@ -42,6 +42,6 @@ void			cb_light_color(GtkColorButton *button, gpointer data)
 	e = data;
 	new_color.alpha = 1;
 	gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(button), &new_color);
-	ACTIVELIGHT.color = gdkrgba_to_int(new_color);
+	A_LIG.color = gdkrgba_to_int(new_color);
 	e->ui->light_color = new_color;
 }
