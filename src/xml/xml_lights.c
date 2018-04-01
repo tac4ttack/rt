@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 16:35:37 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 12:35:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 static void	xml_light_data_v(t_env *e, char **att, t_node *light_node, int *i)
 {
 	if (ft_strncmp(att[*i], "dir=\"", 5) != 0)
-		s_error("\x1b[1;31mError in light, DIR expected in #3\x1b[0m", e);
+		s_error("\x1b[1;31mLight error, DIR expected in #3\x1b[0m", e);
 	else
 		xml_data_dir(e, att, i, light_node);
 	if (ft_strncmp(att[*i], "brightness=\"", 12) != 0)
-		s_error("\x1b[1;31mError in light BRIGHTNESS expected in #4\x1b[0m", e);
+		s_error("\x1b[1;31mLight error BRIGHTNESS expected in #4\x1b[0m", e);
 	else
 		xml_data_brightness(e, att, i, light_node);
 	if (ft_strncmp(att[*i], "shrink=\"", 8) != 0)
-		s_error("\x1b[1;31mError in light, SHRINK expected in #4\x1b[0m", e);
+		s_error("\x1b[1;31mLight error, SHRINK expected in #4\x1b[0m", e);
 	else
 		xml_data_shrink(e, att, i, light_node);
 	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
-		s_error("\x1b[1;31mError in light, COLOR expected in #5\x1b[0m", e);
+		s_error("\x1b[1;31mLight error, COLOR expected in #5\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, light_node);
 }
@@ -35,13 +35,13 @@ static void	xml_light_data_v(t_env *e, char **att, t_node *light_node, int *i)
 static void	xml_light_data(t_env *e, char **att, t_node *light_node, int *i)
 {
 	if (xml_check_node_format(att, 4) != 0)
-		s_error("\x1b[1;31mError in LIGHT format\x1b[0m", e);
+		s_error("\x1b[1;31mLight error format\x1b[0m", e);
 	if (ft_strncmp(att[*i], "type=\"", 6) != 0)
-		s_error("\x1b[1;31mError in light, TYPE expected in #1\x1b[0m", e);
+		s_error("\x1b[1;31mLight error, TYPE expected in #1\x1b[0m", e);
 	else
 		xml_data_type(e, att, i, light_node);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
-		s_error("\x1b[1;31mError in light, POS expected in #2\x1b[0m", e);
+		s_error("\x1b[1;31mLight error, POS expected in #2\x1b[0m", e);
 	else
 		xml_data_pos(e, att, i, light_node);
 	xml_light_data_v(e, att, light_node, i);
@@ -79,7 +79,6 @@ void		xml_push_light(t_env *e, t_node *list)
 	t_light light;
 
 	light.size = sizeof(t_light);
-	//e->lights[list->id].id = list->light; //
 	light.type = list->light;
 	light.pos = list->pos;
 	light.dir = list->dir;

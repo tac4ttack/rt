@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/25 16:28:15 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 18:41:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 12:44:40 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ int			xml_check_float(cl_float3 *clf, float f, int mod)
 	else if (f < 0 || f > 1)
 		return (1);
 	return (0);
+
+	
+
+	
 }
 
 int			xml_check_attnode(char *att, int j)

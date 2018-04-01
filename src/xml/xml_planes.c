@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/26 13:43:11 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 12:35:23 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,27 @@
 static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 {
 	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
-		s_error("\x1b[1;31mError in plane, COLOR expected in #3\x1b[0m", e);
+		s_error("\x1b[1;31mPlane error, COLOR expected in #3\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, plane_node);
 	if (ft_strncmp(att[*i], "diff=\"", 6) != 0)
-		s_error("\x1b[1;31mError in plane, DIFFUSE expected in #4\x1b[0m", e);
+		s_error("\x1b[1;31mPlane error, DIFFUSE expected in #4\x1b[0m", e);
 	else
 		xml_data_diffiouse(e, att, i, plane_node);
 	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
-		s_error("\x1b[1;31mError in plane, SPECULAR expected in #5\x1b[0m", e);
+		s_error("\x1b[1;31mPlane error, SPECULAR expected in #5\x1b[0m", e);
 	else
 		xml_data_speculos(e, att, i, plane_node);
 	if (ft_strncmp(att[*i], "reflex=\"", 6) != 0)
-		s_error("\x1b[1;31mError in plane, REFLEX expected in #6\x1b[0m", e);
+		s_error("\x1b[1;31mPlane error, REFLEX expected in #6\x1b[0m", e);
 	else
 		xml_data_reflex(e, att, i, plane_node);
 	if (ft_strncmp(att[*i], "refract=\"", 6) != 0)
-		s_error("\x1b[2;31mError in plane, REFRACT expected in #7\x1b[0m", e);
+		s_error("\x1b[2;31mPlane error, REFRACT expected in #7\x1b[0m", e);
 	else
 		xml_data_refract(e, att, i, plane_node);
 	if (ft_strncmp(att[*i], "opacity=\"", 6) != 0)
-		s_error("\x1b[2;31mError in plane, OPACITY expected in #8\x1b[0m", e);
+		s_error("\x1b[2;31mPlane error, OPACITY expected in #8\x1b[0m", e);
 	else
 		xml_data_opacity(e, att, i, plane_node);
 }
@@ -43,13 +43,13 @@ static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
 {
 	if (xml_check_node_format(att, 5) != 0)
-		s_error("\x1b[1;31mError in PLANE format\x1b[0m", e);
+		s_error("\x1b[1;31mPlane error format\x1b[0m", e);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
-		s_error("\x1b[1;31mError in plane, POS expected in #1\x1b[0m", e);
+		s_error("\x1b[1;31mPlane error, POS expected in #1\x1b[0m", e);
 	else
 		xml_data_pos(e, att, i, plane_node);
 	if (ft_strncmp(att[*i], "normale=\"", 9) != 0)
-		s_error("\x1b[1;31mError in plane, NORMALE expected in #2\x1b[0m", e);
+		s_error("\x1b[1;31mPlane error, NORMALE expected in #2\x1b[0m", e);
 	else
 		xml_data_normale(e, att, i, plane_node);
 	xml_plane_data_n(e, att, plane_node, i);

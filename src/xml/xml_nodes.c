@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 17:54:43 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 12:38:14 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ int					xml_check_node_format(char **node, int mod)
 	i.y = 0;
 	if (node)
 	{
-		i.y = (mod == 0 ? 6 : i.y); // scene
-		i.y = (mod == 1 ? 9 : i.y); // cam
-		i.y = (mod == 2 ? 22 : i.y); // cone
-		i.y = (mod == 3 ? 23 : i.y); // cylinder
-		i.y = (mod == 4 ? 15 : i.y); // light
-		i.y = (mod == 5 ? 21 : i.y); // plane
-		i.y = (mod == 6 ? 22 : i.y); // sphere
-		i.y = (mod == 7 ? 25 : i.y); // ellips
-		i.y = (mod == 8 ? 23 : i.y); // parabo
-		i.y = (mod == 9 ? 23 : i.y); // torus
-		i.y = (mod == 10 ? 27 : i.y); // box
+		i.y = (mod == 0 ? 6 : i.y);
+		i.y = (mod == 1 ? 9 : i.y);
+		i.y = (mod == 2 ? 22 : i.y);
+		i.y = (mod == 3 ? 23 : i.y);
+		i.y = (mod == 4 ? 15 : i.y);
+		i.y = (mod == 5 ? 21 : i.y);
+		i.y = (mod == 6 ? 22 : i.y);
+		i.y = (mod == 7 ? 25 : i.y);
+		i.y = (mod == 8 ? 23 : i.y);
+		i.y = (mod == 9 ? 23 : i.y);
+		i.y = (mod == 10 ? 27 : i.y);
 		while (i.x <= i.y)
 		{
 			if (i.x == i.y && node[i.x] != NULL)

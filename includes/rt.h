@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 12:08:30 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 12:49:43 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,11 +337,7 @@ cl_float3				roty(cl_float3 dir, float yaw);
 cl_float3				rotx(cl_float3 dir, float pitch);
 cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
 
-void					display_hud(t_env *e);
 int						opencl_draw(t_env *e);
-
-cl_float3				*get_target_dir(t_env *e);
-cl_float3				*get_target_pos(t_env *e);
 
 void					init(GtkApplication *app, gpointer data);
 void					init_gtk(GtkApplication *app, gpointer data);
@@ -366,8 +362,6 @@ void					p_error(char *str, t_env *e);
 void					s_error(char *str, t_env *e);
 void					print_usage();
 int						quit(t_env *e);
-
-void					refresh(t_env *e);
 
 void					clear_surface(t_env *e);
 void					gtk_render_events(t_env *e);

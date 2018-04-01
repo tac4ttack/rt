@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   xml_data_angle.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/01 12:31:46 by fmessina          #+#    #+#             */
+/*   Updated: 2018/04/01 12:37:30 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 void	xml_data_angle(t_env *e, char **attributes, int *i, t_node *node)
@@ -13,4 +25,3 @@ void	xml_data_angle(t_env *e, char **attributes, int *i, t_node *node)
 	else
 		s_error("\x1b[1;31mError reading ANGLE from scene\x1b[0m", e);
 }
-
