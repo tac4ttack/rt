@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/01 18:06:21 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 19:58:48 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void		env_init(t_env *e)
 
 void		cl_init(t_env *e)
 {
-	if (!(e->cl = cl_construct("./kernel/kernel.cl", "ray_trace", WIDTH, HEIGHT,
+	if (!(e->cl = cl_construct("./kernel/kernel.cl", WIDTH, HEIGHT,
 	(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
 		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, WIDTH * HEIGHT * 4)))
