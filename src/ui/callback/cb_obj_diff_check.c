@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cb_render_btnpress.c                               :+:      :+:    :+:   */
+/*   cb_obj_diff_check.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/30 20:17:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 19:09:34 by fmessina         ###   ########.fr       */
+/*   Created: 2018/03/30 20:17:37 by fmessina          #+#    #+#             */
+/*   Updated: 2018/04/01 19:48:31 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-gboolean	cb_render_btnpress(GtkWidget *widget, GdkEvent *ev, gpointer data)
+void		cb_obj_diff_check(GtkButton *btn, gpointer data)
 {
-	t_env	*e;
+	t_env 		*e;
+	t_object	*obj;
 
-	(void)widget;
-	(void)ev;
+	(void)btn;
 	e = data;
-	e->scene->flag |= OPTION_RUN;
-	e->scene->mou_x = (int)ev->button.x;
-	e->scene->mou_y = (int)ev->button.y;
-	return (TRUE);
+	obj = e->gen_objects->mem + e->target;
+	if (obj->flags & OBJ_FLAG_DIFF_MAP)
+		obj->flags ^= OBJ_FLAG_DIFF_MAP;
+	else
+		obj->flags |= OBJ_FLAG_DIFF_MAP;
 }
+

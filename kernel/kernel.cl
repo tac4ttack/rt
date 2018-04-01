@@ -1311,7 +1311,7 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	}
 
 	save = res;
-	if (scene->flag & OPTION_WAVE)
+	if (hit.obj->flags & OBJ_FLAG_WAVES)
 	{
 		if (hit.obj->type == OBJ_PLANE)
 			save.y = res.y + scene->waves_p1.x * sin((hit.pos.x + scene->u_time));

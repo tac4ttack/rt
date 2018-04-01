@@ -73,8 +73,10 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_light_nav.c \
 						ui/callback/cb_light_params.c \
 						ui/callback/cb_light_pos.c \
+						ui/callback/cb_obj_checkboard_check.c \
 						ui/callback/cb_obj_color.c \
 						ui/callback/cb_obj_combo_type.c \
+						ui/callback/cb_obj_diff_check.c \
 						ui/callback/cb_obj_diff.c \
 						ui/callback/cb_obj_dir.c \
 						ui/callback/cb_obj_jump.c \
@@ -87,8 +89,10 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_reflex.c \
 						ui/callback/cb_obj_refrac.c \
 						ui/callback/cb_obj_spec.c \
+						ui/callback/cb_obj_wave_check.c \
 						ui/callback/cb_postproc_radio.c \
 						ui/callback/cb_render_btnpress.c \
+						ui/callback/cb_render_btnrelease.c \
 						ui/callback/cb_render_draw.c \
 						ui/callback/cb_render_keypress.c \
 						ui/callback/cb_render_keyrelease.c \
@@ -200,7 +204,7 @@ $(eval GPU_MACRO = )
 GPU:
 	@echo "$(GREEN)Checking for GPU accelerated RT$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make -j 8 gpu_flags $(NAME)
+	@make -j 4 gpu_flags $(NAME)
 
 gpu: libft GPU
 gpu_flags:

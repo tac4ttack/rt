@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 18:26:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 19:48:14 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ typedef	struct			s_ui
 	GtkWidget			*obj_list_opacity_spin;
 	GtkWidget			* obj_list_color_btn;
 	GdkRGBA				obj_color;
+	GtkWidget			*obj_list_flag_waves_check;
+	GtkWidget			*obj_list_flag_diff_check;
+	GtkWidget			*obj_list_flag_checkboard_check;
 	GtkWidget			*obj_list_cone;
 	GtkWidget			*obj_cone_angle_spin;
 	GtkWidget			*obj_list_cylinder;
@@ -200,8 +203,10 @@ gboolean				cb_light_pos_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_light_pos_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_light_shrink(GtkSpinButton *spin, gpointer data);
 
+void					cb_obj_checkboard_check(GtkButton *btn, gpointer data);
 void					cb_obj_color(GtkColorButton *button, gpointer data);
 void					cb_obj_combo_type(GtkComboBox *box, gpointer data);
+void					cb_obj_diff_check(GtkButton *btn, gpointer data);
 gboolean				cb_obj_diff_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_diff_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_diff_z(GtkSpinButton *spin, gpointer data);
@@ -222,6 +227,9 @@ gboolean				cb_obj_refrac(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_z(GtkSpinButton *spin, gpointer data);
+void					cb_obj_wave_check(GtkButton *btn, gpointer data);
+											
+
 
 void					cb_play_btn(GtkButton *btn, gpointer data);
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
@@ -234,6 +242,8 @@ void					cb_postproc_sepia(GtkToggleButton *button, \
 void					cb_render_btn(GtkButton *btn, gpointer data);
 gboolean				cb_render_btnpress(GtkWidget *widget, GdkEvent *event, \
 										gpointer data);
+gboolean				cb_render_btnrelease(GtkWidget *widget, GdkEvent *ev, \
+											gpointer data);
 gboolean				cb_render_draw(GtkWidget *widget, cairo_t *cr, \
 										gpointer data);
 gboolean				cb_render_keypress(GtkWidget *widget, GdkEvent *event, \

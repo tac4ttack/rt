@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:00:39 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 19:46:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,12 @@ static void	init_cb_object_third_adds(t_env *e)
 	"clicked", G_CALLBACK(cb_export_btn), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->tool_about_btn), \
 	"clicked", G_CALLBACK(cb_about_btn), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_flag_waves_check), \
+	"clicked", G_CALLBACK(cb_obj_wave_check), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_flag_diff_check), \
+	"clicked", G_CALLBACK(cb_obj_diff_check), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_list_flag_checkboard_check), \
+	"clicked", G_CALLBACK(cb_obj_checkboard_check), (gpointer)e);
 }
 
 void		init_cb_object(t_env *e)

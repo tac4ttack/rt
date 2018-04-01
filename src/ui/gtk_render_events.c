@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:04:20 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:04:21 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 19:49:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,8 @@ static void	gtk_render_events_depth(t_env *e)
 	(gdouble)e->scene->depth);
 }
 
-static void	gtk_render_events_sinwave(t_env *e)
-{
-	if (e->scene->flag & OPTION_WAVE)
-		e->scene->flag ^= OPTION_WAVE;
-	else
-		e->scene->flag |= OPTION_WAVE;
-}
-
 void		gtk_render_events(t_env *e)
 {
-	if (KEY_STATE_1)
-		gtk_render_events_sinwave(e);
 	if (KEY_STATE_NPLU || KEY_STATE_NMIN)
 		gtk_render_events_depth(e);
 	if (e->ui->redraw == 1)

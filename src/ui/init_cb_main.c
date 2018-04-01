@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:39 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:00:40 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 19:07:08 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ void	init_cb_main(t_env *e)
 	gtk_widget_add_events(e->ui->render, GDK_BUTTON_PRESS_MASK);
 	g_signal_connect(GTK_WIDGET(e->ui->render), "button-press-event", \
 	G_CALLBACK(cb_render_btnpress), (gpointer)e);
+	gtk_widget_add_events(e->ui->render, GDK_BUTTON_RELEASE_MASK);
+	g_signal_connect(GTK_WIDGET(e->ui->render), "button-release-event", \
+	G_CALLBACK(cb_render_btnrelease), (gpointer)e);
 	gtk_widget_add_events(e->ui->render, GDK_KEY_PRESS_MASK);
 	g_signal_connect(GTK_WIDGET(e->ui->render), "key-press-event", \
 	G_CALLBACK(cb_render_keypress), (gpointer)e);

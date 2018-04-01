@@ -395,37 +395,37 @@ ntoniolo - Noé TONIOLO</property>
   <object class="GtkAdjustment" id="wave_param1_x_adjustement">
     <property name="lower">-100</property>
     <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="wave_param1_y_adjustement">
     <property name="lower">-100</property>
     <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="wave_param1_z_adjustement">
     <property name="lower">-100</property>
     <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="wave_param2_x_adjustement">
     <property name="lower">-100</property>
     <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="step_increment">0.10000000000000001</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="wave_param2_y_adjustement">
     <property name="lower">-100</property>
     <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="wave_param2_z_adjustement">
     <property name="lower">-100</property>
     <property name="upper">100</property>
-    <property name="step_increment">1</property>
+    <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkApplicationWindow" id="main_window">
@@ -1251,49 +1251,49 @@ ntoniolo - Noé TONIOLO</property>
                                                 <property name="margin_top">3</property>
                                                 <property name="margin_bottom">3</property>
                                                 <child>
-                                                  <object class="GtkCheckButton" id="obj_list_flag_diff_check">
-                                                    <property name="label" translatable="yes">Diffuse Map</property>
+                                                  <object class="GtkButton" id="obj_list_flag_waves_check">
+                                                    <property name="label" translatable="yes">Enable/Disable
+  "Sin Wave"</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="receives_default">False</property>
+                                                    <property name="receives_default">True</property>
                                                     <property name="margin_left">10</property>
                                                     <property name="margin_right">10</property>
-                                                    <property name="draw_indicator">True</property>
                                                   </object>
                                                   <packing>
-                                                    <property name="expand">True</property>
+                                                    <property name="expand">False</property>
                                                     <property name="fill">True</property>
                                                     <property name="position">0</property>
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <object class="GtkCheckButton" id="obj_list_flag_wave_check">
-                                                    <property name="label" translatable="yes">"Sin Waves"</property>
+                                                  <object class="GtkButton" id="obj_list_flag_diff_check">
+                                                    <property name="label" translatable="yes">Enable/Disable
+ "Diffuse Map"</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="receives_default">False</property>
+                                                    <property name="receives_default">True</property>
                                                     <property name="margin_left">10</property>
                                                     <property name="margin_right">10</property>
-                                                    <property name="draw_indicator">True</property>
                                                   </object>
                                                   <packing>
-                                                    <property name="expand">True</property>
+                                                    <property name="expand">False</property>
                                                     <property name="fill">True</property>
                                                     <property name="position">1</property>
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <object class="GtkCheckButton" id="obj_list_flag_checkboard_check">
-                                                    <property name="label" translatable="yes">Checked Pattern</property>
+                                                  <object class="GtkButton" id="obj_list_flag_checkboard_check">
+                                                    <property name="label" translatable="yes">  Enable/Disable  
+"Checked Pattern"</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="receives_default">False</property>
+                                                    <property name="receives_default">True</property>
                                                     <property name="margin_left">10</property>
                                                     <property name="margin_right">10</property>
-                                                    <property name="draw_indicator">True</property>
                                                   </object>
                                                   <packing>
-                                                    <property name="expand">True</property>
+                                                    <property name="expand">False</property>
                                                     <property name="fill">True</property>
                                                     <property name="position">2</property>
                                                   </packing>
