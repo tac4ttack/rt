@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/01 12:24:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 18:06:21 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,18 @@ void		env_init(t_env *e)
 	if (e->gpu == 1)
 		e->scene->flag |= OPTION_GPU;
 	e->ui->redraw = 1;
+	e->scene->check_p1.x = 0;
+	e->scene->check_p1.y = 0;
+	e->scene->check_p1.z = 0;
+	e->scene->check_p2.x = 0;
+	e->scene->check_p2.y = 0;
+	e->scene->check_p2.z = 0;
+	e->scene->waves_p1.x = 0.8;
+	e->scene->waves_p1.y = 0.8;
+	e->scene->waves_p1.z = 0.8;
+	e->scene->waves_p2.x = 10;
+	e->scene->waves_p2.y = 10;
+	e->scene->waves_p2.z = 10;
 	ft_putendl("\x1b[1;29mRT environnement initialized!\n\x1b[0m");
 }
 

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 17:21:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 18:27:56 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,6 +319,10 @@ typedef struct			s_scene
 	cl_int				over_sampling;
 	cl_int				mem_size_obj;
 	cl_int				mem_size_lights;
+	cl_float3			check_p1;
+	cl_float3			check_p2;
+	cl_float3			waves_p1;
+	cl_float3			waves_p2;
 }						t_scene;
 
 typedef	struct			s_env
@@ -367,6 +371,7 @@ void					init_gtk_css(t_env *e);
 void					init_gtk_light(t_env *e);
 void					init_gtk_object(t_env *e);
 void					init_gtk_scene(t_env *e);
+void					init_gtk_texture(t_env *e);
 void					init_gtk_toolbar(t_env *e);
 void					init_gtk_win(t_env *e);
 

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:17 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:00:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 18:29:01 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void		init_gtk(GtkApplication *app, gpointer data)
 
 	e = data;
 	(void)app;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	init_gtk_css(e);
 	e->ui->builder = gtk_builder_new();
 	gtk_builder_add_from_file(e->ui->builder, "./theme/rt_ui.glade", NULL);
@@ -28,6 +27,7 @@ void		init_gtk(GtkApplication *app, gpointer data)
 	init_gtk_cam(e);
 	init_gtk_light(e);
 	init_gtk_toolbar(e);
+	init_gtk_texture(e);
 	init_cb_main(e);
 	init_cb_scene(e);
 	init_cb_cam(e);

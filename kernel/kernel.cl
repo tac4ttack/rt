@@ -274,6 +274,8 @@ typedef struct			s_scene
 	int					mem_size_lights;
 	float3				check_p1;
 	float3				check_p2;
+	float3				waves_p1;
+	float3				waves_p2;
 }						t_scene;
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1311,14 +1313,13 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	save = res;
 	if (scene->flag & OPTION_WAVE)
 	{
-		/*						VAGUELETTE							*/
 		if (hit.obj->type == OBJ_PLANE)
-			save.y = res.y + 0.8 * sin((hit.pos.x + scene->u_time));
+			save.y = res.y + scene->waves_p1.x * sin((hit.pos.x + scene->u_time));
 		else
 		{
-			save.x = res.x + 2 * sin(res.y * 10 + scene->u_time); //p1.x p2.x
-			save.z = res.z + 2 * sin(res.x * 10 + scene->u_time);
-			save.y = res.y + 2 * sin(res.x * 10 + scene->u_time);
+			save.x = res.x + scene->waves_p1.x * sin(res.y * scene->waves_p2.x + scene->u_time); //p1.x p2.x
+			save.z = res.z + scene->waves_p1.y * sin(res.x * scene->waves_p2.y + scene->u_time);
+			save.y = res.y + scene->waves_p1.z * sin(res.x * scene->waves_p2.z + scene->u_time);
 		}
 	}
 

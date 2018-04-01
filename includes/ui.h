@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 11:19:19 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 18:26:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,12 @@ typedef	struct			s_ui
 	GtkWidget			*light_nav_next_btn;
 	GtkWidget			*light_nav_add_btn;
 	GtkWidget			*light_nav_del_btn;
+	GtkWidget			*texture_wave_par1_spin_x;
+	GtkWidget			*texture_wave_par1_spin_y;
+	GtkWidget			*texture_wave_par1_spin_z;
+	GtkWidget			*texture_wave_par2_spin_x;
+	GtkWidget			*texture_wave_par2_spin_y;
+	GtkWidget			*texture_wave_par2_spin_z;
 	GtkWidget			*tool_play_btn;
 	GtkWidget			*tool_stop_btn;
 	GtkWidget			*tool_render_btn;
@@ -245,6 +251,13 @@ gboolean				cb_supersampling_update(GtkScale *scale, gpointer data);
 
 gboolean				cb_torus_radius_lil(GtkSpinButton *spin, gpointer data);
 gboolean				cb_torus_radius_big(GtkSpinButton *spin, gpointer data);
+
+gboolean				cb_waves_p1_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_waves_p1_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_waves_p1_z(GtkSpinButton *spin, gpointer data);
+gboolean				cb_waves_p2_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_waves_p2_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_waves_p2_z(GtkSpinButton *spin, gpointer data);
 
 gboolean				gtk_main_loop(gpointer data);
 int						gtk_quit(GtkApplication *app, gpointer data);

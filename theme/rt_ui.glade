@@ -392,6 +392,42 @@ ntoniolo - Noé TONIOLO</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkAdjustment" id="wave_param1_x_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="wave_param1_y_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="wave_param1_z_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="wave_param2_x_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="wave_param2_y_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="wave_param2_z_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkApplicationWindow" id="main_window">
     <property name="can_focus">False</property>
     <property name="has_resize_grip">True</property>
@@ -3155,14 +3191,14 @@ High setting decreases a lot the rendering speed</property>
                                     <property name="orientation">vertical</property>
                                     <property name="homogeneous">True</property>
                                     <child>
-                                      <object class="GtkBox" id="texture_wave_param1_box">
+                                      <object class="GtkBox" id="texture_wave_par1_box">
                                         <property name="height_request">40</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="margin_top">3</property>
                                         <property name="margin_bottom">3</property>
                                         <child>
-                                          <object class="GtkLabel" id="texture_wave_param1_label">
+                                          <object class="GtkLabel" id="texture_wave_par1_label">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <property name="label" translatable="yes">"Sin Waves"
@@ -3176,7 +3212,7 @@ settings 1</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkSpinButton" id="cam_list_dir_spin_x1">
+                                          <object class="GtkSpinButton" id="texture_wave_par1_spin_x">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="tooltip_text" translatable="yes">direction.X</property>
@@ -3185,7 +3221,7 @@ settings 1</property>
                                             <property name="width_chars">0</property>
                                             <property name="text" translatable="yes">-0,010</property>
                                             <property name="input_purpose">number</property>
-                                            <property name="adjustment">cam_dir_adjustement_x</property>
+                                            <property name="adjustment">wave_param1_x_adjustement</property>
                                             <property name="climb_rate">0.01</property>
                                             <property name="digits">2</property>
                                             <property name="wrap">True</property>
@@ -3199,7 +3235,7 @@ settings 1</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkSpinButton" id="cam_list_dir_spin_x2">
+                                          <object class="GtkSpinButton" id="texture_wave_par1_spin_y">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="tooltip_text" translatable="yes">direction.X</property>
@@ -3208,7 +3244,7 @@ settings 1</property>
                                             <property name="width_chars">0</property>
                                             <property name="text" translatable="yes">-0,010</property>
                                             <property name="input_purpose">number</property>
-                                            <property name="adjustment">cam_dir_adjustement_x</property>
+                                            <property name="adjustment">wave_param1_y_adjustement</property>
                                             <property name="climb_rate">0.01</property>
                                             <property name="digits">2</property>
                                             <property name="wrap">True</property>
@@ -3222,7 +3258,7 @@ settings 1</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkSpinButton" id="cam_list_dir_spin_x3">
+                                          <object class="GtkSpinButton" id="texture_wave_par1_spin_z">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="tooltip_text" translatable="yes">direction.X</property>
@@ -3231,7 +3267,7 @@ settings 1</property>
                                             <property name="width_chars">0</property>
                                             <property name="text" translatable="yes">-0,010</property>
                                             <property name="input_purpose">number</property>
-                                            <property name="adjustment">cam_dir_adjustement_x</property>
+                                            <property name="adjustment">wave_param1_z_adjustement</property>
                                             <property name="climb_rate">0.01</property>
                                             <property name="digits">2</property>
                                             <property name="wrap">True</property>
@@ -3252,14 +3288,14 @@ settings 1</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="texture_wave_param2_box">
+                                      <object class="GtkBox" id="texture_wave_par2_box">
                                         <property name="height_request">40</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="margin_top">3</property>
                                         <property name="margin_bottom">3</property>
                                         <child>
-                                          <object class="GtkLabel" id="texture_wave_param2_label">
+                                          <object class="GtkLabel" id="texture_wave_par2_label">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <property name="label" translatable="yes">"Sin Waves"
@@ -3273,7 +3309,7 @@ settings 2</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkSpinButton" id="cam_list_dir_spin_x4">
+                                          <object class="GtkSpinButton" id="texture_wave_par2_spin_x">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="tooltip_text" translatable="yes">direction.X</property>
@@ -3282,7 +3318,7 @@ settings 2</property>
                                             <property name="width_chars">0</property>
                                             <property name="text" translatable="yes">-0,010</property>
                                             <property name="input_purpose">number</property>
-                                            <property name="adjustment">cam_dir_adjustement_x</property>
+                                            <property name="adjustment">wave_param2_x_adjustement</property>
                                             <property name="climb_rate">0.01</property>
                                             <property name="digits">2</property>
                                             <property name="wrap">True</property>
@@ -3296,7 +3332,7 @@ settings 2</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkSpinButton" id="cam_list_dir_spin_x5">
+                                          <object class="GtkSpinButton" id="texture_wave_par2_spin_y">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="tooltip_text" translatable="yes">direction.X</property>
@@ -3305,7 +3341,7 @@ settings 2</property>
                                             <property name="width_chars">0</property>
                                             <property name="text" translatable="yes">-0,010</property>
                                             <property name="input_purpose">number</property>
-                                            <property name="adjustment">cam_dir_adjustement_x</property>
+                                            <property name="adjustment">wave_param2_y_adjustement</property>
                                             <property name="climb_rate">0.01</property>
                                             <property name="digits">2</property>
                                             <property name="wrap">True</property>
@@ -3319,7 +3355,7 @@ settings 2</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkSpinButton" id="cam_list_dir_spin_x6">
+                                          <object class="GtkSpinButton" id="texture_wave_par2_spin_z">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="tooltip_text" translatable="yes">direction.X</property>
@@ -3328,7 +3364,7 @@ settings 2</property>
                                             <property name="width_chars">0</property>
                                             <property name="text" translatable="yes">-0,010</property>
                                             <property name="input_purpose">number</property>
-                                            <property name="adjustment">cam_dir_adjustement_x</property>
+                                            <property name="adjustment">wave_param2_z_adjustement</property>
                                             <property name="climb_rate">0.01</property>
                                             <property name="digits">2</property>
                                             <property name="wrap">True</property>

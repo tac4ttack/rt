@@ -98,6 +98,8 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_supersampling_update.c \
 						ui/callback/cb_tool_bar.c \
 						ui/callback/cb_torus_radius.c \
+						ui/callback/cb_waves_p1.c \
+						ui/callback/cb_waves_p2.c \
 						ui/gdkrgba_to_int.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
@@ -111,6 +113,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/init_gtk_light.c \
 						ui/init_gtk_object.c \
 						ui/init_gtk_scene.c \
+						ui/init_gtk_texture.c \
 						ui/init_gtk_toolbar.c \
 						ui/init_gtk_win.c \
 						ui/init_gtk.c \
