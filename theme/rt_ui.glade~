@@ -108,7 +108,7 @@ ntoniolo - Noé TONIOLO</property>
     <property name="step_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="cone_angle_adjustement">
-    <property name="lower">5</property>
+    <property name="lower">1</property>
     <property name="upper">175</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
@@ -1211,7 +1211,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="width_request">133</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Aperture angle (between 5 and 175)</property>
+                                                    <property name="tooltip_text" translatable="yes">Aperture angle (between 1 and 175)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1491,7 +1491,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
+                                                    <property name="tooltip_text" translatable="yes">Current sphere's radius</property>
                                                     <property name="label" translatable="yes">Radius</property>
                                                   </object>
                                                   <packing>
@@ -1505,7 +1505,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="width_request">133</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="tooltip_text" translatable="yes">Radius (between 0.25 and 10000)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1543,7 +1543,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
+                                                    <property name="tooltip_text" translatable="yes">Current torus big radius, from its center to the middle of the section</property>
                                                     <property name="label" translatable="yes">Big radius</property>
                                                   </object>
                                                   <packing>
@@ -1557,7 +1557,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="width_request">133</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="tooltip_text" translatable="yes">Big radius (between 0.25 and 10000)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1582,7 +1582,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
+                                                    <property name="tooltip_text" translatable="yes">Current torus section radius</property>
                                                     <property name="label" translatable="yes">Little radius</property>
                                                   </object>
                                                   <packing>
@@ -1596,7 +1596,7 @@ ntoniolo - Noé TONIOLO</property>
                                                     <property name="width_request">133</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Resolution's width (between 5 and 9999)</property>
+                                                    <property name="tooltip_text" translatable="yes">Little radius (between 0.25 and 10000)</property>
                                                     <property name="margin_left">5</property>
                                                     <property name="margin_right">5</property>
                                                     <property name="width_chars">0</property>
@@ -1719,7 +1719,6 @@ ntoniolo - Noé TONIOLO</property>
                                                 <property name="visible">True</property>
                                                 <property name="sensitive">False</property>
                                                 <property name="can_focus">False</property>
-                                                <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
                                                 <property name="label" translatable="yes">Choose object type</property>
                                               </object>
                                               <packing>
@@ -1758,7 +1757,7 @@ ntoniolo - Noé TONIOLO</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
-                                                <property name="tooltip_text" translatable="yes">Add a new light</property>
+                                                <property name="tooltip_text" translatable="yes">Add a object from selected type</property>
                                                 <property name="valign">start</property>
                                                 <property name="margin_left">5</property>
                                                 <property name="margin_right">5</property>
@@ -1791,7 +1790,6 @@ ntoniolo - Noé TONIOLO</property>
                                                 <property name="visible">True</property>
                                                 <property name="sensitive">False</property>
                                                 <property name="can_focus">False</property>
-                                                <property name="tooltip_text" translatable="yes">Current camera's "Field Of View"</property>
                                                 <property name="label" translatable="yes">Jump to object...</property>
                                               </object>
                                               <packing>
