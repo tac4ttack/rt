@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:57:19 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 21:05:06 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 17:39:25 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ static bool			cl_create_base(t_cl *cl, int type)
 	return (true);
 }
 
-static bool			cl_build(t_cl *cl, const char *name)
+static bool			cl_build(t_cl *cl)
 {
 	if ((cl->err = clBuildProgram(cl->program, 0, NULL, \
 					"-I ./kernel/includes/ ", NULL, NULL)) != CL_SUCCESS)
 		return (cl_builderrors(cl, 5, cl->err));
-	if (!(cl->kernel = clCreateKernel(cl->program, name, &cl->err)) \
+	if (!(cl->kernel = clCreateKernel(cl->program, "ray_trace", &cl->err)) \
 										|| cl->err != CL_SUCCESS)
 		return (cl_builderrors(cl, 6, cl->err));
 	if ((cl->err = clGetKernelWorkGroupInfo(cl->kernel, cl->device_id,
@@ -92,7 +92,7 @@ static bool			cl_build(t_cl *cl, const char *name)
 	return (true);
 }
 
-t_cl				*cl_construct(const char *path, const char *name, \
+t_cl				*cl_construct(const char *path, \
 					const size_t width, const size_t height, int type)
 {
 	t_cl			*cl;
@@ -104,7 +104,7 @@ t_cl				*cl_construct(const char *path, const char *name, \
 		return (cl_destruct(&cl));
 	if (!cl_load_src(cl, path) ||
 		!cl_create_base(cl, type) ||
-		!cl_build(cl, name))
+		!cl_build(cl))
 		return (NULL);
 	cl->add_buffer = &cl_add_buffer;
 	cl->compute = &cl_compute;
