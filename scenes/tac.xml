@@ -12,6 +12,7 @@
 				reflex="0"
 			refract="0"
 			opacity="1"
+			radius="1"
 				/>
 
 	<sphere		pos="-10, -5, 10"

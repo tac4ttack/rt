@@ -1,5 +1,3 @@
-#pragma OPENCL EXTENSION cl_khr_fp64 : enable
-
 #define BACKCOLOR 0x00999999
 
 #define EPSILON 0.00005f
@@ -19,6 +17,13 @@
 #define OPTION_BW		(1 << 3)
 #define OPTION_RUN		(1 << 4)
 #define OPTION_INVERT	(1 << 7)
+#define OPTION_CARTOON	(1 << 8)
+#define OPTION_STEREO	(1 << 9)
+
+#define OBJ_FLAG_WAVES			(1 << 1)
+#define OBJ_FLAG_CHECKERED		(1 << 2)
+#define OBJ_FLAG_DIFF_MAP		(1 << 3)
+#define OBJ_FLAG_BUMP_MAP		(1 << 4)
 
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2
@@ -62,6 +67,7 @@ typedef struct			s_object
 {
 	int					size;
 	int					type;
+	int					flags;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -77,6 +83,7 @@ typedef struct			s_box
 {
 	int					size;
 	int					type;
+	int					flags;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -95,6 +102,7 @@ typedef struct			s_cone
 {
 	int					size;
 	int					type;
+	int					flags;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -112,6 +120,7 @@ typedef struct			s_cylinder
 {
 	int					size;
 	int					type;
+	int					flags;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -131,6 +140,7 @@ typedef struct			s_plane
 {
 	int					size;
 	int					type;
+	int					flags;
 	int					id;
 	float3				pos;
 	float3				normal;
@@ -140,12 +150,15 @@ typedef struct			s_plane
 	float				reflex;
 	float				refract;
 	float				opacity;
+
+	float				radius;
 }						t_plane;
 
 typedef struct			s_sphere
 {
 	int					size;
 	int					type;
+	int					flags;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -163,6 +176,7 @@ typedef struct			s_ellipsoid
 {
 	int					size;
 	int					type;
+	int					flags;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -181,6 +195,7 @@ typedef struct			s_thor
 {
 	int					size;
 	int					type;
+	int					flags;
 	int					id;
 	float3				pos;
 	float3				dir;
@@ -257,6 +272,8 @@ typedef struct			s_scene
 	int					over_sampling;
 	int					mem_size_obj;
 	int					mem_size_lights;
+	float3				check_p1;
+	float3				check_p2;
 }						t_scene;
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1299,10 +1316,9 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 			save.y = res.y + 0.8 * sin((hit.pos.x + scene->u_time));
 		else
 		{
-			save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
-			//save.z = res.z + 0.8 * sin(res.x * 10 + scene->u_time);
-			save.z = res.z + 0.8 * sin(save.x * 10 + scene->u_time);
-			save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
+			save.x = res.x + 2 * sin(res.y * 10 + scene->u_time); //p1.x p2.x
+			save.z = res.z + 2 * sin(res.x * 10 + scene->u_time);
+			save.y = res.y + 2 * sin(res.x * 10 + scene->u_time);
 		}
 	}
 

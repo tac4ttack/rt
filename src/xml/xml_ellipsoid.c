@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/01 12:34:22 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 17:25:49 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void		xml_push_ellipsoid(t_env *e, t_node *list)
 	ellipsoid.size = sizeof(t_ellipsoid);
 	ellipsoid.id = e->current_index_objects;
 	ellipsoid.type = OBJ_ELLIPSOID;
+	ellipsoid.flags = 0;
 	ellipsoid.pos = list->pos;
 	ellipsoid.dir = list->dir;
 	ellipsoid.radius = list->radius;

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 12:37:10 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 17:26:14 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void		xml_push_box(t_env *e, t_node *list)
 	box.size = sizeof(t_box);
 	box.id = e->current_index_objects;
 	box.type = OBJ_BOX;
+	box.flags = 0;
 	box.pos = list->pos;
 	box.dir = list->dir;
 	box.color = list->color;

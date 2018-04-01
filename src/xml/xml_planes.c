@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 12:35:23 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 17:28:59 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,6 @@
 
 static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 {
-	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
-		s_error("\x1b[1;31mPlane error, COLOR expected in #3\x1b[0m", e);
-	else
-		xml_data_color(e, att, i, plane_node);
-	if (ft_strncmp(att[*i], "diff=\"", 6) != 0)
-		s_error("\x1b[1;31mPlane error, DIFFUSE expected in #4\x1b[0m", e);
-	else
-		xml_data_diffiouse(e, att, i, plane_node);
 	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
 		s_error("\x1b[1;31mPlane error, SPECULAR expected in #5\x1b[0m", e);
 	else
@@ -38,6 +30,10 @@ static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 		s_error("\x1b[2;31mPlane error, OPACITY expected in #8\x1b[0m", e);
 	else
 		xml_data_opacity(e, att, i, plane_node);
+	if (ft_strncmp(att[*i], "radius=\"", 8) != 0)
+		s_error("\x1b[1;31mPlane error, RADIUS expected in #9\x1b[0m", e);
+	else
+		xml_data_radius(e, att, i, plane_node);
 }
 
 static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
@@ -52,6 +48,14 @@ static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
 		s_error("\x1b[1;31mPlane error, NORMALE expected in #2\x1b[0m", e);
 	else
 		xml_data_normale(e, att, i, plane_node);
+	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
+		s_error("\x1b[1;31mPlane error, COLOR expected in #3\x1b[0m", e);
+	else
+		xml_data_color(e, att, i, plane_node);
+	if (ft_strncmp(att[*i], "diff=\"", 6) != 0)
+		s_error("\x1b[1;31mPlane error, DIFFUSE expected in #4\x1b[0m", e);
+	else
+		xml_data_diffiouse(e, att, i, plane_node);
 	xml_plane_data_n(e, att, plane_node, i);
 }
 
@@ -89,12 +93,14 @@ void		xml_push_plane(t_env *e, t_node *list)
 	plane.size = sizeof(t_plane);
 	plane.id = e->current_index_objects;
 	plane.type = OBJ_PLANE;
+	plane.flags = 0;
 	plane.pos = list->pos;
 	plane.normal = list->normale;
 	plane.color = list->color;
 	plane.diff = list->diff;
 	plane.spec = list->spec;
 	plane.reflex = list->reflex;
+	plane.radius = list->radius;
 	plane.refract = list->refract;
 	plane.opacity = list->opacity;
 	e->gen_objects->add(e->gen_objects, (void*)&plane);
