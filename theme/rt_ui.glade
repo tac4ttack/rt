@@ -489,7 +489,7 @@ ntoniolo - Noé TONIOLO</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Export render</property>
-                <property name="label" translatable="yes">Export render</property>
+                <property name="label" translatable="yes">Export render to PNG</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">img_export_btn</property>
               </object>

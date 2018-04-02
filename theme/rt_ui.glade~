@@ -3216,7 +3216,8 @@ settings 1</property>
                                           <object class="GtkSpinButton" id="texture_wave_par1_spin_x">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">direction.X</property>
+                                            <property name="tooltip_text" translatable="yes">sinwave.param1.X
+(between -100 and 100)</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="width_chars">0</property>
@@ -3239,7 +3240,8 @@ settings 1</property>
                                           <object class="GtkSpinButton" id="texture_wave_par1_spin_y">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">direction.X</property>
+                                            <property name="tooltip_text" translatable="yes">sinwave.param1.Y
+(between -100 and 100)</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="width_chars">0</property>
@@ -3262,7 +3264,8 @@ settings 1</property>
                                           <object class="GtkSpinButton" id="texture_wave_par1_spin_z">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">direction.X</property>
+                                            <property name="tooltip_text" translatable="yes">sinwave.param1.Z
+(between -100 and 100)</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="width_chars">0</property>
@@ -3314,7 +3317,8 @@ settings 2</property>
                                           <object class="GtkSpinButton" id="texture_wave_par2_spin_x">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">direction.X</property>
+                                            <property name="tooltip_text" translatable="yes">sinwave.param2.X
+(between -100 and 100)</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="width_chars">0</property>
@@ -3337,7 +3341,8 @@ settings 2</property>
                                           <object class="GtkSpinButton" id="texture_wave_par2_spin_y">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">direction.X</property>
+                                            <property name="tooltip_text" translatable="yes">sinwave.param2.Y
+(between -100 and 100)</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="width_chars">0</property>
@@ -3360,7 +3365,8 @@ settings 2</property>
                                           <object class="GtkSpinButton" id="texture_wave_par2_spin_z">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">direction.X</property>
+                                            <property name="tooltip_text" translatable="yes">sinwave.param2.Z
+(between -100 and 100)</property>
                                             <property name="margin_left">5</property>
                                             <property name="margin_right">5</property>
                                             <property name="width_chars">0</property>
