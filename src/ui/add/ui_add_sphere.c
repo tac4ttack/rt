@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:42 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 19:59:43 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 17:35:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ui_add_sphere(t_env *e)
 	sphere.type = OBJ_SPHERE;
 	sphere.pos.x = 0;
 	sphere.pos.y = 0;
+	sphere.flags = 0;
 	sphere.pos.z = 0;
 	sphere.dir = sphere.pos;
 	sphere.dir.z = 1;

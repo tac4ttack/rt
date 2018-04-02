@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:52 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 19:59:53 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 17:35:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ui_add_plane(t_env *e)
 	plane.pos.x = 0;
 	plane.pos.y = 0;
 	plane.pos.z = 0;
+	plane.flags = 0;
 	plane.normal = plane.pos;
 	plane.normal.z = 1;
 	plane.color = rand();

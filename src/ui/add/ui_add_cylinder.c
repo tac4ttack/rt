@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:56 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 19:59:57 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 17:34:53 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	ui_add_cylinder(t_env *e)
 	cylinder.dir.z = 1;
 	cylinder.dir = normalize_vect(cylinder.dir);
 	cylinder.radius = 4;
+	cylinder.flags = 0;
 	cylinder.color = rand();
 	cylinder.height = 0;
 	cylinder.diff.x = 0.42;
