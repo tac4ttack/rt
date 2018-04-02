@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:57:19 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 17:39:25 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/02 12:04:32 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static bool			cl_create_base(t_cl *cl, int type)
 static bool			cl_build(t_cl *cl)
 {
 	if ((cl->err = clBuildProgram(cl->program, 0, NULL, \
-					"-I ./kernel/includes/ ", NULL, NULL)) != CL_SUCCESS)
+				"-Werror -I ./kernel/includes/ ", NULL, NULL)) != CL_SUCCESS)
 		return (cl_builderrors(cl, 5, cl->err));
 	if (!(cl->kernel = clCreateKernel(cl->program, "ray_trace", &cl->err)) \
 										|| cl->err != CL_SUCCESS)

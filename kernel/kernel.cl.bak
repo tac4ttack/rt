@@ -263,23 +263,23 @@ typedef struct			s_scene
 {
 	t_cam				__local *cameras;
 //	void				*dummy_pedro;
-	void				__local *mem_lights;  //repassé en void à cause de l'erreur compilation, sinon pour oclgrind foutre char
+	char				__local *mem_lights;
 //	void				*dummy_gomez;
-	void				__local *mem_obj; //repassé en void à cause de l'erreur compilation, sinon pour oclgrind foutre char
+	char				__local *mem_obj;
 //	void				*dummy_ramon;
 	unsigned int		n_cams;
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
 	float3				ambient;
-	unsigned int		mou_x;
-	unsigned int		mou_y;
-	unsigned int		depth;
+	int					mou_x;
+	int					mou_y;
+	int					depth;
 	float				u_time;
 	int					flag;
-	unsigned int		over_sampling;
-	unsigned int		mem_size_obj;
-	unsigned int		mem_size_lights;
+	int					over_sampling;
+	int					mem_size_obj;
+	int					mem_size_lights;
 	float3				check_p1;
 	float3				check_p2;
 	float3				waves_p1;
@@ -298,7 +298,7 @@ static t_hit	hit_init(void)
 
 	hit.dist = 0.f;
 	hit.normal = 0.f;
-	hit.obj = 0;
+	hit.obj = -1;
 	hit.pos = 0.f;
 	hit.mem_index = 0;
 	hit.opacity = 0;
@@ -357,13 +357,16 @@ static unsigned int	invert(const unsigned int color)
 // not working
 static unsigned int	cartoonize(const unsigned int color)
 {
-	uint3	base;
+	uint3	base, cooking_pot = 0;
 	base.x = (color & 0x00FF0000) >> 16;
 	base.y = (color & 0x0000FF00) >> 8;
 	base.z = (color & 0x000000FF);
-	base.x = base.x - base.x % 30;
-	base.y = base.y - base.y % 30;
-	base.z = base.z - base.z % 30;
+	if ((base.x = base.x - base.x % 30) < 0)
+		base.x = 0;
+	if ((base.y = base.y - base.y % 30) < 0)
+		base.y = 0;
+	if ((base.z = base.z - base.z % 30) < 0)
+		base.z = 0;
 	return (((uint)base.x << 16) + ((uint)base.y << 8) + (uint)base.z);
 }
 
@@ -613,7 +616,7 @@ static bool		solve_quadratic(const float a, const float b, const float c, float 
 	return (true);
 }
 
-static float3		get_ellipsoid_normal(const __local t_ellipsoid *ellipsoid, const t_hit *hit)
+float3		get_ellipsoid_normal(const __local t_ellipsoid *ellipsoid, const t_hit *hit)
 {
 	float3 pos = hit->pos - ellipsoid->pos;
 	pos = vector_get_rotate(&pos, &ellipsoid->dir);
@@ -721,6 +724,7 @@ static float	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray
 	float		d;
 	float		res1;
 	float		res2;
+	float		m;
 
 	res1 = 0;
 	res2 = 0;
@@ -1172,7 +1176,7 @@ static float	inter_cone(const __local t_cone *cone, const float3 ray, const floa
 /*
 ** BOXES FUNCTIONS /////////////////////////////////////////////////////////////
 */
-static void	fswap(float *a, float *b)
+void	fswap(float *a, float *b)
 {
 	float tmp;
 
@@ -1261,23 +1265,23 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 	if (lightdist == 0)
 		hit.opacity = 1;
 	while (mem_index_obj < scene->mem_size_obj)
-	{
+	{	
 		obj = scene->mem_obj + mem_index_obj;
 		if (obj->type == OBJ_SPHERE)
-		 	dist = inter_sphere((__local struct s_sphere *)obj, ray, origin);
+		 	dist = inter_sphere(obj, ray, origin);
 		//	ABORT
 		// else if (obj->type == OBJ_BOX)
 		//  	dist = inter_box(obj, ray, origin, &hit);
 		else if (obj->type == OBJ_CYLINDER)
-		 	dist = inter_cylinder((__local struct s_cylinder *)obj, ray, origin);
+		 	dist = inter_cylinder(obj, ray, origin);
 		else if (obj->type == OBJ_PLANE)
-		 	dist = inter_plan((__local struct s_plane *)obj, ray, origin);
+		 	dist = inter_plan(obj, ray, origin);
 		else if (obj->type == OBJ_CONE)
-		 	dist = inter_cone((__local struct s_cone *)obj, ray, origin);
+		 	dist = inter_cone(obj, ray, origin);
 		else if (obj->type == OBJ_ELLIPSOID)
-		   	dist = inter_ellipsoid((__local struct s_ellipsoid *)obj, ray, origin);
+		   	dist = inter_ellipsoid(obj, ray, origin);
 		 else if (obj->type == OBJ_THOR)
-		 	dist = inter_thor((__local struct s_thor *)obj, ray, origin);
+		 	dist = inter_thor(obj, ray, origin);
 		if (lightdist > 0 && dist < lightdist && dist > EPSILON)
 			hit.opacity += obj->opacity;
 		if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
@@ -1298,11 +1302,11 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	if (hit.obj->type == OBJ_SPHERE)
 	 	res = hit.pos - hit.obj->pos;
 	else if (hit.obj->type == OBJ_CYLINDER)
-		res = get_cylinder_normal((__local t_cylinder *)hit.obj, hit);
+		res = get_cylinder_normal(hit.obj, hit);
 	else if (hit.obj->type == OBJ_CONE)
-		res = get_cone_normal((__local t_cone *)hit.obj, hit);
+		res = get_cone_normal(hit.obj, hit);
 	else if (hit.obj->type == OBJ_ELLIPSOID)
-		res = get_ellipsoid_normal((__local t_ellipsoid *)hit.obj, &hit);
+		res = get_ellipsoid_normal(hit.obj, &hit);
 //	ABORT
 //	else if (hit.obj->type == OBJ_THOR)
 //		res = get_thor_normal(hit.obj, hit);
@@ -1760,7 +1764,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	color = 0;
 	bounce_color = 0;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
-	if ((isHim == 1) && ((int)hit.obj != -1))
+	if (isHim && hit.obj != -1)
 		*target = hit.mem_index;
 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
@@ -1857,7 +1861,7 @@ __kernel void		ray_trace(	__global	char		*output,
 	if (scene->over_sampling > 1)
 	{
 		uint2 true_pix = pix;
-		unsigned int i = 0;
+		int i = 0;
 		pix.x *= scene->over_sampling;
 		pix.y *= scene->over_sampling;
 

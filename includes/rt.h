@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 18:27:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 11:54:23 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,14 +311,14 @@ typedef struct			s_scene
 	cl_uint				win_w;
 	cl_uint				win_h;
 	cl_float3			ambient;
-	cl_int				mou_x;
-	cl_int				mou_y;
-	cl_int				depth;
+	cl_uint				mou_x;
+	cl_uint				mou_y;
+	cl_uint				depth;
 	cl_float			u_time;
 	cl_int				flag;
-	cl_int				over_sampling;
-	cl_int				mem_size_obj;
-	cl_int				mem_size_lights;
+	cl_uint				over_sampling;
+	cl_uint				mem_size_obj;
+	cl_uint				mem_size_lights;
 	cl_float3			check_p1;
 	cl_float3			check_p2;
 	cl_float3			waves_p1;
