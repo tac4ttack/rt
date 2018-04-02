@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/01 12:27:29 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 14:56:58 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,25 @@ static void		cl_write_buffer(t_env *e, t_cl *cl)
 							e->gen_lights->mem_size,
 							e->gen_lights->mem, 0, NULL, NULL)))
 		s_error("Error: Failed to send arguments to kernel!", e);
+
+
+
+	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[6], CL_TRUE, 0,
+							sizeof(unsigned int) * e->texture[0].width * e->texture[0].height,
+							e->texture[0].pixel_array, 0, NULL, NULL)))
+		s_error("Error: Failed to send arguments to kernel!", e);
+	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[7], CL_TRUE, 0,
+							sizeof(unsigned int) * e->texture[1].width * e->texture[1].height,
+							e->texture[1].pixel_array, 0, NULL, NULL)))
+		s_error("Error: Failed to send arguments to kernel!", e);
+	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[8], CL_TRUE, 0,
+							sizeof(unsigned int) * e->texture[2].width * e->texture[2].height,
+							e->texture[2].pixel_array, 0, NULL, NULL)))
+		s_error("Error: Failed to send arguments to kernel!", e);
+	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[9], CL_TRUE, 0,
+							sizeof(unsigned int) * e->texture[3].width * e->texture[3].height,
+							e->texture[3].pixel_array, 0, NULL, NULL)))
+	s_error("Error: Failed to send arguments to kernel!", e);
 }
 
 void			opencl_set_args(t_env *e, t_cl *cl)
@@ -49,6 +68,13 @@ void			opencl_set_args(t_env *e, t_cl *cl)
 	cl->err |= clSetKernelArg(cl->kernel, 10, e->gen_lights->mem_size, NULL);
 	cl->err |= clSetKernelArg(cl->kernel, 11, 4, &e->gen_lights->mem_size);
 	cl->err |= clSetKernelArg(cl->kernel, 12, sizeof(cl_mem), &cl->mem[5]);
+
+	cl->err |= clSetKernelArg(cl->kernel, 13, sizeof(cl_mem), &cl->mem[6]);
+	cl->err |= clSetKernelArg(cl->kernel, 14, sizeof(cl_mem), &cl->mem[7]);
+	cl->err |= clSetKernelArg(cl->kernel, 15, sizeof(cl_mem), &cl->mem[8]);
+	cl->err |= clSetKernelArg(cl->kernel, 16, sizeof(cl_mem), &cl->mem[9]);
+	
+	
 	if (cl->err != CL_SUCCESS)
 		s_error("Error: Failed to send arguments to kernel!", e);
 }

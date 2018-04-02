@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 11:54:23 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 14:58:59 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,11 +301,32 @@ typedef	struct			s_xml
 	int					excl;
 }						t_xml;
 
+typedef struct			s_rtx
+{
+	GdkPixbuf			*pixbuf;
+	guchar				*pixels;
+	int					width;
+	int					height;
+	int					rowstride;
+	int					n_channels;
+}						t_rtx;
+
+typedef struct			s_tex
+{
+	unsigned int		*pixel_array;
+	int					width;
+	int					height;
+} 						t_tex;
+
 typedef struct			s_scene
 {
 	t_cam				*cameras;
 	void				*mem_lights;
 	void				*mem_obj;
+	unsigned int		*texture_earth;
+	unsigned int		*texture_moon;
+	unsigned int		*texture_earth_cloud;
+	unsigned int		*texture_star;
 	cl_uint				n_cams;
 	cl_uint				active_cam;
 	cl_uint				win_w;
@@ -347,6 +368,8 @@ typedef	struct			s_env
 
 	int					*pixel_data;
 	int					target;
+	t_rtx				raw_texture;
+	t_tex				*texture;
 	int					current_index_objects;
 }						t_env;
 
