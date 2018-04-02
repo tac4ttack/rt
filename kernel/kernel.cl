@@ -379,9 +379,9 @@ static unsigned int	cartoonize(const unsigned int color)
 	base.x = (color & 0x00FF0000) >> 16;
 	base.y = (color & 0x0000FF00) >> 8;
 	base.z = (color & 0x000000FF);
-	base.x = base.x - base.x % 30;
-	base.y = base.y - base.y % 30;
-	base.z = base.z - base.z % 30;
+	base.x = base.x - base.x % 90;
+	base.y = base.y - base.y % 90;
+	base.z = base.z - base.z % 90;
 	return (((uint)base.x << 16) + ((uint)base.y << 8) + (uint)base.z);
 }
 
@@ -2049,7 +2049,8 @@ __kernel void		ray_trace(	__global	char		*output,
 		final_color = desaturate(final_color);
 	if (scene->flag & OPTION_INVERT)
 		final_color = invert(final_color);
-
+	//if (scene->flag & OPTION_CARTOON)
+		final_color = cartoonize(final_color);
 	// ALPHA INSERT and RGB SWAP
 	int4 swap;
 	swap.w = 255;
