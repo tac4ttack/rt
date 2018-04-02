@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 15:04:13 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 19:11:58 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@
 # define OPTION_GPU				(1 << 5)
 # define OPTION_DEBUG			(1 << 6)
 # define OPTION_INVERT			(1 << 7)
-# define OPTION_CARTOON			(1 << 8)
+# define OPTION_CARTOON_FOUR	(1 << 8)
 # define OPTION_STEREO			(1 << 9)
+# define OPTION_CARTOON_TWO		(1 << 10)
 
 # define OBJ_FLAG_WAVES			(1 << 1)
 # define OBJ_FLAG_CHECKERED		(1 << 2)

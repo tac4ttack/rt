@@ -6,14 +6,30 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:23 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:00:23 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 19:17:51 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
+static void	init_gtk_cartoon(t_env *e)
+{
+	e->ui->scene_cartoon_two_radio = GTK_WIDGET(gtk_builder_get_object(\
+	e->ui->builder, "scene_cartoon_two_radio"));
+	g_signal_connect(GTK_WIDGET(e->ui->scene_cartoon_two_radio), \
+	"toggled", G_CALLBACK(cb_cartoon_two), (gpointer)e);
+	e->ui->scene_cartoon_four_radio = GTK_WIDGET(gtk_builder_get_object(\
+	e->ui->builder, "scene_cartoon_four_radio"));
+	g_signal_connect(GTK_WIDGET(e->ui->scene_cartoon_four_radio), \
+	"toggled", G_CALLBACK(cb_cartoon_four), (gpointer)e);
+}
+
 static void	init_gtk_scene_adds(t_env *e)
 {
+	e->ui->scene_depth_spin = GTK_WIDGET(gtk_builder_get_object(\
+	e->ui->builder, "scene_depth_spin"));
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_depth_spin, \
+	(gdouble)e->scene->depth);
 	e->ui->scene_supersampling_scale = GTK_WIDGET(gtk_builder_get_object(\
 	e->ui->builder, "scene_supersampling_scale"));
 	gtk_scale_add_mark(GTK_SCALE(e->ui->scene_supersampling_scale), \
@@ -58,9 +74,6 @@ void		init_gtk_scene(t_env *e)
 	e->ui->builder, "scene_ambient_blue_spin"));
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_ambient_blue_spin, \
 	(gdouble)e->scene->ambient.z);
-	e->ui->scene_depth_spin = GTK_WIDGET(gtk_builder_get_object(\
-	e->ui->builder, "scene_depth_spin"));
-	gtk_spin_button_set_value((GtkSpinButton*)e->ui->scene_depth_spin, \
-	(gdouble)e->scene->depth);
 	init_gtk_scene_adds(e);
+	init_gtk_cartoon(e);
 }

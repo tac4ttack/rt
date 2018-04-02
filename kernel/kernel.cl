@@ -20,13 +20,14 @@
 #define SPHERE scene->spheres
 #define ACTIVECAM scene->cameras[scene->active_cam]
 
-#define OPTION_WAVE 	(1 << 1)
-#define OPTION_SEPIA	(1 << 2)
-#define OPTION_BW		(1 << 3)
-#define OPTION_RUN		(1 << 4)
-#define OPTION_INVERT	(1 << 7)
-#define OPTION_CARTOON	(1 << 8)
-#define OPTION_STEREO	(1 << 9)
+#define OPTION_WAVE 		(1 << 1)
+#define OPTION_SEPIA		(1 << 2)
+#define OPTION_BW			(1 << 3)
+#define OPTION_RUN			(1 << 4)
+#define OPTION_INVERT		(1 << 7)
+#define OPTION_CARTOON_FOUR	(1 << 8)
+#define OPTION_STEREO		(1 << 9)
+#define OPTION_CARTOON_TWO	(1 << 10)
 
 #define OBJ_FLAG_WAVES			(1 << 1)
 #define OBJ_FLAG_CHECKERED		(1 << 2)
@@ -235,8 +236,6 @@ typedef	struct			s_tor
 	float				coef_tra;
 	float				opacity;
 	unsigned int		color;
-	int					check_g;  //?
-	int					check_d;  //?
 	uint				mem_index;
 	int					id;
 	int					type;
@@ -345,6 +344,70 @@ static void			print_vect(float3 v)
 /*
 ** COLOR FUNCTIONS /////////////////////////////////////////////////////////////
 */
+static unsigned int cartoonize_four(unsigned int col_r, unsigned int col_g, unsigned int col_b)
+{
+		if (col_r > 0 && col_r <= 50)
+			col_r = 32;
+		else if (col_r > 50 && col_r <= 100)
+			col_r = 96;
+		else if (col_r > 100 && col_r <= 200)
+			col_r = 160;
+		else if (col_r > 200 && col_r < 250)
+			col_r = 224;
+		else if (col_r >= 255)
+			col_r = 255;
+
+		if (col_g > 0 && col_g <= 50)
+			col_g = 32;
+		else if (col_g > 50 && col_g <= 100)
+			col_g = 96;
+		else if (col_g > 100 && col_g <= 200)
+			col_g = 160;
+		else if (col_g > 200 && col_g < 250)
+			col_g = 224;
+		else if (col_g >= 255)
+			col_g = 255;
+
+		if (col_b > 0 && col_b <= 50)
+			col_b = 32;
+		else if (col_b > 50 && col_b <= 100)
+			col_b = 96;
+		else if (col_b > 100 && col_b <= 200)
+			col_b = 160;
+		else if (col_b > 200 && col_b < 250)
+			col_b = 224;
+		else if (col_b >= 255)
+			col_b = 255;
+
+	return (((col_r << 16) + (col_g << 8) + col_b));
+}
+
+static unsigned int cartoonize_two(unsigned int col_r, unsigned int col_g, unsigned int col_b)
+{
+		if (col_r > 0 && col_r <= 128)
+			col_r = 64;
+		else if (col_r > 128 && col_r <= 255)
+			col_r = 192;
+		else if (col_r >= 255)
+			col_r = 255;
+
+		if (col_g > 0 && col_g <= 128)
+			col_g = 64;
+		else if (col_g > 128 && col_g <= 255)
+			col_g = 192;
+		else if (col_g >= 255)
+			col_g = 255;
+
+		if (col_b > 0 && col_r <= 128)
+			col_b = 64;
+		else if (col_b > 128 && col_b <= 255)
+			col_b = 192;
+		else if (col_b >= 255)
+			col_b = 255;
+
+	return (((col_r << 16) + (col_g << 8) + col_b));
+}
+
 static unsigned int	sepiarize(const unsigned int color)
 {
 	uint3	base, cooking_pot = 0;
@@ -369,19 +432,6 @@ static unsigned int	invert(const unsigned int color)
 	base.x = 255 - base.x;
 	base.y = 255 - base.y;
 	base.z = 255 - base.z;
-	return (((uint)base.x << 16) + ((uint)base.y << 8) + (uint)base.z);
-}
-
-// not working
-static unsigned int	cartoonize(const unsigned int color)
-{
-	uint3	base;
-	base.x = (color & 0x00FF0000) >> 16;
-	base.y = (color & 0x0000FF00) >> 8;
-	base.z = (color & 0x000000FF);
-	base.x = base.x - base.x % 90;
-	base.y = base.y - base.y % 90;
-	base.z = base.z - base.z % 90;
 	return (((uint)base.x << 16) + ((uint)base.y << 8) + (uint)base.z);
 }
 
@@ -1546,6 +1596,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir, light_ray.dist);
 		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON) || light_hit.opacity < 1)
 		{
+			// diffuse part
 			tmp = (dot(hit.normal, light_ray.dir));
 			if (tmp > EPSILON)
 			{
@@ -1575,12 +1626,18 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			//	col_g = (col_g > 255 ? col_g / (col_g + 1) : col_g);
 				(col_b > 255 ? col_b = 255 : 0);
 			//	col_b = (col_b > 255 ? col_b / (col_b + 1) : col_b);
-				res_color = ((col_r << 16) + (col_g << 8) + col_b);
-			}
 
+				if (scene->flag & OPTION_CARTOON_FOUR)
+					res_color = cartoonize_four(col_r, col_g, col_b);
+				else if (scene->flag & OPTION_CARTOON_TWO)
+				 	res_color = cartoonize_two(col_r, col_g, col_b);
+				else
+					res_color = ((col_r << 16) + (col_g << 8) + col_b);
+			}
+			
+			// specular part
 			reflect = fast_normalize(((float)(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
 			tmp = dot(reflect, -ray);
-			
 			if (tmp > EPSILON)
 			{
 				speculos = obj->spec;
@@ -1601,6 +1658,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			//	col_g = (col_g > 255 ? col_g / (col_g + 1) : col_g);
 				(col_b > 255 ? col_b = 255 : 0);
 			//	col_b = (col_b > 255 ? col_b / (col_b + 1) : col_b);
+				
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 			res_color = blend_factor(res_color, ((light_hit.opacity - 1) * -1));
@@ -1832,8 +1890,6 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 		tor[i].coef_ref = 0;
 		tor[i].coef_tra = 0;
 		tor[i].color = 0;
-		tor[i].check_g = 0;		// ?
-		tor[i].check_d = 0;		// ?
 		tor[i].opacity = 0;
 		tor[i].mem_index = 0;
 		tor[i].id = 0;
@@ -1863,7 +1919,6 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 		ft = 1 - fr;
 		if (fr < 1)
 		{
-			tor[i].check_g = 1;
 			if (tor[i].type != OBJ_PLANE)
 				refract = refract_ray(scene, tor[i].prim, tor[i].normale, tor[i].coef_tra);
 			else
@@ -1885,10 +1940,8 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 			}
 		}
 		else
-			tor[i].check_g = 0;
 		if ((tor[i].opacity < 1 && tor[i].coef_tra >= 1) || tor[i].coef_ref != 0)
 		{
-			tor[i].check_d = 1;
 			bounce = bounce_ray(scene, tor[i].prim, tor[i]);
 			new_hit = ray_hit(scene, tor[i].pos, bounce, 0);
 			if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
@@ -2018,7 +2071,7 @@ __kernel void		ray_trace(	__global	char		*output,
 	ev = async_work_group_copy((__local char *)mem_lights, (__global char *)global_mem_lights, mem_size_lights, 0);
 	wait_group_events(1, &ev);
 
-	int boo = get_global_id(0) + get_global_id(1);
+	// int boo = get_global_id(0) + get_global_id(1); // unused, remove?
 
 	pix.x = get_global_id(0);// % scene->win_w;
 	pix.y = get_global_id(1);// / scene->win_w;
@@ -2076,8 +2129,7 @@ __kernel void		ray_trace(	__global	char		*output,
 		final_color = desaturate(final_color);
 	if (scene->flag & OPTION_INVERT)
 		final_color = invert(final_color);
-	if (scene->flag & OPTION_CARTOON)
-		final_color = cartoonize(final_color);
+
 
 	// ALPHA INSERT and RGB SWAP
 	int4 swap;
@@ -2088,3 +2140,4 @@ __kernel void		ray_trace(	__global	char		*output,
 	final_color = ((swap.w << 24) + (swap.z << 16) + (swap.y << 8) + swap.x);
 	((__global unsigned int *)output)[id] = final_color;
 }
+

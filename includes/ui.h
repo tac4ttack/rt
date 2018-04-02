@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 12:46:49 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 19:17:44 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ typedef	struct			s_ui
 	GtkWidget			*scene_postproc_sepia_radio;
 	GtkWidget			*scene_postproc_none_radio;
 	GtkWidget			*scene_postproc_invert_check;
+	GtkWidget			*scene_cartoon_four_radio;
+	GtkWidget			*scene_cartoon_two_radio;
 	GtkWidget			*cam_list_id_label;
 	GtkWidget			*cam_list_pos_spin_x;
 	GtkWidget			*cam_list_pos_spin_y;
@@ -176,6 +178,9 @@ void					cb_cam_nav_next(GtkButton *btn, gpointer data);
 gboolean				cb_cam_pos_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_z(GtkSpinButton *spin, gpointer data);
+
+void					cb_cartoon_two(GtkToggleButton *button, gpointer data);
+void					cb_cartoon_four(GtkToggleButton *button, gpointer data);
 
 gboolean				cb_cone_angle(GtkSpinButton *spin, gpointer data);
 
