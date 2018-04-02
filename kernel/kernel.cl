@@ -2009,7 +2009,6 @@ __kernel void		ray_trace(	__global	char		*output,
 	unsigned int	final_color;
 	uint3			rgb = 0;
 
-
 	ev = async_work_group_copy((__local char *)mem_objects, (__global char *)global_mem_objects, mem_size_objects, 0);
 	wait_group_events(1, &ev);
 	ev = async_work_group_copy((__local char *)scene, (__global char *)scene_data, sizeof(t_scene), 0);
@@ -2034,6 +2033,12 @@ __kernel void		ray_trace(	__global	char		*output,
 	scene->mem_obj = mem_objects;
 	scene->mem_size_obj = mem_size_objects;
 	scene->mem_size_lights = mem_size_lights;
+	
+	scene->texture_earth = texture_earth;
+	scene->texture_moon = texture_moon;
+	scene->texture_earth_cloud = texture_earth_cloud;
+	scene->texture_star = texture_star;
+
 	if (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y)
 		*target = -1;
 	final_color = 0;

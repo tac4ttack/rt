@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/02 15:07:16 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 18:08:06 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,6 @@ static void		cl_write_buffer(t_env *e, t_cl *cl)
 
 
 
-	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[6], CL_TRUE, 0,
-							sizeof(unsigned int) * e->texture[0].width * e->texture[0].height,
-							e->texture[0].pixel_array, 0, NULL, NULL)))
-		s_error("Error: Failed to send text0 arguments to kernel!", e);
-	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[7], CL_TRUE, 0,
-							sizeof(unsigned int) * e->texture[1].width * e->texture[1].height,
-							e->texture[1].pixel_array, 0, NULL, NULL)))
-		s_error("Error: Failed to send text1 arguments to kernel!", e);
-	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[8], CL_TRUE, 0,
-							sizeof(unsigned int) * e->texture[2].width * e->texture[2].height,
-							e->texture[2].pixel_array, 0, NULL, NULL)))
-		s_error("Error: Failed to send text2 arguments to kernel!", e);
-	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[9], CL_TRUE, 0,
-							sizeof(unsigned int) * e->texture[3].width * e->texture[3].height,
-							e->texture[3].pixel_array, 0, NULL, NULL)))
-	s_error("Error: Failed to send text3 arguments to kernel!", e);
 }
 
 void			opencl_set_args(t_env *e, t_cl *cl)
