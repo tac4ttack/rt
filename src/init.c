@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/02 15:05:55 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 18:09:21 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ void		cl_init(t_env *e)
 		s_error("\x1b[2;31mError creation LIGHTS cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, sizeof(int))))
 		s_error("\x1b[2;31mError creation TARGETOBJ cl_mem failed\x1b[0m", e);
+
+
 	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[0].width * e->texture[0].height)))
 	 	s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[1].width * e->texture[1].height)))
@@ -127,7 +129,11 @@ void		cl_init(t_env *e)
 	if ((e->cl->err = clEnqueueWriteBuffer(e->cl->queue, e->cl->mem[9], CL_TRUE, 0,
 							sizeof(unsigned int) * e->texture[3].width * e->texture[3].height,
 							e->texture[3].pixel_array, 0, NULL, NULL)))
+<<<<<<< HEAD
 		s_error("Error: Failed to send text2 arguments to kernel!", e);
+=======
+	s_error("Error: Failed to send text3 arguments to kernel!", e);
+>>>>>>> 886fa93bab6e7b0402c114cfb6efc8887b956f46
 }
 
 void		init(GtkApplication *app, gpointer data)
