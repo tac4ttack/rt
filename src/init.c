@@ -111,6 +111,23 @@ void		cl_init(t_env *e)
 	 	s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[3].width * e->texture[3].height)))
 		s_error("\x1b[2;31mError creation cl_mem failed bite\x1b[0m", e);
+
+	if ((e->cl->err = clEnqueueWriteBuffer(e->cl->queue, e->cl->mem[6], CL_TRUE, 0,
+							sizeof(unsigned int) * e->texture[0].width * e->texture[0].height,
+							e->texture[0].pixel_array, 0, NULL, NULL)))
+		s_error("Error: Failed to send text0 arguments to kernel!", e);
+	if ((e->cl->err = clEnqueueWriteBuffer(e->cl->queue, e->cl->mem[7], CL_TRUE, 0,
+							sizeof(unsigned int) * e->texture[1].width * e->texture[1].height,
+							e->texture[1].pixel_array, 0, NULL, NULL)))
+		s_error("Error: Failed to send text1 arguments to kernel!", e);
+	if ((e->cl->err = clEnqueueWriteBuffer(e->cl->queue, e->cl->mem[8], CL_TRUE, 0,
+							sizeof(unsigned int) * e->texture[2].width * e->texture[2].height,
+							e->texture[2].pixel_array, 0, NULL, NULL)))
+		s_error("Error: Failed to send text2 arguments to kernel!", e);
+	if ((e->cl->err = clEnqueueWriteBuffer(e->cl->queue, e->cl->mem[9], CL_TRUE, 0,
+							sizeof(unsigned int) * e->texture[3].width * e->texture[3].height,
+							e->texture[3].pixel_array, 0, NULL, NULL)))
+		s_error("Error: Failed to send text2 arguments to kernel!", e);
 }
 
 void		init(GtkApplication *app, gpointer data)

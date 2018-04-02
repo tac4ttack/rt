@@ -1267,15 +1267,36 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, float r
 
 static float3	get_cone_normal(const __local t_cone *cone, const t_hit hit)
 {
-	float3		res = 0;
-	float3		v = 0;
-	float3		project = 0;
-	float		doty = 0;
+	float3		res;
+	float3		final;
+	float3		v;
+	float3		project;
+	float		doty;
+	float		m;
+	float		r;
+	float		k;
+	float3		dir;
 
+	dir =  fast_normalize(cone->dir);
 	v = hit.pos - cone->pos;
-	doty = dot(v, cone->dir);
-	project = doty * fast_normalize(cone->dir);
+	doty = dot(v, dir);
+	project = doty * dir;
+	m = fast_length(project);
 	res = v - project;
+	// final = res;
+	// r = fast_length(res);
+	// if (m = 0)
+	// {
+	// 	// printf("tcho");
+	// 	return (fast_normalize(res));
+	// }
+	// if (m < 0)
+	// 	m = -m;
+	// k = r / m;
+	// r = 1 + (k * k);
+	// k = r * m;
+	// final = v - (k * dir);
+	// res = v - res;
 	return (fast_normalize(res));
 }
 
@@ -1447,11 +1468,11 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	res = 0;
 	if (hit.obj->type == OBJ_SPHERE)
 	 	res = hit.pos - hit.obj->pos;
-	else if (hit.obj->type == OBJ_CYLINDER)
+	if (hit.obj->type == OBJ_CYLINDER)
 		res = get_cylinder_normal((__local t_cylinder *)hit.obj, hit);
-	else if (hit.obj->type == OBJ_CONE)
+	if (hit.obj->type == OBJ_CONE)
 		res = get_cone_normal((__local t_cone *)hit.obj, hit);
-	else if (hit.obj->type == OBJ_ELLIPSOID)
+	if (hit.obj->type == OBJ_ELLIPSOID)
 		res = get_ellipsoid_normal((__local t_ellipsoid *)hit.obj, &hit);
 //	ABORT
 //	else if (hit.obj->type == OBJ_THOR)
@@ -1929,19 +1950,19 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 			hit.pos = hit.pos + (0.001f * hit.normal);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 		
-		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-		 	hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_moon, 8192, 4096, 0, 0);
-		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
-			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color);
+		// if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+		//  	hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_moon, 8192, 4096, 0, 0);
+		// if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
+		// 	hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color);
 		
-		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = plane_texture(hit.normal, hit.pos, fast_normalize(((__local t_plane *)hit.obj)->u_axis), scene->texture_star, 1500, 1500);
-		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
-			hit.color = plane_checkerboard(hit.normal, hit.pos);
-		if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = cylinder_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cylinder *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500, ((__local t_cylinder *)hit.obj)->radius);
-		if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = cone_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cone *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500);
+		// if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+		// 	hit.color = plane_texture(hit.normal, hit.pos, fast_normalize(((__local t_plane *)hit.obj)->u_axis), scene->texture_star, 1500, 1500);
+		// if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
+		// 	hit.color = plane_checkerboard(hit.normal, hit.pos);
+		// if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+		// 	hit.color = cylinder_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cylinder *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500, ((__local t_cylinder *)hit.obj)->radius);
+		// if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+		// 	hit.color = cone_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cone *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500);
 
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
@@ -2034,6 +2055,10 @@ __kernel void		ray_trace(	__global	char		*output,
 	scene->mem_obj = mem_objects;
 	scene->mem_size_obj = mem_size_objects;
 	scene->mem_size_lights = mem_size_lights;
+	scene->texture_earth = texture_earth;
+	scene->texture_earth_cloud = texture_earth_cloud;
+	scene->texture_moon = texture_moon;
+	scene->texture_star = texture_star;
 	if (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y)
 		*target = -1;
 	final_color = 0;
