@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 21:09:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 14:54:55 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 19:36:39 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void		load_texture(t_env *e)
 	}
 	e->texture[0].width = e->raw_texture.width;
 	e->texture[0].height = e->raw_texture.height;
-	printf("%i, %i, chan : %i\n", e->texture[0].width, e->texture[0].height, e->raw_texture.n_channels);
 	while (j < e->texture[0].height)
 	{
 		i = 0;

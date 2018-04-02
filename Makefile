@@ -62,6 +62,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_cam_manager.c \
 						ui/callback/cb_cam_nav.c \
 						ui/callback/cb_cam_pos.c \
+						ui/callback/cb_cartoon_radio.c \
 						ui/callback/cb_cone_angle.c \
 						ui/callback/cb_configure_draw_area.c \
 						ui/callback/cb_cylinder_radius.c \
