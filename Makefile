@@ -58,6 +58,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/add/ui_add_torus.c \
 						ui/callback/cb_about_dialog.c \
 						ui/callback/cb_ambient_update.c \
+						ui/callback/cb_cam_dir.c \
 						ui/callback/cb_cam_fov_update.c \
 						ui/callback/cb_cam_manager.c \
 						ui/callback/cb_cam_nav.c \

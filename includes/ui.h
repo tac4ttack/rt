@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 19:48:14 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 12:08:35 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,9 @@ gboolean				cb_ambient_green_update(GtkSpinButton *spin, \
 										gpointer data);
 gboolean				cb_ambient_blue_update(GtkSpinButton *spin, \
 										gpointer data);
+gboolean				cb_cam_dir_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_cam_dir_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_cam_dir_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_fov_update(GtkSpinButton *spin, gpointer data);
 void					cb_cam_manage_add(GtkButton *btn, gpointer data);
 void					cb_cam_manage_del(GtkButton *btn, gpointer data);
