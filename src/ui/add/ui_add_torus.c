@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:37 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 19:59:38 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 17:35:27 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ui_add_torus(t_env *e)
 	torus.pos.x = 0;
 	torus.pos.y = 0;
 	torus.pos.z = 0;
+	torus.flags = 0;
 	torus.dir = torus.pos;
 	torus.dir.z = 1;
 	torus.lil_radius = 4;

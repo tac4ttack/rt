@@ -627,7 +627,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		hit.normal = get_hit_normal(scene, ray, hit);
 			hit.pos = hit.pos + (0.001f * hit.normal);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
-		if (hit.obj->type == 6)
+		if (hit.obj->type == OBJ_SPHERE)
 		{
 			if (hit.obj->pos.x == 0)
 			{
@@ -639,12 +639,12 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 			 	hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_moon, 8192, 4096, 0, 0);
 				// hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 8192, 4096, 0, 0);
 		}
-		if (hit.obj->type == 5)
+		if (hit.obj->type == OBJ_PLANE)
 			// hit.color = plane_texture(hit.normal, hit.pos, fast_normalize(((__local t_plane *)hit.obj)->u_axis), scene->texture_star, 1500, 1500);
 			hit.color = plane_checkerboard(hit.normal, hit.pos);
-		if (hit.obj->type == 4)
+		if (hit.obj->type == OBJ_CYLINDER)
 			hit.color = cylinder_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cylinder *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500, ((__local t_cylinder *)hit.obj)->radius);
-		if (hit.obj->type == 3)
+		if (hit.obj->type == OBJ_CONE)
 			hit.color = cone_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cone *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500);
 		// if (hit.obj->type != 6 && hit.obj->type != 4 && hit.obj->type != 5)
 		//  	hit.color = hit.obj->color;

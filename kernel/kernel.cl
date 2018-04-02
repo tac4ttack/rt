@@ -681,7 +681,7 @@ static float	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, f
 /*
 ** PLANES FUNCTIONS ////////////////////////////////////////////////////////////
 */
-unsigned int		plane_checkerboard(float3 normale, float3 pos)
+static unsigned int		plane_checkerboard(float3 normale, float3 pos)
 {
 	float3			u_axis;
 	float3			v_axis;
@@ -705,7 +705,7 @@ unsigned int		plane_checkerboard(float3 normale, float3 pos)
 	return (0);
 }
 
-unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, unsigned int __global *texture, int width, int height)
+static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, unsigned int __global *texture, int width, int height)
 {
 	float3			v_axis;
 	int2			uv;
@@ -743,7 +743,7 @@ static float	inter_plan(const __local t_plane *plane, const float3 ray, const fl
 /*
 ** CYLINDER FUNCTIONS //////////////////////////////////////////////////////////
 */
-unsigned int		cylinder_texture(float3 pos, float3 dir, float3 u_axis, float ratio, unsigned int __global *texture, int width, int height, float radius)
+static unsigned int		cylinder_texture(float3 pos, float3 dir, float3 u_axis, float ratio, unsigned int __global *texture, int width, int height, float radius)
 {
 	unsigned int	color = 0;
 	float3			v_axis;
@@ -1164,12 +1164,12 @@ static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 /*
 ** SPHERES FUNCTIONS ///////////////////////////////////////////////////////////
 */
-unsigned int		sphere_checkerboard(float3 pos, unsigned int color)
+static unsigned int		sphere_checkerboard(float3 dir, unsigned int color)
 {
 	int2	uv;
 
-	uv.x = (int)floor((0.5 + (atan2(pos.z, pos.x) / (2 * 3.1415))) * 20);
-	uv.y = (int)floor((0.5 - (asin(pos.y) / 3.1415)) * 10);
+	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415))) * 20);
+	uv.y = (int)floor((0.5 - (asin(dir.y) / 3.1415)) * 10);
 	if (uv.x % 2 == 0)
 	{
 		if (uv.y % 2 == 0)
@@ -1182,7 +1182,7 @@ unsigned int		sphere_checkerboard(float3 pos, unsigned int color)
 	return (0);
 }
 
-unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, int width, int height, int i, float u_time)
+static unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, int width, int height, int i, float u_time)
 {
 	unsigned int	color = 0;
 	int2			uv;
@@ -1240,7 +1240,7 @@ static float	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 /*
 ** CONES FUNCTIONS /////////////////////////////////////////////////////////////
 */
-unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, float ratio, unsigned int __global *texture, int width, int height)
+static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, float ratio, unsigned int __global *texture, int width, int height)
 {
 	unsigned int	color = 0;
 	float3			v_axis;
@@ -1248,6 +1248,7 @@ unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, float ratio, u
 	float			vpos;
 	float			radius;
 	int2			uv;
+	// ratio = echelle de la texture
 
 	v_axis = cross(u_axis, dir);
 	npos = dot(pos, dir);
@@ -1510,7 +1511,10 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	mem_index_lights = 0;
 
 	obj = hit.obj;
-	hue = obj->color;
+	if ((hit.obj->flags & OBJ_FLAG_CHECKERED) || hit.obj->flags & OBJ_FLAG_DIFF_MAP)
+		hue = hit.color;
+	else
+		hue = obj->color;
 
 	col_r = (hue & 0x00FF0000) >> 16;
 	col_g = (hue & 0x0000FF00) >> 8;
@@ -1924,9 +1928,26 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		hit.normal = get_hit_normal(scene, ray, hit);
 			hit.pos = hit.pos + (0.001f * hit.normal);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
+		
+		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+		 	hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_moon, 8192, 4096, 0, 0);
+		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
+			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color);
+		
+		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+			hit.color = plane_texture(hit.normal, hit.pos, fast_normalize(((__local t_plane *)hit.obj)->u_axis), scene->texture_star, 1500, 1500);
+		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
+			hit.color = plane_checkerboard(hit.normal, hit.pos);
+		if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+			hit.color = cylinder_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cylinder *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500, ((__local t_cylinder *)hit.obj)->radius);
+		if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+			hit.color = cone_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cone *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500);
+
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
 			return (fresnel(scene, ray, hit, depth, color));
+
+		// c'est quoi ce bloc commenté en dessous?
 		/*else if (hit.obj->refract != 0 && hit.obj->opacity < 1)
 		{
 			bounce_color = refract(scene, ray, hit);
@@ -1936,6 +1957,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		}
 		else if (depth > 0 && hit.obj->reflex > 0)
 			bounce_color = bounce(scene, ray, hit, depth);*/
+		
 		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
@@ -2049,8 +2071,9 @@ __kernel void		ray_trace(	__global	char		*output,
 		final_color = desaturate(final_color);
 	if (scene->flag & OPTION_INVERT)
 		final_color = invert(final_color);
-	//if (scene->flag & OPTION_CARTOON)
+	if (scene->flag & OPTION_CARTOON)
 		final_color = cartoonize(final_color);
+
 	// ALPHA INSERT and RGB SWAP
 	int4 swap;
 	swap.w = 255;

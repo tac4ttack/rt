@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:59 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 19:59:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 17:34:43 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ui_add_cone(t_env *e)
 	cone.pos.x = 0;
 	cone.pos.y = 0;
 	cone.pos.z = 0;
+	cone.flags = 0;
 	cone.dir = cone.pos;
 	cone.dir.z = 1;
 	cone.angle = 4;
