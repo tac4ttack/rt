@@ -129,11 +129,7 @@ void		cl_init(t_env *e)
 	if ((e->cl->err = clEnqueueWriteBuffer(e->cl->queue, e->cl->mem[9], CL_TRUE, 0,
 							sizeof(unsigned int) * e->texture[3].width * e->texture[3].height,
 							e->texture[3].pixel_array, 0, NULL, NULL)))
-<<<<<<< HEAD
-		s_error("Error: Failed to send text2 arguments to kernel!", e);
-=======
-	s_error("Error: Failed to send text3 arguments to kernel!", e);
->>>>>>> 886fa93bab6e7b0402c114cfb6efc8887b956f46
+		s_error("Error: Failed to send text3 arguments to kernel!", e);
 }
 
 void		init(GtkApplication *app, gpointer data)

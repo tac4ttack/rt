@@ -846,171 +846,171 @@ static float	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray
 /*
 ** TORUS FUNCTIONS /////////////////////////////////////////////////////////////
 */
-// static double	ft_max(double u, double v)
-// {
-// 	if (u >= v)
-// 		return (u);
-// 	return (v);
-// }
+/* static double	ft_max(double u, double v)
+{
+	if (u >= v)
+		return (u);
+	return (v);
+}
 
-// static double	ft_ret(double4 tab)
-// {
-// 	double		ret;
-// 	int			i;
+static double	ft_ret(double4 tab)
+{
+	double		ret;
+	int			i;
 	
-// 	ret = -1.0;
-// 	i = 0;
-// 	while(i < 4)
-// 	{
-// 		if(tab[i] > 0.0001 && ret == -1)
-// 			ret = tab[i];
-// 		if (tab[i] < ret && tab[i] > 0.0001 )
-// 			ret = tab[i];
-// 		i++;
-// 	}
-// 	if (ret == -1.0)
-// 		ret = 0.0;
-// 	return (ret);
-// }
+	ret = -1.0;
+	i = 0;
+	while(i < 4)
+	{
+		if(tab[i] > 0.0001 && ret == -1)
+			ret = tab[i];
+		if (tab[i] < ret && tab[i] > 0.0001 )
+			ret = tab[i];
+		i++;
+	}
+	if (ret == -1.0)
+		ret = 0.0;
+	return (ret);
+}
 
-// static double3	ft_solve_3(double a, double b, double c, double d)
-// {
-// 	double3 result;
+static double3	ft_solve_3(double a, double b, double c, double d)
+{
+	double3 result;
 	
-// 	double3 abc;
-// 	abc.x = c / d;
-// 	abc.y = b / d;
-// 	abc.z = a / d;
+	double3 abc;
+	abc.x = c / d;
+	abc.y = b / d;
+	abc.z = a / d;
 	
-// 	double r = (2.0f * abc.x * abc.x * abc.x - 9.0f * abc.x * abc.y + 27.0f * abc.z) / 54.0f;
-// 	double q = (abc.x * abc.x - 3.0f * abc.y) / 9.0f;
-// 	double qcube = q * q * q;
-// 	double theta;
-// 	double sqrtq;
-// 	double e;
+	double r = (2.0f * abc.x * abc.x * abc.x - 9.0f * abc.x * abc.y + 27.0f * abc.z) / 54.0f;
+	double q = (abc.x * abc.x - 3.0f * abc.y) / 9.0f;
+	double qcube = q * q * q;
+	double theta;
+	double sqrtq;
+	double e;
 	
-// 	d = qcube - r * r;
-// 	if (d >= 0.0001f)
-// 	{	
-// 		if (q < 0.0f)
-// 		{
-// 			result.x = 0.0f;
-// 			result.y = 0.0f;
-// 			result.z = 0.0f;
-// 			return (result);
-// 		}
-// 		theta = acos(r / sqrt(qcube));
-// 		sqrtq = sqrt(q);
-// 		result.x = -2.0f * sqrtq * cos(theta / 3.0f) - abc.x / 3.0f;
-// 		result.y = -2.0f * sqrtq * cos((theta + 2.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
-// 		result.z = -2.0f * sqrtq * cos((theta + 4.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
-// 	}
-// 	else
-// 	{	
-// 		e = pow(sqrt((double)-d) + fabs((double)r), (double)(1.0f / 3.0f));		
-// 		if (r > 0.0001f)
-// 			e = -e;
-// 		result.x = result.y = result.z = (e + q / e) - abc.x / 3.0f;
-// 	}
-// 	return (result);
-// }
+	d = qcube - r * r;
+	if (d >= 0.0001f)
+	{	
+		if (q < 0.0f)
+		{
+			result.x = 0.0f;
+			result.y = 0.0f;
+			result.z = 0.0f;
+			return (result);
+		}
+		theta = acos(r / sqrt(qcube));
+		sqrtq = sqrt(q);
+		result.x = -2.0f * sqrtq * cos(theta / 3.0f) - abc.x / 3.0f;
+		result.y = -2.0f * sqrtq * cos((theta + 2.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
+		result.z = -2.0f * sqrtq * cos((theta + 4.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
+	}
+	else
+	{	
+		e = pow(sqrt((double)-d) + fabs((double)r), (double)(1.0f / 3.0f));		
+		if (r > 0.0001f)
+			e = -e;
+		result.x = result.y = result.z = (e + q / e) - abc.x / 3.0f;
+	}
+	return (result);
+}
 
-// static double	ft_solve_4(double4 t, double wut)
-// {
-// 	double4 res;
+static double	ft_solve_4(double4 t, double wut)
+{
+	double4 res;
 
-// 	double4 a;
-// 	a.w = t.w / wut;
-// 	a.x = t.x / wut;
-// 	a.y = t.y / wut;
-// 	a.z = t.z / wut;
+	double4 a;
+	a.w = t.w / wut;
+	a.x = t.x / wut;
+	a.y = t.y / wut;
+	a.z = t.z / wut;
 
-// 	double3 b;
-// 	b.x = 4.0f * a.y * a.w - a.x * a.x - a.z * a.z * a.w;
-// 	b.y = a.x * a.z - 4.0f * a.w;
-// 	b.z = -a.y;
+	double3 b;
+	b.x = 4.0f * a.y * a.w - a.x * a.x - a.z * a.z * a.w;
+	b.y = a.x * a.z - 4.0f * a.w;
+	b.z = -a.y;
 
-// 	double3 roots;
-// 	roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
+	double3 roots;
+	roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
 
-// 	double rsqrt;
-// 	double rrec;
-// 	double d;	
-// 	double e;
-// 	double y = ft_max(roots.x, ft_max(roots.y, roots.z));
-// 	double r = 0.25f * a.z * a.z - a.y + y;	
+	double rsqrt;
+	double rrec;
+	double d;	
+	double e;
+	double y = ft_max(roots.x, ft_max(roots.y, roots.z));
+	double r = 0.25f * a.z * a.z - a.y + y;	
 
-// 	if (r < 0.0001f)
-// 		return (0.0f);
-// 	r = sqrt(r);
-// 	if (r == 0.0001f)
-// 	{
-// 		d = sqrt(0.75f * a.z * a.z - 2.0f * a.y + 2.0f * sqrt(y * y - 4.0f * a.w));
-// 		e = sqrt(0.75f * a.z * a.z - 2.0f * a.y - 2.0f * sqrt(y * y - 4.0f * a.w));
-// 	}
-// 	else
-// 	{
-// 		rsqrt = r * r;
-// 		rrec = 1.0f / r;
-// 		d = sqrt(0.75f * a.z * a.z - rsqrt - 2.0f * a.y + 0.25f * rrec * (4.0f * a.z * a.y - 8.0f * a.x - a.z * a.z * a.z));
-// 		e = sqrt(0.75f * a.z * a.z - rsqrt - 2.0f * a.y - 0.25f * rrec * (4.0f * a.z * a.y - 8.0f * a.x - a.z * a.z * a.z));
-// 	}
+	if (r < 0.0001f)
+		return (0.0f);
+	r = sqrt(r);
+	if (r == 0.0001f)
+	{
+		d = sqrt(0.75f * a.z * a.z - 2.0f * a.y + 2.0f * sqrt(y * y - 4.0f * a.w));
+		e = sqrt(0.75f * a.z * a.z - 2.0f * a.y - 2.0f * sqrt(y * y - 4.0f * a.w));
+	}
+	else
+	{
+		rsqrt = r * r;
+		rrec = 1.0f / r;
+		d = sqrt(0.75f * a.z * a.z - rsqrt - 2.0f * a.y + 0.25f * rrec * (4.0f * a.z * a.y - 8.0f * a.x - a.z * a.z * a.z));
+		e = sqrt(0.75f * a.z * a.z - rsqrt - 2.0f * a.y - 0.25f * rrec * (4.0f * a.z * a.y - 8.0f * a.x - a.z * a.z * a.z));
+	}
 
-// 	res.w = -0.25f * a.z + 0.5f * r + 0.5f * d;
-// 	res.x = -0.25f * a.z + 0.5f * r - 0.5f * d;
-// 	res.y = -0.25f * a.z - 0.5f * r + 0.5f * e;
-// 	res.z = -0.25f * a.z - 0.5f * r - 0.5f * e;
+	res.w = -0.25f * a.z + 0.5f * r + 0.5f * d;
+	res.x = -0.25f * a.z + 0.5f * r - 0.5f * d;
+	res.y = -0.25f * a.z - 0.5f * r + 0.5f * e;
+	res.z = -0.25f * a.z - 0.5f * r - 0.5f * e;
 
-// 	return(ft_ret(res));
-// }
+	return(ft_ret(res));
+}
 
-// static float		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
-// {
-// 	double8 z;
-// 	double4	res;
-// 	double3	q;
-// 	float	dist;
+static float		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
+{
+	double8 z;
+	double4	res;
+	double3	q;
+	float	dist;
 
-// 	double3	double_ray_origin;
-// 	double_ray_origin.x = (double)origin.x;
-// 	double_ray_origin.y = (double)origin.y;
-// 	double_ray_origin.z = (double)origin.z;
-// 	double3 double_ray_dir;
-// 	double_ray_dir.x = (double)ray.x;
-// 	double_ray_dir.y = (double)ray.y;
-// 	double_ray_dir.z = (double)ray.z;
+	double3	double_ray_origin;
+	double_ray_origin.x = (double)origin.x;
+	double_ray_origin.y = (double)origin.y;
+	double_ray_origin.z = (double)origin.z;
+	double3 double_ray_dir;
+	double_ray_dir.x = (double)ray.x;
+	double_ray_dir.y = (double)ray.y;
+	double_ray_dir.z = (double)ray.z;
 
-// 	double3 double_thor_dir;
-// 	double_thor_dir.x = (double)thor->dir.x;
-// 	double_thor_dir.y = (double)thor->dir.y;
-// 	double_thor_dir.z = (double)thor->dir.z;
-// 	double3 double_thor_pos;
-// 	double_thor_pos.x = (double)thor->pos.x;
-// 	double_thor_pos.y = (double)thor->pos.y;
-// 	double_thor_pos.z = (double)thor->pos.z;
+	double3 double_thor_dir;
+	double_thor_dir.x = (double)thor->dir.x;
+	double_thor_dir.y = (double)thor->dir.y;
+	double_thor_dir.z = (double)thor->dir.z;
+	double3 double_thor_pos;
+	double_thor_pos.x = (double)thor->pos.x;
+	double_thor_pos.y = (double)thor->pos.y;
+	double_thor_pos.z = (double)thor->pos.z;
 
-// 	q = double_ray_origin - double_thor_pos;
+	q = double_ray_origin - double_thor_pos;
 
-// 	z.s0 = dot(double_thor_dir, q);
-// 	z.s1 = dot(double_thor_dir, double_ray_dir);
-// 	z.s2 = 1. - pow(z.s1, 2.);
-// 	z.s3 = 2. * (dot(q, double_ray_dir) - z.s0 * z.s1);
-// 	z.s4 = dot(q, q) - pow(z.s0, 2.);
-// 	z.s5 = dot(q, q) + pow((double)thor->big_radius, 2.) - pow((double)thor->lil_radius, 2.);
+	z.s0 = dot(double_thor_dir, q);
+	z.s1 = dot(double_thor_dir, double_ray_dir);
+	z.s2 = 1. - pow(z.s1, 2.);
+	z.s3 = 2. * (dot(q, double_ray_dir) - z.s0 * z.s1);
+	z.s4 = dot(q, q) - pow(z.s0, 2.);
+	z.s5 = dot(q, q) + pow((double)thor->big_radius, 2.) - pow((double)thor->lil_radius, 2.);
 
-// 	res.w = 4. * dot(q, double_ray_dir);
-// 	res.x = 2. * z.s5 + pow(res.w, 2.) / 4. - 4. * pow((double)thor->big_radius, 2.) * z.s2;
-// 	res.y = res.w * z.s5 - 4. * pow((double)thor->big_radius, 2.) * z.s3;
-// 	res.z = pow(z.s5, 2.) - 4. * pow((double)thor->big_radius, 2.) * z.s4 + 1e-3;
+	res.w = 4. * dot(q, double_ray_dir);
+	res.x = 2. * z.s5 + pow(res.w, 2.) / 4. - 4. * pow((double)thor->big_radius, 2.) * z.s2;
+	res.y = res.w * z.s5 - 4. * pow((double)thor->big_radius, 2.) * z.s3;
+	res.z = pow(z.s5, 2.) - 4. * pow((double)thor->big_radius, 2.) * z.s4 + 1e-3;
 	
-// 	double wut = double_ray_dir.x * double_ray_dir.x + double_ray_dir.y * double_ray_dir.y + double_ray_dir.z * double_ray_dir.z;
+	double wut = double_ray_dir.x * double_ray_dir.x + double_ray_dir.y * double_ray_dir.y + double_ray_dir.z * double_ray_dir.z;
 	
-// 	dist = (float)ft_solve_4(res, wut);
-// 	return (dist);
-// }
+	dist = (float)ft_solve_4(res, wut);
+	return (dist);
+}
 
 
-// BACKUP
+BACKUP*/
 static float	ft_max(float u, float v)
 {
 	if (u >= v)
@@ -1182,23 +1182,18 @@ static unsigned int		sphere_checkerboard(float3 dir, unsigned int color)
 	return (0);
 }
 
-static unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, int width, int height, int i, float u_time)
+static unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, int t_width, int t_height, int w_ratio, int h_ratio, int decx, int decy)
 {
 	unsigned int	color = 0;
 	int2			uv;
 
-	uv.x = (int)floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * width);
-	uv.y = (int)floor((0.5 - (asin(pos.y) / M_PI)) * height);
-	uv.y = (uv.y - height) * -1;
-	if (i == 1)					//deplacement gauche / droite
-		uv.x += u_time * 100;
-	if (i == 2)
-		uv.x += u_time * 200;
-	if (uv.x > width)
-		uv.x -= width;
-	// if ((uv.y += decy) > height) deplacement haut / bas
-	// 	uv.y -= height;
-	color = texture[uv.x + uv.y * width];
+	uv.x = (int)floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * w_ratio);
+	uv.y = (int)floor((0.5 - (asin(pos.y) / M_PI)) * h_ratio);
+	uv.y = (uv.y - h_ratio) * -1;
+	 //deplacement gauche / droite
+	uv.x = (uv.x + decx) % t_width;
+	uv.y = (uv.y + decy) % t_height; //deplacement haut / bas
+	color = texture[uv.x + uv.y * t_width];
 	return (color);
 }
 
@@ -1283,21 +1278,20 @@ static float3	get_cone_normal(const __local t_cone *cone, const t_hit hit)
 	project = doty * dir;
 	m = fast_length(project);
 	res = v - project;
-	// final = res;
+	final = res;
+
+	//  ABORT DAMNED
 	// r = fast_length(res);
-	// if (m = 0)
-	// {
-	// 	// printf("tcho");
-	// 	return (fast_normalize(res));
-	// }
 	// if (m < 0)
 	// 	m = -m;
 	// k = r / m;
-	// r = 1 + (k * k);
-	// k = r * m;
-	// final = v - (k * dir);
+	// k = m * k * k;
+	// dir = k * dir;
+	// final.x = v.x - dir.x;
+	// final.y = v.y - dir.y;
+	// final.z = v.z - dir.z;
 	// res = v - res;
-	return (fast_normalize(res));
+	return (fast_normalize(final));
 }
 
 static float3	get_cone_abc(const __local t_cone *cone, const float3 ray, const float3 origin)
@@ -1950,19 +1944,24 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 			hit.pos = hit.pos + (0.001f * hit.normal);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 		
-		// if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-		//  	hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_moon, 8192, 4096, 0, 0);
-		// if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
-		// 	hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color);
+		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+		{
+			if (hit.obj->pos.x == -10)
+		 		hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, 2500, 1200, 0, 0);
+			else
+				hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4096, 2048, 4096, 2048, 0, 0);
+		}
+		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
+			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color);
 		
-		// if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-		// 	hit.color = plane_texture(hit.normal, hit.pos, fast_normalize(((__local t_plane *)hit.obj)->u_axis), scene->texture_star, 1500, 1500);
-		// if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
-		// 	hit.color = plane_checkerboard(hit.normal, hit.pos);
-		// if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-		// 	hit.color = cylinder_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cylinder *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500, ((__local t_cylinder *)hit.obj)->radius);
-		// if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-		// 	hit.color = cone_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cone *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500);
+		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+			hit.color = plane_texture(hit.normal, hit.pos, fast_normalize(((__local t_plane *)hit.obj)->u_axis), scene->texture_star, 1500, 1500);
+		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
+			hit.color = plane_checkerboard(hit.normal, hit.pos);
+		if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+			hit.color = cylinder_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cylinder *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500, ((__local t_cylinder *)hit.obj)->radius);
+		if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+			hit.color = cone_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cone *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500);
 
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
@@ -2054,19 +2053,12 @@ __kernel void		ray_trace(	__global	char		*output,
 	scene->mem_obj = mem_objects;
 	scene->mem_size_obj = mem_size_objects;
 	scene->mem_size_lights = mem_size_lights;
-<<<<<<< HEAD
-	scene->texture_earth = texture_earth;
-	scene->texture_earth_cloud = texture_earth_cloud;
-	scene->texture_moon = texture_moon;
-	scene->texture_star = texture_star;
-=======
 	
 	scene->texture_earth = texture_earth;
 	scene->texture_moon = texture_moon;
 	scene->texture_earth_cloud = texture_earth_cloud;
 	scene->texture_star = texture_star;
 
->>>>>>> 886fa93bab6e7b0402c114cfb6efc8887b956f46
 	if (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y)
 		*target = -1;
 	final_color = 0;
