@@ -6,15 +6,15 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:37 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 19:48:31 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 12:14:30 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void		cb_obj_diff_check(GtkButton *btn, gpointer data)
+void			cb_obj_diff_check(GtkButton *btn, gpointer data)
 {
-	t_env 		*e;
+	t_env		*e;
 	t_object	*obj;
 
 	(void)btn;
@@ -25,4 +25,3 @@ void		cb_obj_diff_check(GtkButton *btn, gpointer data)
 	else
 		obj->flags |= OBJ_FLAG_DIFF_MAP;
 }
-

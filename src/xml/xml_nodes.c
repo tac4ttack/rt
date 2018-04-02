@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 17:29:41 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 12:22:16 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,17 @@ int					xml_check_node_format(char **node, int mod)
 	cl_int2			i;
 
 	i.x = 0;
-	i.y = 0;
+	i.y = 6;
 	if (node)
 	{
-		i.y = (mod == 0 ? 6 : i.y);
 		i.y = (mod == 1 ? 9 : i.y);
-		i.y = (mod == 2 ? 22 : i.y);
-		i.y = (mod == 3 ? 23 : i.y);
 		i.y = (mod == 4 ? 15 : i.y);
-		i.y = (mod == 5 ? 22 : i.y);
-		i.y = (mod == 6 ? 22 : i.y);
-		i.y = (mod == 7 ? 25 : i.y);
-		i.y = (mod == 8 ? 23 : i.y);
-		i.y = (mod == 9 ? 23 : i.y);
 		i.y = (mod == 10 ? 27 : i.y);
+		i.y = (mod == 7 ? 25 : i.y);
+		if (mod == 2 || mod == 5 || mod == 6)
+			i.y = 22;
+		if (mod == 3 || mod == 8 || mod == 9)
+			i.y = 23;
 		while (i.x <= i.y)
 		{
 			if (i.x == i.y && node[i.x] != NULL)
@@ -72,6 +69,27 @@ void				xml_node_generic(t_env *e, char *node, char mod)
 	free(tmp);
 }
 
+static void			xml_process_node_obj(t_env *e, char *node)
+{
+	if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "cone") == 0)
+		xml_node_cone(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "cylinder") == 0)
+		xml_node_cylinder(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "plane") == 0)
+		xml_node_plane(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "sphere") == 0)
+		xml_node_sphere(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "ellipsoid") == 0)
+		xml_node_ellipsoid(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "torus") == 0)
+		xml_node_torus(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "box") == 0)
+		xml_node_box(e, node);
+	else
+		s_error("\x1b[1;31mError wrong node type\x1b[0m", e);
+	xml_node_clean(XMLSUB);
+}
+
 void				xml_process_node(t_env *e, char *node)
 {
 	if (!(XMLSUB = ft_strsplit(node, ' ')) || xml_check_attr(e, XMLSUB) != 0)
@@ -86,25 +104,10 @@ void				xml_process_node(t_env *e, char *node)
 		xml_node_scene(e, node, 1);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "cam") == 0)
 		xml_node_cam(e, node);
-	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "cone") == 0)
-		xml_node_cone(e, node);
-	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "cylinder") == 0)
-		xml_node_cylinder(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "light") == 0)
 		xml_node_light(e, node);
-	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "plane") == 0)
-		xml_node_plane(e, node);
-	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "sphere") == 0)
-		xml_node_sphere(e, node);
-	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "ellipsoid") == 0)
-		xml_node_ellipsoid(e, node);
-	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "torus") == 0)
-		xml_node_torus(e, node);
-	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "box") == 0)
-		xml_node_box(e, node);
 	else
-		s_error("\x1b[1;31mError wrong node type\x1b[0m", e);
-	xml_node_clean(XMLSUB);
+		xml_process_node_obj(e, node);
 }
 
 void				xml_parse_nodes(t_env *e)

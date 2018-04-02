@@ -298,7 +298,9 @@ static t_hit	hit_init(void)
 
 	hit.dist = 0.f;
 	hit.normal = 0.f;
-	hit.obj = 0;
+	
+	hit.obj = -1;
+	
 	hit.pos = 0.f;
 	hit.mem_index = 0;
 	hit.opacity = 0;
