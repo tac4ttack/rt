@@ -122,6 +122,7 @@ typedef struct			s_cone
 	float				opacity;
 
 	float				angle;
+	float3				u_axis;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -142,6 +143,7 @@ typedef struct			s_cylinder
 	float				height;
 	float3				base_dir;
 	float				radius;
+	float3				u_axis;
 }						t_cylinder;
 
 typedef struct			s_plane
@@ -160,6 +162,7 @@ typedef struct			s_plane
 	float				opacity;
 
 	float				radius;
+	float3				u_axis;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -232,8 +235,8 @@ typedef	struct			s_tor
 	float				coef_tra;
 	float				opacity;
 	unsigned int		color;
-	int					check_g;
-	int					check_d;
+	int					check_g;  //?
+	int					check_d;  //?
 	uint				mem_index;
 	int					id;
 	int					type;
@@ -257,6 +260,7 @@ typedef struct			s_hit
 	t_object __local	*obj;
 	int					mem_index;
 	float				opacity;
+	unsigned int		color;
 }						t_hit;
 
 typedef struct			s_tex
@@ -312,6 +316,7 @@ static t_hit	hit_init(void)
 	
 	hit.obj = -1; // dangling dangerouss!
 	
+	hit.color = 0;
 	hit.pos = 0.f;
 	hit.mem_index = 0;
 	hit.opacity = 0;
@@ -676,6 +681,48 @@ static float	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, f
 /*
 ** PLANES FUNCTIONS ////////////////////////////////////////////////////////////
 */
+unsigned int		plane_checkerboard(float3 normale, float3 pos)
+{
+	float3			u_axis;
+	float3			v_axis;
+	int2			uv;
+
+	u_axis.x = normale.y;
+	u_axis.y = normale.z;
+	u_axis.z = -normale.x;
+	v_axis = cross(u_axis, normale);
+	uv.x = (int)floor(dot(pos, u_axis) / 4);
+	uv.y = (int)floor(dot(pos, v_axis) / 4);
+	if (uv.x % 2 == 0)
+	{
+		if (uv.y % 2 == 0)
+			return (0);
+		else
+			return (0x00FFFFFF);
+	}
+	else if (uv.y % 2 == 0)
+		return (0x00FFFFFF);
+	return (0);
+}
+
+unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, unsigned int __global *texture, int width, int height)
+{
+	float3			v_axis;
+	int2			uv;
+
+	v_axis = cross(u_axis, normale);
+	uv.x = (int)floor(dot(pos, u_axis) * 10 /* + decalage */);// * le ratio
+	uv.y = (int)floor(dot(pos, v_axis) * 10 /* + decalage */);// idem
+	uv.x %= width;
+	uv.y %= height;
+	if (uv.x < 0)
+		uv.x += width;
+	if (uv.y < 0)
+		uv.y += height;
+	uv.y = (uv.y - 1500) * -1;
+	return (texture[uv.y + uv.x * width]);
+}
+
 static float	inter_plan(const __local t_plane *plane, const float3 ray, const float3 origin)
 {
 	float		t;
@@ -696,6 +743,33 @@ static float	inter_plan(const __local t_plane *plane, const float3 ray, const fl
 /*
 ** CYLINDER FUNCTIONS //////////////////////////////////////////////////////////
 */
+unsigned int		cylinder_texture(float3 pos, float3 dir, float3 u_axis, float ratio, unsigned int __global *texture, int width, int height, float radius)
+{
+	unsigned int	color = 0;
+	float3			v_axis;
+	float			npos;
+	float			vpos;
+	int2			uv;
+
+	v_axis = cross(u_axis, dir);
+	npos = fast_length(dot(pos, dir) * dir);
+	while (npos > ratio)
+		npos -= ratio;
+	if (dot(pos, dir) < 0)
+		npos = (npos - ratio) * -1;
+	uv.y = (int)floor((npos / ratio) * height);
+	npos = dot(pos, u_axis);
+	vpos = dot(pos, v_axis);
+	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * width);
+	// uv.y = (uv.y - height) * -1;
+	// if ((uv.x += decx) > width)   Decalage;
+	// 	uv.x -= width;
+	// if ((uv.y += decy) > height)
+	// 	uv.y -= height;
+	color = (unsigned int)texture[uv.x + (uv.y * width)];
+	return (color);
+}
+
 static float3	get_cylinder_abc(const float radius, const float3 dir, const float3 ray, const float3 origin)
 {
 	float3		abc;
@@ -1090,6 +1164,44 @@ static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 /*
 ** SPHERES FUNCTIONS ///////////////////////////////////////////////////////////
 */
+unsigned int		sphere_checkerboard(float3 pos, unsigned int color)
+{
+	int2	uv;
+
+	uv.x = (int)floor((0.5 + (atan2(pos.z, pos.x) / (2 * 3.1415))) * 20);
+	uv.y = (int)floor((0.5 - (asin(pos.y) / 3.1415)) * 10);
+	if (uv.x % 2 == 0)
+	{
+		if (uv.y % 2 == 0)
+			return (0);
+		else
+			return (color);
+	}
+	else if (uv.y % 2 == 0)
+			return (color);
+	return (0);
+}
+
+unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, int width, int height, int i, float u_time)
+{
+	unsigned int	color = 0;
+	int2			uv;
+
+	uv.x = (int)floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * width);
+	uv.y = (int)floor((0.5 - (asin(pos.y) / M_PI)) * height);
+	uv.y = (uv.y - height) * -1;
+	if (i == 1)					//deplacement gauche / droite
+		uv.x += u_time * 100;
+	if (i == 2)
+		uv.x += u_time * 200;
+	if (uv.x > width)
+		uv.x -= width;
+	// if ((uv.y += decy) > height) deplacement haut / bas
+	// 	uv.y -= height;
+	color = texture[uv.x + uv.y * width];
+	return (color);
+}
+
 static float3	get_sphere_abc(const float radius, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
@@ -1128,6 +1240,30 @@ static float	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 /*
 ** CONES FUNCTIONS /////////////////////////////////////////////////////////////
 */
+unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, float ratio, unsigned int __global *texture, int width, int height)
+{
+	unsigned int	color = 0;
+	float3			v_axis;
+	float			npos;
+	float			vpos;
+	float			radius;
+	int2			uv;
+
+	v_axis = cross(u_axis, dir);
+	npos = dot(pos, dir);
+	radius = fast_length(pos - (npos * dir));
+	while (npos > ratio)
+		npos -= ratio;
+	while (npos < 0)
+		npos += ratio;
+	uv.y = (int)floor((fast_length(npos * dir) / ratio) * height);
+	npos = dot(pos, u_axis);
+	vpos = dot(pos, v_axis);
+	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * width);
+	color = (unsigned int)texture[uv.x + (uv.y * width)];
+	return (color);
+}
+
 static float3	get_cone_normal(const __local t_cone *cone, const t_hit hit)
 {
 	float3		res = 0;
@@ -1346,29 +1482,32 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3 ray)
 {
 	t_object __local		*obj;
-	t_light __local		*light;
-	uint				mem_index_lights;
+	t_light __local			*light;
+	uint					mem_index_lights;
 
-	unsigned int		res_color;
-	float				tmp;
-	float3				reflect;
-	float3 __private	diffuse;
-	float __private	brightness;
-	int __private hue;
-	int __private hue_light;
-	unsigned int __private col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g;
-	t_light_ray			light_ray;
+	unsigned int			res_color;
+	float					tmp;
+	float3					reflect;
+	float3 __private		diffuse;
+	float __private			brightness;
+	unsigned int __private 	hue;
+	unsigned int __private	hue_light;
+	unsigned int __private 	col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g;
+	t_light_ray				light_ray;
 	t_hit					light_hit;
-	float __private pow_of_spec;
-	int __private light_color;
-	float3 __private speculos;
+	float __private 		pow_of_spec;
+	int __private 			light_color;
+	float3 __private 		speculos;
 
 	tmp = 0;
 	reflect = 0;
 	diffuse = 0;
 	brightness = 0;
-	hue = 0;
 	hue_light = 0;
+	pow_of_spec = 0;
+	light_color = 0;
+	speculos = 0;
+	mem_index_lights = 0;
 
 	obj = hit.obj;
 	hue = obj->color;
@@ -1380,6 +1519,8 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
 	col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
+	
+	// RESET NON UTILE?
 	col_r = 0;
 	col_g = 0;
 	col_b = 0;
@@ -1389,15 +1530,12 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	l_r = 0;
 	l_g = 0;
 	l_b = 0;
-	pow_of_spec = 0;
-	light_color = 0;
-	speculos = 0;
-	mem_index_lights = 0;
+	//
+	
 	while (mem_index_lights < scene->mem_size_lights)
 	{
-		light = scene->mem_lights + mem_index_lights;
-
 		tmp = 0;
+		light = scene->mem_lights + mem_index_lights;		
 		light_ray.dir = light->pos - hit.pos;
 		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
@@ -1409,7 +1547,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			{
 				brightness = (float __private)light->brightness;
 				diffuse = (float3 __private)obj->diff;
-				hue = (int __private)obj->color;
+				// hue = (int __private)obj->color; // marqué comme inutile dans branch texturegtk
 				hue_light = light->color;
 
 				col_r = (res_color & 0xFF0000) >> 16;
@@ -1425,6 +1563,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				col_r += ((l_r * brightness) + obj_r) * tmp * diffuse.x;
 				col_g += ((l_g * brightness) + obj_g) * tmp * diffuse.y;
 				col_b += ((l_b * brightness) + obj_b) * tmp * diffuse.z;
+
 				(col_r > 255 ? col_r = 255 : 0);
 				// commented lines are failed tonemaping test
 			//	col_r = (col_r > 255 ? col_r / (col_r + 1) : col_r);
@@ -1434,8 +1573,10 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			//	col_b = (col_b > 255 ? col_b / (col_b + 1) : col_b);
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
+
 			reflect = fast_normalize(((float)(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
 			tmp = dot(reflect, -ray);
+			
 			if (tmp > EPSILON)
 			{
 				speculos = obj->spec;
@@ -1445,9 +1586,11 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 
 				pow_of_spec = native_powr(tmp, (light->shrink));
 				light_color = light->color;
+
 				col_r += (((light_color & 0xFF0000) >> 16) * pow_of_spec) * speculos.x;
 				col_g += ((light_color & 0x00FF00) >> 8) * pow_of_spec * speculos.y;
 				col_b += (light_color & 0x0000FF) * pow_of_spec * speculos.z;
+
 				(col_r > 255 ? col_r = 255 : 0);
 			//	col_r = (col_r > 255 ? col_r / (col_r + 1) : col_r);
 				(col_g > 255 ? col_g = 255 : 0);
@@ -1530,7 +1673,7 @@ static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_h
 			new_hit.pos = (new_hit.dist * refract) + old_hit.pos;
 			new_hit.normal = get_hit_normal(scene, refract, new_hit);
 			if (new_hit.mem_index != old_hit.mem_index && new_hit.obj->refract != 0 && new_hit.obj->opacity < 1)
-				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000) * -new_hit.normal);//pour refract en chaine, inverser la normale pour le decalage de la position
+				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000) * -new_hit.normal);	//pour refract en chaine, inverser la normale pour le decalage de la position
 			else
 				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000) * new_hit.normal);
 			if (new_hit.obj->refract == 0)
@@ -1685,9 +1828,9 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 		tor[i].coef_ref = 0;
 		tor[i].coef_tra = 0;
 		tor[i].color = 0;
-		tor[i].check_d = 0;
+		tor[i].check_g = 0;		// ?
+		tor[i].check_d = 0;		// ?
 		tor[i].opacity = 0;
-		tor[i].check_g = 0;
 		tor[i].mem_index = 0;
 		tor[i].id = 0;
 		tor[i].type = 0;
@@ -1828,7 +1971,12 @@ __kernel void		ray_trace(	__global	char		*output,
 								__local		char		*mem_lights,
 								__private	int			mem_size_lights,
 
-								__global	int			*target)
+								__global	int			*target,
+
+								__global	unsigned int *texture_earth,
+								__global	unsigned int *texture_moon,
+								__global	unsigned int *texture_earth_cloud,
+								__global	unsigned int *texture_star)
 {
 
  	event_t			ev;

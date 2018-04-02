@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/01 19:58:48 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 15:05:55 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,14 @@ void		cl_init(t_env *e)
 		s_error("\x1b[2;31mError creation LIGHTS cl_mem failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, sizeof(int))))
 		s_error("\x1b[2;31mError creation TARGETOBJ cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[0].width * e->texture[0].height)))
+	 	s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[1].width * e->texture[1].height)))
+	 	s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[2].width * e->texture[2].height)))
+	 	s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[3].width * e->texture[3].height)))
+		s_error("\x1b[2;31mError creation cl_mem failed bite\x1b[0m", e);
 }
 
 void		init(GtkApplication *app, gpointer data)

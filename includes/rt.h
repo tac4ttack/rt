@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 14:58:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 15:04:13 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ typedef struct			s_cone
 	cl_float			refract;
 	cl_float			opacity;
 	cl_float			angle;
-
+	cl_float3			u_axis;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -186,6 +186,7 @@ typedef struct			s_cylinder
 	cl_float			height;
 	cl_float3			base_dir;
 	cl_float			radius;
+	cl_float3			u_axis;
 }						t_cylinder;
 
 typedef struct			s_plane
@@ -203,6 +204,7 @@ typedef struct			s_plane
 	cl_float			refract;
 	cl_float			opacity;
 	cl_float			radius;
+	cl_float3			u_axis;
 }						t_plane;
 
 typedef struct			s_sphere
