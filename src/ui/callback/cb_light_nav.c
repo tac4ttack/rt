@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cb_light_nav.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 20:17:03 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 20:42:42 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 void		ui_light_set_id(t_env *e)
 {
 	char	*light_id;
-	
+
 	light_id = ft_strjoin_frs2("LIGHT ", ft_itoa(e->ui->light_selector + 1));
 	light_id = ft_strjoin_frs1(light_id, " / ");
 	light_id = ft_strjoin_free(light_id, ft_itoa(e->gen_lights->length));
@@ -19,7 +31,7 @@ void		cb_light_nav_prev(GtkButton *btn, gpointer data)
 	e = data;
 	e->ui->light_selector = ((int)e->ui->light_selector - 1 \
 	< 0 ? e->gen_lights->length - 1 : e->ui->light_selector - 1);
-	ui_light_set_id(e);	
+	ui_light_set_id(e);
 	ui_light_update(e);
 }
 
@@ -31,6 +43,6 @@ void		cb_light_nav_next(GtkButton *btn, gpointer data)
 	e = data;
 	e->ui->light_selector = (e->ui->light_selector + 1 \
 	< e->gen_lights->length ? e->ui->light_selector + 1 : 0);
-	ui_light_set_id(e);	
+	ui_light_set_id(e);
 	ui_light_update(e);
 }

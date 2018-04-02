@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 16:35:21 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 12:36:39 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ void		xml_data_cam_fov(t_env *e, char **attributes, int *i, t_node *node)
 static void	xml_cam_data(t_env *e, char **att, t_node *cam_node, int *i)
 {
 	if (xml_check_node_format(att, 1) != 0)
-		s_error("\x1b[1;31mError in CAMERA format\x1b[0m", e);
+		s_error("\x1b[1;31mCamera error format\x1b[0m", e);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
-		s_error("\x1b[1;31mError in camera, POS expected in #1\x1b[0m", e);
+		s_error("\x1b[1;31mCamera error, POS expected in #1\x1b[0m", e);
 	else
 		xml_data_pos(e, att, i, cam_node);
 	if (ft_strncmp(att[*i], "dir=\"", 5) != 0)
-		s_error("\x1b[1;31mError in camera, DIR expected in #2\x1b[0m", e);
+		s_error("\x1b[1;31mCamera error, DIR expected in #2\x1b[0m", e);
 	else
 		xml_data_dir(e, att, i, cam_node);
 	if (ft_strncmp(att[*i], "fov=\"", 5) != 0)
-		s_error("\x1b[1;31mError in camera, FOV expected in #3\x1b[0m", e);
+		s_error("\x1b[1;31mCamera error, FOV expected in #3\x1b[0m", e);
 	else
 		xml_data_cam_fov(e, att, i, cam_node);
 }

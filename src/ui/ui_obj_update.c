@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ui_obj_update.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 20:12:43 by fmessina          #+#    #+#             */
+/*   Updated: 2018/04/01 19:50:01 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 static void		ui_obj_get_id(t_env *e, t_object *obj)
@@ -7,7 +19,7 @@ static void		ui_obj_get_id(t_env *e, t_object *obj)
 	obj_label = ft_strjoin_frs1(ft_itoa(gen_get_ptr_index(e->gen_objects, obj) \
 														+ 1), "# ");
 	if (obj->type == OBJ_CONE)
-			obj_label = ft_strjoin_frs1(obj_label, " CONE");
+		obj_label = ft_strjoin_frs1(obj_label, " CONE");
 	else if (obj->type == OBJ_CYLINDER)
 		obj_label = ft_strjoin_frs1(obj_label, " CYLINDER");
 	else if (obj->type == OBJ_PLANE)
@@ -16,8 +28,6 @@ static void		ui_obj_get_id(t_env *e, t_object *obj)
 		obj_label = ft_strjoin_frs1(obj_label, " SPHERE");
 	else if (obj->type == OBJ_ELLIPSOID)
 		obj_label = ft_strjoin_frs1(obj_label, " ELLIPSOID");
-	else if (obj->type == OBJ_PARABOLOID)
-		obj_label = ft_strjoin_frs1(obj_label, " PARABOLOID");
 	else if (obj->type == OBJ_TORUS)
 		obj_label = ft_strjoin_frs1(obj_label, " TORUS");
 	gtk_label_set_text(GTK_LABEL(e->ui->obj_list_id_label), obj_label);
@@ -77,8 +87,6 @@ static	void	ui_obj_set_custom(t_env *e, t_object *obj)
 		ui_obj_set_sphere(e, (t_sphere*)obj);
 	else if (obj->type == OBJ_ELLIPSOID)
 		ui_obj_set_ellipsoid(e, (t_ellipsoid*)obj);
-	else if (obj->type == OBJ_PARABOLOID)
-		ui_obj_set_paraboloid(e, (t_paraboloid*)obj);
 	else if (obj->type == OBJ_TORUS)
 		ui_obj_set_torus(e, (t_torus*)obj);
 }
@@ -91,8 +99,8 @@ void			ui_obj_update(t_env *e, t_object *obj)
 		gtk_widget_show(e->ui->obj_nav_prev_btn);
 		gtk_widget_show(e->ui->obj_nav_next_btn);
 		gtk_widget_show(e->ui->obj_nav_del_btn);
-		gtk_combo_box_set_active((GtkComboBox*)e->ui->obj_nav_jump_combo,
-                          gen_get_ptr_index(e->gen_objects, obj));
+		gtk_combo_box_set_active((GtkComboBox*)e->ui->obj_nav_jump_combo,\
+		gen_get_ptr_index(e->gen_objects, obj));
 		ui_obj_get_id(e, obj);
 		ui_obj_set_base(e, obj);
 		ui_obj_set_aux(e, obj);
@@ -106,4 +114,3 @@ void			ui_obj_update(t_env *e, t_object *obj)
 		gtk_widget_hide(e->ui->obj_nav_del_btn);
 	}
 }
-

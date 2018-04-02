@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ui_add_sphere.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 19:59:42 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 19:59:43 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 void	ui_add_sphere(t_env *e)
 {
 	t_sphere sphere;
-	
+
 	sphere.size = sizeof(t_sphere);
 	sphere.id = e->gen_objects->length;
 	sphere.type = OBJ_SPHERE;

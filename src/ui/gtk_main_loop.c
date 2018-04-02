@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   gtk_main_loop.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 20:01:06 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 20:01:29 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 gboolean	gtk_main_loop(gpointer data)
@@ -18,9 +30,7 @@ gboolean	gtk_main_loop(gpointer data)
 			free(fps);
 		}
 		else if (e->ui->redraw == 0)
-		{
-			gtk_label_set_text(GTK_LABEL(e->ui->tool_fps_label), "Realtime rendering paused");
-		}
+			gtk_label_set_text(GTK_LABEL(e->ui->tool_fps_label), "PAUSED");
 		gtk_render_events(e);
 		while (gtk_events_pending())
 		{

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:33:45 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/15 18:48:37 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 12:28:25 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void		xml_read_file(t_env *e)
 		else
 		{
 			buf = xml_check_line(e, ft_strtrim_free(buf));
-			e->scene_file = ft_strjoin_free(e->scene_file, ft_strjoin_frs1(buf, " "));
+			e->scene_file = ft_strjoin_free(e->scene_file, \
+											ft_strjoin_frs1(buf, " "));
 		}
 	}
 	ft_putendl("\x1b[1;29mScene read\n\x1b[0m");
@@ -39,15 +40,6 @@ void		xml_read_file(t_env *e)
 void		xml_get_file(t_env *e)
 {
 	ft_putendl("\x1b[1;29mOpening scene file...\x1b[0m");
-//	if (ac > 2)
-//		s_error("\x1b[1;31mError, too many arguments\x1b[0m", e);
-//	else if (ac == 2)
-//		e->scene_file = ft_strdup(av);
-//	else
-//	{
-//		ft_putendl("\x1b[2;33mNo scene file specified, loading default\x1b[0m");
-//		e->scene_file = ft_strdup("./scenes/default.xml");
-//	}
 	if ((e->scene_fd = open(e->scene_file, O_RDONLY)) < 0)
 		p_error("\x1b[1;31mCan't open scene file\x1b[0m", e);
 	ft_bzero((void*)e->scene_file, ft_strlen(e->scene_file));

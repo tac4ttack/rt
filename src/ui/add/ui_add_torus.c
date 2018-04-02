@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ui_add_torus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 19:59:37 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 19:59:38 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 void	ui_add_torus(t_env *e)
 {
 	t_torus torus;
-	
+
 	torus.size = sizeof(t_torus);
 	torus.id = e->gen_objects->length;
 	torus.type = OBJ_TORUS;

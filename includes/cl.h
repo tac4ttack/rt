@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cl.h                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/01 11:19:20 by fmessina          #+#    #+#             */
+/*   Updated: 2018/04/01 17:38:21 by ntoniolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CL_H
 # define CL_H
 
@@ -22,6 +34,7 @@ typedef struct			s_cl
 	cl_program			program;
 	cl_kernel			kernel;
 	cl_platform_id		platform_id;
+	cl_uint				num_platforms;
 	cl_int				err;
 	size_t				global_item_size;
 	size_t				local_item_size;
@@ -33,7 +46,7 @@ typedef struct			s_cl
 	bool				(*compute)(struct s_cl *);
 }						t_cl;
 
-t_cl					*cl_construct(const char *path, const char *name, \
+t_cl					*cl_construct(const char *path, \
 							const size_t width, const size_t height, int type);
 void					*cl_destruct(t_cl **ptr_cl);
 bool					cl_add_buffer(t_cl *cl, size_t size);

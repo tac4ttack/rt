@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt.h                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
+/*   Updated: 2018/04/02 11:54:23 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RT_H
 # define RT_H
 
@@ -11,7 +23,6 @@
 # include "ui.h"
 # include "gen.h"
 
-
 # ifdef GPU
 #  define IS_GPU			1
 # else
@@ -24,29 +35,28 @@
 #  define DBUG					0
 # endif
 
-# define DEG2RAD				(M_PI / 180)
-# define RAD2DEG				(180 / M_PI)
+# define DEG2RAD		(M_PI / 180)
+# define RAD2DEG		(180 / M_PI)
 
-# define WIDTH					e->scene->win_w
-# define HEIGHT					e->scene->win_h
-# define DEPTH					e->scene->depth
+# define WIDTH			e->scene->win_w
+# define HEIGHT			e->scene->win_h
+# define DEPTH			e->scene->depth
 
-# define KRT					e->cl.kernel
-# define NCAM					e->scene->n_cams
-# define NCON					e->scene->n_cones
-# define NCYL					e->scene->n_cylinders
-# define NLIG					e->scene->n_lights
-# define NPLA					e->scene->n_planes
-# define NSPH					e->scene->n_spheres
-# define NELL					e->scene->n_ellipsoids
-# define NPAR					e->scene->n_paraboloids
+# define KRT			e->cl.kernel
+# define NCAM			e->scene->n_cams
+# define NCON			e->scene->n_cones
+# define NCYL			e->scene->n_cylinders
+# define NLIG			e->scene->n_lights
+# define NPLA			e->scene->n_planes
+# define NSPH			e->scene->n_spheres
+# define NELL			e->scene->n_ellipsoids
 
-# define ACTIVECAM				e->cameras[e->scene->active_cam]
-# define ACTIVELIGHT			((t_light*)e->gen_lights->mem)[e->ui->light_selector]
+# define A_CAM			e->cameras[e->scene->active_cam]
+# define A_LIG			((t_light*)e->gen_lights->mem)[e->ui->light_selector]
 
-# define XMLSUB					e->xml->sub_node
-# define XML					e->xml
-# define SCN					e->scene
+# define XMLSUB			e->xml->sub_node
+# define XML			e->xml
+# define SCN			e->scene
 
 # define RESERVED				(1 << 0)
 # define OPTION_WAVE			(1 << 1)
@@ -56,6 +66,13 @@
 # define OPTION_GPU				(1 << 5)
 # define OPTION_DEBUG			(1 << 6)
 # define OPTION_INVERT			(1 << 7)
+# define OPTION_CARTOON			(1 << 8)
+# define OPTION_STEREO			(1 << 9)
+
+# define OBJ_FLAG_WAVES			(1 << 1)
+# define OBJ_FLAG_CHECKERED		(1 << 2)
+# define OBJ_FLAG_DIFF_MAP		(1 << 3)
+# define OBJ_FLAG_BUMP_MAP		(1 << 4)
 
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2
@@ -64,14 +81,14 @@
 # define OBJ_PLANE			5
 # define OBJ_SPHERE			6
 # define OBJ_ELLIPSOID		7
-# define OBJ_PARABOLOID		8
-# define OBJ_TORUS			9
-# define OBJ_BOX			10
+# define OBJ_TORUS			8
+# define OBJ_BOX			9
 
 typedef struct			s_object
 {
 	cl_int				size;
 	cl_int				type;
+	cl_int				flags;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -94,25 +111,6 @@ typedef struct			s_fps
 	unsigned int		ret_fps;
 }						t_fps;
 
-typedef struct			s_p2i
-{
-	int					x;
-	int					y;
-}						t_p2i;
-
-typedef struct			s_hit
-{
-	cl_float			dist;
-	cl_float3			normale;
-	cl_float3			pos;
-	t_object			*obj;
-	cl_int				mem_index;
-	cl_float			opacity;
-	cl_float			m;
-	cl_int				isin;
-	cl_int				mein;
-}						t_hit;
-
 typedef struct			s_cam
 {
 	cl_float3			pos;
@@ -134,16 +132,11 @@ typedef struct			s_light
 	cl_int				color;
 }						t_light;
 
-/*							*\
-**|							**|
-**|			OBJECT			**|
-**|							**!
-*/
-
 typedef struct			s_box
 {
 	cl_int				size;
 	cl_int				type;
+	cl_int				flags;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -162,6 +155,7 @@ typedef struct			s_cone
 {
 	cl_int				size;
 	cl_int				type;
+	cl_int				flags;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -179,6 +173,7 @@ typedef struct			s_cylinder
 {
 	cl_int				size;
 	cl_int				type;
+	cl_int				flags;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -193,28 +188,11 @@ typedef struct			s_cylinder
 	cl_float			radius;
 }						t_cylinder;
 
-typedef struct			s_paraboloid
-{
-	cl_int				size;
-	cl_int				type;
-	cl_int				id;
-	cl_float3			pos;
-	cl_float3			dir;
-	cl_float3			diff;
-	cl_float3			spec;
-	cl_int				color;
-	cl_float			reflex;
-	cl_float			refract;
-	cl_float			opacity;
-	cl_float			height;
-	cl_float3			base_dir;
-	cl_float			radius;
-}						t_paraboloid;
-
 typedef struct			s_plane
 {
 	cl_int				size;
 	cl_int				type;
+	cl_int				flags;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			normal;
@@ -224,12 +202,14 @@ typedef struct			s_plane
 	cl_float			reflex;
 	cl_float			refract;
 	cl_float			opacity;
+	cl_float			radius;
 }						t_plane;
 
 typedef struct			s_sphere
 {
 	cl_int				size;
 	cl_int				type;
+	cl_int				flags;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -246,6 +226,7 @@ typedef struct			s_torus
 {
 	cl_int				size;
 	cl_int				type;
+	cl_int				flags;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -263,6 +244,7 @@ typedef struct			s_ellipsoid
 {
 	cl_int				size;
 	cl_int				type;
+	cl_int				flags;
 	cl_int				id;
 	cl_float3			pos;
 	cl_float3			dir;
@@ -275,7 +257,6 @@ typedef struct			s_ellipsoid
 	cl_float			radius;
 	cl_float3			axis_size;
 }						t_ellipsoid;
-
 
 typedef struct			s_node
 {
@@ -330,15 +311,18 @@ typedef struct			s_scene
 	cl_uint				win_w;
 	cl_uint				win_h;
 	cl_float3			ambient;
-	cl_int				mou_x;
-	cl_int				mou_y;
-	cl_int				depth;
+	cl_uint				mou_x;
+	cl_uint				mou_y;
+	cl_uint				depth;
 	cl_float			u_time;
 	cl_int				flag;
-	cl_int				tor_count;
-	cl_int				over_sampling;
-	cl_int				mem_size_obj;
-	cl_int				mem_size_lights;
+	cl_uint				over_sampling;
+	cl_uint				mem_size_obj;
+	cl_uint				mem_size_lights;
+	cl_float3			check_p1;
+	cl_float3			check_p2;
+	cl_float3			waves_p1;
+	cl_float3			waves_p2;
 }						t_scene;
 
 typedef	struct			s_env
@@ -361,7 +345,7 @@ typedef	struct			s_env
 	int					gpu;
 	t_fps				fps;
 
-	int					*pixel_data; // raw pixel image
+	int					*pixel_data;
 	int					target;
 	int					current_index_objects;
 }						t_env;
@@ -373,34 +357,38 @@ cl_float3				roty(cl_float3 dir, float yaw);
 cl_float3				rotx(cl_float3 dir, float pitch);
 cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
 
-void					display_hud(t_env *e);
 int						opencl_draw(t_env *e);
 
-cl_float3				*get_target_dir(t_env *e);
-cl_float3				*get_target_pos(t_env *e);
-
-void					init(GtkApplication* app, gpointer data);
+void					init(GtkApplication *app, gpointer data);
+void					init_gtk(GtkApplication *app, gpointer data);
+void					init_cb_cam(t_env *e);
+void					init_cb_light(t_env *e);
+void					init_cb_main(t_env *e);
+void					init_cb_object(t_env *e);
+void					init_cb_scene(t_env *e);
+void					init_gtk_cam(t_env *e);
+void					init_gtk_css(t_env *e);
+void					init_gtk_light(t_env *e);
+void					init_gtk_object(t_env *e);
+void					init_gtk_scene(t_env *e);
+void					init_gtk_texture(t_env *e);
+void					init_gtk_toolbar(t_env *e);
+void					init_gtk_win(t_env *e);
 
 cl_float3				normalize_vect(cl_float3 v);
 
 void					opencl_set_args(t_env *e, t_cl *cl);
-
 
 void					p_error(char *str, t_env *e);
 void					s_error(char *str, t_env *e);
 void					print_usage();
 int						quit(t_env *e);
 
-void					refresh(t_env *e);
-void					print_obj(t_gen *gen, void *data);
-
-
 void					clear_surface(t_env *e);
 void					gtk_render_events(t_env *e);
 void					ui_add_cone(t_env *e);
 void					ui_add_cylinder(t_env *e);
 void					ui_add_ellipsoid(t_env *e);
-void					ui_add_paraboloid(t_env *e);
 void					ui_add_plane(t_env *e);
 void					ui_add_sphere(t_env *e);
 void					ui_add_torus(t_env *e);
@@ -414,7 +402,6 @@ void					ui_obj_jump_list(t_env *e);
 void					ui_obj_set_cone(t_env *e, t_cone *obj);
 void					ui_obj_set_cylinder(t_env *e, t_cylinder *obj);
 void					ui_obj_set_ellipsoid(t_env *e, t_ellipsoid *obj);
-void					ui_obj_set_paraboloid(t_env *e, t_paraboloid *obj);
 void					ui_obj_set_plane(t_env *e, t_plane *obj);
 void					ui_obj_set_sphere(t_env *e, t_sphere *obj);
 void					ui_obj_set_torus(t_env *e, t_torus *obj);
@@ -478,7 +465,6 @@ void					xml_node_cone(t_env *e, char *node);
 void					xml_node_cylinder(t_env *e, char *node);
 void					xml_node_ellipsoid(t_env *e, char *node);
 void					xml_node_light(t_env *e, char *node);
-void					xml_node_paraboloid(t_env *e, char *node);
 void					xml_node_plane(t_env *e, char *node);
 void					xml_node_scene(t_env *e, char *node, char mod);
 void					xml_node_sphere(t_env *e, char *node);
@@ -491,7 +477,6 @@ void					xml_push_cone(t_env *e, t_node *list);
 void					xml_push_cyl(t_env *e, t_node *list);
 void					xml_push_ellipsoid(t_env *e, t_node *list);
 void					xml_push_light(t_env *e, t_node *list);
-void					xml_push_paraboloid(t_env *e, t_node *list);
 void					xml_push_plane(t_env *e, t_node *list);
 void					xml_push_sphere(t_env *e, t_node *list);
 void					xml_push_box(t_env *e, t_node *list);

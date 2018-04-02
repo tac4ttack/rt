@@ -6,54 +6,24 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/29 17:37:39 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/01 19:58:48 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	init_print_structure_memory_size()
-{
-	printf("t_cam 				: %-20lu\n", sizeof(t_cam));
-	printf("t_cone 				: %-20lu\n", sizeof(t_cone));
-	printf("t_cylinder 			: %-20lu\n", sizeof(t_cylinder));
-	printf("t_light 			: %-20lu\n", sizeof(t_light));
-	printf("t_plane 			: %-20lu\n", sizeof(t_plane));
-	printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
-//	printf("t_tor 				: %-20lu\n", sizeof(t_tor));
-	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
-	printf("cl_int				: %-20lu\n", sizeof(cl_int));
-	printf("cl_float			: %-20lu\n", sizeof(cl_float));
-	printf("cl_float3			: %-20lu\n", sizeof(cl_float3));
-}
-
-void		load_obj(t_env *e)
-{
-	ft_putendl("\x1b[1;29mFetching scene objects...\x1b[0m");
-	xml_allocate_cam(e);
-	ft_putendl("\x1b[1;29mScene objects fetched!\x1b[0m");
-}
-
-void		load_scene(t_env *e)
+void		load_scene_objects(t_env *e)
 {
 	t_node	*list;
 
-	ft_putendl("\n\x1b[1;32m/\\ Loading scene /\\\x1b[0m\n");
-	load_obj(e);
 	list = XML->node_lst;
 	while (list != NULL)
 	{
 		e->current_index_objects++;
-		if (list->type == OBJ_CAM)
-			xml_push_cam(e, list);
 		if (list->type == OBJ_CONE)
 			xml_push_cone(e, list);
 		if (list->type == OBJ_CYLINDER)
 			xml_push_cyl(e, list);
-		if (list->type == OBJ_PARABOLOID)
-			xml_push_paraboloid(e, list);
-		if (list->type == OBJ_LIGHT)
-			xml_push_light(e, list);
 		if (list->type == OBJ_PLANE)
 			xml_push_plane(e, list);
 		if (list->type == OBJ_SPHERE)
@@ -70,24 +40,74 @@ void		load_scene(t_env *e)
 	ft_putendl("\x1b[1;29mSuccessfully loaded the scene!\n\x1b[0m");
 }
 
+void		load_scene(t_env *e)
+{
+	t_node	*list;
+
+	ft_putendl("\n\x1b[1;32m/\\ Loading scene /\\\x1b[0m\n");
+	xml_allocate_cam(e);
+	list = XML->node_lst;
+	while (list != NULL)
+	{
+		e->current_index_objects++;
+		if (list->type == OBJ_CAM)
+			xml_push_cam(e, list);
+		if (list->type == OBJ_LIGHT)
+			xml_push_light(e, list);
+		list = list->next;
+	}
+	load_scene_objects(e);
+}
+
 void		env_init(t_env *e)
 {
 	ft_putendl("\n\x1b[1;32m/\\ Initializing RT environnement /\\\x1b[0m\n");
 	e->scene->depth = 0;
 	e->scene->over_sampling = 1;
 	e->target = -1;
-	e->scene->tor_count = pow(2, e->scene->depth + 1) - 1; // USELESS?
-	e->debug = DBUG;
+	if (DBUG == 1)
+		e->scene->flag |= OPTION_DEBUG;
 	e->gpu = IS_GPU;
 	if (e->gpu == 1)
 		e->scene->flag |= OPTION_GPU;
 	e->ui->redraw = 1;
+	e->scene->check_p1.x = 0;
+	e->scene->check_p1.y = 0;
+	e->scene->check_p1.z = 0;
+	e->scene->check_p2.x = 0;
+	e->scene->check_p2.y = 0;
+	e->scene->check_p2.z = 0;
+	e->scene->waves_p1.x = 0.8;
+	e->scene->waves_p1.y = 0.8;
+	e->scene->waves_p1.z = 0.8;
+	e->scene->waves_p2.x = 10;
+	e->scene->waves_p2.y = 10;
+	e->scene->waves_p2.z = 10;
 	ft_putendl("\x1b[1;29mRT environnement initialized!\n\x1b[0m");
 }
 
-void		init(GtkApplication* app, gpointer data)
+void		cl_init(t_env *e)
 {
-	t_env *e;
+	if (!(e->cl = cl_construct("./kernel/kernel.cl", WIDTH, HEIGHT,
+	(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
+		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, WIDTH * HEIGHT * 4)))
+		s_error("\x1b[2;31mError creation FRAMEBUFFER cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, e->gen_objects->mem_size)))
+		s_error("\x1b[2;31mError creation OBJECTS cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(t_scene))))
+		s_error("\x1b[2;31mError creation SCENE cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(t_cam) * NCAM)))
+		s_error("\x1b[2;31mError creation CAMERAS cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, e->gen_lights->mem_size)))
+		s_error("\x1b[2;31mError creation LIGHTS cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(int))))
+		s_error("\x1b[2;31mError creation TARGETOBJ cl_mem failed\x1b[0m", e);
+}
+
+void		init(GtkApplication *app, gpointer data)
+{
+	t_env	*e;
 
 	(void)app;
 	e = data;
@@ -100,35 +120,11 @@ void		init(GtkApplication* app, gpointer data)
 	ft_bzero(e->scene, sizeof(t_scene));
 	xml_init(e);
 	env_init(e);
-	if (!(e->pixel_data = malloc(sizeof(int) * e->scene->win_w * e->scene->win_h)))
+	if (!(e->pixel_data = malloc(sizeof(int) * WIDTH * HEIGHT)))
 		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
-	ft_bzero(e->pixel_data, sizeof(int) * e->scene->win_w * e->scene->win_h);
+	ft_bzero(e->pixel_data, sizeof(int) * WIDTH * HEIGHT);
 	load_scene(e);
-
-
-
-	if (!(e->cl = cl_construct("./kernel/kernel.cl", "ray_trace", e->scene->win_w, e->scene->win_h,
-			(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
-		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
-
-	if (e->debug)
-	{
-		printf("%i %i %i\n", e->scene->win_w, e->scene->win_h, (e->scene->flag & OPTION_GPU));
-		init_print_structure_memory_size();
-	}
-
-	if (!(e->cl->add_buffer(e->cl, e->scene->win_w * e->scene->win_h * 4)))
-		s_error("\x1b[2;31mError creation FRAMEBUFFER cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, e->gen_objects->mem_size)))
-		s_error("\x1b[2;31mError creation OBJECTS cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, sizeof(t_scene))))
-		s_error("\x1b[2;31mError creation SCENE cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, sizeof(t_cam) * NCAM)))
-		s_error("\x1b[2;31mError creation CAMERAS cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, e->gen_lights->mem_size)))
-		s_error("\x1b[2;31mError creation LIGHTS cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, sizeof(int))))
-		s_error("\x1b[2;31mError creation TARGETOBJ cl_mem failed\x1b[0m", e);
+	cl_init(e);
 	opencl_set_args(e, e->cl);
 	opencl_draw(e);
 }

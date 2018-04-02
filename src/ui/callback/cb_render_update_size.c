@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cb_render_update_size.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 20:17:41 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 20:23:07 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
-
-void	cb_render_update_size(GtkContainer *box, gpointer data)
+void		cb_render_update_size(GtkContainer *box, gpointer data)
 {
-	t_env *e;
-	cl_int2 zone;
+	t_env	*e;
+	cl_int2	zone;
 
 	e = data;
 	(void)box;

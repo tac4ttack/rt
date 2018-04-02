@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cb_export_dialog.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 20:17:00 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 20:47:34 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 void		gtk_export(GdkPixbuf *target, char *format, char *filename)
 {
-	GError		*error;
+	GError	*error;
 
 	error = NULL;
 	gdk_pixbuf_save(target, filename, format, &error, NULL);
@@ -12,11 +24,9 @@ void		gtk_export(GdkPixbuf *target, char *format, char *filename)
 	ft_putendl("\x1b[0m\x1b[1;29m successfully exported!\x1b[0m");
 }
 
-
-
 void		cb_export_btn(GtkButton *btn, gpointer data)
 {
-	t_env	*e; 
+	t_env	*e;
 	char	*filename;
 
 	(void)btn;
@@ -27,10 +37,12 @@ void		cb_export_btn(GtkButton *btn, gpointer data)
 								GTK_FILE_CHOOSER_ACTION_SAVE, \
 								"Cancel", GTK_RESPONSE_CLOSE, \
 								"Export", GTK_RESPONSE_OK, NULL);
-	gtk_window_set_transient_for(GTK_WINDOW(e->ui->export_window), GTK_WINDOW(e->ui->main_window));
+	gtk_window_set_transient_for(GTK_WINDOW(e->ui->export_window), \
+								GTK_WINDOW(e->ui->main_window));
 	if (gtk_dialog_run(GTK_DIALOG(e->ui->export_window)) == GTK_RESPONSE_OK)
 	{
-		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(e->ui->export_window));
+		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(\
+												e->ui->export_window));
 		gtk_export(e->ui->pixbuf, "png", filename);
 		g_free(filename);
 	}

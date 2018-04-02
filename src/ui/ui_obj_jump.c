@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ui_obj_jump.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 20:09:07 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 20:09:43 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 static	char	*obj_jump_get_label(t_env *e, t_object *obj)
 {
 	char		*label;
-	
+
 	label = ft_strjoin_frs1(ft_itoa(gen_get_ptr_index(e->gen_objects, \
 															obj) + 1), "# ");
 	if (obj->type == OBJ_CONE)
@@ -16,8 +28,6 @@ static	char	*obj_jump_get_label(t_env *e, t_object *obj)
 		label = ft_strjoin_frs1(label, " SPHERE");
 	else if (obj->type == OBJ_ELLIPSOID)
 		label = ft_strjoin_frs1(label, " ELLIPSOID");
-	else if (obj->type == OBJ_PARABOLOID)
-		label = ft_strjoin_frs1(label, " PARABOLOID");
 	else if (obj->type == OBJ_TORUS)
 		label = ft_strjoin_frs1(label, " TORUS");
 	return (label);
@@ -36,7 +46,7 @@ void			ui_obj_jump_list(t_env *e)
 	{
 		label = obj_jump_get_label(e, obj);
 		gtk_combo_box_text_append((GtkComboBoxText *)e->ui->obj_nav_jump_combo,\
-                           			NULL, label);
+		NULL, label);
 		free(label);
 		obj = obj + ((t_object*)(obj))->size;
 		i++;

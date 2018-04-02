@@ -46,19 +46,18 @@ SRC_NAME =	 			cl/cl_compute.c \
 						gen/gen_construct.c \
 						gen/gen_destruct.c \
 						main.c \
-						print_obj.c \
 						opencl_compute.c \
 						rotations.c \
 						tools.c \
 						ui/add/ui_add_cone.c \
 						ui/add/ui_add_cylinder.c \
 						ui/add/ui_add_ellipsoid.c \
-						ui/add/ui_add_paraboloid.c \
 						ui/add/ui_add_plane.c \
 						ui/add/ui_add_sphere.c \
 						ui/add/ui_add_torus.c \
 						ui/callback/cb_about_dialog.c \
 						ui/callback/cb_ambient_update.c \
+						ui/callback/cb_cam_dir.c \
 						ui/callback/cb_cam_fov_update.c \
 						ui/callback/cb_cam_manager.c \
 						ui/callback/cb_cam_nav.c \
@@ -74,14 +73,15 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_light_nav.c \
 						ui/callback/cb_light_params.c \
 						ui/callback/cb_light_pos.c \
+						ui/callback/cb_obj_checkboard_check.c \
 						ui/callback/cb_obj_color.c \
 						ui/callback/cb_obj_combo_type.c \
+						ui/callback/cb_obj_diff_check.c \
 						ui/callback/cb_obj_diff.c \
 						ui/callback/cb_obj_dir.c \
 						ui/callback/cb_obj_jump.c \
 						ui/callback/cb_obj_nav_add.c \
 						ui/callback/cb_obj_nav_del.c \
-						ui/callback/cb_obj_nav_jump.c \
 						ui/callback/cb_obj_nav_next.c \
 						ui/callback/cb_obj_nav_prev.c \
 						ui/callback/cb_obj_opacity.c \
@@ -89,11 +89,10 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_reflex.c \
 						ui/callback/cb_obj_refrac.c \
 						ui/callback/cb_obj_spec.c \
-						ui/callback/cb_paraboloid_basedir.c \
-						ui/callback/cb_paraboloid_height.c \
-						ui/callback/cb_paraboloid_radius.c \
+						ui/callback/cb_obj_wave_check.c \
 						ui/callback/cb_postproc_radio.c \
 						ui/callback/cb_render_btnpress.c \
+						ui/callback/cb_render_btnrelease.c \
 						ui/callback/cb_render_draw.c \
 						ui/callback/cb_render_keypress.c \
 						ui/callback/cb_render_keyrelease.c \
@@ -103,10 +102,25 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_supersampling_update.c \
 						ui/callback/cb_tool_bar.c \
 						ui/callback/cb_torus_radius.c \
+						ui/callback/cb_waves_p1.c \
+						ui/callback/cb_waves_p2.c \
 						ui/gdkrgba_to_int.c \
-						ui/gtk.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
+						ui/init_cb_cam.c \
+						ui/init_cb_light.c \
+						ui/init_cb_main.c \
+						ui/init_cb_object.c \
+						ui/init_cb_scene.c \
+						ui/init_gtk_cam.c \
+						ui/init_gtk_css.c \
+						ui/init_gtk_light.c \
+						ui/init_gtk_object.c \
+						ui/init_gtk_scene.c \
+						ui/init_gtk_texture.c \
+						ui/init_gtk_toolbar.c \
+						ui/init_gtk_win.c \
+						ui/init_gtk.c \
 						ui/ui_cam.c \
 						ui/ui_cam_update.c \
 						ui/ui_light_update.c \
@@ -115,7 +129,6 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/ui_obj_set_cone.c \
 						ui/ui_obj_set_cylinder.c \
 						ui/ui_obj_set_ellipsoid.c \
-						ui/ui_obj_set_paraboloid.c \
 						ui/ui_obj_set_plane.c \
 						ui/ui_obj_set_sphere.c \
 						ui/ui_obj_set_torus.c \
@@ -149,7 +162,6 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/xml_lights.c \
 						xml/xml_list.c \
 						xml/xml_nodes.c \
-						xml/xml_paraboloid.c \
 						xml/xml_planes.c \
 						xml/xml_scene.c \
 						xml/xml_spheres.c \
@@ -192,7 +204,7 @@ $(eval GPU_MACRO = )
 GPU:
 	@echo "$(GREEN)Checking for GPU accelerated RT$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make gpu_flags $(NAME)
+	@make -j 4 gpu_flags $(NAME)
 
 gpu: libft GPU
 gpu_flags:
@@ -283,6 +295,8 @@ installbrewshit:
 	brew install -f gtkspell3
 	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)pygtk$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f pygtk
+	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)adwaita-icon-theme$(EOC)$(B_GREEN) from brew...$(EOC)"
+	brew install -f adwaita-icon-theme
 	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)glade$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f glade
 	

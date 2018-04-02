@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   gen_print.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/30 21:06:51 by fmessina          #+#    #+#             */
+/*   Updated: 2018/03/30 21:08:20 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "gen.h"
 
 void		gen_print(t_gen *gen, void (*print)(t_gen *, void *))
@@ -17,7 +29,6 @@ void		gen_print(t_gen *gen, void (*print)(t_gen *, void *))
 		ft_putstr("\n");
 		print(gen, (gen->mem + mem_index));
 		mem_index += *((int *)(gen->mem + mem_index));
-
 		unit_index++;
 	}
 	ft_putchar('\n');

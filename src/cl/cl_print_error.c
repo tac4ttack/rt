@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:43 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/07 19:37:47 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/30 21:06:25 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,6 @@ bool			cl_print_error(int err)
 		(err == -1004 ? ft_putstr(\
 		"\x1b[1;31m\nCL_D3D10_RESOURCE_ALREADY_ACQUIRED_KHR\x1b[0m") : 0);
 	}
-	else
-		ft_putstr("\x1b[2;31m\nUnknown OpenCL error\n");
 	if (err)
 		return (false);
 	return (true);
