@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/02 18:08:06 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 20:50:17 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ static void		cl_write_buffer(t_env *e, t_cl *cl)
 							e->gen_lights->mem_size,
 							e->gen_lights->mem, 0, NULL, NULL)))
 		s_error("Error: Failed to send arguments to kernel!", e);
-
-
-
 }
 
 void			opencl_set_args(t_env *e, t_cl *cl)
