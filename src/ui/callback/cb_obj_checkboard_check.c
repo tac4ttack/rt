@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:37 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 17:30:44 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 18:13:58 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,9 @@ void			cb_obj_checkboard_check(GtkButton *btn, gpointer data)
 	if (obj->flags & OBJ_FLAG_CHECKERED)
 		obj->flags ^= OBJ_FLAG_CHECKERED;
 	else
+	{
+		if (obj->flags & OBJ_FLAG_DIFF_MAP)
+			obj->flags ^= OBJ_FLAG_DIFF_MAP;
 		obj->flags |= OBJ_FLAG_CHECKERED;
+	}
 }
