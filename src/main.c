@@ -25,10 +25,7 @@ void		load_texture(t_env *e)
 	e->raw_texture.width = gdk_pixbuf_get_width(e->raw_texture.pixbuf);
 	e->raw_texture.height = gdk_pixbuf_get_height(e->raw_texture.pixbuf);
 	if (!(e->texture = (t_tex *)malloc(sizeof(t_tex) * 4)) || \
-	!(e->texture[0].pixel_array = (unsigned int *)malloc((sizeof(unsigned int) * (e->raw_texture.width * e->raw_texture.height)))) || \
-	!(e->texture[1].pixel_array = (unsigned int *)malloc(sizeof(unsigned int) * (8192 * 4096))) || \
-	!(e->texture[2].pixel_array = (unsigned int *)malloc(sizeof(unsigned int) * (8192 * 4096))) || \
-	!(e->texture[3].pixel_array = (unsigned int *)malloc(sizeof(unsigned int) * (1500 * 1500))))
+	!(e->texture[0].pixel_array = (unsigned int *)malloc((sizeof(unsigned int) * (e->raw_texture.width * e->raw_texture.height)))))
 	{
 		ft_putendl("Definitly not Charlie\n");
 		exit(1);
@@ -54,6 +51,11 @@ void		load_texture(t_env *e)
 	e->raw_texture.rowstride = gdk_pixbuf_get_rowstride(e->raw_texture.pixbuf);
 	e->raw_texture.width = gdk_pixbuf_get_width(e->raw_texture.pixbuf);
 	e->raw_texture.height = gdk_pixbuf_get_height(e->raw_texture.pixbuf);
+	if (!(e->texture[1].pixel_array = (unsigned int *)malloc(sizeof(unsigned int) * (e->raw_texture.width * e->raw_texture.height))))
+	{
+		ft_putendl("Definitly not Charlie\n");
+		exit(1);
+	}
 	e->texture[1].width = e->raw_texture.width;
 	e->texture[1].height = e->raw_texture.height;
 	while (j < e->texture[1].height)
@@ -74,6 +76,11 @@ void		load_texture(t_env *e)
 	e->raw_texture.rowstride = gdk_pixbuf_get_rowstride(e->raw_texture.pixbuf);
 	e->raw_texture.width = gdk_pixbuf_get_width(e->raw_texture.pixbuf);
 	e->raw_texture.height = gdk_pixbuf_get_height(e->raw_texture.pixbuf);
+	if (!(e->texture[2].pixel_array = (unsigned int *)malloc(sizeof(unsigned int) * (e->raw_texture.width * e->raw_texture.height))))
+	{
+		ft_putendl("Definitly not Charlie\n");
+		exit(1);
+	}
 	e->texture[2].width = e->raw_texture.width;
 	e->texture[2].height = e->raw_texture.height;
 	while (j < e->texture[2].height)
@@ -94,6 +101,11 @@ void		load_texture(t_env *e)
 	e->raw_texture.rowstride = gdk_pixbuf_get_rowstride(e->raw_texture.pixbuf);
 	e->raw_texture.width = gdk_pixbuf_get_width(e->raw_texture.pixbuf);
 	e->raw_texture.height = gdk_pixbuf_get_height(e->raw_texture.pixbuf);
+	if (!(e->texture[3].pixel_array = (unsigned int *)malloc(sizeof(unsigned int) * (e->raw_texture.width * e->raw_texture.height))))
+	{
+		ft_putendl("Definitly not Charlie\n");
+		exit(1);
+	}
 	e->texture[3].width = e->raw_texture.width;
 	e->texture[3].height = e->raw_texture.height;
 	while (j < e->texture[3].height)
