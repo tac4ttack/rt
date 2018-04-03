@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:25 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 14:24:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 16:43:56 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,6 @@ static void	init_gtk_object_third_adds(t_env *e)
 	e->ui->builder, "obj_nav_add_btn"));
 	e->ui->obj_nav_jump_combo = GTK_WIDGET(gtk_builder_get_object(\
 	e->ui->builder, "obj_nav_jump_combo"));
-	e->ui->obj_list_flag_diff_check = GTK_WIDGET(gtk_builder_get_object(\
-	e->ui->builder, "obj_list_flag_diff_check"));
-	e->ui->obj_list_flag_waves_check = GTK_WIDGET(gtk_builder_get_object(\
-	e->ui->builder, "obj_list_flag_waves_check"));
-	e->ui->obj_list_flag_checkboard_check = GTK_WIDGET(gtk_builder_get_object(\
-	e->ui->builder, "obj_list_flag_checkboard_check"));
 	if (e->gen_objects->length < 2)
 	{
 		gtk_widget_set_sensitive(e->ui->obj_nav_prev_btn, FALSE);

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 16:10:20 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 16:39:53 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,8 @@ typedef	struct			s_ui
 	GtkWidget			*obj_list_reflex_spin;
 	GtkWidget			*obj_list_refrac_spin;
 	GtkWidget			*obj_list_opacity_spin;
-	GtkWidget			* obj_list_color_btn;
+	GtkWidget			*obj_list_color_btn;
 	GdkRGBA				obj_color;
-	GtkWidget			*obj_list_flag_waves_check;
-	GtkWidget			*obj_list_flag_diff_check;
-	GtkWidget			*obj_list_flag_checkboard_check;
 	GtkWidget			*obj_list_cone;
 	GtkWidget			*obj_cone_angle_spin;
 	GtkWidget			*obj_list_cylinder;
@@ -100,6 +97,7 @@ typedef	struct			s_ui
 	GtkWidget			*obj_list_torus;
 	GtkWidget			*obj_torus_lilradius_spin;
 	GtkWidget			*obj_torus_bigradius_spin;
+	GtkWidget			*obj_list_limit;
 	GtkWidget			*obj_limit_button;
 	GtkWidget			*obj_limit_dir_spin_x;
 	GtkWidget			*obj_limit_dir_spin_y;
@@ -107,6 +105,7 @@ typedef	struct			s_ui
 	GtkWidget			*obj_limit_pos_spin_x;
 	GtkWidget			*obj_limit_pos_spin_y;
 	GtkWidget			*obj_limit_pos_spin_z;
+	GtkWidget			*obj_list_sinwave;
 	GtkWidget			*obj_sinwave_button;
 	GtkWidget			*obj_sinwave_param1_spin_x;
 	GtkWidget			*obj_sinwave_param1_spin_y;
