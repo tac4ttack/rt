@@ -90,8 +90,8 @@ typedef struct			s_object
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float3				check_size;
-	unsigned int		diff_map_id;
+	float2				check_size;
+	int					diff_map_id;
 	float3				diff_map_size;
 }						t_object;
 
@@ -113,8 +113,8 @@ typedef struct			s_box
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float3				check_size;
-	unsigned int		diff_map_id;
+	float2				check_size;
+	int					diff_map_id;
 	float3				diff_map_size;
 
 	float3				min;
@@ -139,8 +139,8 @@ typedef struct			s_cone
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float3				check_size;
-	unsigned int		diff_map_id;
+	float2				check_size;
+	int					diff_map_id;
 	float3				diff_map_size;
 
 	float				angle;
@@ -165,8 +165,8 @@ typedef struct			s_cylinder
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float3				check_size;
-	unsigned int		diff_map_id;
+	float2				check_size;
+	int					diff_map_id;
 	float3				diff_map_size;
 
 	float				height;
@@ -193,8 +193,8 @@ typedef struct			s_plane
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float3				check_size;
-	unsigned int		diff_map_id;
+	float2				check_size;
+	int					diff_map_id;
 	float3				diff_map_size;
 
 	float				radius;
@@ -219,8 +219,8 @@ typedef struct			s_sphere
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float3				check_size;
-	unsigned int		diff_map_id;
+	float2				check_size;
+	int					diff_map_id;
 	float3				diff_map_size;
 
 	float				radius;
@@ -244,8 +244,8 @@ typedef struct			s_ellipsoid
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float3				check_size;
-	unsigned int		diff_map_id;
+	float2				check_size;
+	int					diff_map_id;
 	float3				diff_map_size;
 
 	float				radius;
@@ -270,8 +270,8 @@ typedef struct			s_thor
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float3				check_size;
-	unsigned int		diff_map_id;
+	float2				check_size;
+	int					diff_map_id;
 	float3				diff_map_size;
 	
 	float				lil_radius;

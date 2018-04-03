@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 17:22:57 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:55:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,20 @@ void		xml_node_sphere(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
+static void	xml_push_sphere_effects(t_sphere *sphere)
+{
+	sphere->limit_pos.x = 0;
+	sphere->limit_pos.y = 0;
+	sphere->limit_pos.z = 0;
+	sphere->limit_dir = sphere->limit_pos;
+	sphere->waves_p1 = sphere->limit_pos;
+	sphere->waves_p2 = sphere->limit_pos;
+	sphere->check_size.x = 1;
+	sphere->check_size.y = 1;
+	sphere->diff_map_id = -1;
+	sphere->diff_map_size = sphere->limit_pos;
+}
+
 void		xml_push_sphere(t_env *e, t_node *list)
 {
 	t_sphere sphere;
@@ -103,5 +117,6 @@ void		xml_push_sphere(t_env *e, t_node *list)
 	sphere.reflex = list->reflex;
 	sphere.refract = list->refract;
 	sphere.opacity = list->opacity;
+	xml_push_sphere_effects(&sphere);
 	e->gen_objects->add(e->gen_objects, (void*)&sphere);
 }

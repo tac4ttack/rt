@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 14:14:01 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:47:26 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ typedef struct			s_object
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float3			check_size;
-	cl_uint				diff_map_id;
+	cl_float2			check_size;
+	cl_int				diff_map_id;
 	cl_float3			diff_map_size;
 }						t_object;
 
@@ -158,8 +158,8 @@ typedef struct			s_box
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float3			check_size;
-	cl_uint				diff_map_id;
+	cl_float2			check_size;
+	cl_int				diff_map_id;
 	cl_float3			diff_map_size;
 
 	cl_float3			min;
@@ -184,8 +184,8 @@ typedef struct			s_cone
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float3			check_size;
-	cl_uint				diff_map_id;
+	cl_float2			check_size;
+	cl_int				diff_map_id;
 	cl_float3			diff_map_size;
 
 	cl_float			angle;
@@ -210,8 +210,8 @@ typedef struct			s_cylinder
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float3			check_size;
-	cl_uint				diff_map_id;
+	cl_float2			check_size;
+	cl_int				diff_map_id;
 	cl_float3			diff_map_size;
 
 	cl_float			height;
@@ -238,8 +238,8 @@ typedef struct			s_plane
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float3			check_size;
-	cl_uint				diff_map_id;
+	cl_float2			check_size;
+	cl_int				diff_map_id;
 	cl_float3			diff_map_size;
 
 	cl_float			radius;
@@ -264,8 +264,8 @@ typedef struct			s_sphere
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float3			check_size;
-	cl_uint				diff_map_id;
+	cl_float2			check_size;
+	cl_int				diff_map_id;
 	cl_float3			diff_map_size;
 
 	cl_float			radius;
@@ -288,8 +288,8 @@ typedef struct			s_torus
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float3			check_size;
-	cl_uint				diff_map_id;
+	cl_float2			check_size;
+	cl_int				diff_map_id;
 	cl_float3			diff_map_size;
 
 	cl_float			opacity;
@@ -315,8 +315,8 @@ typedef struct			s_ellipsoid
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float3			check_size;
-	cl_uint				diff_map_id;
+	cl_float2			check_size;
+	cl_int				diff_map_id;
 	cl_float3			diff_map_size;
 
 	cl_float			radius;
@@ -458,6 +458,11 @@ void					init_gtk_cam(t_env *e);
 void					init_gtk_css(t_env *e);
 void					init_gtk_light(t_env *e);
 void					init_gtk_object(t_env *e);
+void					init_gtk_object_checkboard(t_env *e);
+void					init_gtk_object_diffmap(t_env *e);
+void					init_gtk_object_effects(t_env *e);
+void					init_gtk_object_limit(t_env *e);
+void					init_gtk_object_sinwave(t_env *e);
 void					init_gtk_scene(t_env *e);
 void					init_gtk_texture(t_env *e);
 void					init_gtk_toolbar(t_env *e);

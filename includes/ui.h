@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 19:17:44 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:56:38 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,35 @@ typedef	struct			s_ui
 	GtkWidget			*obj_list_torus;
 	GtkWidget			*obj_torus_lilradius_spin;
 	GtkWidget			*obj_torus_bigradius_spin;
+	
+	GtkWidget			*obj_limit_button; //
+	GtkWidget			*obj_limit_dir_spin_x; //
+	GtkWidget			*obj_limit_dir_spin_y; //
+	GtkWidget			*obj_limit_dir_spin_z; //
+	GtkWidget			*obj_limit_pos_spin_x; //
+	GtkWidget			*obj_limit_pos_spin_y; //
+	GtkWidget			*obj_limit_pos_spin_z;//
+	
+	GtkWidget			*obj_sinwave_button; //
+	GtkWidget			*obj_sinwave_param1_spin_x; //
+	GtkWidget			*obj_sinwave_param1_spin_y; //
+	GtkWidget			*obj_sinwave_param1_spin_z; //
+	GtkWidget			*obj_sinwave_param2_spin_x; //
+	GtkWidget			*obj_sinwave_param2_spin_y; //
+	GtkWidget			*obj_sinwave_param2_spin_z; //
+
+	GtkWidget			*obj_list_checkboard; //
+	GtkWidget			*obj_checkboard_button; //
+	GtkWidget			*obj_checkboard_width_spin; //
+	GtkWidget			*obj_checkboard_height_spin; //
+	
+	GtkWidget			*obj_list_texture_diff; //
+	GtkWidget			*obj_texture_diff_button; //
+	GtkWidget			*obj_texture_diff_offset_spin_x; //
+	GtkWidget			*obj_texture_diff_offset_spin_y; //
+	GtkWidget			*obj_texture_diff_ratio_spin; //
+	GtkWidget			*obj_texture_diff_chooser; //
+	
 	GtkWidget			*obj_nav_prev_btn;
 	GtkWidget			*obj_nav_next_btn;
 	GtkWidget			*obj_nav_del_btn;
@@ -143,12 +172,6 @@ typedef	struct			s_ui
 	GtkWidget			*light_nav_next_btn;
 	GtkWidget			*light_nav_add_btn;
 	GtkWidget			*light_nav_del_btn;
-	GtkWidget			*texture_wave_par1_spin_x;
-	GtkWidget			*texture_wave_par1_spin_y;
-	GtkWidget			*texture_wave_par1_spin_z;
-	GtkWidget			*texture_wave_par2_spin_x;
-	GtkWidget			*texture_wave_par2_spin_y;
-	GtkWidget			*texture_wave_par2_spin_z;
 	GtkWidget			*tool_play_btn;
 	GtkWidget			*tool_stop_btn;
 	GtkWidget			*tool_render_btn;

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 17:30:39 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:53:51 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	xml_cylinder_data_n(t_env *e, char **att, t_node *cyl_node, int *i)
 	else
 		xml_data_refract(e, att, i, cyl_node);
 	if (ft_strncmp(att[*i], "opacity=\"", 6) != 0)
-		s_error("\x1b[2;31mError in plane, OPACITY expected in #9\x1b[0m", e);
+		s_error("\x1b[2;31mError in cylinder, OPACITY expected in #9\x1b[0m", e);
 	else
 		xml_data_opacity(e, att, i, cyl_node);
 }
@@ -90,6 +90,20 @@ void		xml_node_cylinder(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
+static void	xml_push_cylinder_effects(t_cylinder *cylinder)
+{
+	cylinder->limit_pos.x = 0;
+	cylinder->limit_pos.y = 0;
+	cylinder->limit_pos.z = 0;
+	cylinder->limit_dir = cylinder->limit_pos;
+	cylinder->waves_p1 = cylinder->limit_pos;
+	cylinder->waves_p2 = cylinder->limit_pos;
+	cylinder->check_size.x = 1;
+	cylinder->check_size.y = 1;
+	cylinder->diff_map_id = -1;
+	cylinder->diff_map_size = cylinder->limit_pos;
+}
+
 void		xml_push_cyl(t_env *e, t_node *list)
 {
 	t_cylinder cylinder;
@@ -109,5 +123,6 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	cylinder.opacity = list->opacity;
 	cylinder.height = 0;
 	cylinder.base_dir = normalize_vect(list->dir);
+	xml_push_cylinder_effects(&cylinder);
 	e->gen_objects->add(e->gen_objects, (void*)&cylinder);
 }

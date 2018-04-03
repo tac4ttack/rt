@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:25 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 18:52:35 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:24:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,4 +121,5 @@ void		init_gtk_object(t_env *e)
 	init_gtk_object_first_adds(e);
 	init_gtk_object_second_adds(e);
 	init_gtk_object_third_adds(e);
+	init_gtk_object_effects(e);
 }

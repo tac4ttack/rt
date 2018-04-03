@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 19:46:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:59:05 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,26 +60,6 @@ static void	init_cb_object_second_adds(t_env *e)
 	"changed", G_CALLBACK(cb_obj_combo_type), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_add_btn), \
 	"clicked", G_CALLBACK(cb_obj_nav_add), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->tool_play_btn), \
-	"clicked", G_CALLBACK(cb_play_btn), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->tool_stop_btn), \
-	"clicked", G_CALLBACK(cb_stop_btn), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->tool_render_btn), \
-	"clicked", G_CALLBACK(cb_render_btn), (gpointer)e);
-}
-
-static void	init_cb_object_third_adds(t_env *e)
-{
-	g_signal_connect(GTK_WIDGET(e->ui->tool_export_btn), \
-	"clicked", G_CALLBACK(cb_export_btn), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->tool_about_btn), \
-	"clicked", G_CALLBACK(cb_about_btn), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->obj_list_flag_waves_check), \
-	"clicked", G_CALLBACK(cb_obj_wave_check), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->obj_list_flag_diff_check), \
-	"clicked", G_CALLBACK(cb_obj_diff_check), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->obj_list_flag_checkboard_check), \
-	"clicked", G_CALLBACK(cb_obj_checkboard_check), (gpointer)e);
 }
 
 void		init_cb_object(t_env *e)
@@ -106,5 +86,4 @@ void		init_cb_object(t_env *e)
 	"value-changed", G_CALLBACK(cb_obj_spec_x), (gpointer)e);
 	init_cb_object_first_adds(e);
 	init_cb_object_second_adds(e);
-	init_cb_object_third_adds(e);
 }

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:21 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:00:21 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:58:49 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,14 @@ void	init_gtk_toolbar(t_env *e)
 	gtk_widget_set_sensitive(e->ui->tool_play_btn, FALSE);
 	gtk_widget_set_sensitive(e->ui->tool_render_btn, FALSE);
 	gtk_widget_set_sensitive(e->ui->tool_stop_btn, TRUE);
+	g_signal_connect(GTK_WIDGET(e->ui->tool_play_btn), \
+	"clicked", G_CALLBACK(cb_play_btn), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->tool_stop_btn), \
+	"clicked", G_CALLBACK(cb_stop_btn), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->tool_render_btn), \
+	"clicked", G_CALLBACK(cb_render_btn), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->tool_export_btn), \
+	"clicked", G_CALLBACK(cb_export_btn), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->tool_about_btn), \
+	"clicked", G_CALLBACK(cb_about_btn), (gpointer)e);
 }

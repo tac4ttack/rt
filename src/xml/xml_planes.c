@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 12:54:53 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:53:38 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,20 @@ void		xml_node_plane(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
+static void	xml_push_plane_effects(t_plane *plane)
+{
+	plane->limit_pos.x = 0;
+	plane->limit_pos.y = 0;
+	plane->limit_pos.z = 0;
+	plane->limit_dir = plane->limit_pos;
+	plane->waves_p1 = plane->limit_pos;
+	plane->waves_p2 = plane->limit_pos;
+	plane->check_size.x = 1;
+	plane->check_size.y = 1;
+	plane->diff_map_id = -1;
+	plane->diff_map_size = plane->limit_pos;
+}
+
 void		xml_push_plane(t_env *e, t_node *list)
 {
 	t_plane plane;
@@ -103,5 +117,6 @@ void		xml_push_plane(t_env *e, t_node *list)
 	plane.radius = list->radius;
 	plane.refract = list->refract;
 	plane.opacity = list->opacity;
+	xml_push_plane_effects(&plane);
 	e->gen_objects->add(e->gen_objects, (void*)&plane);
 }

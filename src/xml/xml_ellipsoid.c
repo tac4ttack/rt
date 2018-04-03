@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/01 17:25:49 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:53:45 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,20 @@ void		xml_node_ellipsoid(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
+static void	xml_push_ellipsoid_effects(t_ellipsoid *ellipsoid)
+{
+	ellipsoid->limit_pos.x = 0;
+	ellipsoid->limit_pos.y = 0;
+	ellipsoid->limit_pos.z = 0;
+	ellipsoid->limit_dir = ellipsoid->limit_pos;
+	ellipsoid->waves_p1 = ellipsoid->limit_pos;
+	ellipsoid->waves_p2 = ellipsoid->limit_pos;
+	ellipsoid->check_size.x = 1;
+	ellipsoid->check_size.y = 1;
+	ellipsoid->diff_map_id = -1;
+	ellipsoid->diff_map_size = ellipsoid->limit_pos;
+}
+
 void		xml_push_ellipsoid(t_env *e, t_node *list)
 {
 	t_ellipsoid ellipsoid;
@@ -110,5 +124,6 @@ void		xml_push_ellipsoid(t_env *e, t_node *list)
 	ellipsoid.refract = list->refract;
 	ellipsoid.opacity = list->opacity;
 	ellipsoid.axis_size = list->axis_size;
+	xml_push_ellipsoid_effects(&ellipsoid);
 	e->gen_objects->add(e->gen_objects, (void*)&ellipsoid);
 }

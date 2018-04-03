@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 17:26:14 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:54:27 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,20 @@ void		xml_node_box(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
+static void	xml_push_box_effects(t_box *box)
+{
+	box->limit_pos.x = 0;
+	box->limit_pos.y = 0;
+	box->limit_pos.z = 0;
+	box->limit_dir = box->limit_pos;
+	box->waves_p1 = box->limit_pos;
+	box->waves_p2 = box->limit_pos;
+	box->check_size.x = 1;
+	box->check_size.y = 1;
+	box->diff_map_id = -1;
+	box->diff_map_size = box->limit_pos;
+}
+
 void		xml_push_box(t_env *e, t_node *list)
 {
 	t_box box;
@@ -108,5 +122,6 @@ void		xml_push_box(t_env *e, t_node *list)
 	box.opacity = list->opacity;
 	box.min = list->min;
 	box.max = list->max;
+	xml_push_box_effects(&box);
 	e->gen_objects->add(e->gen_objects, (void*)&box);
 }

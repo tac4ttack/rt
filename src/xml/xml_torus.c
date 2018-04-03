@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 12:34:52 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:53:26 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,20 @@ void		xml_node_torus(t_env *e, char *node)
 	xml_node_clean(tmp);
 }
 
+static void	xml_push_torus_effects(t_torus *torus)
+{
+	torus->limit_pos.x = 0;
+	torus->limit_pos.y = 0;
+	torus->limit_pos.z = 0;
+	torus->limit_dir = torus->limit_pos;
+	torus->waves_p1 = torus->limit_pos;
+	torus->waves_p2 = torus->limit_pos;
+	torus->check_size.x = 1;
+	torus->check_size.y = 1;
+	torus->diff_map_id = -1;
+	torus->diff_map_size = torus->limit_pos;
+}
+
 void		xml_push_torus(t_env *e, t_node *list)
 {
 	t_torus torus;
@@ -107,5 +121,6 @@ void		xml_push_torus(t_env *e, t_node *list)
 	torus.reflex = list->reflex;
 	torus.refract = list->refract;
 	torus.opacity = list->opacity;
+	xml_push_torus_effects(&torus);
 	e->gen_objects->add(e->gen_objects, (void*)&torus);
 }

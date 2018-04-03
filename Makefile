@@ -108,20 +108,24 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/gdkrgba_to_int.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
-						ui/init_cb_cam.c \
-						ui/init_cb_light.c \
-						ui/init_cb_main.c \
-						ui/init_cb_object.c \
-						ui/init_cb_scene.c \
-						ui/init_gtk_cam.c \
-						ui/init_gtk_css.c \
-						ui/init_gtk_light.c \
-						ui/init_gtk_object.c \
-						ui/init_gtk_scene.c \
-						ui/init_gtk_texture.c \
-						ui/init_gtk_toolbar.c \
-						ui/init_gtk_win.c \
-						ui/init_gtk.c \
+						ui/init/init_cb_cam.c \
+						ui/init/init_cb_light.c \
+						ui/init/init_cb_main.c \
+						ui/init/init_cb_object.c \
+						ui/init/init_cb_scene.c \
+						ui/init/init_gtk_cam.c \
+						ui/init/init_gtk_css.c \
+						ui/init/init_gtk_light.c \
+						ui/init/init_gtk_object.c \
+						ui/init/init_gtk_object_checkboard.c \
+						ui/init/init_gtk_object_diffmap.c \
+						ui/init/init_gtk_object_effects.c \
+						ui/init/init_gtk_object_limit.c \
+						ui/init/init_gtk_object_sinwave.c \
+						ui/init/init_gtk_scene.c \
+						ui/init/init_gtk_toolbar.c \
+						ui/init/init_gtk_win.c \
+						ui/init/init_gtk.c \
 						ui/ui_cam.c \
 						ui/ui_cam_update.c \
 						ui/ui_light_update.c \
@@ -191,6 +195,7 @@ $(OBJ_PATH):
 	@mkdir $(OBJ_PATH)/ui
 	@mkdir $(OBJ_PATH)/ui/add
 	@mkdir $(OBJ_PATH)/ui/callback
+	@mkdir $(OBJ_PATH)/ui/init
 	@mkdir $(OBJ_PATH)/event
 
 CPU:
