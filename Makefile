@@ -311,10 +311,7 @@ installbrewshit:
 	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)pygtk$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f pygtk
 	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)adwaita-icon-theme$(EOC)$(B_GREEN) from brew...$(EOC)"
-	brew install -f adwaita-icon-theme
-	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)glade$(EOC)$(B_GREEN) from brew...$(EOC)"
-	brew install -f glade
-	
+	brew install -f adwaita-icon-theme	
 
 norme:
 	norminette $(SRC_PATH)
