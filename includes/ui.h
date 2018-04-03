@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 18:00:06 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 19:19:23 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,8 @@ typedef	struct			s_ui
 	GtkWidget			*obj_texture_diff_button;
 	GtkWidget			*obj_texture_diff_offset_spin_x;
 	GtkWidget			*obj_texture_diff_offset_spin_y;
-	GtkWidget			*obj_texture_diff_ratio_spin;
+	GtkWidget			*obj_texture_diff_ratio_spin_x;
+	GtkWidget			*obj_texture_diff_ratio_spin_y;
 	GtkWidget			*obj_texture_diff_chooser;
 	GtkWidget			*obj_nav_prev_btn;
 	GtkWidget			*obj_nav_next_btn;
@@ -236,10 +237,6 @@ gboolean				cb_obj_checkboard_height(GtkSpinButton *spin, \
 												gpointer data);
 void					cb_obj_color(GtkColorButton *button, gpointer data);
 void					cb_obj_combo_type(GtkComboBox *box, gpointer data);
-void					cb_obj_diff_check(GtkButton *btn, gpointer data);
-gboolean				cb_obj_diff_x(GtkSpinButton *spin, gpointer data);
-gboolean				cb_obj_diff_y(GtkSpinButton *spin, gpointer data);
-gboolean				cb_obj_diff_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_z(GtkSpinButton *spin, gpointer data);
@@ -285,9 +282,9 @@ gboolean				cb_obj_texture_diff_offset_x(GtkSpinButton *spin, \
 													gpointer data);
 gboolean				cb_obj_texture_diff_offset_y(GtkSpinButton *spin, \
 													gpointer data);
-gboolean				cb_obj_texture_diff_offset_z(GtkSpinButton *spin, \
+gboolean				cb_obj_texture_diff_ratio_x(GtkSpinButton *spin, \
 													gpointer data);
-gboolean				cb_obj_texture_diff_ratio(GtkSpinButton *spin, \
+gboolean				cb_obj_texture_diff_ratio_y(GtkSpinButton *spin, \
 													gpointer data);
 void					cb_play_btn(GtkButton *btn, gpointer data);
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);

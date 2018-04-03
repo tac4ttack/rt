@@ -93,7 +93,8 @@ typedef struct			s_object
 	float3				waves_p2;
 	float2				check_size;
 	int					diff_map_id;
-	float3				diff_map_size;
+	float2				diff_offset;
+	float2				diff_ratio;
 }						t_object;
 
 typedef struct			s_box
@@ -116,7 +117,8 @@ typedef struct			s_box
 	float3				waves_p2;
 	float2				check_size;
 	int					diff_map_id;
-	float3				diff_map_size;
+	float2				diff_offset;
+	float2				diff_ratio;
 
 	float3				min;
 	float3				max;
@@ -142,7 +144,8 @@ typedef struct			s_cone
 	float3				waves_p2;
 	float2				check_size;
 	int					diff_map_id;
-	float3				diff_map_size;
+	float2				diff_offset;
+	float2				diff_ratio;
 
 	float				angle;
 	float3				u_axis;
@@ -168,7 +171,8 @@ typedef struct			s_cylinder
 	float3				waves_p2;
 	float2				check_size;
 	int					diff_map_id;
-	float3				diff_map_size;
+	float2				diff_offset;
+	float2				diff_ratio;
 
 	float				height;
 	float3				base_dir;
@@ -196,7 +200,8 @@ typedef struct			s_plane
 	float3				waves_p2;
 	float2				check_size;
 	int					diff_map_id;
-	float3				diff_map_size;
+	float2				diff_offset;
+	float2				diff_ratio;
 
 	float				radius;
 	float3				u_axis;
@@ -222,7 +227,8 @@ typedef struct			s_sphere
 	float3				waves_p2;
 	float2				check_size;
 	int					diff_map_id;
-	float3				diff_map_size;
+	float2				diff_offset;
+	float2				diff_ratio;
 
 	float				radius;
 }						t_sphere;
@@ -247,7 +253,8 @@ typedef struct			s_ellipsoid
 	float3				waves_p2;
 	float2				check_size;
 	int					diff_map_id;
-	float3				diff_map_size;
+	float2				diff_offset;
+	float2				diff_ratio;
 
 	float				radius;
 	float3				axis_size;
@@ -273,7 +280,8 @@ typedef struct			s_thor
 	float3				waves_p2;
 	float2				check_size;
 	int					diff_map_id;
-	float3				diff_map_size;
+	float2				diff_offset;
+	float2				diff_ratio;
 	
 	float				lil_radius;
 	float				big_radius;
@@ -2056,6 +2064,8 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		
 		// if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			// hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4096, 2048, 4096, 2048, 0, 0);
+
+			
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color);
 		

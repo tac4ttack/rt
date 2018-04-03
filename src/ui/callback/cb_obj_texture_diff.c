@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 15:47:45 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 16:10:00 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 19:23:08 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ gboolean		cb_obj_texture_diff_offset_x(GtkSpinButton *spin, gpointer data)
 	e = data;
 	obj = e->gen_objects->mem + e->target;
 	value = gtk_spin_button_get_value(spin);
-	obj->diff_map_size.x = (float)value;
+	obj->diff_offset.x = (float)value;
 	return (TRUE);
 }
 
@@ -48,11 +48,11 @@ gboolean		cb_obj_texture_diff_offset_y(GtkSpinButton *spin, gpointer data)
 	e = data;
 	obj = e->gen_objects->mem + e->target;
 	value = gtk_spin_button_get_value(spin);
-	obj->diff_map_size.y = (float)value;
+	obj->diff_offset.y = (float)value;
 	return (TRUE);
 }
 
-gboolean		cb_obj_texture_diff_ratio(GtkSpinButton *spin, gpointer data)
+gboolean		cb_obj_texture_diff_ratio_x(GtkSpinButton *spin, gpointer data)
 {
 	gdouble		value;
 	t_env		*e;
@@ -61,24 +61,19 @@ gboolean		cb_obj_texture_diff_ratio(GtkSpinButton *spin, gpointer data)
 	e = data;
 	obj = e->gen_objects->mem + e->target;
 	value = gtk_spin_button_get_value(spin);
-	obj->diff_map_size.z = (float)value;
+	obj->diff_ratio.x = (float)value;
 	return (TRUE);
 }
 
-void		cb_obj_texture_diff_chooser(GtkComboBox *box, gpointer data)
+gboolean		cb_obj_texture_diff_ratio_y(GtkSpinButton *spin, gpointer data)
 {
-	t_env	*e;
-//	gint	index;
-	//void	*obj;
+	gdouble		value;
+	t_env		*e;
+	t_object	*obj;
 
 	e = data;
-	(void)box;
-	ft_putendl("TOTO CACA!");
-	// index = gtk_combo_box_get_active(box);
-	// if (index > -1)
-	// {
-	// 	obj = gen_get_index_ptr(e->gen_objects, index);
-	// 	e->target = obj - e->gen_objects->mem;
-	// 	ui_obj_update(e, obj);
-	// }
+	obj = e->gen_objects->mem + e->target;
+	value = gtk_spin_button_get_value(spin);
+	obj->diff_ratio.y = (float)value;
+	return (TRUE);
 }

@@ -77,8 +77,6 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_checkboard.c \
 						ui/callback/cb_obj_color.c \
 						ui/callback/cb_obj_combo_type.c \
-						ui/callback/cb_obj_diff_check.c \
-						ui/callback/cb_obj_diff.c \
 						ui/callback/cb_obj_dir.c \
 						ui/callback/cb_obj_jump.c \
 						ui/callback/cb_obj_limit_btn.c \
@@ -97,6 +95,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_sinwave_param2.c \
 						ui/callback/cb_obj_spec.c \
 						ui/callback/cb_obj_texture_diff.c \
+						ui/callback/cb_obj_texture_diff_chooser.c \
 						ui/callback/cb_postproc_radio.c \
 						ui/callback/cb_render_btnpress.c \
 						ui/callback/cb_render_btnrelease.c \

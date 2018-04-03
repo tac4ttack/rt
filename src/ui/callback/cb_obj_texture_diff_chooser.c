@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cb_obj_diff_check.c                                :+:      :+:    :+:   */
+/*   cb_obj_texture_diff_chooser.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/30 20:17:37 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 18:14:11 by fmessina         ###   ########.fr       */
+/*   Created: 2018/04/03 15:47:45 by fmessina          #+#    #+#             */
+/*   Updated: 2018/04/03 19:22:23 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void			cb_obj_diff_check(GtkButton *btn, gpointer data)
+void		cb_obj_texture_diff_chooser(GtkComboBox *box, gpointer data)
 {
-	t_env		*e;
-	t_object	*obj;
+	t_env	*e;
+//	gint	index;
+	//void	*obj;
 
-	(void)btn;
 	e = data;
-	obj = e->gen_objects->mem + e->target;
-	if (obj->flags & OBJ_FLAG_DIFF_MAP)
-		obj->flags ^= OBJ_FLAG_DIFF_MAP;
-	else
-	{
-		if (obj->flags & OBJ_FLAG_CHECKERED)
-			obj->flags ^= OBJ_FLAG_CHECKERED;
-		obj->flags |= OBJ_FLAG_DIFF_MAP;
-	}
+	(void)box;
+	ft_putendl("TOTO CACA!");
+	// index = gtk_combo_box_get_active(box);
+	// if (index > -1)
+	// {
+	// 	obj = gen_get_index_ptr(e->gen_objects, index);
+	// 	e->target = obj - e->gen_objects->mem;
+	// 	ui_obj_update(e, obj);
+	// }
 }

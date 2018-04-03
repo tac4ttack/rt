@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 18:37:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 19:20:31 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ typedef struct			s_object
 	cl_float3			waves_p2;
 	cl_float2			check_size;
 	cl_int				diff_map_id;
-	cl_float3			diff_map_size;
+	cl_float2			diff_offset;
+	cl_float2			diff_ratio;
 }						t_object;
 
 typedef struct			s_fps
@@ -161,7 +162,8 @@ typedef struct			s_box
 	cl_float3			waves_p2;
 	cl_float2			check_size;
 	cl_int				diff_map_id;
-	cl_float3			diff_map_size;
+	cl_float2			diff_offset;
+	cl_float2			diff_ratio;
 
 	cl_float3			min;
 	cl_float3			max;
@@ -187,7 +189,8 @@ typedef struct			s_cone
 	cl_float3			waves_p2;
 	cl_float2			check_size;
 	cl_int				diff_map_id;
-	cl_float3			diff_map_size;
+	cl_float2			diff_offset;
+	cl_float2			diff_ratio;
 
 	cl_float			angle;
 	cl_float3			u_axis;
@@ -213,7 +216,8 @@ typedef struct			s_cylinder
 	cl_float3			waves_p2;
 	cl_float2			check_size;
 	cl_int				diff_map_id;
-	cl_float3			diff_map_size;
+	cl_float2			diff_offset;
+	cl_float2			diff_ratio;
 
 	cl_float			height;
 	cl_float3			base_dir;
@@ -241,7 +245,8 @@ typedef struct			s_plane
 	cl_float3			waves_p2;
 	cl_float2			check_size;
 	cl_int				diff_map_id;
-	cl_float3			diff_map_size;
+	cl_float2			diff_offset;
+	cl_float2			diff_ratio;
 
 	cl_float			radius;
 	cl_float3			u_axis;
@@ -267,7 +272,8 @@ typedef struct			s_sphere
 	cl_float3			waves_p2;
 	cl_float2			check_size;
 	cl_int				diff_map_id;
-	cl_float3			diff_map_size;
+	cl_float2			diff_offset;
+	cl_float2			diff_ratio;
 
 	cl_float			radius;
 }						t_sphere;
@@ -291,7 +297,8 @@ typedef struct			s_torus
 	cl_float3			waves_p2;
 	cl_float2			check_size;
 	cl_int				diff_map_id;
-	cl_float3			diff_map_size;
+	cl_float2			diff_offset;
+	cl_float2			diff_ratio;
 
 	cl_float			opacity;
 	cl_float			lil_radius;
@@ -318,7 +325,8 @@ typedef struct			s_ellipsoid
 	cl_float3			waves_p2;
 	cl_float2			check_size;
 	cl_int				diff_map_id;
-	cl_float3			diff_map_size;
+	cl_float2			diff_offset;
+	cl_float2			diff_ratio;
 
 	cl_float			radius;
 	cl_float3			axis_size;

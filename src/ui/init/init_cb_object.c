@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 14:59:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 19:30:34 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,6 @@ void		init_cb_object(t_env *e)
 	"value-changed", G_CALLBACK(cb_obj_dir_y), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_list_dir_spin_z), \
 	"value-changed", G_CALLBACK(cb_obj_dir_z), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->obj_list_diff_spin_x), \
-	"value-changed", G_CALLBACK(cb_obj_diff_x), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->obj_list_diff_spin_y), \
-	"value-changed", G_CALLBACK(cb_obj_diff_y), (gpointer)e);
-	g_signal_connect(GTK_WIDGET(e->ui->obj_list_diff_spin_z), \
-	"value-changed", G_CALLBACK(cb_obj_diff_z), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_list_spec_spin_x), \
 	"value-changed", G_CALLBACK(cb_obj_spec_x), (gpointer)e);
 	init_cb_object_first_adds(e);
