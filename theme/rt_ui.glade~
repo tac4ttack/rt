@@ -1933,7 +1933,7 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="margin_top">3</property>
                                                         <property name="margin_bottom">3</property>
                                                         <child>
-                                                          <object class="GtkLabel" id="obj_list_limit_pos_label">
+                                                          <object class="GtkLabel" id="obj_limit_pos_label">
                                                             <property name="width_request">90</property>
                                                             <property name="visible">True</property>
                                                             <property name="sensitive">False</property>
@@ -1948,7 +1948,7 @@ ntoniolo - Noé TONIOLO</property>
                                                           </packing>
                                                         </child>
                                                         <child>
-                                                          <object class="GtkSpinButton" id="obj_list_limit_pos_spin_x">
+                                                          <object class="GtkSpinButton" id="obj_limit_pos_spin_x">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="tooltip_text" translatable="yes">plane.limit.position.X
@@ -1971,7 +1971,7 @@ ntoniolo - Noé TONIOLO</property>
                                                           </packing>
                                                         </child>
                                                         <child>
-                                                          <object class="GtkSpinButton" id="obj_list_limit_pos_spin_y">
+                                                          <object class="GtkSpinButton" id="obj_limit_pos_spin_y">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="tooltip_text" translatable="yes"> plane.limit.position.Y</property>
@@ -1993,7 +1993,7 @@ ntoniolo - Noé TONIOLO</property>
                                                           </packing>
                                                         </child>
                                                         <child>
-                                                          <object class="GtkSpinButton" id="obj_list_limit_pos_spin_z">
+                                                          <object class="GtkSpinButton" id="obj_limit_pos_spin_z">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="tooltip_text" translatable="yes">plane.limit.position.Z</property>
@@ -2150,7 +2150,7 @@ settings 1</property>
                                                           </packing>
                                                         </child>
                                                         <child>
-                                                          <object class="GtkSpinButton" id="obj_sinwave_param1_pin_z">
+                                                          <object class="GtkSpinButton" id="obj_sinwave_param1_spin_z">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="tooltip_text" translatable="yes">sinwave.param1.Z
@@ -2629,7 +2629,7 @@ max_ratio = 100</property>
                                                           </packing>
                                                         </child>
                                                         <child>
-                                                          <object class="GtkComboBoxText" id="obj_texture_diff_WWchooser_combo">
+                                                          <object class="GtkComboBoxText" id="obj_texture_diff_chooser">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
                                                             <property name="margin_left">10</property>
@@ -2672,7 +2672,7 @@ max_ratio = 100</property>
                                             <property name="visible">True</property>
                                             <property name="sensitive">False</property>
                                             <property name="can_focus">True</property>
-                                            <property name="margin_top">10</property>
+                                            <property name="margin_top">12</property>
                                             <property name="margin_bottom">5</property>
                                             <child>
                                               <object class="GtkSeparator" id="obj_list_separator">
