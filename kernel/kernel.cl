@@ -858,7 +858,7 @@ static float	inter_plan(const __local t_plane *plane, const float3 ray, const fl
 /*
 ** CYLINDER FUNCTIONS //////////////////////////////////////////////////////////
 */
-static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsigned int __global *texture, int width, int height)
+static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsigned int __global *texture, int t_width, int t_height)
 {
 	unsigned int	color = 0;
 	float3			v_axis;
@@ -870,20 +870,34 @@ static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsig
 	dir = fast_normalize(cyl->dir);
 	v_axis = cross(cyl->u_axis, dir);
 	npos = fast_length(dot(pos, dir) * dir);
-	while (npos > cyl->diff_map_size.z)
-		npos -= cyl->diff_map_size.z;
+	while (npos > 10)
+		npos -= 10;
 	if (dot(pos, dir) < 0)
-		npos = (npos - cyl->diff_map_size.z) * -1;
-	uv.y = (int)floor((npos / cyl->diff_map_size.z) * height + cyl->diff_map_size.y);
+		npos = (npos - 10) * -1;
+	uv.y = (int)floor((npos / 10) * t_height * cyl->diff_ratio.y + cyl->diff_offset.y);
 	npos = dot(pos, cyl->u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * width + cyl->diff_map_size.x);
+	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * t_width * cyl->diff_ratio.x + cyl->diff_offset.x);
+	if (uv.x < 0)
+	{
+		uv.x %= t_width;
+		uv.x = (uv.x - t_width) * -1;
+	}
+	uv.x %= t_width;
+	if (uv.y < 0)
+		uv.y %= t_height;
+	else
+	{
+		uv.y %= t_height;
+		uv.y = (uv.y - t_height) * -1;
+	}
+
 	// uv.y = (uv.y - height) * -1;
 	// if ((uv.x += decx) > width)   Decalage;
 	// 	uv.x -= width;
 	// if ((uv.y += decy) > height)
 	// 	uv.y -= height;
-	color = (unsigned int)texture[uv.x + (uv.y * width)];
+	color = (unsigned int)texture[uv.x + (uv.y * t_width)];
 	return (color);
 }
 
@@ -1303,26 +1317,26 @@ static unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, 
 {
 	unsigned int	color = 0;
 	int2			uv;
+	int2			size;
 
-	uv.x = (int)floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * ratio.x * t_width + offset.x);
-	uv.y = (int)floor((0.5 - (asin(pos.y) / M_PI)) * ratio.y * t_height + offset.y);
+	size.x = (int)floor(t_width * ratio.x);
+	size.y = (int)floor(t_height * ratio.y);
+	uv.x = (int)floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * size.x + offset.x);
+	uv.y = (int)floor((0.5 - (asin(pos.y) / M_PI)) * size.y + offset.y);
 	if (uv.x < 0)
 	{
-		uv.x %= t_width * -ratio.x;
-		uv.x = (uv.x + t_width * ratio.x)) * -1;
+		uv.x %= t_width;
+		uv.x = (uv.x - t_width) * -1;
 	}
 	else
-		uv.x %= t_width * ratio.x;
+		uv.x %= t_width;
 	if (uv.y < 0)
-		uv.y %= t_height * -ratio.y;
+		uv.y %= t_height;
 	else
 	{
-		uv.y %= t_height * ratio.y;
-		uv.y = (uv.y - ratio.y * t_height) * -1;
+		uv.y %= t_height;
+		uv.y = (uv.y - t_height) * -1;
 	}
-	 //deplacement gauche / droite
-	uv.x = uv.x % t_width;
-	uv.y = uv.y % t_height; //deplacement haut / bas
 	color = texture[uv.x + uv.y * t_width];
 	return (color);
 }
@@ -1365,7 +1379,7 @@ static float	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 /*
 ** CONES FUNCTIONS /////////////////////////////////////////////////////////////
 */
-static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigned int __global *texture, int t_width, int t_height, int w_ratio, int h_ratio, float3 diff_map_size)
+static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigned int __global *texture, int t_width, int t_height, float2 ratio, float2 offset)
 {
 	unsigned int	color = 0;
 	float3			v_axis;
@@ -1378,16 +1392,27 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigne
 	v_axis = cross(u_axis, dir);
 	npos = dot(pos, dir);
 	radius = fast_length(pos - (npos * dir));
-	while (npos > diff_map_size.z)
-		npos -= diff_map_size.z;
+	while (npos > 10)
+		npos -= 10;
 	while (npos < 0)
-		npos += diff_map_size.z;
-	uv.y = (int)floor((fast_length(npos * dir) / diff_map_size.z) * h_ratio + diff_map_size.y);
+		npos += 10;
+	uv.y = (int)floor((fast_length(npos * dir) / 10) * ratio.y * t_height + offset.y);
 	npos = dot(pos, u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * w_ratio + diff_map_size.x);
+	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * ratio.x * t_width + offset.x);
+	if (uv.x < 0)
+	{
+		uv.x %= t_width;
+		uv.x = (uv.x - t_width) * -1;
+	}
 	uv.x %= t_width;
-	uv.y %= t_height;
+	if (uv.y < 0)
+		uv.y %= t_height;
+	else
+	{
+		uv.y %= t_height;
+		uv.y = (uv.y - t_height) * -1;
+	}
 	color = (unsigned int)texture[uv.x + (uv.y * t_width)];
 	return (color);
 }
@@ -2080,7 +2105,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 		
 		 if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			 hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, 4915, 2457, 0, 0);
+			 hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)hit.obj)->diff_ratio, ((__local t_sphere *)hit.obj)->diff_offset);
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color);
 		
@@ -2093,7 +2118,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 			hit.color = cylinder_texture(hit.pos - hit.obj->pos, (__local t_cylinder *)hit.obj, scene->texture_star, 1500, 1500);
 
 		if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = cone_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cone *)hit.obj)->u_axis), scene->texture_star, 1500, 1500, 1500, 1500; hit.obj->diff_map_size;
+			hit.color = cone_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cone *)hit.obj)->u_axis), scene->texture_star, 1500, 1500, 1500, 1500);
 
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
