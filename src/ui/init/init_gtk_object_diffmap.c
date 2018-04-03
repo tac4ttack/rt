@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 14:41:05 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 14:42:33 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 17:59:47 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	init_gtk_object_diffmap(t_env *e)
 {
+	e->ui->obj_list_texture_diff = GTK_WIDGET(gtk_builder_get_object(\
+	e->ui->builder, "obj_list_texture_diff"));
+
 	e->ui->obj_list_texture_diff = GTK_WIDGET(gtk_builder_get_object(\
 	e->ui->builder, "obj_list_texture_diff"));
 	e->ui->obj_texture_diff_button = GTK_WIDGET(gtk_builder_get_object(\
