@@ -115,6 +115,18 @@ ntoniolo - Noé TONIOLO</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="checkboard_hieght_adjustement">
+    <property name="lower">1</property>
+    <property name="upper">1000</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="checkboard_width_adjustement">
+    <property name="lower">1</property>
+    <property name="upper">1000</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
   <object class="GtkAdjustment" id="cone_angle_adjustement">
     <property name="lower">1</property>
     <property name="upper">175</property>
@@ -136,6 +148,24 @@ ntoniolo - Noé TONIOLO</property>
     <property name="upper">6</property>
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="diffuse_map_offset_x_adjustement">
+    <property name="lower">-10000</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="diffuse_map_offset_y_adjustement">
+    <property name="lower">-10000</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="diffuse_map_ratio_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="ellipsoid_axis_adjustement_x">
     <property name="lower">-1000</property>
@@ -372,6 +402,42 @@ ntoniolo - Noé TONIOLO</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">1</property>
   </object>
+  <object class="GtkAdjustment" id="plane_limit_dir_x_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="plane_limit_dir_y_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="plane_limit_dir_z_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="plane_limit_pos_x_adjustement">
+    <property name="lower">-10000</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="plane_limit_pos_y_adjustement">
+    <property name="lower">-10000</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="plane_limit_pos_z_adjustement">
+    <property name="lower">-10000</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">1</property>
+  </object>
   <object class="GtkAdjustment" id="red_ambient_adjustement">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
@@ -410,6 +476,42 @@ ntoniolo - Noé TONIOLO</property>
   <object class="GtkAdjustment" id="torus_lilradius_adjustement">
     <property name="lower">0.25</property>
     <property name="upper">10000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="wave_param1_x_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="wave_param1_y_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="wave_param1_z_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="wave_param2_x_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="wave_param2_y_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="wave_param2_z_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">1</property>
   </object>
@@ -1224,748 +1326,6 @@ ntoniolo - Noé TONIOLO</property>
                                           </object>
                                         </child>
                                         <child>
-                                          <object class="GtkListBoxRow" id="obj_list_limit">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="margin_top">10</property>
-                                            <child>
-                                              <object class="GtkBox" id="obj_list_limit_box">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="halign">end</property>
-                                                <property name="margin_top">3</property>
-                                                <property name="margin_bottom">3</property>
-                                                <child>
-                                                  <object class="GtkButton" id="obj_list_flag_limit_check">
-                                                    <property name="label" translatable="yes">Enable/Disable
- "Plane limit"</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="receives_default">True</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkListBoxRow" id="obj_list_limit_dir">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <child>
-                                              <object class="GtkBox" id="obj_list_limit_dir_box">
-                                                <property name="height_request">35</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="margin_top">3</property>
-                                                <property name="margin_bottom">3</property>
-                                                <child>
-                                                  <object class="GtkLabel" id="obj_list_limit_dir_label">
-                                                    <property name="width_request">90</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="sensitive">False</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current object's direction</property>
-                                                    <property name="label" translatable="yes">Limit Direction</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_list_limit_dir_spin_x">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">direction.X</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">0,000</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">obj_dir_adjustement_x</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_list_limit_dir_spin_y">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">direction.Y</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">0,000</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">obj_dir_adjustement_y</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">2</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_list_limit_dir_spin_z">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">direction.Z</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">0,000</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">obj_dir_adjustement_z</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">3</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkListBoxRow" id="obj_list_limit_pos">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <child>
-                                              <object class="GtkBox" id="obj_list_limit_pos_box">
-                                                <property name="height_request">35</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="margin_top">3</property>
-                                                <property name="margin_bottom">3</property>
-                                                <child>
-                                                  <object class="GtkLabel" id="obj_list_limit_pos_label">
-                                                    <property name="width_request">90</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="sensitive">False</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current object's direction</property>
-                                                    <property name="label" translatable="yes">Limit Position</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_list_limit_pos_spin_x">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">direction.X</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">0,000</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">obj_dir_adjustement_x</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_list_limit_pos_spin_y">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">direction.Y</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">0,000</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">obj_dir_adjustement_y</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">2</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_list_limit_pos_spin_z">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">direction.Z</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">0,000</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">obj_dir_adjustement_z</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">3</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">3</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkListBoxRow" id="obj_list_sinwave">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="margin_top">10</property>
-                                            <child>
-                                              <object class="GtkBox" id="obj_list_sinwave_box">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="halign">end</property>
-                                                <property name="margin_top">3</property>
-                                                <property name="margin_bottom">3</property>
-                                                <child>
-                                                  <object class="GtkButton" id="obj_list_flag_waves_check">
-                                                    <property name="label" translatable="yes">Enable/Disable
-   "Sin Wave"</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="receives_default">True</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkListBoxRow" id="obj_list_sinwave_param1">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <child>
-                                              <object class="GtkBox" id="texture_wave_par1_box">
-                                                <property name="height_request">40</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="margin_top">3</property>
-                                                <property name="margin_bottom">3</property>
-                                                <child>
-                                                  <object class="GtkLabel" id="texture_wave_par1_label">
-                                                    <property name="visible">True</property>
-                                                    <property name="sensitive">False</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Adjust the first parameter used for the "Sin Waves" effect</property>
-                                                    <property name="label" translatable="yes">"Sin Waves"
-settings 1</property>
-                                                    <property name="justify">center</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="texture_wave_par1_spin_x">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">sinwave.param1.X
-(between -100 and 100)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">-0,01</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">wave_param1_x_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">-0.01</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="texture_wave_par1_spin_y">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">sinwave.param1.Y
-(between -100 and 100)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">-0,01</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">wave_param1_y_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">-0.01</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">2</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="texture_wave_par1_spin_z">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">sinwave.param1.Z
-(between -100 and 100)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">-0,01</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">wave_param1_z_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">-0.01</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">3</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkListBoxRow" id="obj_list_sinwave_param2">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <child>
-                                              <object class="GtkBox" id="texture_wave_par2_box">
-                                                <property name="height_request">40</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="margin_top">3</property>
-                                                <property name="margin_bottom">3</property>
-                                                <child>
-                                                  <object class="GtkLabel" id="texture_wave_par2_label">
-                                                    <property name="visible">True</property>
-                                                    <property name="sensitive">False</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Adjust the second parameter used for the "Sin Waves" effect</property>
-                                                    <property name="label" translatable="yes">"Sin Waves"
-settings 2</property>
-                                                    <property name="justify">center</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="texture_wave_par2_spin_x">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">sinwave.param2.X
-(between -100 and 100)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">-0,01</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">wave_param2_x_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">-0.01</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="texture_wave_par2_spin_y">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">sinwave.param2.Y
-(between -100 and 100)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">-0,01</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">wave_param2_y_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">-0.01</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">2</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="texture_wave_par2_spin_z">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">sinwave.param2.Z
-(between -100 and 100)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">-0,01</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">wave_param2_z_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">-0.01</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">3</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkListBoxRow" id="obj_list_checkboard">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="margin_top">10</property>
-                                            <child>
-                                              <object class="GtkBox" id="obj_list_checkboard_box">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="halign">end</property>
-                                                <property name="margin_top">3</property>
-                                                <property name="margin_bottom">3</property>
-                                                <child>
-                                                  <object class="GtkButton" id="obj_list_flag_checkboard_check">
-                                                    <property name="label" translatable="yes">  Enable/Disable  
-"Checked Pattern"</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="receives_default">True</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkListBoxRow" id="obj_list_checkboard_param">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <child>
-                                              <object class="GtkBox" id="obj_list_checkboard_bo">
-                                                <property name="height_request">35</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="margin_top">3</property>
-                                                <property name="margin_bottom">3</property>
-                                                <child>
-                                                  <object class="GtkLabel" id="obj_list_checkboard_width_label">
-                                                    <property name="width_request">60</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="sensitive">False</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current object's reflexion setting</property>
-                                                    <property name="label" translatable="yes">Width</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_list_checkboard_width_spin">
-                                                    <property name="width_request">133</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Reflexion index (between 0 and 1)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="max_length">4</property>
-                                                    <property name="width_chars">4</property>
-                                                    <property name="text" translatable="yes">1,00</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">obj_reflex_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="numeric">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">1</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkLabel" id="obj_list_checkboard_height_label">
-                                                    <property name="width_request">60</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="sensitive">False</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current object's refraction setting</property>
-                                                    <property name="label" translatable="yes">Height</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">2</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_list_checkboard_height_spin">
-                                                    <property name="width_request">133</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Refraction index (0 to disable, between 1 and 100)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="max_length">4</property>
-                                                    <property name="width_chars">4</property>
-                                                    <property name="text" translatable="yes">6,00</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">obj_refrac_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="numeric">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">6</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">3</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkListBoxRow" id="obj_list_texture_flag">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="margin_top">10</property>
-                                            <child>
-                                              <object class="GtkBox" id="obj_list_texture_flag_box">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="halign">end</property>
-                                                <property name="margin_top">3</property>
-                                                <property name="margin_bottom">3</property>
-                                                <child>
-                                                  <object class="GtkButton" id="obj_list_flag_diff_check">
-                                                    <property name="label" translatable="yes">Enable/Disable
- "Diffuse Map"</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="receives_default">True</property>
-                                                    <property name="margin_left">10</property>
-                                                    <property name="margin_right">10</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkListBoxRow" id="obj_list_texture">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <child>
-                                              <object class="GtkBox" id="obj_list_texture_box">
-                                                <property name="height_request">40</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="margin_top">3</property>
-                                                <property name="margin_bottom">10</property>
-                                                <child>
-                                                  <object class="GtkLabel" id="obj_list_texture_offset_label">
-                                                    <property name="visible">True</property>
-                                                    <property name="sensitive">False</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Adjust the second parameter used for the "Sin Waves" effect</property>
-                                                    <property name="label" translatable="yes">Offset</property>
-                                                    <property name="justify">center</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_list_texture_offset_spin_x">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">sinwave.param2.X
-(between -100 and 100)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">-0,01</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">wave_param2_x_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">-0.01</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_list_texture_offset_spin_y">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">sinwave.param2.Y
-(between -100 and 100)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">-0,01</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">wave_param2_y_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">-0.01</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">2</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkLabel" id="obj_list_texture_ratio_label">
-                                                    <property name="visible">True</property>
-                                                    <property name="sensitive">False</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Adjust the second parameter used for the "Sin Waves" effect</property>
-                                                    <property name="label" translatable="yes">Ratio</property>
-                                                    <property name="justify">center</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">3</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_list_texture_ratio_spin">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">sinwave.param2.Z
-(between -100 and 100)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">-0,01</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">wave_param2_z_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="wrap">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">-0.01</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">True</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">4</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
                                           <object class="GtkListBoxRow" id="obj_list_cone">
                                             <property name="height_request">35</property>
                                             <property name="visible">True</property>
@@ -2006,58 +1366,6 @@ settings 2</property>
                                                     <property name="numeric">True</property>
                                                     <property name="update_policy">if-valid</property>
                                                     <property name="value">6</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkListBoxRow" id="obj_list_cylinder">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <child>
-                                              <object class="GtkBox" id="obj_list_cylinder_box">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <child>
-                                                  <object class="GtkLabel" id="obj_cylinder_radius_label">
-                                                    <property name="width_request">60</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="sensitive">False</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current cylinder's diameter</property>
-                                                    <property name="label" translatable="yes">Diameter</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_cylinder_radius_spin">
-                                                    <property name="width_request">133</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Diameter (between 0.25 and 10000)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">1,00</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">cylinder_radius_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="numeric">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">1</property>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -2231,6 +1539,110 @@ settings 2</property>
                                           </object>
                                         </child>
                                         <child>
+                                          <object class="GtkListBoxRow" id="obj_list_sphere">
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <object class="GtkBox" id="obj_list_sphere_box">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="obj_sphere_radius_label">
+                                                    <property name="width_request">60</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="tooltip_text" translatable="yes">Current sphere's radius</property>
+                                                    <property name="label" translatable="yes">Radius</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="obj_sphere_radius_spin">
+                                                    <property name="width_request">133</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">Radius (between 0.25 and 10000)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="width_chars">0</property>
+                                                    <property name="text" translatable="yes">6,00</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">sphere_radius_adjustement</property>
+                                                    <property name="climb_rate">0.01</property>
+                                                    <property name="digits">2</property>
+                                                    <property name="numeric">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                    <property name="value">6</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_cylinder">
+                                            <property name="height_request">35</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <child>
+                                              <object class="GtkBox" id="obj_list_cylinder_box">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="obj_cylinder_radius_label">
+                                                    <property name="width_request">60</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="tooltip_text" translatable="yes">Current cylinder's diameter</property>
+                                                    <property name="label" translatable="yes">Diameter</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="obj_cylinder_radius_spin">
+                                                    <property name="width_request">133</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="tooltip_text" translatable="yes">Diameter (between 0.25 and 10000)</property>
+                                                    <property name="margin_left">5</property>
+                                                    <property name="margin_right">5</property>
+                                                    <property name="width_chars">0</property>
+                                                    <property name="text" translatable="yes">1,00</property>
+                                                    <property name="input_purpose">number</property>
+                                                    <property name="adjustment">cylinder_radius_adjustement</property>
+                                                    <property name="climb_rate">0.01</property>
+                                                    <property name="digits">2</property>
+                                                    <property name="numeric">True</property>
+                                                    <property name="update_policy">if-valid</property>
+                                                    <property name="value">1</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
                                           <object class="GtkListBoxRow" id="obj_list_plane">
                                             <property name="height_request">35</property>
                                             <property name="visible">True</property>
@@ -2284,58 +1696,6 @@ settings 2</property>
                                           </object>
                                         </child>
                                         <child>
-                                          <object class="GtkListBoxRow" id="obj_list_sphere">
-                                            <property name="height_request">35</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <child>
-                                              <object class="GtkBox" id="obj_list_sphere_box">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <child>
-                                                  <object class="GtkLabel" id="obj_sphere_radius_label">
-                                                    <property name="width_request">60</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="sensitive">False</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="tooltip_text" translatable="yes">Current sphere's radius</property>
-                                                    <property name="label" translatable="yes">Radius</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="obj_sphere_radius_spin">
-                                                    <property name="width_request">133</property>
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Radius (between 0.25 and 10000)</property>
-                                                    <property name="margin_left">5</property>
-                                                    <property name="margin_right">5</property>
-                                                    <property name="width_chars">0</property>
-                                                    <property name="text" translatable="yes">6,00</property>
-                                                    <property name="input_purpose">number</property>
-                                                    <property name="adjustment">sphere_radius_adjustement</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">2</property>
-                                                    <property name="numeric">True</property>
-                                                    <property name="update_policy">if-valid</property>
-                                                    <property name="value">6</property>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
                                           <object class="GtkListBoxRow" id="obj_list_torus">
                                             <property name="height_request">35</property>
                                             <property name="visible">True</property>
@@ -2346,7 +1706,7 @@ settings 2</property>
                                                 <property name="can_focus">False</property>
                                                 <child>
                                                   <object class="GtkLabel" id="obj_torus_bigradius_label">
-                                                    <property name="width_request">90</property>
+                                                    <property name="width_request">60</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
@@ -2385,7 +1745,7 @@ settings 2</property>
                                                 </child>
                                                 <child>
                                                   <object class="GtkLabel" id="obj_torus_lilradius_label">
-                                                    <property name="width_request">90</property>
+                                                    <property name="width_request">70</property>
                                                     <property name="visible">True</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">False</property>
@@ -2421,6 +1781,885 @@ settings 2</property>
                                                     <property name="fill">True</property>
                                                     <property name="position">3</property>
                                                   </packing>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_limit">
+                                            <property name="width_request">100</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="margin_top">10</property>
+                                            <child>
+                                              <object class="GtkExpander" id="obj_expand_limit">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <child>
+                                                  <object class="GtkBox" id="obj_limit_box">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="orientation">vertical</property>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_limit_button_box">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="halign">center</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">3</property>
+                                                        <child>
+                                                          <object class="GtkButton" id="obj_limit_button">
+                                                            <property name="label" translatable="yes">Enable/Disable
+ "Plane limit"</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="receives_default">True</property>
+                                                            <property name="tooltip_text" translatable="yes">Limit the object with plane defined below</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_limit_dir_box">
+                                                        <property name="height_request">35</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">3</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_limit_dir_label">
+                                                            <property name="width_request">90</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="sensitive">False</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="tooltip_text" translatable="yes">Plane limiter direction</property>
+                                                            <property name="label" translatable="yes">Limit Direction</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_limit_dir_spin_x">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">plane.limit.direction.X</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">plane_limit_dir_x_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_limit_dir_spin_y">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">plane.limit.direction.Y</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">plane_limit_dir_y_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_limit_dir_spin_z">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">plane.limit.direction.Z</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">plane_limit_dir_z_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">3</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_limit_pos_box">
+                                                        <property name="height_request">35</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">3</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_list_limit_pos_label">
+                                                            <property name="width_request">90</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="sensitive">False</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="tooltip_text" translatable="yes">Plane limiter position</property>
+                                                            <property name="label" translatable="yes">Limit Position</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_list_limit_pos_spin_x">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">plane.limit.position.X
+</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">plane_limit_pos_x_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_list_limit_pos_spin_y">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes"> plane.limit.position.Y</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">plane_limit_pos_y_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_list_limit_pos_spin_z">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">plane.limit.position.Z</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">plane_limit_pos_z_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">3</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">2</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child type="label">
+                                                  <object class="GtkLabel" id="obj_expand_limit_label">
+                                                    <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">Plane limit</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_sinwave">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="margin_top">10</property>
+                                            <child>
+                                              <object class="GtkExpander" id="obj_expand_sinwave">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <child>
+                                                  <object class="GtkBox" id="obj_sinwave_box">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="orientation">vertical</property>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_sinwave_button_box">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="halign">center</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">3</property>
+                                                        <child>
+                                                          <object class="GtkButton" id="obj_sinwave_button">
+                                                            <property name="label" translatable="yes">Enable/Disable
+   "Sin Wave"</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="receives_default">True</property>
+                                                            <property name="tooltip_text" translatable="yes">Disturb current object's normal with a sinusoidal wave effect</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_sinwave_param1_box">
+                                                        <property name="height_request">40</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">3</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_sinwave_param1_label">
+                                                            <property name="visible">True</property>
+                                                            <property name="sensitive">False</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="tooltip_text" translatable="yes">Adjust the first parameter used for the "Sin Waves" effect</property>
+                                                            <property name="label" translatable="yes">"Sin Waves"
+settings 1</property>
+                                                            <property name="justify">center</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_sinwave_param1_spin_x">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">sinwave.param1.X
+(between -100 and 100)</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">-0,01</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">wave_param1_x_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">-0.01</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_sinwave_param1_spin_y">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">sinwave.param1.Y
+(between -100 and 100)</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">-0,01</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">wave_param1_y_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">-0.01</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_sinwave_param1_pin_z">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">sinwave.param1.Z
+(between -100 and 100)</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">-0,01</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">wave_param1_z_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">-0.01</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">3</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_sinwave_param2_box">
+                                                        <property name="height_request">40</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">3</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_sinwave_param2_label">
+                                                            <property name="visible">True</property>
+                                                            <property name="sensitive">False</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="tooltip_text" translatable="yes">Adjust the second parameter used for the "Sin Waves" effect</property>
+                                                            <property name="label" translatable="yes">"Sin Waves"
+settings 2</property>
+                                                            <property name="justify">center</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_sinwave_param2_spin_x">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">sinwave.param2.X
+(between -100 and 100)</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">-0,01</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">wave_param2_x_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">-0.01</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_sinwave_param2_spin_y">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">sinwave.param2.Y
+(between -100 and 100)</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">-0,01</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">wave_param2_y_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">-0.01</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_sinwave_param2_spin_z">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">sinwave.param2.Z
+(between -100 and 100)</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">-0,01</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">wave_param2_z_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">-0.01</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">3</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">2</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child type="label">
+                                                  <object class="GtkLabel" id="obj_expand_sinwave_label">
+                                                    <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">"Sin Waves" effect</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_checkboard">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="margin_top">10</property>
+                                            <child>
+                                              <object class="GtkExpander" id="obj_expand_checkboard">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <child>
+                                                  <object class="GtkBox" id="obj_checkboard_box">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="orientation">vertical</property>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_checkboard_button_box">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="halign">center</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">3</property>
+                                                        <child>
+                                                          <object class="GtkButton" id="obj_checkboard_button">
+                                                            <property name="label" translatable="yes">  Enable/Disable  
+"Checked Pattern"</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="receives_default">True</property>
+                                                            <property name="tooltip_text" translatable="yes">Texture current object with a checked pattern</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_checkboard_param_box">
+                                                        <property name="height_request">35</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">3</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_checkboard_width_label">
+                                                            <property name="width_request">60</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="sensitive">False</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="tooltip_text" translatable="yes">Checked pattern's width</property>
+                                                            <property name="label" translatable="yes">Width</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_checkboard_width_spin">
+                                                            <property name="width_request">133</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">Reflexion index (between 0 and 1)</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="max_length">4</property>
+                                                            <property name="width_chars">4</property>
+                                                            <property name="text" translatable="yes">1,00</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">checkboard_width_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="numeric">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">1</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_checkboard_height_label">
+                                                            <property name="width_request">60</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="sensitive">False</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="tooltip_text" translatable="yes">Checked pattern's height
+</property>
+                                                            <property name="label" translatable="yes">Height</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_checkboard_height_spin">
+                                                            <property name="width_request">133</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">Refraction index (0 to disable, between 1 and 100)</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="max_length">4</property>
+                                                            <property name="width_chars">4</property>
+                                                            <property name="text" translatable="yes">6,00</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">checkboard_hieght_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="numeric">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">6</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">3</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child type="label">
+                                                  <object class="GtkLabel" id="obj_expand_checkboard_label">
+                                                    <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">"Checked Pattern" texturing</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkListBoxRow" id="obj_list_texture_diff">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="margin_top">10</property>
+                                            <child>
+                                              <object class="GtkExpander" id="obj_expand_texture_diff">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <child>
+                                                  <object class="GtkBox" id="obj_texture_diff_box">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="orientation">vertical</property>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_texture_diff_button_box">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="halign">center</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">3</property>
+                                                        <child>
+                                                          <object class="GtkButton" id="obj_texture_diff_button">
+                                                            <property name="label" translatable="yes">Enable/Disable
+ "Diffuse Map"</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="receives_default">True</property>
+                                                            <property name="tooltip_text" translatable="yes">Texture current object with choosed diffuse map</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_texture_diff_param_box">
+                                                        <property name="height_request">40</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">10</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_texture_diff_offset_label">
+                                                            <property name="visible">True</property>
+                                                            <property name="sensitive">False</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="tooltip_text" translatable="yes">Offset use to shift diffuse map base position</property>
+                                                            <property name="label" translatable="yes">Offset</property>
+                                                            <property name="justify">center</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_texture_diff_offset_spin_x">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">diffuse.map.offset.X</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">-0,01</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">diffuse_map_offset_x_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">-0.01</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_texture_diff_offset_spin_y">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">diffuse.map.offset.Y</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">-0,01</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">diffuse_map_offset_y_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">-0.01</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_texture_diff_ratio_label">
+                                                            <property name="visible">True</property>
+                                                            <property name="sensitive">False</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="tooltip_text" translatable="yes">Ratio used to stretch or shrink the diffuse map</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="label" translatable="yes">Ratio</property>
+                                                            <property name="justify">center</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">3</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_texture_diff_ratio_spin">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">0 &lt; ratio &lt; 1   -&gt; shrink map
+1 &lt; ratio         -&gt; stretch map
+-1 &lt; ratio &lt; 0  -&gt; shrink and revert map
+ratio &lt; -1        -&gt; stretch and revert map
+min_ratio = -100
+max_ratio = 100</property>
+                                                            <property name="margin_left">5</property>
+                                                            <property name="margin_right">5</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">-0,01</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="adjustment">diffuse_map_ratio_adjustement</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">-0.01</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">4</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_texture_chooser_box">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_texture_chooser_label">
+                                                            <property name="width_request">80</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="label" translatable="yes">Diffuse map</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkComboBoxText" id="obj_texture_chooser_combo">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="margin_left">10</property>
+                                                            <property name="margin_right">5</property>
+                                                            <items>
+                                                            <item translatable="yes">toto</item>
+                                                            <item translatable="yes">caca</item>
+                                                            </items>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">2</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child type="label">
+                                                  <object class="GtkLabel" id="obj_expand_texture_diff_label">
+                                                    <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">Diffuse texturing settings</property>
+                                                  </object>
                                                 </child>
                                               </object>
                                             </child>
@@ -4041,41 +4280,5 @@ High setting decreases a lot the rendering speed</property>
     <child type="titlebar">
       <placeholder/>
     </child>
-  </object>
-  <object class="GtkAdjustment" id="wave_param1_x_adjustement">
-    <property name="lower">-100</property>
-    <property name="upper">100</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">1</property>
-  </object>
-  <object class="GtkAdjustment" id="wave_param1_y_adjustement">
-    <property name="lower">-100</property>
-    <property name="upper">100</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">1</property>
-  </object>
-  <object class="GtkAdjustment" id="wave_param1_z_adjustement">
-    <property name="lower">-100</property>
-    <property name="upper">100</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">1</property>
-  </object>
-  <object class="GtkAdjustment" id="wave_param2_x_adjustement">
-    <property name="lower">-100</property>
-    <property name="upper">100</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">1</property>
-  </object>
-  <object class="GtkAdjustment" id="wave_param2_y_adjustement">
-    <property name="lower">-100</property>
-    <property name="upper">100</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">1</property>
-  </object>
-  <object class="GtkAdjustment" id="wave_param2_z_adjustement">
-    <property name="lower">-100</property>
-    <property name="upper">100</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">1</property>
   </object>
 </interface>
