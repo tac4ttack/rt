@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 12:32:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 12:32:39 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 12:54:39 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,22 @@ void	xml_data_radius(t_env *e, char **attributes, int *i, t_node *node)
 		node->radius = ft_atof(attributes[(*i)++] + 8);
 		if (node->radius <= 0)
 			s_error("\x1b[1;31mError RADIUS can't be 0 or less\x1b[0m", e);
+	}
+	else
+		s_error("\x1b[1;31mError reading RADIUS from scene\x1b[0m", e);
+}
+
+void	xml_data_plane_radius(t_env *e, char **attributes, int *i, t_node *node)
+{
+	if (e && attributes && node)
+	{
+		if (attributes[(*i)] == NULL)
+			s_error("\x1b[1;31mError reading RADIUS value\x1b[0m", e);
+		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
+			s_error("\x1b[1;31mError in RADIUS from scene\x1b[0m", e);
+		node->radius = ft_atof(attributes[(*i)++] + 8);
+		if (node->radius < 0)
+			s_error("\x1b[1;31mError RADIUS under 0\x1b[0m", e);
 	}
 	else
 		s_error("\x1b[1;31mError reading RADIUS from scene\x1b[0m", e);

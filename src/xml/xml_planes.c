@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 17:28:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 12:54:53 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 	if (ft_strncmp(att[*i], "radius=\"", 8) != 0)
 		s_error("\x1b[1;31mPlane error, RADIUS expected in #9\x1b[0m", e);
 	else
-		xml_data_radius(e, att, i, plane_node);
+		xml_data_plane_radius(e, att, i, plane_node);
 }
 
 static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)

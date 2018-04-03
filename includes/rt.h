@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 12:38:09 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 12:55:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ typedef struct			s_object
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float2			check_size;
+	cl_float3			check_size;
 	cl_uint				diff_map_id;
 	cl_float3			diff_map_size;
 }						t_object;
@@ -158,7 +158,7 @@ typedef struct			s_box
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float2			check_size;
+	cl_float3			check_size;
 	cl_uint				diff_map_id;
 	cl_float3			diff_map_size;
 
@@ -184,7 +184,7 @@ typedef struct			s_cone
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float2			check_size;
+	cl_float3			check_size;
 	cl_uint				diff_map_id;
 	cl_float3			diff_map_size;
 
@@ -210,7 +210,7 @@ typedef struct			s_cylinder
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float2			check_size;
+	cl_float3			check_size;
 	cl_uint				diff_map_id;
 	cl_float3			diff_map_size;
 
@@ -238,7 +238,7 @@ typedef struct			s_plane
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float2			check_size;
+	cl_float3			check_size;
 	cl_uint				diff_map_id;
 	cl_float3			diff_map_size;
 
@@ -263,7 +263,7 @@ typedef struct			s_sphere
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float2			check_size;
+	cl_float3			check_size;
 	cl_uint				diff_map_id;
 	cl_float3			diff_map_size;
 
@@ -288,7 +288,7 @@ typedef struct			s_torus
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float2			check_size;
+	cl_float3			check_size;
 	cl_uint				diff_map_id;
 	cl_float3			diff_map_size;
 
@@ -315,7 +315,7 @@ typedef struct			s_ellipsoid
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
 	cl_float3			waves_p2;
-	cl_float2			check_size;
+	cl_float3			check_size;
 	cl_uint				diff_map_id;
 	cl_float3			diff_map_size;
 
@@ -524,6 +524,8 @@ void					xml_data_normale(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_opacity(t_env *e, char **attributes, \
 										int *i, t_node *node);
+void					xml_data_plane_radius(t_env *e, char **attributes, \
+												int *i, t_node *node);
 void					xml_data_pos(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_radius(t_env *e, char **attributes, \

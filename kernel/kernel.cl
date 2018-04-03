@@ -90,7 +90,7 @@ typedef struct			s_object
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	unsigned int		diff_map_id;
 	float3				diff_map_size;
 }						t_object;
@@ -113,7 +113,7 @@ typedef struct			s_box
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	unsigned int		diff_map_id;
 	float3				diff_map_size;
 
@@ -139,7 +139,7 @@ typedef struct			s_cone
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	unsigned int		diff_map_id;
 	float3				diff_map_size;
 
@@ -165,7 +165,7 @@ typedef struct			s_cylinder
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	unsigned int		diff_map_id;
 	float3				diff_map_size;
 
@@ -193,7 +193,7 @@ typedef struct			s_plane
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	unsigned int		diff_map_id;
 	float3				diff_map_size;
 
@@ -219,7 +219,7 @@ typedef struct			s_sphere
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	unsigned int		diff_map_id;
 	float3				diff_map_size;
 
@@ -244,7 +244,7 @@ typedef struct			s_ellipsoid
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	unsigned int		diff_map_id;
 	float3				diff_map_size;
 
@@ -270,7 +270,7 @@ typedef struct			s_thor
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	unsigned int		diff_map_id;
 	float3				diff_map_size;
 	

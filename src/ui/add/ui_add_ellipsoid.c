@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:54 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 17:35:04 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 12:51:00 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ui_add_ellipsoid(t_env *e)
 	ellipsoid.dir = ellipsoid.pos;
 	ellipsoid.dir.z = 1;
 	ellipsoid.flags = 0;
-	ellipsoid.radius = 4;
+	ellipsoid.radius = 1;
 	ellipsoid.color = rand();
 	ellipsoid.diff.x = 0.42;
 	ellipsoid.diff.y = 0.42;
