@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 14:53:51 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 18:13:39 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ static void	xml_cylinder_data_n(t_env *e, char **att, t_node *cyl_node, int *i)
 	else
 		xml_data_speculos(e, att, i, cyl_node);
 	if (ft_strncmp(att[*i], "reflex=\"", 6) != 0)
-		s_error("\x1b[1;31mError in cylinder, REFLEX expected in #7\x1b[0m", e);
+		s_error("\x1b[1;31mCylinder error, REFLEX expected in #7\x1b[0m", e);
 	else
 		xml_data_reflex(e, att, i, cyl_node);
 	if (ft_strncmp(att[*i], "refract=\"", 6) != 0)
-		s_error("\x1b[2;31mError in cylinder REFRACT expected in #8\x1b[0m", e);
+		s_error("\x1b[2;31mCylinder error REFRACT expected in #8\x1b[0m", e);
 	else
 		xml_data_refract(e, att, i, cyl_node);
 	if (ft_strncmp(att[*i], "opacity=\"", 6) != 0)
-		s_error("\x1b[2;31mError in cylinder, OPACITY expected in #9\x1b[0m", e);
+		s_error("\x1b[2;31mCylinder error, OPACITY expected in #9\x1b[0m", e);
 	else
 		xml_data_opacity(e, att, i, cyl_node);
 }
@@ -39,25 +39,25 @@ static void	xml_cylinder_data_n(t_env *e, char **att, t_node *cyl_node, int *i)
 static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
 {
 	if (xml_check_node_format(att, 3) != 0)
-		s_error("\x1b[1;31mError in CYLINDER format\x1b[0m", e);
+		s_error("\x1b[1;31mCylinder error format\x1b[0m", e);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
-		s_error("\x1b[1;31mError in cylinder, POS expected in #1\x1b[0m", e);
+		s_error("\x1b[1;31mCylinder error, POS expected in #1\x1b[0m", e);
 	else
 		xml_data_pos(e, att, i, cyl_node);
 	if (ft_strncmp(att[*i], "dir=\"", 5) != 0)
-		s_error("\x1b[1;31mError in cylinder, DIR expected in #2\x1b[0m", e);
+		s_error("\x1b[1;31mCylinder error, DIR expected in #2\x1b[0m", e);
 	else
 		xml_data_dir(e, att, i, cyl_node);
 	if (ft_strncmp(att[*i], "radius=\"", 8) != 0)
-		s_error("\x1b[1;31mError in cylinder, RADIUS expected in #3\x1b[0m", e);
+		s_error("\x1b[1;31mCylinder error, RADIUS expected in #3\x1b[0m", e);
 	else
 		xml_data_radius(e, att, i, cyl_node);
 	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
-		s_error("\x1b[1;31mError in cylinder, COLOR expected in #4\x1b[0m", e);
+		s_error("\x1b[1;31mCylinder error, COLOR expected in #4\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, cyl_node);
 	if (ft_strncmp(att[*i], "height=\"", 8) != 0)
-		s_error("\x1b[1;31mError in cylinder, HEIGHT expected in #5\x1b[0m", e);
+		s_error("\x1b[1;31mCylinder error, HEIGHT expected in #5\x1b[0m", e);
 	else
 		xml_data_height(e, att, i, cyl_node);
 	xml_cylinder_data_n(e, att, cyl_node, i);
@@ -95,13 +95,21 @@ static void	xml_push_cylinder_effects(t_cylinder *cylinder)
 	cylinder->limit_pos.x = 0;
 	cylinder->limit_pos.y = 0;
 	cylinder->limit_pos.z = 0;
-	cylinder->limit_dir = cylinder->limit_pos;
-	cylinder->waves_p1 = cylinder->limit_pos;
-	cylinder->waves_p2 = cylinder->limit_pos;
+	cylinder->limit_dir.x = 0;
+	cylinder->limit_dir.y = 0;
+	cylinder->limit_dir.z = 0;
+	cylinder->waves_p1.x = 0.8;
+	cylinder->waves_p1.y = 0.8;
+	cylinder->waves_p1.z = 0.8;
+	cylinder->waves_p2.x = 5;
+	cylinder->waves_p2.y = 5;
+	cylinder->waves_p2.z = 5;
 	cylinder->check_size.x = 1;
 	cylinder->check_size.y = 1;
 	cylinder->diff_map_id = -1;
-	cylinder->diff_map_size = cylinder->limit_pos;
+	cylinder->diff_map_size.x = 0;
+	cylinder->diff_map_size.y = 0;
+	cylinder->diff_map_size.z = 1;
 }
 
 void		xml_push_cyl(t_env *e, t_node *list)

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:10:36 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 18:01:00 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 18:35:20 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ static void	show_only_cone(t_env *e)
 void		ui_obj_set_cone(t_env *e, t_cone *obj)
 {
 	show_only_cone(e);
+	ui_obj_update_checkboard(e, (t_object *)obj);
+	ui_obj_update_diff_map(e, (t_object *)obj);
+	ui_obj_update_limit(e, (t_object *)obj);
+	ui_obj_update_sinwave(e, (t_object *)obj);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_cone_angle_spin, \
 	(gdouble)obj->angle);
+	
 }

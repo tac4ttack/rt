@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 14:53:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 18:13:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,21 @@ static void	xml_push_cone_effects(t_cone *cone)
 	cone->limit_pos.x = 0;
 	cone->limit_pos.y = 0;
 	cone->limit_pos.z = 0;
-	cone->limit_dir = cone->limit_pos;
-	cone->waves_p1 = cone->limit_pos;
-	cone->waves_p2 = cone->limit_pos;
+	cone->limit_dir.x = 0;
+	cone->limit_dir.y = 0;
+	cone->limit_dir.z = 0;
+	cone->waves_p1.x = 0.8;
+	cone->waves_p1.y = 0.8;
+	cone->waves_p1.z = 0.8;
+	cone->waves_p2.x = 5;
+	cone->waves_p2.y = 5;
+	cone->waves_p2.z = 5;
 	cone->check_size.x = 1;
 	cone->check_size.y = 1;
 	cone->diff_map_id = -1;
-	cone->diff_map_size = cone->limit_pos;
+	cone->diff_map_size.x = 0;
+	cone->diff_map_size.y = 0;
+	cone->diff_map_size.z = 1;
 }
 
 void		xml_push_cone(t_env *e, t_node *list)

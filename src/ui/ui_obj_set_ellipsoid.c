@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:11:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 18:01:22 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 18:35:36 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ static void	show_only_ellipsoid(t_env *e)
 void		ui_obj_set_ellipsoid(t_env *e, t_ellipsoid *obj)
 {
 	show_only_ellipsoid(e);
+	ui_obj_update_checkboard(e, (t_object *)obj);
+	ui_obj_update_diff_map(e, (t_object *)obj);
+	ui_obj_update_limit(e, (t_object *)obj);
+	ui_obj_update_sinwave(e, (t_object *)obj);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_ellipsoid_radius_spin,\
 	(gdouble)obj->radius);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_ellipsoid_axis_spin_x,\

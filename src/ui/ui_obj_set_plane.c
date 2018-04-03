@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:11:49 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 18:01:34 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 18:35:41 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ static void	show_only_plane(t_env *e)
 
 void		ui_obj_set_plane(t_env *e, t_plane *obj)
 {
-	(void)obj;
 	show_only_plane(e);
+	ui_obj_update_checkboard(e, (t_object *)obj);
+	ui_obj_update_diff_map(e, (t_object *)obj);
+	ui_obj_update_limit(e, (t_object *)obj);
+	ui_obj_update_sinwave(e, (t_object *)obj);
 }

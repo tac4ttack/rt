@@ -146,6 +146,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/ui_obj_set_sphere.c \
 						ui/ui_obj_set_torus.c \
 						ui/ui_obj_update.c \
+						ui/ui_obj_update_effects.c \
 						update_fps.c \
 						vectors.c \
 						xml/xml.c \

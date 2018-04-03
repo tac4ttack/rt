@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:12:20 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 18:01:49 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 18:35:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ static void	show_only_torus(t_env *e)
 void		ui_obj_set_torus(t_env *e, t_torus *obj)
 {
 	show_only_torus(e);
+	ui_obj_update_checkboard(e, (t_object *)obj);
+	ui_obj_update_diff_map(e, (t_object *)obj);
+	ui_obj_update_limit(e, (t_object *)obj);
+	ui_obj_update_sinwave(e, (t_object *)obj);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_torus_lilradius_spin, \
 	(gdouble)obj->lil_radius);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_torus_bigradius_spin, \

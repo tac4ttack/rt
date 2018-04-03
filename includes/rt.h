@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 15:49:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 18:37:59 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -504,6 +504,11 @@ void					ui_obj_set_plane(t_env *e, t_plane *obj);
 void					ui_obj_set_sphere(t_env *e, t_sphere *obj);
 void					ui_obj_set_torus(t_env *e, t_torus *obj);
 void					ui_obj_update(t_env *e, t_object *obj);
+void					ui_obj_update_checkboard(t_env *e, t_object *obj);
+void					ui_obj_update_diff_map(t_env *e, t_object *obj);
+void					ui_obj_update_limit(t_env *e, t_object *obj);
+void					ui_obj_update_sinwave(t_env *e, t_object *obj);
+
 void					update_fps(t_fps *fps);
 
 void					xml_allocate_cam(t_env *e);

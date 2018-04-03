@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 14:55:11 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 18:13:01 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,21 @@ static void	xml_push_sphere_effects(t_sphere *sphere)
 	sphere->limit_pos.x = 0;
 	sphere->limit_pos.y = 0;
 	sphere->limit_pos.z = 0;
-	sphere->limit_dir = sphere->limit_pos;
-	sphere->waves_p1 = sphere->limit_pos;
-	sphere->waves_p2 = sphere->limit_pos;
+	sphere->limit_dir.x = 0;
+	sphere->limit_dir.y = 0;
+	sphere->limit_dir.z = 0;
+	sphere->waves_p1.x = 0.8;
+	sphere->waves_p1.y = 0.8;
+	sphere->waves_p1.z = 0.8;
+	sphere->waves_p2.x = 5;
+	sphere->waves_p2.y = 5;
+	sphere->waves_p2.z = 5;
 	sphere->check_size.x = 1;
 	sphere->check_size.y = 1;
 	sphere->diff_map_id = -1;
-	sphere->diff_map_size = sphere->limit_pos;
+	sphere->diff_map_size.x = 0;
+	sphere->diff_map_size.y = 0;
+	sphere->diff_map_size.z = 1;
 }
 
 void		xml_push_sphere(t_env *e, t_node *list)
