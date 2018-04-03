@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 19:11:58 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 12:38:09 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,13 @@ typedef struct			s_object
 	cl_float			reflex;
 	cl_float			refract;
 	cl_float			opacity;
+	cl_float3			limit_pos;
+	cl_float3			limit_dir;
+	cl_float3			waves_p1;
+	cl_float3			waves_p2;
+	cl_float2			check_size;
+	cl_uint				diff_map_id;
+	cl_float3			diff_map_size;
 }						t_object;
 
 typedef struct			s_fps
@@ -147,6 +154,13 @@ typedef struct			s_box
 	cl_float			reflex;
 	cl_float			refract;
 	cl_float			opacity;
+	cl_float3			limit_pos;
+	cl_float3			limit_dir;
+	cl_float3			waves_p1;
+	cl_float3			waves_p2;
+	cl_float2			check_size;
+	cl_uint				diff_map_id;
+	cl_float3			diff_map_size;
 
 	cl_float3			min;
 	cl_float3			max;
@@ -166,6 +180,14 @@ typedef struct			s_cone
 	cl_float			reflex;
 	cl_float			refract;
 	cl_float			opacity;
+	cl_float3			limit_pos;
+	cl_float3			limit_dir;
+	cl_float3			waves_p1;
+	cl_float3			waves_p2;
+	cl_float2			check_size;
+	cl_uint				diff_map_id;
+	cl_float3			diff_map_size;
+
 	cl_float			angle;
 	cl_float3			u_axis;
 }						t_cone;
@@ -184,6 +206,14 @@ typedef struct			s_cylinder
 	cl_float			reflex;
 	cl_float			refract;
 	cl_float			opacity;
+	cl_float3			limit_pos;
+	cl_float3			limit_dir;
+	cl_float3			waves_p1;
+	cl_float3			waves_p2;
+	cl_float2			check_size;
+	cl_uint				diff_map_id;
+	cl_float3			diff_map_size;
+
 	cl_float			height;
 	cl_float3			base_dir;
 	cl_float			radius;
@@ -204,6 +234,14 @@ typedef struct			s_plane
 	cl_float			reflex;
 	cl_float			refract;
 	cl_float			opacity;
+	cl_float3			limit_pos;
+	cl_float3			limit_dir;
+	cl_float3			waves_p1;
+	cl_float3			waves_p2;
+	cl_float2			check_size;
+	cl_uint				diff_map_id;
+	cl_float3			diff_map_size;
+
 	cl_float			radius;
 	cl_float3			u_axis;
 }						t_plane;
@@ -221,6 +259,14 @@ typedef struct			s_sphere
 	cl_int				color;
 	cl_float			reflex;
 	cl_float			refract;
+	cl_float3			limit_pos;
+	cl_float3			limit_dir;
+	cl_float3			waves_p1;
+	cl_float3			waves_p2;
+	cl_float2			check_size;
+	cl_uint				diff_map_id;
+	cl_float3			diff_map_size;
+
 	cl_float			opacity;
 	cl_float			radius;
 }						t_sphere;
@@ -238,6 +284,14 @@ typedef struct			s_torus
 	cl_int				color;
 	cl_float			reflex;
 	cl_float			refract;
+	cl_float3			limit_pos;
+	cl_float3			limit_dir;
+	cl_float3			waves_p1;
+	cl_float3			waves_p2;
+	cl_float2			check_size;
+	cl_uint				diff_map_id;
+	cl_float3			diff_map_size;
+
 	cl_float			opacity;
 	cl_float			lil_radius;
 	cl_float			big_radius;
@@ -257,6 +311,14 @@ typedef struct			s_ellipsoid
 	cl_float			reflex;
 	cl_float			refract;
 	cl_float			opacity;
+	cl_float3			limit_pos;
+	cl_float3			limit_dir;
+	cl_float3			waves_p1;
+	cl_float3			waves_p2;
+	cl_float2			check_size;
+	cl_uint				diff_map_id;
+	cl_float3			diff_map_size;
+
 	cl_float			radius;
 	cl_float3			axis_size;
 }						t_ellipsoid;
