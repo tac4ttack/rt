@@ -77,7 +77,7 @@ void		env_init(t_env *e)
 void		cl_init(t_env *e)
 {
 	if (!(e->cl = cl_construct("./kernel/kernel.cl", WIDTH, HEIGHT,
-	(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
+	/*(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : */CL_DEVICE_TYPE_CPU)))
 		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
 	if (!(e->cl->add_buffer(e->cl, WIDTH * HEIGHT * 4)))
 		s_error("\x1b[2;31mError creation FRAMEBUFFER cl_mem failed\x1b[0m", e);

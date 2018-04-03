@@ -370,7 +370,7 @@ static t_hit	hit_init(void)
 	hit.dist = 0.f;
 	hit.normal = 0.f;
 	
-	hit.obj = -1; // dangling dangerouss!
+	hit.obj = 0; // dangling dangerouss!
 	
 	hit.color = 0;
 	hit.pos = 0.f;
@@ -1342,7 +1342,7 @@ static float	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 /*
 ** CONES FUNCTIONS /////////////////////////////////////////////////////////////
 */
-static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, float ratio, unsigned int __global *texture, int width, int height)
+static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, float ratio, unsigned int __global *texture, int t_width, int t_height, int w_ratio, int h_ratio, int decx, int decy)
 {
 	unsigned int	color = 0;
 	float3			v_axis;
@@ -1359,11 +1359,13 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, float r
 		npos -= ratio;
 	while (npos < 0)
 		npos += ratio;
-	uv.y = (int)floor((fast_length(npos * dir) / ratio) * height);
+	uv.y = (int)floor((fast_length(npos * dir) / ratio) * h_ratio) + decy;
 	npos = dot(pos, u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * width);
-	color = (unsigned int)texture[uv.x + (uv.y * width)];
+	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * w_ratio) + decx;
+	uv.x %= t_width;
+	uv.y %= t_height;
+	color = (unsigned int)texture[uv.x + (uv.y * t_width)];
 	return (color);
 }
 
@@ -1375,8 +1377,8 @@ static float3	get_cone_normal(const __local t_cone *cone, const t_hit hit)
 	float3		project;
 	float		doty;
 	float		m;
-	float		r;
-	float		k;
+	//float		r;
+	//float		k;
 	float3		dir;
 
 	dir =  fast_normalize(cone->dir);
@@ -1388,15 +1390,15 @@ static float3	get_cone_normal(const __local t_cone *cone, const t_hit hit)
 	final = res;
 
 	//  ABORT DAMNED
-	// r = fast_length(res);
-	// if (m < 0)
-	// 	m = -m;
-	// k = r / m;
-	// k = m * k * k;
-	// dir = k * dir;
-	// final.x = v.x - dir.x;
-	// final.y = v.y - dir.y;
-	// final.z = v.z - dir.z;
+	/*r = fast_length(res);
+	if (m < 0)
+		m = -m;
+	k = r / m;
+	k = m * k * k;
+	dir = k * dir;
+	final.x = v.x - dir.x;
+	final.y = v.y - dir.y;
+	final.z = v.z - dir.z;*/
 	// res = v - res;
 	return (fast_normalize(final));
 }
@@ -2054,8 +2056,8 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 			hit.pos = hit.pos + (0.001f * hit.normal);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 		
-		// if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			// hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4096, 2048, 4096, 2048, 0, 0);
+		 if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+			 hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, 4915, 2457, 0, 0);
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color);
 		
@@ -2068,7 +2070,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 			hit.color = cylinder_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cylinder *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500, ((__local t_cylinder *)hit.obj)->radius);
 
 		if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = cone_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cone *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500);
+			hit.color = cone_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cone *)hit.obj)->u_axis), 10., scene->texture_star, 1500, 1500, 750, 1500, 0, 0);
 
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
