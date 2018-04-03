@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 19:10:25 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 17:34:29 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ gboolean	cb_render_btnrelease(GtkWidget *widget, GdkEvent *ev, gpointer data)
 {
 	t_env	*e;
 
-	(void)widget;
 	(void)ev;
 	e = data;
 	if (gtk_widget_is_focus(widget) == FALSE)
