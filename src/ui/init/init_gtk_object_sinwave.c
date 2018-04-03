@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 14:38:07 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 14:39:54 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 18:04:10 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	init_gtk_object_sinwave(t_env *e)
 {
+	e->ui->obj_list_sinwave = GTK_WIDGET(gtk_builder_get_object(\
+	e->ui->builder, "obj_list_sinwave"));
 	e->ui->obj_sinwave_button = GTK_WIDGET(gtk_builder_get_object(\
 	e->ui->builder, "obj_sinwave_button"));
 	e->ui->obj_sinwave_param1_spin_x = GTK_WIDGET(gtk_builder_get_object(\

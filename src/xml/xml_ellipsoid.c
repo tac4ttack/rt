@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/03 14:53:45 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 18:13:25 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,13 +97,21 @@ static void	xml_push_ellipsoid_effects(t_ellipsoid *ellipsoid)
 	ellipsoid->limit_pos.x = 0;
 	ellipsoid->limit_pos.y = 0;
 	ellipsoid->limit_pos.z = 0;
-	ellipsoid->limit_dir = ellipsoid->limit_pos;
-	ellipsoid->waves_p1 = ellipsoid->limit_pos;
-	ellipsoid->waves_p2 = ellipsoid->limit_pos;
+	ellipsoid->limit_dir.x = 0;
+	ellipsoid->limit_dir.y = 0;
+	ellipsoid->limit_dir.z = 0;
+	ellipsoid->waves_p1.x = 0.8;
+	ellipsoid->waves_p1.y = 0.8;
+	ellipsoid->waves_p1.z = 0.8;
+	ellipsoid->waves_p2.x = 5;
+	ellipsoid->waves_p2.y = 5;
+	ellipsoid->waves_p2.z = 5;
 	ellipsoid->check_size.x = 1;
 	ellipsoid->check_size.y = 1;
 	ellipsoid->diff_map_id = -1;
-	ellipsoid->diff_map_size = ellipsoid->limit_pos;
+	ellipsoid->diff_map_size.x = 0;
+	ellipsoid->diff_map_size.y = 0;
+	ellipsoid->diff_map_size.z = 1;
 }
 
 void		xml_push_ellipsoid(t_env *e, t_node *list)

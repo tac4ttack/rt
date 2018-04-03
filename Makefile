@@ -146,6 +146,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/ui_obj_set_sphere.c \
 						ui/ui_obj_set_torus.c \
 						ui/ui_obj_update.c \
+						ui/ui_obj_update_effects.c \
 						update_fps.c \
 						vectors.c \
 						xml/xml.c \
@@ -310,10 +311,7 @@ installbrewshit:
 	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)pygtk$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f pygtk
 	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)adwaita-icon-theme$(EOC)$(B_GREEN) from brew...$(EOC)"
-	brew install -f adwaita-icon-theme
-	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)glade$(EOC)$(B_GREEN) from brew...$(EOC)"
-	brew install -f glade
-	
+	brew install -f adwaita-icon-theme	
 
 norme:
 	norminette $(SRC_PATH)

@@ -1,46 +1,15 @@
-NEEEEEEEEED TO BE UPDATED!!!!
+PLEASE FIX THESE SHITS!!!!!!!!!!!!!
 
 * leaks gtk ok -> free à la fin du programme
 * leaks à la fin du programme, foutre while(1) avant le exit pour les trouver
-* problème selection objet à la souris, double clic chelou
+* virer du parsing la lecture de la direction pour une CAMERA
 * ouverture fichier de scene
 * sauvegarde fichier de scene
 * top menu?
-* changement de resolution nique le redraw
-* axis size elipsoid dans gui trop large
-
-TODO LIST COMMON:
------------------
-* norm norm norm
 * faire une touche pour reload le kernel en pleine execution
-* génération damier -> Noé on the job
-* faire print_usage
 * bruit de perlinpinpin -> Chaton?
 * kernel post process Stereoscopie -> Flo?
-* kernel post process Cel Shading
-
-
-
-TEXTURES:
----------
-* ajouter textures -> cf ajout PARSER
+* créer gestionnaire de textures?
 * bump mapping
 * light mappinng
 * uv map?
-
-PARSER:
------------------
-* rajouter la propriété 'depth' à la scene (nombre de reflexions) 
-* rajouter propriété sinwave="0, 0.5, 1" avec 3 valeurs comprises entre 0 et 1
-
-
-CAMERA:
--------
-	* direction pas du tout prise en compte pour le départ
-	* si direction avec multi composante alors bug deplacement
-
-KNOWN BUGS:
------------
-
-	*cylinder.xml crash au lancement
-	*erreur si aucun objet -> normal ou pas ?

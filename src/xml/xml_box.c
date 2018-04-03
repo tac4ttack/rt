@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 14:54:27 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 18:14:08 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,21 @@ static void	xml_push_box_effects(t_box *box)
 	box->limit_pos.x = 0;
 	box->limit_pos.y = 0;
 	box->limit_pos.z = 0;
-	box->limit_dir = box->limit_pos;
-	box->waves_p1 = box->limit_pos;
-	box->waves_p2 = box->limit_pos;
+	box->limit_dir.x = 0;
+	box->limit_dir.y = 0;
+	box->limit_dir.z = 0;
+	box->waves_p1.x = 0.8;
+	box->waves_p1.y = 0.8;
+	box->waves_p1.z = 0.8;
+	box->waves_p2.x = 5;
+	box->waves_p2.y = 5;
+	box->waves_p2.z = 5;
 	box->check_size.x = 1;
 	box->check_size.y = 1;
 	box->diff_map_id = -1;
-	box->diff_map_size = box->limit_pos;
+	box->diff_map_size.x = 0;
+	box->diff_map_size.y = 0;
+	box->diff_map_size.z = 1;
 }
 
 void		xml_push_box(t_env *e, t_node *list)
