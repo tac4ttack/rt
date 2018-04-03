@@ -1375,7 +1375,7 @@ static float3	get_cone_normal(const __local t_cone *cone, const t_hit hit)
 	float3		project;
 	float		doty;
 	float		m;
-	float		r;
+//	float		r;	// UNUSED
 	float		k;
 	float3		dir;
 
