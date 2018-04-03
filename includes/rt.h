@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 12:55:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 14:14:01 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,7 @@ typedef struct			s_sphere
 	cl_int				color;
 	cl_float			reflex;
 	cl_float			refract;
+	cl_float			opacity;
 	cl_float3			limit_pos;
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
@@ -267,7 +268,6 @@ typedef struct			s_sphere
 	cl_uint				diff_map_id;
 	cl_float3			diff_map_size;
 
-	cl_float			opacity;
 	cl_float			radius;
 }						t_sphere;
 
