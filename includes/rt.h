@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 14:47:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 15:49:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@
 # define OBJ_FLAG_CHECKERED		(1 << 2)
 # define OBJ_FLAG_DIFF_MAP		(1 << 3)
 # define OBJ_FLAG_BUMP_MAP		(1 << 4)
+# define OBJ_FLAG_PLANELIMIT	(1 << 5)
 
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2
@@ -454,6 +455,10 @@ void					init_cb_light(t_env *e);
 void					init_cb_main(t_env *e);
 void					init_cb_object(t_env *e);
 void					init_cb_scene(t_env *e);
+void					init_cb_object_checkboard(t_env *e);
+void					init_cb_object_diffmap(t_env *e);
+void					init_cb_object_limit(t_env *e);
+void					init_cb_object_sinwave(t_env *e);
 void					init_gtk_cam(t_env *e);
 void					init_gtk_css(t_env *e);
 void					init_gtk_light(t_env *e);

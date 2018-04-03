@@ -74,13 +74,16 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_light_nav.c \
 						ui/callback/cb_light_params.c \
 						ui/callback/cb_light_pos.c \
-						ui/callback/cb_obj_checkboard_check.c \
+						ui/callback/cb_obj_checkboard.c \
 						ui/callback/cb_obj_color.c \
 						ui/callback/cb_obj_combo_type.c \
 						ui/callback/cb_obj_diff_check.c \
 						ui/callback/cb_obj_diff.c \
 						ui/callback/cb_obj_dir.c \
 						ui/callback/cb_obj_jump.c \
+						ui/callback/cb_obj_limit_btn.c \
+						ui/callback/cb_obj_limit_dir.c \
+						ui/callback/cb_obj_limit_pos.c \
 						ui/callback/cb_obj_nav_add.c \
 						ui/callback/cb_obj_nav_del.c \
 						ui/callback/cb_obj_nav_next.c \
@@ -89,8 +92,11 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_pos.c \
 						ui/callback/cb_obj_reflex.c \
 						ui/callback/cb_obj_refrac.c \
+						ui/callback/cb_obj_sinwave_btn.c \
+						ui/callback/cb_obj_sinwave_param1.c \
+						ui/callback/cb_obj_sinwave_param2.c \
 						ui/callback/cb_obj_spec.c \
-						ui/callback/cb_obj_wave_check.c \
+						ui/callback/cb_obj_texture_diff.c \
 						ui/callback/cb_postproc_radio.c \
 						ui/callback/cb_render_btnpress.c \
 						ui/callback/cb_render_btnrelease.c \
@@ -103,8 +109,6 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_supersampling_update.c \
 						ui/callback/cb_tool_bar.c \
 						ui/callback/cb_torus_radius.c \
-						ui/callback/cb_waves_p1.c \
-						ui/callback/cb_waves_p2.c \
 						ui/gdkrgba_to_int.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
@@ -112,6 +116,10 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/init/init_cb_light.c \
 						ui/init/init_cb_main.c \
 						ui/init/init_cb_object.c \
+						ui/init/init_cb_object_checkboard.c \
+						ui/init/init_cb_object_diffmap.c \
+						ui/init/init_cb_object_limit.c \
+						ui/init/init_cb_object_sinwave.c \
 						ui/init/init_cb_scene.c \
 						ui/init/init_gtk_cam.c \
 						ui/init/init_gtk_css.c \

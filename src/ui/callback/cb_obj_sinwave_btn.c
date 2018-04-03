@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_gtk_object_effects.c                          :+:      :+:    :+:   */
+/*   cb_obj_sinwave.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/03 14:25:27 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 16:13:06 by fmessina         ###   ########.fr       */
+/*   Created: 2018/04/03 15:47:45 by fmessina          #+#    #+#             */
+/*   Updated: 2018/04/03 15:50:52 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	init_gtk_object_effects(t_env *e)
+void			cb_obj_sinwave_btn(GtkButton *btn, gpointer data)
 {
-	init_gtk_object_limit(e);
-	init_gtk_object_sinwave(e);
-	init_gtk_object_diffmap(e);
-	init_gtk_object_checkboard(e);
-	// init_cb_object_limit(e); //3
-	// init_cb_object_sinwave(e); //1
-	// init_cb_object_diffmap(e); //1 
-	init_cb_object_checkboard(e);
+	t_env		*e;
+	t_object	*obj;
+
+	(void)btn;
+	e = data;
+	obj = e->gen_objects->mem + e->target;
+	if (obj->flags & OBJ_FLAG_WAVES)
+		obj->flags ^= OBJ_FLAG_WAVES;
+	else
+		obj->flags |= OBJ_FLAG_WAVES;
 }

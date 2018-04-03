@@ -33,6 +33,7 @@
 #define OBJ_FLAG_CHECKERED		(1 << 2)
 #define OBJ_FLAG_DIFF_MAP		(1 << 3)
 #define OBJ_FLAG_BUMP_MAP		(1 << 4)
+# define OBJ_FLAG_PLANELIMIT	(1 << 5)
 
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cb_obj_wave_check.c                                :+:      :+:    :+:   */
+/*   cb_obj_limit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/30 20:17:37 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 17:28:03 by fmessina         ###   ########.fr       */
+/*   Created: 2018/04/03 15:47:45 by fmessina          #+#    #+#             */
+/*   Updated: 2018/04/03 15:56:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void			cb_obj_wave_check(GtkButton *btn, gpointer data)
+void			cb_obj_limit_btn(GtkButton *btn, gpointer data)
 {
 	t_env		*e;
 	t_object	*obj;
@@ -20,8 +20,8 @@ void			cb_obj_wave_check(GtkButton *btn, gpointer data)
 	(void)btn;
 	e = data;
 	obj = e->gen_objects->mem + e->target;
-	if (obj->flags & OBJ_FLAG_WAVES)
-		obj->flags ^= OBJ_FLAG_WAVES;
+	if (obj->flags & OBJ_FLAG_PLANELIMIT)
+		obj->flags ^= OBJ_FLAG_PLANELIMIT;
 	else
-		obj->flags |= OBJ_FLAG_WAVES;
+		obj->flags |= OBJ_FLAG_PLANELIMIT;
 }
