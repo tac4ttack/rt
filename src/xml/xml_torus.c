@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 18:12:39 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 19:25:23 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,10 @@ static void	xml_push_torus_effects(t_torus *torus)
 	torus->check_size.x = 1;
 	torus->check_size.y = 1;
 	torus->diff_map_id = -1;
-	torus->diff_map_size.x = 0;
-	torus->diff_map_size.y = 0;
-	torus->diff_map_size.z = 1;
+	torus->diff_offset.x = 0;
+	torus->diff_offset.y = 0;
+	torus->diff_ratio.x = 1;
+	torus->diff_ratio.y = 1;
 }
 
 void		xml_push_torus(t_env *e, t_node *list)

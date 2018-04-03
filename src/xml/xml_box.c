@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 18:14:08 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 19:24:30 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,10 @@ static void	xml_push_box_effects(t_box *box)
 	box->check_size.x = 1;
 	box->check_size.y = 1;
 	box->diff_map_id = -1;
-	box->diff_map_size.x = 0;
-	box->diff_map_size.y = 0;
-	box->diff_map_size.z = 1;
+	box->diff_offset.x = 0;
+	box->diff_offset.y = 0;
+	box->diff_ratio.x = 1;
+	box->diff_ratio.y = 1;
 }
 
 void		xml_push_box(t_env *e, t_node *list)

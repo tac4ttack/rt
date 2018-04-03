@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 18:13:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 19:24:43 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,10 @@ static void	xml_push_cone_effects(t_cone *cone)
 	cone->check_size.x = 1;
 	cone->check_size.y = 1;
 	cone->diff_map_id = -1;
-	cone->diff_map_size.x = 0;
-	cone->diff_map_size.y = 0;
-	cone->diff_map_size.z = 1;
+	cone->diff_offset.x = 0;
+	cone->diff_offset.y = 0;
+	cone->diff_ratio.x = 1;
+	cone->diff_ratio.y = 1;
 }
 
 void		xml_push_cone(t_env *e, t_node *list)
