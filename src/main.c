@@ -32,6 +32,7 @@ void		load_texture(t_env *e)
 	}
 	e->texture[0].width = e->raw_texture.width;
 	e->texture[0].height = e->raw_texture.height;
+	printf("w : %i, h : %i\n", e->texture[0].width, e->texture[0].height);
 	while (j < e->texture[0].height)
 	{
 		i = 0;
