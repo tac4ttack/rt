@@ -33,7 +33,7 @@
 #define OBJ_FLAG_CHECKERED		(1 << 2)
 #define OBJ_FLAG_DIFF_MAP		(1 << 3)
 #define OBJ_FLAG_BUMP_MAP		(1 << 4)
-# define OBJ_FLAG_PLANELIMIT	(1 << 5)
+#define OBJ_FLAG_PLANELIMIT		(1 << 5)
 
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2
@@ -1590,12 +1590,12 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 	if (hit.obj->flags & OBJ_FLAG_WAVES)
 	{
 		if (hit.obj->type == OBJ_PLANE)
-			save.y = res.y + scene->waves_p1.x * sin((hit.pos.x + scene->u_time));
+			save.y = res.y + hit.obj->waves_p1.x * sin((hit.pos.x + scene->u_time));
 		else
 		{
-			save.x = res.x + scene->waves_p1.x * sin(res.y * scene->waves_p2.x + scene->u_time); //p1.x p2.x
-			save.z = res.z + scene->waves_p1.y * sin(res.x * scene->waves_p2.y + scene->u_time);
-			save.y = res.y + scene->waves_p1.z * sin(res.x * scene->waves_p2.z + scene->u_time);
+			save.x = res.x + hit.obj->waves_p1.x * sin(res.y * hit.obj->waves_p2.x + scene->u_time); //p1.x p2.x
+			save.z = res.z + hit.obj->waves_p1.y * sin(res.x * hit.obj->waves_p2.y + scene->u_time);
+			save.y = res.y + hit.obj->waves_p1.z * sin(res.x * hit.obj->waves_p2.z + scene->u_time);
 		}
 	}
 
