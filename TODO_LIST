@@ -1,19 +1,17 @@
-PLEASE FIX THESE SHITS!!!!!!!!!!!!!
-
-* leaks gtk ok -> free à la fin du programme
+* leaks gtk -> ok free à la fin du programme
 * leaks à la fin du programme, foutre while(1) avant le exit pour les trouver
 * virer du parsing la lecture de la direction pour une CAMERA
-* ouverture fichier de scene
-* sauvegarde fichier de scene
-* top menu?
-* faire une touche pour reload le kernel en pleine execution
-* bruit de perlinpinpin -> Chaton?
-* kernel post process Stereoscopie -> Flo?
-* créer gestionnaire de textures?
-* bump mapping
-* light mappinng
-* uv map?
-* status bar présente mais non utilisée
+* ouverture fichier de scene -> ignore? pas de point
+* sauvegarde fichier de scene -> ignore? pas de point
+* top menu? -> ignore? pas de point
+* faire une touche pour reload le kernel en pleine execution -> ignore? pas de point
+* bruit de perlinpinpin -> Chaton? ignore? pas le temps?
+* kernel post process Stereoscopie -> Flo? ignore? pas le temps?
+* créer gestionnaire de textures? -> ignore? ou on se chauffe?
+* bump mapping -> ignore? pas le temps?
+* light mapping -> ignore? pas le temps?
+* uv map? -> ignore? pas le temps?
+* status bar présente mais non utilisée -> ignore? pas de point
 * activer la diffuse map desactive le checkboard et vice versa!
 * rotation objet ou changement de direction ne suis pas avec la texture (O)
 * les box, fonctionnel ou pas? on garde ou pas?
