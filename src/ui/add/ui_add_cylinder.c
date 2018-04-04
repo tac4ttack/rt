@@ -6,11 +6,37 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:56 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 12:51:01 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 11:08:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+static void	ui_add_cylinder_effects(t_cylinder *cylinder)
+{
+	cylinder->reflex = 0;
+	cylinder->refract = 0;
+	cylinder->opacity = 1;
+	cylinder->limit_pos.x = 0;
+	cylinder->limit_pos.y = 0;
+	cylinder->limit_pos.z = 0;
+	cylinder->limit_dir.x = 0;
+	cylinder->limit_dir.y = 0;
+	cylinder->limit_dir.z = 0;
+	cylinder->waves_p1.x = 0.8;
+	cylinder->waves_p1.y = 0.8;
+	cylinder->waves_p1.z = 0.8;
+	cylinder->waves_p2.x = 5;
+	cylinder->waves_p2.y = 5;
+	cylinder->waves_p2.z = 5;
+	cylinder->check_size.x = 20;
+	cylinder->check_size.y = 10;
+	cylinder->diff_map_id = -1;
+	cylinder->diff_offset.x = 0;
+	cylinder->diff_offset.y = 0;
+	cylinder->diff_ratio.x = 1;
+	cylinder->diff_ratio.y = 1;
+}
 
 void	ui_add_cylinder(t_env *e)
 {
@@ -33,10 +59,8 @@ void	ui_add_cylinder(t_env *e)
 	cylinder.diff.y = 0.42;
 	cylinder.diff.z = 0.42;
 	cylinder.spec = cylinder.diff;
-	cylinder.reflex = 0;
-	cylinder.refract = 0;
-	cylinder.opacity = 1;
 	cylinder.base_dir = cylinder.dir;
 	cylinder.base_dir = normalize_vect(cylinder.dir);
+	ui_add_cylinder_effects(&cylinder);
 	e->gen_objects->add(e->gen_objects, (void*)&cylinder);
 }

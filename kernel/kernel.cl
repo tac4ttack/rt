@@ -1295,12 +1295,12 @@ static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 /*
 ** SPHERES FUNCTIONS ///////////////////////////////////////////////////////////
 */
-static unsigned int		sphere_checkerboard(float3 dir, unsigned int color)
+static unsigned int		sphere_checkerboard(const float3 dir, const unsigned int color, const float2 check_size)
 {
 	int2	uv;
 
-	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415))) * 20);
-	uv.y = (int)floor((0.5 - (asin(dir.y) / 3.1415)) * 10);
+	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415))) * check_size.x);
+	uv.y = (int)floor((0.5 - (asin(dir.y) / 3.1415)) * check_size.y);
 	if (uv.x % 2 == 0)
 	{
 		if (uv.y % 2 == 0)
@@ -2107,7 +2107,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		 if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			 hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)hit.obj)->diff_ratio, ((__local t_sphere *)hit.obj)->diff_offset);
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
-			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color);
+			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
 		
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = plane_texture(hit.normal, hit.pos, fast_normalize(((__local t_plane *)hit.obj)->u_axis), scene->texture_star, 1500, 1500);

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 18:36:31 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 19:31:00 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 11:22:39 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ui_obj_update_checkboard(t_env *e, t_object *obj)
 {
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_checkboard_width_spin,\
 								(gdouble)obj->check_size.x);
-	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_checkboard_width_spin,\
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_checkboard_height_spin,\
 								(gdouble)obj->check_size.y);
 }
 
@@ -69,3 +69,4 @@ void	ui_obj_update_sinwave(t_env *e, t_object *obj)
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_sinwave_param2_spin_z,\
 								(gdouble)obj->waves_p2.z);
 }
+

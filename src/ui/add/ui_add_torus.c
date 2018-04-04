@@ -6,11 +6,34 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:37 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 17:35:27 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 11:07:27 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+static void	ui_add_torus_effects(t_torus *torus)
+{
+	torus->limit_pos.x = 0;
+	torus->limit_pos.y = 0;
+	torus->limit_pos.z = 0;
+	torus->limit_dir.x = 0;
+	torus->limit_dir.y = 0;
+	torus->limit_dir.z = 0;
+	torus->waves_p1.x = 0.8;
+	torus->waves_p1.y = 0.8;
+	torus->waves_p1.z = 0.8;
+	torus->waves_p2.x = 5;
+	torus->waves_p2.y = 5;
+	torus->waves_p2.z = 5;
+	torus->check_size.x = 20;
+	torus->check_size.y = 10;
+	torus->diff_map_id = -1;
+	torus->diff_offset.x = 0;
+	torus->diff_offset.y = 0;
+	torus->diff_ratio.x = 1;
+	torus->diff_ratio.y = 1;
+}
 
 void	ui_add_torus(t_env *e)
 {
@@ -35,5 +58,6 @@ void	ui_add_torus(t_env *e)
 	torus.reflex = 0;
 	torus.refract = 0;
 	torus.opacity = 1;
+	ui_add_torus_effects(&torus);
 	e->gen_objects->add(e->gen_objects, (void*)&torus);
 }

@@ -2375,14 +2375,12 @@ settings 2</property>
                                                             <property name="tooltip_text" translatable="yes">Reflexion index (between 0 and 1)</property>
                                                             <property name="margin_left">5</property>
                                                             <property name="margin_right">5</property>
-                                                            <property name="max_length">4</property>
-                                                            <property name="width_chars">4</property>
-                                                            <property name="text" translatable="yes">1,00</property>
+                                                            <property name="width_chars">0</property>
                                                             <property name="input_purpose">number</property>
                                                             <property name="adjustment">checkboard_width_adjustement</property>
                                                             <property name="climb_rate">0.01</property>
                                                             <property name="digits">2</property>
-                                                            <property name="numeric">True</property>
+                                                            <property name="wrap">True</property>
                                                             <property name="update_policy">if-valid</property>
                                                             <property name="value">1</property>
                                                           </object>
@@ -2416,16 +2414,14 @@ settings 2</property>
                                                             <property name="tooltip_text" translatable="yes">Refraction index (0 to disable, between 1 and 100)</property>
                                                             <property name="margin_left">5</property>
                                                             <property name="margin_right">5</property>
-                                                            <property name="max_length">4</property>
-                                                            <property name="width_chars">4</property>
-                                                            <property name="text" translatable="yes">6,00</property>
+                                                            <property name="width_chars">0</property>
                                                             <property name="input_purpose">number</property>
                                                             <property name="adjustment">checkboard_hieght_adjustement</property>
                                                             <property name="climb_rate">0.01</property>
                                                             <property name="digits">2</property>
-                                                            <property name="numeric">True</property>
+                                                            <property name="wrap">True</property>
                                                             <property name="update_policy">if-valid</property>
-                                                            <property name="value">6</property>
+                                                            <property name="value">1</property>
                                                           </object>
                                                           <packing>
                                                             <property name="expand">True</property>
@@ -3339,26 +3335,9 @@ High setting decreases a lot the rendering speed</property>
                                       <object class="GtkBox" id="scene_cartoon_box">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="halign">center</property>
                                         <property name="margin_top">3</property>
                                         <property name="margin_bottom">3</property>
-                                        <child>
-                                          <object class="GtkLabel" id="scene_cartoon_label">
-                                            <property name="width_request">90</property>
-                                            <property name="visible">True</property>
-                                            <property name="sensitive">False</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="tooltip_text" translatable="yes">Current scene postprocessing setting, used to apply color filter on render</property>
-                                            <property name="label" translatable="yes">Cartoonize
-:
-</property>
-                                            <property name="single_line_mode">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
                                         <child>
                                           <object class="GtkRadioButton" id="scene_cartoon_two_radio">
                                             <property name="label" translatable="yes">Flat 2 tones</property>
@@ -3388,12 +3367,6 @@ High setting decreases a lot the rendering speed</property>
                                             <property name="fill">True</property>
                                             <property name="position">2</property>
                                           </packing>
-                                        </child>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
-                                        <child>
-                                          <placeholder/>
                                         </child>
                                       </object>
                                       <packing>
