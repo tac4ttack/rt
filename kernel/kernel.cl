@@ -8,7 +8,7 @@
 
 #define BACKCOLOR 0x00999999
 
-#define EPSILON 0.00005f
+#define EPSILON 0.0000000005f
 #define MAX_DIST 10000000.0
 #define SHADOW_BIAS 1000
 
@@ -689,19 +689,16 @@ t_ret	object_limited(t_object __local *object,
 	t.radius = 0;
 	dist_plan = inter_plan_private(&t, ray, origin);
 
-	if (res1 < 0)
+	if (res1 <= 0)
 	{
 		if (dot(t.normal, ray) > 0)
 		{
 			if (res2 > dist_plan)
 			{
 				ret.dist = res2;
-				return (ret);
 			}
-			else if (dist_plan < MAX_DIST) // DE LA MERD
+			else
 			{
-			//	if (object->type == OBJ_CONE)
-			//		printf("%.2f %.2f %.2f\n", res1, res2, dist_plan);
 				ret.dist = dist_plan;
 				ret.normal = -t.normal;
 				ret.wall = 1;

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:16:16 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 23:47:58 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,16 @@ void		ui_obj(t_env *e)
 			target = &obj->pos;
 		if (target)
 			ui_obj_apply(e, target);
+		if (obj->flags & OBJF_FLAG_FIXLIMIT)
+		{
+			if (KEY_STATE_I || KEY_STATE_J || KEY_STATE_K || KEY_STATE_L \
+			|| KEY_STATE_U || KEY_STATE_O)
+				target = &obj->limit_dir;
+			else
+				target = &obj->limit_pos;
+			if (target)
+				ui_obj_apply(e, target);
+		}
 		ui_obj_update(e, obj);
-		opencl_set_args(e, e->cl);
 	}
 }
