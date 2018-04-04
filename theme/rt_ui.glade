@@ -1815,6 +1815,21 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="margin_top">3</property>
                                                         <property name="margin_bottom">3</property>
                                                         <child>
+                                                          <object class="GtkButton" id="obj_limit_button1">
+                                                            <property name="label" translatable="yes"> Enable/Disable
+"Plane limit lock"</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="receives_default">True</property>
+                                                            <property name="tooltip_text" translatable="yes">Limit the object with plane defined below</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
                                                           <object class="GtkButton" id="obj_limit_button">
                                                             <property name="label" translatable="yes">Enable/Disable
  "Plane limit"</property>

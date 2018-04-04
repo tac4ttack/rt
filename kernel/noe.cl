@@ -583,6 +583,91 @@ static float3	rotat_z(const float3 vect, const float angle)
 
 
 
+static float	inter_plan_private(const t_plane *plane, const float3 ray, const float3 origin)
+{
+	float		t;
+
+	t = dot(fast_normalize(ray), fast_normalize(plane->normal));
+	if (fabs(t) < 0.0005 || (plane->radius && t > plane->radius))
+		return (0);
+	t = (dot(plane->pos - origin, fast_normalize(plane->normal))) / t;
+	if (t < 0.001)
+		return (0);
+	return (t);
+}
+
+t_ret	object_limited(t_object __local *object,
+							const float res1, const float res2,
+							const float3 ray, const float3 origin)
+{
+	t_ret		ret;
+	t_plane		t;
+	float		dist_plan;
+
+	ret.dist = 0;
+	ret.wall = 0;
+	t.pos = object->pos;
+	t.normal = object->normal_plan;
+	t.radius = 0;
+	dist_plan = inter_plan_private(&t, ray, origin);
+
+	if (res1 < 0)
+	{
+		if (dot(t.normal, ray) > 0)
+		{
+			if (res2 > dist_plan)
+			{
+				ret.dist = res2;
+				return (ret);
+			}
+			else if (dist_plan < MAX_DIST) // DE LA MERD
+			{
+				if (object->type == OBJ_CONE)
+					printf("%.2f %.2f %.2f\n", res1, res2, dist_plan);
+				ret.dist = dist_plan;
+				ret.normal = -t.normal;
+				ret.wall = 1;
+			}
+		}
+		else
+		{
+			if (dist_plan > res2)
+				ret.dist = res2;
+			else if (dist_plan < MAX_DIST)
+			{
+				ret.dist = dist_plan;
+				ret.normal = -t.normal;
+				ret.wall = 1;
+			}
+		}
+		return (ret);
+	}
+	if (dot(t.normal, ray) > 0)
+	{
+		if (res2 < dist_plan)
+			return (ret);
+		else if (res1 > dist_plan)
+			ret.dist = res1;
+		else if (dist_plan < MAX_DIST)
+		{
+			ret.dist = dist_plan;
+			ret.normal = -t.normal;
+			ret.wall = 1;
+		}
+	}
+	else
+	{
+		if (dist_plan < res1)
+			return (ret);
+		ret.dist = res1;
+	}
+	return (ret);
+}
+
+
+
+
+
 /*
 ** ELLIPSOID FUNCTIONS
 */
@@ -678,86 +763,7 @@ static bool		solve_quadratic(const float a, const float b, const float c, float 
 	return (true);
 }
 
-static float	inter_plan_private(const t_plane *plane, const float3 ray, const float3 origin)
-{
-	float		t;
 
-	t = dot(fast_normalize(ray), fast_normalize(plane->normal));
-	if (fabs(t) < 0.0005 || (plane->radius && t > plane->radius))
-		return (0);
-	t = (dot(plane->pos - origin, fast_normalize(plane->normal))) / t;
-	if (t < 0.001)
-		return (0);
-	return (t);
-}
-
-t_ret	object_limited(t_object __local *object,
-							const float res1, const float res2,
-							const float3 ray, const float3 origin)
-{
-	t_ret		ret;
-	t_plane		t;
-	float		dist_plan;
-
-	ret.dist = 0;
-	ret.wall = 0;
-	t.pos = object->pos;
-	t.normal = object->normal_plan;
-	t.radius = 0;
-	dist_plan = inter_plan_private(&t, ray, origin);
-
-	if (res1 < 0)
-	{
-		if (dot(t.normal, ray) > 0)
-		{
-			if (res2 > dist_plan)
-			{
-				ret.dist = res2;
-				return (ret);
-			}
-			else if (dist_plan < MAX_DIST) // DE LA MERD
-			{
-				if (object->type == OBJ_CONE)
-					printf("%.2f %.2f %.2f\n", res1, res2, dist_plan);
-				ret.dist = dist_plan;
-				ret.normal = -t.normal;
-				ret.wall = 1;
-			}
-		}
-		else
-		{
-			if (dist_plan > res2)
-				ret.dist = res2;
-			else if (dist_plan < MAX_DIST)
-			{
-				ret.dist = dist_plan;
-				ret.normal = -t.normal;
-				ret.wall = 1;
-			}
-		}
-		return (ret);
-	}
-	if (dot(t.normal, ray) > 0)
-	{
-		if (res2 < dist_plan)
-			return (ret);
-		else if (res1 > dist_plan)
-			ret.dist = res1;
-		else if (dist_plan < MAX_DIST)
-		{
-			ret.dist = dist_plan;
-			ret.normal = -t.normal;
-			ret.wall = 1;
-		}
-	}
-	else
-	{
-		if (dist_plan < res1)
-			return (ret);
-		ret.dist = res1;
-	}
-	return (ret);
-}
 
 static float3		get_ellipsoid_normal(const __local t_ellipsoid *ellipsoid, const t_hit *hit)
 {

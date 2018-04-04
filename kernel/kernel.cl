@@ -34,6 +34,7 @@
 #define OBJ_FLAG_DIFF_MAP		(1 << 3)
 #define OBJ_FLAG_BUMP_MAP		(1 << 4)
 #define OBJ_FLAG_PLANELIMIT		(1 << 5)
+#define OBJ_FLAG_PLANELIMIT		(1 << 6)
 
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2
@@ -325,6 +326,7 @@ typedef struct			s_hit
 	int					mem_index;
 	float				opacity;
 	unsigned int		color;
+	int					wall; // WIP
 }						t_hit;
 
 typedef struct			s_tex
@@ -333,6 +335,13 @@ typedef struct			s_tex
 	int					width;
 	int					height;
 }						t_tex;
+
+typedef struct			s_ret
+{
+	int					wall;
+	float				dist;
+	float3				normal;
+}						t_ret;
 
 typedef struct			s_scene
 {
@@ -378,8 +387,9 @@ static t_hit	hit_init(void)
 	hit.dist = 0.f;
 	hit.normal = 0.f;
 	
-	hit.obj = 0; // dangling dangerouss!
-	
+	hit.obj = -1; // dangling dangerouss!
+
+	hit.wall = 0;
 	hit.color = 0;
 	hit.pos = 0.f;
 	hit.mem_index = 0;
