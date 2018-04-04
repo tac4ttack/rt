@@ -16,3 +16,7 @@
 * rotation objet ou changement de direction ne suis pas avec la texture (O)
 * les box, fonctionnel ou pas? on garde ou pas?
 * si on garde les box il faut modifier ui_obj_update pour afficher son nom sur l'UI
+* check norme
+* check leaks
+* check asan
+* check valgrindou
