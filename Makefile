@@ -148,37 +148,37 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/ui_obj_update_effects.c \
 						update_fps.c \
 						vectors.c \
+						xml/data/xml_data_angle.c \
+						xml/data/xml_data_axis_size.c \
+						xml/data/xml_data_brightness.c \
+						xml/data/xml_data_color.c \
+						xml/data/xml_data_diffuse.c \
+						xml/data/xml_data_dir.c \
+						xml/data/xml_data_height.c \
+						xml/data/xml_data_min_max.c \
+						xml/data/xml_data_normale.c \
+						xml/data/xml_data_opacity.c \
+						xml/data/xml_data_pos.c \
+						xml/data/xml_data_radius.c \
+						xml/data/xml_data_reflex.c \
+						xml/data/xml_data_refrac.c \
+						xml/data/xml_data_shrink.c \
+						xml/data/xml_data_specular.c \
+						xml/data/xml_data_type.c \
+						xml/object/xml_box.c \
+						xml/object/xml_cameras.c \
+						xml/object/xml_cones.c \
+						xml/object/xml_cylinders.c \
+						xml/object/xml_ellipsoid.c \
+						xml/object/xml_lights.c \
+						xml/object/xml_planes.c \
+						xml/object/xml_spheres.c \
+						xml/object/xml_torus.c \
 						xml/xml.c \
-						xml/xml_cameras.c \
 						xml/xml_check_attr.c \
-						xml/xml_cones.c \
-						xml/xml_box.c \
-						xml/xml_cylinders.c \
-						xml/xml_data_angle.c \
-						xml/xml_data_axis_size.c \
-						xml/xml_data_brightness.c \
-						xml/xml_data_color.c \
-						xml/xml_data_diffuse.c \
-						xml/xml_data_dir.c \
-						xml/xml_data_height.c \
-						xml/xml_data_normale.c \
-						xml/xml_data_opacity.c \
-						xml/xml_data_pos.c \
-						xml/xml_data_radius.c \
-						xml/xml_data_reflex.c \
-						xml/xml_data_refrac.c \
-						xml/xml_data_shrink.c \
-						xml/xml_data_specular.c \
-						xml/xml_data_type.c \
-						xml/xml_ellipsoid.c \
-						xml/xml_data_min_max.c \
-						xml/xml_lights.c \
 						xml/xml_list.c \
 						xml/xml_nodes.c \
-						xml/xml_planes.c \
 						xml/xml_scene.c \
-						xml/xml_spheres.c \
-						xml/xml_torus.c \
 						xml/xml_tools.c
 
 default: gpu
@@ -199,6 +199,8 @@ $(OBJ_PATH):
 	@mkdir $(OBJ_PATH)
 	@mkdir $(OBJ_PATH)/cl
 	@mkdir $(OBJ_PATH)/xml
+	@mkdir $(OBJ_PATH)/xml/data
+	@mkdir $(OBJ_PATH)/xml/object
 	@mkdir $(OBJ_PATH)/gen
 	@mkdir $(OBJ_PATH)/ui
 	@mkdir $(OBJ_PATH)/ui/add

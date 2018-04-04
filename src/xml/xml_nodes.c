@@ -6,11 +6,26 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 12:22:16 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 14:49:33 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+/*
+** xml_check_node_format mod details
+** 0 = scene
+** 1 = camera
+** 2 = cone
+** 3 = cylinder
+** 4 = light
+** 5 = plane
+** 6 = sphere
+** 7 = ellipsoid
+** 8 = paraboloid
+** 9 = torus
+** 10 = box
+*/
 
 int					xml_check_node_format(char **node, int mod)
 {
@@ -22,12 +37,12 @@ int					xml_check_node_format(char **node, int mod)
 	{
 		i.y = (mod == 1 ? 9 : i.y);
 		i.y = (mod == 4 ? 15 : i.y);
-		i.y = (mod == 10 ? 27 : i.y);
-		i.y = (mod == 7 ? 25 : i.y);
+		i.y = (mod == 10 ? 33 : i.y);
+		i.y = (mod == 7 ? 31 : i.y);
 		if (mod == 2 || mod == 5 || mod == 6)
-			i.y = 22;
+			i.y = 28;
 		if (mod == 3 || mod == 8 || mod == 9)
-			i.y = 23;
+			i.y = 29;
 		while (i.x <= i.y)
 		{
 			if (i.x == i.y && node[i.x] != NULL)

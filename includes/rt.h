@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 19:20:31 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 15:01:10 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,6 +356,8 @@ typedef struct			s_node
 	cl_float			reflex;
 	cl_float			refract;
 	cl_float			opacity;
+	cl_float3			limit_dir;
+	cl_float3			limit_pos;
 	struct s_node		*next;
 }						t_node;
 
@@ -547,8 +549,12 @@ void					xml_data_normale(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_opacity(t_env *e, char **attributes, \
 										int *i, t_node *node);
+void					xml_data_plane_limit_dir(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_plane_limit_pos(t_env *e, char **attributes, \
+										int *i, t_node *node);
 void					xml_data_plane_radius(t_env *e, char **attributes, \
-												int *i, t_node *node);
+										int *i, t_node *node);
 void					xml_data_pos(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_radius(t_env *e, char **attributes, \

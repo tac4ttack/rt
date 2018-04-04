@@ -3344,6 +3344,8 @@ High setting decreases a lot the rendering speed</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
                                             <property name="draw_indicator">True</property>
                                             <property name="group">scene_postproc_none_radio</property>
                                           </object>
@@ -3359,6 +3361,8 @@ High setting decreases a lot the rendering speed</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="margin_left">5</property>
+                                            <property name="margin_right">5</property>
                                             <property name="draw_indicator">True</property>
                                             <property name="group">scene_postproc_none_radio</property>
                                           </object>
