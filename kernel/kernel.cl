@@ -796,7 +796,7 @@ static float	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, f
 /*
 ** PLANES FUNCTIONS ////////////////////////////////////////////////////////////
 */
-static unsigned int		plane_checkerboard(float3 normale, float3 pos, unsigned int color)
+static unsigned int		plane_checkerboard(const float3 normale, const float3 pos, const unsigned int color, const float2 check_size)
 {
 	float3			u_axis;
 	float3			v_axis;
@@ -806,8 +806,8 @@ static unsigned int		plane_checkerboard(float3 normale, float3 pos, unsigned int
 	u_axis.y = normale.z;
 	u_axis.z = -normale.x;
 	v_axis = cross(u_axis, normale);
-	uv.x = (int)floor(dot(pos, u_axis) / 4);
-	uv.y = (int)floor(dot(pos, v_axis) / 4);
+	uv.x = (int)floor(dot(pos, u_axis) / check_size.x);
+	uv.y = (int)floor(dot(pos, v_axis) / check_size.y);
 	if (uv.x % 2 == 0)
 	{
 		if (uv.y % 2 == 0)
@@ -2112,7 +2112,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = plane_texture(hit.normal, hit.pos, fast_normalize(((__local t_plane *)hit.obj)->u_axis), scene->texture_star, 1500, 1500);
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
-			hit.color = plane_checkerboard(hit.normal, hit.pos, hit.obj->color);
+			hit.color = plane_checkerboard(hit.normal, hit.pos, hit.obj->color, hit.obj->check_size);
 
 		if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = cylinder_texture(hit.pos - hit.obj->pos, (__local t_cylinder *)hit.obj, scene->texture_star, 1500, 1500);
