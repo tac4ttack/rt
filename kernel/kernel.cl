@@ -34,7 +34,6 @@
 #define OBJ_FLAG_DIFF_MAP		(1 << 3)
 #define OBJ_FLAG_BUMP_MAP		(1 << 4)
 #define OBJ_FLAG_LIMITED		(1 << 5)
-#define OBJ_FLAG_LIMITED		(1 << 6)
 
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2
@@ -701,8 +700,8 @@ t_ret	object_limited(t_object __local *object,
 			}
 			else if (dist_plan < MAX_DIST) // DE LA MERD
 			{
-				if (object->type == OBJ_CONE)
-					printf("%.2f %.2f %.2f\n", res1, res2, dist_plan);
+			//	if (object->type == OBJ_CONE)
+			//		printf("%.2f %.2f %.2f\n", res1, res2, dist_plan);
 				ret.dist = dist_plan;
 				ret.normal = -t.normal;
 				ret.wall = 1;
@@ -857,10 +856,12 @@ static t_ret	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, f
 	float3		abc = 0;
 	float		res1, res2;
 	float3		pos = 0;
+	float3		save_ray;
 	t_ret		ret;
 
 	ret.dist = 0;
 	ret.wall = 0;
+	save_ray = ray;
 	pos = origin - ellipsoid->pos;
 	pos = vector_get_rotate(&pos, &ellipsoid->dir);
 	ray = vector_get_rotate(&ray, &ellipsoid->dir);
@@ -880,7 +881,7 @@ static t_ret	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, f
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
 	if (ellipsoid->flags & OBJ_FLAG_LIMITED)
-		return (object_limited((t_object __local *)ellipsoid, res1, res2, ray, origin));
+		return (object_limited((t_object __local *)ellipsoid, res1, res2, save_ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		ret.dist = res1;
 	else
