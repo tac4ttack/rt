@@ -33,8 +33,8 @@
 #define OBJ_FLAG_CHECKERED		(1 << 2)
 #define OBJ_FLAG_DIFF_MAP		(1 << 3)
 #define OBJ_FLAG_BUMP_MAP		(1 << 4)
-#define OBJ_FLAG_PLANELIMIT		(1 << 5)
-#define OBJ_FLAG_PLANELIMIT		(1 << 6)
+#define OBJ_FLAG_LIMITED		(1 << 5)
+#define OBJ_FLAG_LIMITED		(1 << 6)
 
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2
@@ -283,7 +283,7 @@ typedef struct			s_thor
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
-	
+
 	float				lil_radius;
 	float				big_radius;
 }						t_thor;
@@ -386,7 +386,7 @@ static t_hit	hit_init(void)
 
 	hit.dist = 0.f;
 	hit.normal = 0.f;
-	
+
 	hit.obj = -1; // dangling dangerouss!
 
 	hit.wall = 0;
@@ -662,6 +662,88 @@ static float3	rotat_z(const float3 vect, const float angle)
 ////////////////////////////////////////////////////////////////////////////////
 
 
+static float	inter_plan_private(const t_plane *plane, const float3 ray, const float3 origin)
+{
+	float		t;
+
+	t = dot(fast_normalize(ray), fast_normalize(plane->normal));
+	if (fabs(t) < 0.0005 || (plane->radius && t > plane->radius))
+		return (0);
+	t = (dot(plane->pos - origin, fast_normalize(plane->normal))) / t;
+	if (t < 0.001)
+		return (0);
+	return (t);
+}
+
+t_ret	object_limited(t_object __local *object,
+							const float res1, const float res2,
+							const float3 ray, const float3 origin)
+{
+	t_ret		ret;
+	t_plane		t;
+	float		dist_plan;
+
+	ret.dist = 0;
+	ret.wall = 0;
+	t.pos = object->limit_pos;
+	t.normal = object->limit_dir;
+	t.radius = 0;
+	dist_plan = inter_plan_private(&t, ray, origin);
+
+	if (res1 < 0)
+	{
+		if (dot(t.normal, ray) > 0)
+		{
+			if (res2 > dist_plan)
+			{
+				ret.dist = res2;
+				return (ret);
+			}
+			else if (dist_plan < MAX_DIST) // DE LA MERD
+			{
+				if (object->type == OBJ_CONE)
+					printf("%.2f %.2f %.2f\n", res1, res2, dist_plan);
+				ret.dist = dist_plan;
+				ret.normal = -t.normal;
+				ret.wall = 1;
+			}
+		}
+		else
+		{
+			if (dist_plan > res2)
+				ret.dist = res2;
+			else if (dist_plan < MAX_DIST)
+			{
+				ret.dist = dist_plan;
+				ret.normal = -t.normal;
+				ret.wall = 1;
+			}
+		}
+		return (ret);
+	}
+	if (dot(t.normal, ray) > 0)
+	{
+		if (res2 < dist_plan)
+			return (ret);
+		else if (res1 > dist_plan)
+			ret.dist = res1;
+		else if (dist_plan < MAX_DIST)
+		{
+			ret.dist = dist_plan;
+			ret.normal = -t.normal;
+			ret.wall = 1;
+		}
+	}
+	else
+	{
+		if (dist_plan < res1)
+			return (ret);
+		ret.dist = res1;
+	}
+	return (ret);
+}
+
+
 
 /*
 ** ELLIPSOID FUNCTIONS
@@ -770,13 +852,15 @@ static float3		get_ellipsoid_normal(const __local t_ellipsoid *ellipsoid, const 
 	return (res);
 }
 
-static float	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, float3 origin)
+static t_ret	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, float3 origin)
 {
 	float3		abc = 0;
-	float		inter0, inter1;
+	float		res1, res2;
 	float3		pos = 0;
+	t_ret		ret;
 
-
+	ret.dist = 0;
+	ret.wall = 0;
 	pos = origin - ellipsoid->pos;
 	pos = vector_get_rotate(&pos, &ellipsoid->dir);
 	ray = vector_get_rotate(&ray, &ellipsoid->dir);
@@ -793,11 +877,15 @@ static float	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, f
 		 pos.y * pos.y +
 		 pos.z * pos.z) - (ellipsoid->radius * ellipsoid->radius);
 
-	 if (!solve_quadratic(abc.x, abc.y, abc.z, &inter0, &inter1))
-		return (0);
-	if (inter0 < 0)
-		return (inter1);
-	return (inter0);
+	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
+		return (ret);
+	if (ellipsoid->flags & OBJ_FLAG_LIMITED)
+		return (object_limited((t_object __local *)ellipsoid, res1, res2, ray, origin));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		ret.dist = res1;
+	else
+		ret.dist = res2;
+	return (ret);
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -848,17 +936,31 @@ static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, un
 	return (texture[uv.y + uv.x * width]);
 }
 
-static float	inter_plan(const __local t_plane *plane, const float3 ray, const float3 origin)
+static t_ret	inter_plan(const __local t_plane *plane, const float3 ray, const float3 origin)
 {
 	float		t;
+	t_ret		ret;
 
+	ret.dist = 0;
+	ret.wall = 0;
 	t = dot(fast_normalize(ray), fast_normalize(plane->normal));
-	if (fabs(t) < 0.0005)
-		return (0);
+	if (fabs(t) < 0.0005 || (plane->radius && t > plane->radius))
+		return (ret);
 	t = (dot(plane->pos - origin, fast_normalize(plane->normal))) / t;
-		if (t < 0.001)
-		return (0);
-	return (t);
+	if (t < 0.001)
+		return (ret);
+	if (plane->radius)
+	{
+		float3 p = origin + ray * t;
+		float3 v = p - plane->pos;
+		float d2 = dot(v, v);
+		if (sqrt(d2) > plane->radius)
+			return (ret);
+	}
+	if (plane->flags & OBJ_FLAG_LIMITED)
+		return (object_limited((t_object __local *)plane, t, t, ray, origin));
+	ret.dist = t;
+	return (ret);
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -942,43 +1044,27 @@ static float3	get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
 	return (fast_normalize(res));
 }
 
-static float	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin)
+static t_ret	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin)
 {
 	float3		abc;
 	float3		pos;
-	float		d;
 	float		res1;
 	float		res2;
+	t_ret		ret;
 
-	res1 = 0;
-	res2 = 0;
+	ret.dist = 0;
+	ret.wall = 0;
 	pos = origin - cylinder->pos;
 	abc = get_cylinder_abc(cylinder->radius, fast_normalize(cylinder->dir), ray, pos);
-	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
-	if (d < 0)
-		return (0);
-	if (d == 0)
-		res1 = (-abc[1]) / (2 * abc[0]);
-	else
-	{
-		res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
-		res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
-	}
-	if (res1 < 0 && res2 < 0)
-		return (0);
+	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
+		return (ret);
+	if (cylinder->flags & OBJ_FLAG_LIMITED)
+		return (object_limited((t_object __local *)cylinder, res1, res2, ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
-	{
-		if (cylinder->height == 0 || (dot(ray, fast_normalize(cylinder->dir) * res1 +
-			dot(origin, fast_normalize(cylinder->dir))) < cylinder->height && dot(ray, fast_normalize(cylinder->dir) * res1 +
-			dot(origin, fast_normalize(cylinder->dir))) > 0))
-			return (res1);
-	}
-	if (cylinder->height ==  0 || (dot(ray, fast_normalize(cylinder->dir) * res2 +
-			dot(origin, fast_normalize(cylinder->dir))) < cylinder->height && dot(ray, fast_normalize(cylinder->dir) * res2 +
-			dot(origin, fast_normalize(cylinder->dir))) > 0))
-		return (res2);
+		ret.dist = res1;
 	else
-		return (0);
+		ret.dist = res2;
+	return (ret);
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -998,7 +1084,7 @@ static double	ft_ret(double4 tab)
 {
 	double		ret;
 	int			i;
-	
+
 	ret = -1.0;
 	i = 0;
 	while(i < 4)
@@ -1017,22 +1103,22 @@ static double	ft_ret(double4 tab)
 static double3	ft_solve_3(double a, double b, double c, double d)
 {
 	double3 result;
-	
+
 	double3 abc;
 	abc.x = c / d;
 	abc.y = b / d;
 	abc.z = a / d;
-	
+
 	double r = (2.0f * abc.x * abc.x * abc.x - 9.0f * abc.x * abc.y + 27.0f * abc.z) / 54.0f;
 	double q = (abc.x * abc.x - 3.0f * abc.y) / 9.0f;
 	double qcube = q * q * q;
 	double theta;
 	double sqrtq;
 	double e;
-	
+
 	d = qcube - r * r;
 	if (d >= 0.0001f)
-	{	
+	{
 		if (q < 0.0f)
 		{
 			result.x = 0.0f;
@@ -1047,8 +1133,8 @@ static double3	ft_solve_3(double a, double b, double c, double d)
 		result.z = -2.0f * sqrtq * cos((theta + 4.0f * M_PI) / 3.0f ) - abc.x / 3.0f;
 	}
 	else
-	{	
-		e = pow(sqrt((double)-d) + fabs((double)r), (double)(1.0f / 3.0f));		
+	{
+		e = pow(sqrt((double)-d) + fabs((double)r), (double)(1.0f / 3.0f));
 		if (r > 0.0001f)
 			e = -e;
 		result.x = result.y = result.z = (e + q / e) - abc.x / 3.0f;
@@ -1076,10 +1162,10 @@ static double	ft_solve_4(double4 t, double wut)
 
 	double rsqrt;
 	double rrec;
-	double d;	
+	double d;
 	double e;
 	double y = ft_max(roots.x, ft_max(roots.y, roots.z));
-	double r = 0.25f * a.z * a.z - a.y + y;	
+	double r = 0.25f * a.z * a.z - a.y + y;
 
 	if (r < 0.0001f)
 		return (0.0f);
@@ -1143,9 +1229,9 @@ static float		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 	res.x = 2. * z.s5 + pow(res.w, 2.) / 4. - 4. * pow((double)thor->big_radius, 2.) * z.s2;
 	res.y = res.w * z.s5 - 4. * pow((double)thor->big_radius, 2.) * z.s3;
 	res.z = pow(z.s5, 2.) - 4. * pow((double)thor->big_radius, 2.) * z.s4 + 1e-3;
-	
+
 	double wut = double_ray_dir.x * double_ray_dir.x + double_ray_dir.y * double_ray_dir.y + double_ray_dir.z * double_ray_dir.z;
-	
+
 	dist = (float)ft_solve_4(res, wut);
 	return (dist);
 }
@@ -1195,7 +1281,7 @@ static float3	ft_solve_3(float a, float b, float c, float d)
 	float Qcubed = Q * Q * Q;
 	d = Qcubed - R * R;
 	if ( d >= 0.0001f )
-	{	
+	{
 		if ( Q < 0.0f )
 		{
 			Result.x = 0.0f;
@@ -1210,8 +1296,8 @@ static float3	ft_solve_3(float a, float b, float c, float d)
 		Result.z = -2.0f * sqrtQ * cos((theta + 4.0f * M_PI) / 3.0f ) - a1 / 3.0f;
 	}
 	else
-	{	
-		e = pow(sqrt(-d) + fabs(R), 1.0f/ 3.0f);	
+	{
+		e = pow(sqrt(-d) + fabs(R), 1.0f/ 3.0f);
 		if ( R > 0.0001f )
 			e = -e;
 		Result.x = Result.y = Result.z = (e + Q / e) - a1 / 3.0f;
@@ -1260,12 +1346,17 @@ static float	ft_solve_4(float t[5])
 return (0.0f);
 }
 
-static float		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
+static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
 {
-	float		c[5];
+	float	c[5];
 	float3	k;
-	float		e;
-	float r = thor->big_radius;
+	float	e;
+	float	r = thor->big_radius;
+	t_ret	ret;
+
+	ret.wall = 0;
+	ret.dist = 0;
+
 	k.x = ray.x * ray.x + ray.y * ray.y + ray.z * ray.z;
 	e = (origin.x - thor->pos.x) * (origin.x - thor->pos.x) + (origin.y - thor->pos.y) *
 	(origin.y - thor->pos.y) + (origin.z - thor->pos.z) * (origin.z - thor->pos.z) -
@@ -1279,7 +1370,8 @@ static float		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * ray.y * ray.y;
 	c[3] = 4.0f * k.x * k.z;
 	c[4] = k.x * k.x;
-	return (ft_solve_4(c));
+	ret.dist = ft_solve_4(c);
+	return (ret);
 }
 
 static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
@@ -1361,26 +1453,28 @@ static float3	get_sphere_abc(const float radius, const float3 ray, const float3 
 	return (abc);
 }
 
-static float	inter_sphere(const __local t_sphere *sphere, const float3 ray, const float3 origin)
+static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
-	float		d = 0;
 	float		res1 = 0;
 	float		res2 = 0;
 	float3		pos = 0;
+	t_ret		ret;
 
+	ret.dist = 0;
+	ret.wall = 0;
 	pos = origin - sphere->pos;
 	abc = get_sphere_abc(sphere->radius, ray, pos);
-	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
-	if (d < 0)
-		return (0);
-	if (d == 0)
-		return ((-abc[1]) / (2 * abc[0]));
-	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
-	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
+		return (ret);
+	if (sphere->flags & OBJ_FLAG_LIMITED)
+		return (object_limited((t_object __local *)sphere, res1, res2, ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
-		return (res1);
-	return (res2);
+		ret.dist = res1;
+	else
+		ret.dist = res2;
+	return (ret);
+
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1476,104 +1570,27 @@ static float3	get_cone_abc(const __local t_cone *cone, const float3 ray, const f
 	return (abc);
 }
 
-static float	inter_cone(const __local t_cone *cone, const float3 ray, const float3 origin)
+static t_ret	inter_cone(const __local t_cone *cone, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
-	float		d = 0;
 	float		res1 = 0;
 	float		res2 = 0;
 	float3		pos = 0;
+	t_ret		ret;
 
+	ret.dist = 0;
+	ret.wall = 0;
 	pos = origin - cone->pos;
 	abc = get_cone_abc(cone, ray, pos);
-	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
-	if (d < 0)
-		return (0);
-	if (d == 0)
-		return (-abc[1]) / (2 * abc[0]);
-	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
-	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
+		return (ret);
+	if (cone->flags & OBJ_FLAG_LIMITED)
+		return (object_limited((t_object __local *)cone, res1, res2, ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
-		return (res1);
-	return (res2);
-}
-////////////////////////////////////////////////////////////////////////////////
-
-
-
-/*
-** BOXES FUNCTIONS /////////////////////////////////////////////////////////////
-*/
-static void	fswap(float *a, float *b)
-{
-	float tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
-
-static float			inter_box(const __local t_box *box, float3 ray, float3 origin, t_hit *hit)
-{
-	float tmin = (box->pos.x + box->min.x - origin.x) / ray.x;
-	float tmax = (box->pos.x + box->max.x - origin.x) / ray.x;
-	if (tmin > tmax)
-		fswap(&tmin, &tmax);
-	float tymin = (box->pos.y + box->min.y - origin.y) / ray.y;
-	float tymax = (box->pos.y + box->max.y - origin.y) / ray.y;
-	if (tymin > tymax)
-		fswap(&tymin, &tymax);
-	if ((tmin > tymax) || (tymin > tmax))
-		return 0;
-	if (tymin > tmin)
-	{
-		tmin = tymin;
-	}
-	if (tymax < tmax)
-	{
-		tmax = tymax;
-	}
-
-	float tzmin = (box->pos.z + box->min.z - origin.z) / ray.z;
-	float tzmax = (box->pos.z + box->max.z - origin.z) / ray.z;
-	if (tzmin > tzmax)
-		fswap(&tzmin, &tzmax);
-	if ((tmin > tzmax) || (tzmin > tmax))
-		return 0;
-	if (tzmin > tmin)
-	{
-		tmin = tzmin;
-	}
-	if (tzmax < tmax)
-	{
-		tmax = tzmax;
-	}
-
-	;
-
-	/*float3 t;
-	t = ray * tmin + (origin + box->min);
-	return (fast_length(t));*/
-	//return true;
-
-	float3		abc = 0;
-	float		d = 0;
-	float		res1 = 0;
-	float		res2 = 0;
-	float3		pos = 0;
-
-	pos = origin - box->pos;
-	abc = get_sphere_abc(2, ray, pos);
-	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
-	if (d < 0)
-		return (0);
-	if (d == 0)
-		return ((-abc[1]) / (2 * abc[0]));
-	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
-	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
-	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
-		return (res1);
-	return (res2);
+		ret.dist = res1;
+	else
+		ret.dist = res2;
+	return (ret);
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1585,6 +1602,7 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 	float						dist;
 	t_object 		__local		*obj;
 	uint						mem_index_obj;
+	t_ret						ret;
 
 	dist = 0;
 	hit = hit_init();
@@ -1596,25 +1614,24 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 	{
 		obj = scene->mem_obj + mem_index_obj;
 		if (obj->type == OBJ_SPHERE)
-		 	dist = inter_sphere((__local struct s_sphere *)obj, ray, origin);
-		//	ABORT
-		// else if (obj->type == OBJ_BOX)
-		//  	dist = inter_box(obj, ray, origin, &hit);
+		 	ret = inter_sphere((__local struct s_sphere *)obj, ray, origin);
 		else if (obj->type == OBJ_CYLINDER)
-		 	dist = inter_cylinder((__local struct s_cylinder *)obj, ray, origin);
+		 	ret = inter_cylinder((__local struct s_cylinder *)obj, ray, origin);
 		else if (obj->type == OBJ_PLANE)
-		 	dist = inter_plan((__local struct s_plane *)obj, ray, origin);
+		 	ret = inter_plan((__local struct s_plane *)obj, ray, origin);
 		else if (obj->type == OBJ_CONE)
-		 	dist = inter_cone((__local struct s_cone *)obj, ray, origin);
+		 	ret = inter_cone((__local struct s_cone *)obj, ray, origin);
 		else if (obj->type == OBJ_ELLIPSOID)
-		   	dist = inter_ellipsoid((__local struct s_ellipsoid *)obj, ray, origin);
-		 else if (obj->type == OBJ_THOR)
-		 	dist = inter_thor((__local struct s_thor *)obj, ray, origin);
-		if (lightdist > 0 && dist < lightdist && dist > EPSILON)
+		   	ret = inter_ellipsoid((__local struct s_ellipsoid *)obj, ray, origin);
+		else if (obj->type == OBJ_THOR)
+			ret = inter_thor((__local struct s_thor *)obj, ray, origin);
+		if (lightdist > 0 && ret.dist < lightdist && ret.dist > EPSILON)
 			hit.opacity += obj->opacity;
-		if ((dist < hit.dist || hit.dist == 0) && dist > EPSILON)
+		if ((ret.dist < hit.dist || hit.dist == 0) && ret.dist > EPSILON)
 		{
-			hit.dist = dist;
+			hit.dist = ret.dist;
+			hit.normal = ret.normal;
+			hit.wall = ret.wall;
 			hit.obj = obj;
 			hit.mem_index = mem_index_obj;
 		}
@@ -1625,15 +1642,77 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 
 static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit hit)
 {
-	float3		res, save;
+	float3				res, save;
+	t_object __local	*object;
+
+	object = hit.obj;
+	res = 0;
+	if (hit.wall)
+		res = hit.normal;
+	else
+	{
+		if (hit.obj->type == OBJ_SPHERE)
+		 	res = hit.pos - hit.obj->pos;
+		else if (hit.obj->type == OBJ_CYLINDER)
+			res = get_cylinder_normal((__local t_cylinder *)hit.obj, hit);
+		else if (hit.obj->type == OBJ_CONE)
+			res = get_cone_normal((__local t_cone *)hit.obj, hit);
+		else if (hit.obj->type == OBJ_ELLIPSOID)
+			res = get_ellipsoid_normal((__local t_ellipsoid *)hit.obj, &hit);
+	//	ABORT
+	//	else if (hit.obj->type == OBJ_THOR)
+	//		res = get_thor_normal(hit.obj, hit);
+		else if (hit.obj->type == OBJ_PLANE)
+		{
+			if (dot(hit.obj->dir, -ray) < 0)
+				res = -hit.obj->dir;
+			else
+				res = hit.obj->dir;
+		}
+	}
+	save = res;
+	if (object->flags & OBJ_FLAG_WAVES)
+	{
+		if (object->type == OBJ_PLANE)
+			save.y = res.y + object->waves_p1.x * sin((hit.pos.x + scene->u_time));
+		else
+		{
+			save.x = res.x + object->waves_p1.x * sin(res.y * object->waves_p2.x + scene->u_time); //p1.x p2.x
+			save.z = res.z + object->waves_p1.y * sin(res.x * object->waves_p2.y + scene->u_time);
+			save.y = res.y + object->waves_p1.z * sin(res.x * object->waves_p2.z + scene->u_time);
+		}
+	}
+
+	return (fast_normalize(save));
+}
+
+/*static float3			wave(t_scene __local *scene, t_hit *hit, float3 normal)
+{
+	float3 res;
+
+	if (hit->obj->type == OBJ_PLANE)
+		res.y = normal.y + hit->obj->waves_p1.x * sin((hit->pos.x + scene->u_time));
+	else
+	{
+		res.x = normal.x + hit->obj->waves_p1.x * sin(normal.y * hit->obj->waves_p2.x + scene->u_time); //p1.x p2.x
+		res.z = normal.z + hit->obj->waves_p1.y * sin(normal.x * hit->obj->waves_p2.y + scene->u_time);
+		res.y = normal.y + hit->obj->waves_p1.z * sin(normal.x * hit->obj->waves_p2.z + scene->u_time);
+	}
+	return (res);
+}
+
+static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit hit)
+{
+	float3		res;
+
 	res = 0;
 	if (hit.obj->type == OBJ_SPHERE)
 	 	res = hit.pos - hit.obj->pos;
-	if (hit.obj->type == OBJ_CYLINDER)
+	else if (hit.obj->type == OBJ_CYLINDER)
 		res = get_cylinder_normal((__local t_cylinder *)hit.obj, hit);
-	if (hit.obj->type == OBJ_CONE)
+	else if (hit.obj->type == OBJ_CONE)
 		res = get_cone_normal((__local t_cone *)hit.obj, hit);
-	if (hit.obj->type == OBJ_ELLIPSOID)
+	else if (hit.obj->type == OBJ_ELLIPSOID)
 		res = get_ellipsoid_normal((__local t_ellipsoid *)hit.obj, &hit);
 //	ABORT
 //	else if (hit.obj->type == OBJ_THOR)
@@ -1645,22 +1724,8 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 		else
 			res = hit.obj->dir;
 	}
-
-	save = res;
-	if (hit.obj->flags & OBJ_FLAG_WAVES)
-	{
-		if (hit.obj->type == OBJ_PLANE)
-			save.y = res.y + hit.obj->waves_p1.x * sin((hit.pos.x + scene->u_time));
-		else
-		{
-			save.x = res.x + hit.obj->waves_p1.x * sin(res.y * hit.obj->waves_p2.x + scene->u_time); //p1.x p2.x
-			save.z = res.z + hit.obj->waves_p1.y * sin(res.x * hit.obj->waves_p2.y + scene->u_time);
-			save.y = res.y + hit.obj->waves_p1.z * sin(res.x * hit.obj->waves_p2.z + scene->u_time);
-		}
-	}
-
-	return (fast_normalize(save));
-}
+	return (fast_normalize(res));
+}*/
 
 static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3 ray)
 {
@@ -1705,7 +1770,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
 	col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
-	
+
 	// RESET NON UTILE?
 	col_r = 0;
 	col_g = 0;
@@ -1717,11 +1782,11 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	l_g = 0;
 	l_b = 0;
 	//
-	
+
 	while (mem_index_lights < scene->mem_size_lights)
 	{
 		tmp = 0;
-		light = scene->mem_lights + mem_index_lights;		
+		light = scene->mem_lights + mem_index_lights;
 		light_ray.dir = light->pos - hit.pos;
 		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
@@ -1766,7 +1831,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				else
 					res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
-			
+
 			// specular part
 			reflect = fast_normalize(((float)(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
 			tmp = dot(reflect, -ray);
@@ -1790,7 +1855,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			//	col_g = (col_g > 255 ? col_g / (col_g + 1) : col_g);
 				(col_b > 255 ? col_b = 255 : 0);
 			//	col_b = (col_b > 255 ? col_b / (col_b + 1) : col_b);
-				
+
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 			res_color = blend_factor(res_color, ((light_hit.opacity - 1) * -1));
@@ -2113,12 +2178,12 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		hit.normal = get_hit_normal(scene, ray, hit);
 			hit.pos = hit.pos + (0.001f * hit.normal);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
-		
+
 		 if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			 hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)hit.obj)->diff_ratio, ((__local t_sphere *)hit.obj)->diff_offset);
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
-		
+
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = plane_texture(hit.normal, hit.pos, fast_normalize(((__local t_plane *)hit.obj)->u_axis), scene->texture_star, 1500, 1500);
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
@@ -2144,7 +2209,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		}
 		else if (depth > 0 && hit.obj->reflex > 0)
 			bounce_color = bounce(scene, ray, hit, depth);*/
-		
+
 		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
@@ -2272,4 +2337,3 @@ __kernel void		ray_trace(	__global	char		*output,
 	final_color = ((swap.w << 24) + (swap.z << 16) + (swap.y << 8) + swap.x);
 	((__global unsigned int *)output)[id] = final_color;
 }
-

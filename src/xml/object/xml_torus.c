@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 15:14:04 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 22:50:19 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,6 @@ void		xml_node_torus(t_env *e, char *node)
 
 static void	xml_push_torus_effects(t_torus *torus)
 {
-	torus->limit_pos.x = 0;
-	torus->limit_pos.y = 0;
-	torus->limit_pos.z = 0;
-	torus->limit_dir.x = 0;
-	torus->limit_dir.y = 0;
-	torus->limit_dir.z = 0;
 	torus->waves_p1.x = 0.8;
 	torus->waves_p1.y = 0.8;
 	torus->waves_p1.z = 0.8;

@@ -53,8 +53,8 @@
 				reflex="0"
 				refract="0"
 				opacity="1"
-				p_limit_pos="0, 0, 0"
-				p_limit_dir="0, 0, 1"
+				p_limit_pos="5, 0, 5"
+				p_limit_dir="1, 0, 0"
 				/>
 	<cone		pos="-5, 0, 5"
 				dir="0.786, 0, 0.617"

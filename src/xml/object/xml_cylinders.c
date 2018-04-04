@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 15:14:04 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 22:48:41 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,6 @@ void		xml_node_cylinder(t_env *e, char *node)
 
 static void	xml_push_cylinder_effects(t_cylinder *cylinder)
 {
-	cylinder->limit_pos.x = 0;
-	cylinder->limit_pos.y = 0;
-	cylinder->limit_pos.z = 0;
-	cylinder->limit_dir.x = 0;
-	cylinder->limit_dir.y = 0;
-	cylinder->limit_dir.z = 0;
 	cylinder->waves_p1.x = 0.8;
 	cylinder->waves_p1.y = 0.8;
 	cylinder->waves_p1.z = 0.8;

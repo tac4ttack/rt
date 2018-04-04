@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 15:14:04 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 22:49:47 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,6 @@ void		xml_node_cone(t_env *e, char *node)
 
 static void	xml_push_cone_effects(t_cone *cone)
 {
-	cone->limit_pos.x = 0;
-	cone->limit_pos.y = 0;
-	cone->limit_pos.z = 0;
-	cone->limit_dir.x = 0;
-	cone->limit_dir.y = 0;
-	cone->limit_dir.z = 0;
 	cone->waves_p1.x = 0.8;
 	cone->waves_p1.y = 0.8;
 	cone->waves_p1.z = 0.8;

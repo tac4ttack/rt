@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 16:25:36 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 22:50:10 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,6 @@ void		xml_node_plane(t_env *e, char *node)
 
 static void	xml_push_plane_effects(t_plane *plane)
 {
-	plane->limit_pos.x = 0;
-	plane->limit_pos.y = 0;
-	plane->limit_pos.z = 0;
-	plane->limit_dir.x = 0;
-	plane->limit_dir.y = 0;
-	plane->limit_dir.z = 0;
 	plane->waves_p1.x = 0.8;
 	plane->waves_p1.y = 0.8;
 	plane->waves_p1.z = 0.8;

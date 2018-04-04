@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xml_ellipsoid.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/04 15:14:04 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 22:50:02 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,6 @@ void		xml_node_ellipsoid(t_env *e, char *node)
 
 static void	xml_push_ellipsoid_effects(t_ellipsoid *ellipsoid)
 {
-	ellipsoid->limit_pos.x = 0;
-	ellipsoid->limit_pos.y = 0;
-	ellipsoid->limit_pos.z = 0;
-	ellipsoid->limit_dir.x = 0;
-	ellipsoid->limit_dir.y = 0;
-	ellipsoid->limit_dir.z = 0;
 	ellipsoid->waves_p1.x = 0.8;
 	ellipsoid->waves_p1.y = 0.8;
 	ellipsoid->waves_p1.z = 0.8;
