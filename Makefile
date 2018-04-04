@@ -77,6 +77,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_checkboard.c \
 						ui/callback/cb_obj_color.c \
 						ui/callback/cb_obj_combo_type.c \
+						ui/callback/cb_obj_diff.c \
 						ui/callback/cb_obj_dir.c \
 						ui/callback/cb_obj_jump.c \
 						ui/callback/cb_obj_limit_btn.c \

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:52 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 11:07:42 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 16:25:46 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	ui_add_plane_effects(t_plane *plane)
 	plane->waves_p2.x = 5;
 	plane->waves_p2.y = 5;
 	plane->waves_p2.z = 5;
-	plane->check_size.x = 20;
+	plane->check_size.x = 10;
 	plane->check_size.y = 10;
 	plane->diff_map_id = -1;
 	plane->diff_offset.x = 0;

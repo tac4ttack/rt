@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 15:14:04 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 16:25:36 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static void	xml_push_plane_effects(t_plane *plane)
 	plane->waves_p2.x = 5;
 	plane->waves_p2.y = 5;
 	plane->waves_p2.z = 5;
-	plane->check_size.x = 20;
+	plane->check_size.x = 10;
 	plane->check_size.y = 10;
 	plane->diff_map_id = -1;
 	plane->diff_offset.x = 0;

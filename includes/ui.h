@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 19:19:23 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/04 16:29:07 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,6 +237,9 @@ gboolean				cb_obj_checkboard_height(GtkSpinButton *spin, \
 												gpointer data);
 void					cb_obj_color(GtkColorButton *button, gpointer data);
 void					cb_obj_combo_type(GtkComboBox *box, gpointer data);
+gboolean				cb_obj_diff_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_diff_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_diff_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_z(GtkSpinButton *spin, gpointer data);
