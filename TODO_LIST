@@ -13,5 +13,8 @@ PLEASE FIX THESE SHITS!!!!!!!!!!!!!
 * bump mapping
 * light mappinng
 * uv map?
+* status bar présente mais non utilisée
 * activer la diffuse map desactive le checkboard et vice versa!
 * rotation objet ou changement de direction ne suis pas avec la texture (O)
+* les box, fonctionnel ou pas? on garde ou pas?
+* si on garde les box il faut modifier ui_obj_update pour afficher son nom sur l'UI
