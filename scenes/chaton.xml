@@ -8,6 +8,20 @@
 			dir="0, 0, 1"
 			fov="30"
 			/>
+<light		type="1"
+			pos="5, 8, 9"
+			dir="0, 0, 0"
+			brightness="0.51"
+			shrink="42"
+			color="0, 255, 255, 255"
+			/>
+<light		type="1"
+			pos="0, 0, -20"
+			dir="0, 0, 0"
+			brightness="0.51"
+			shrink="42"
+			color="0, 255, 255, 255"
+			/>
 
 <plane		pos="0, 20, 0"
 			normale="0, 1, 0"
@@ -17,7 +31,9 @@
 			reflex="0"
 			refract="0"
 			opacity="1"
-			radius="0"
+			radius="0"	
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
 			/>
 
 <plane		pos="0, -20, 0"
@@ -29,6 +45,8 @@
 			refract="0"
 			opacity="1"
 			radius="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
 			/>
 
 <plane		pos="0, 0, 40"
@@ -40,6 +58,8 @@
 			refract="0"
 			opacity="1"
 			radius="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
 			/>
 
 <plane		pos="0, 0, -140"
@@ -51,6 +71,8 @@
 			refract="0"
 			opacity="1"
 			radius="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
 			/>
 
 <plane		pos="20, 0, 0"
@@ -62,6 +84,8 @@
 			refract="0"
 			opacity="1"
 			radius="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
 			/>
 
 <plane		pos="-20, 0, 0"
@@ -73,6 +97,8 @@
 			refract="0"
 			opacity="0"
 			radius="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
 			/>
 
 <sphere		pos="0, -5, -8"
@@ -84,6 +110,8 @@
 			reflex="0"
 			refract="0"
 			opacity="1"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
 			/>
 
 <sphere		pos="0, 0, -50"
@@ -95,22 +123,8 @@
 			reflex="0"
 			refract="1.5"
 			opacity="0.2"
-			/>
-
-<light		type="1"
-			pos="5, 8, 9"
-			dir="0, 0, 0"
-			brightness="0.51"
-			shrink="42"
-			color="0, 255, 255, 255"
-			/>
-
-<light		type="1"
-			pos="0, 0, -20"
-			dir="0, 0, 0"
-			brightness="0.51"
-			shrink="42"
-			color="0, 255, 255, 255"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
 			/>
 
 <cone		pos="5, 0, 0"
@@ -122,6 +136,8 @@
 			reflex="0"
 			refract="0"
 			opacity="1"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
 			/>
 
 <cone		pos="-5, -5, 2"
@@ -133,6 +149,8 @@
 			reflex="0"
 			refract="0"
 			opacity="1"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
 			/>
 
 <cylinder	pos="-5, 0, 10"
@@ -145,5 +163,7 @@
 			reflex="0"
 			refract="1.3"
 			opacity="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
 			/>
 </scene>

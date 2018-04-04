@@ -19,6 +19,9 @@
 			reflex="0"
 			refract="0"
 			opacity="0"
+			radius="0"
+			p_limit_pos="0, 0, 0"
+				p_limit_dir="0, 0, 1"
 			/>
 	<plane 	pos="-15, 0, 0"
 			normale="1, 0, 0"
@@ -28,6 +31,9 @@
 			reflex="0"
 			refract="0"
 			opacity="0"
+			radius="0"
+			p_limit_pos="0, 0, 0"
+				p_limit_dir="0, 0, 1"
 			/>
 	<plane 	pos="15, 0, 0"
 			normale="1, 0, 0"
@@ -37,6 +43,9 @@
 			reflex="0"
 			refract="0"
 			opacity="0"
+			radius="0"
+			p_limit_pos="0, 0, 0"
+				p_limit_dir="0, 0, 1"
 			/>
 	<plane 	pos="0, 15, 0"
 			normale="0, -1, 0"
@@ -46,6 +55,9 @@
 			reflex="0"
 			refract="0"
 			opacity="0"
+			radius="0"
+			p_limit_pos="0, 0, 0"
+				p_limit_dir="0, 0, 1"
 			/>
 	<plane 	pos="0, 0, 30"
 			normale="0, 0, -1"
@@ -55,5 +67,8 @@
 			reflex="0.42"
 			refract="0"
 			opacity="0"
+			radius="0"
+			p_limit_pos="0, 0, 0"
+				p_limit_dir="0, 0, 1"
 			/>
 </scene>
