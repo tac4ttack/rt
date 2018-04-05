@@ -694,11 +694,13 @@ static t_ret	object_limited(t_object __local *object,
 	dist_plan = inter_plan_private(&t, ray, origin);
 
 	// IN OBJECT
-	if (res1 <= 0)
+	if (res1 < 0)
 	{
 		if (dot(t.normal, ray) > EPSILON)
 		{
-			if (res2 < dist_plan)
+			if (!dist_plan && res2 > EPSILON)
+				ret.dist = res2;
+			else if (res2 < dist_plan)
 				return (ret);
 			else
 			{
@@ -721,7 +723,7 @@ static t_ret	object_limited(t_object __local *object,
 		return (ret);
 	}
 
-	if (dot(t.normal, ray) > 0)
+	if (dot(t.normal, ray) > EPSILON)
 	{
 		if (res2 < dist_plan || dist_plan > MAX_DIST)
 			return (ret);
