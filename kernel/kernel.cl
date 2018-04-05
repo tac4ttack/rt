@@ -665,16 +665,16 @@ static float	inter_plan_private(const t_plane *plane, const float3 ray, const fl
 {
 	float		t;
 
-	t = dot(fast_normalize(ray), fast_normalize(plane->normal));
+	t = dot(fast_normalize(ray), plane->normal);
 	if (fabs(t) < 0.0005 || (plane->radius && t > plane->radius))
 		return (0);
-	t = (dot(plane->pos - origin, fast_normalize(plane->normal))) / t;
+	t = (dot(plane->pos - origin, plane->normal)) / t;
 	if (t < 0.001)
 		return (0);
 	return (t);
 }
 
-t_ret	object_limited(t_object __local *object,
+static t_ret	object_limited(t_object __local *object,
 							const float res1, const float res2,
 							const float3 ray, const float3 origin)
 {
@@ -941,10 +941,10 @@ static t_ret	inter_plan(const __local t_plane *plane, const float3 ray, const fl
 
 	ret.dist = 0;
 	ret.wall = 0;
-	t = dot(fast_normalize(ray), fast_normalize(plane->normal));
+	t = dot(fast_normalize(ray), plane->normal);
 	if (fabs(t) < 0.0005 || (plane->radius && t > plane->radius))
 		return (ret);
-	t = (dot(plane->pos - origin, fast_normalize(plane->normal))) / t;
+	t = (dot(plane->pos - origin, plane->normal)) / t;
 	if (t < 0.001)
 		return (ret);
 	if (plane->radius)
@@ -972,17 +972,15 @@ static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsig
 {
 	unsigned int	color = 0;
 	float3			v_axis;
-	float3			dir;
 	float			npos;
 	float			vpos;
 	int2			uv;
 
-	dir = fast_normalize(cyl->dir);
-	v_axis = cross(cyl->u_axis, dir);
-	npos = fast_length(dot(pos, dir) * dir);
+	v_axis = cross(cyl->u_axis, cyl->dir);
+	npos = fast_length(dot(pos, cyl->dir) * cyl->dir);
 	while (npos > 10)
 		npos -= 10;
-	if (dot(pos, dir) < 0)
+	if (dot(pos, cyl->dir) < 0)
 		npos = (npos - 10) * -1;
 	uv.y = (int)floor((npos / 10) * t_height * cyl->diff_ratio.y + cyl->diff_offset.y);
 	npos = dot(pos, cyl->u_axis);
@@ -1001,7 +999,6 @@ static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsig
 		uv.y %= t_height;
 		uv.y = (uv.y - t_height) * -1;
 	}
-
 	// uv.y = (uv.y - height) * -1;
 	// if ((uv.x += decx) > width)   Decalage;
 	// 	uv.x -= width;
@@ -1027,17 +1024,15 @@ static float3	get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
 	float3		res;
 	float3		v;
 	float3		project;
-	float3		cyl_dir;
 	float		doty;
 
 	res = 0;
 	v = 0;
 	project = 0;
 	doty = 0;
-	cyl_dir = fast_normalize(cylinder->dir);
 	v = hit.pos - cylinder->pos;
-	doty = dot(v, cyl_dir);
-	project = doty * cyl_dir;
+	doty = dot(v, cylinder->dir);
+	project = doty * cylinder->dir;
 	res = v - project;
 	return (fast_normalize(res));
 }
@@ -1053,7 +1048,7 @@ static t_ret	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray
 	ret.dist = 0;
 	ret.wall = 0;
 	pos = origin - cylinder->pos;
-	abc = get_cylinder_abc(cylinder->radius, fast_normalize(cylinder->dir), ray, pos);
+	abc = get_cylinder_abc(cylinder->radius, cylinder->dir, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
 	if (cylinder->flags & OBJ_FLAG_LIMITED)
@@ -1529,12 +1524,10 @@ static float3	get_cone_normal(const __local t_cone *cone, const t_hit hit)
 	float		m;
 //	float		r;	// UNUSED
 	//float		k;
-	float3		dir;
 
-	dir =  fast_normalize(cone->dir);
 	v = hit.pos - cone->pos;
-	doty = dot(v, dir);
-	project = doty * dir;
+	doty = dot(v, cone->dir);
+	project = doty * cone->dir;
 	m = fast_length(project);
 	res = v - project;
 	final = res;
@@ -2183,7 +2176,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
 
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = plane_texture(hit.normal, hit.pos, fast_normalize(((__local t_plane *)hit.obj)->u_axis), scene->texture_star, 1500, 1500);
+			hit.color = plane_texture(hit.normal, hit.pos, ((__local t_plane *)hit.obj)->u_axis, scene->texture_star, 1500, 1500);
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = plane_checkerboard(hit.normal, hit.pos, hit.obj->color, hit.obj->check_size);
 
@@ -2191,7 +2184,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 			hit.color = cylinder_texture(hit.pos - hit.obj->pos, (__local t_cylinder *)hit.obj, scene->texture_star, 1500, 1500);
 
 		if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = cone_texture(hit.pos - hit.obj->pos, fast_normalize(hit.obj->dir), fast_normalize(((__local t_cone *)hit.obj)->u_axis), scene->texture_star, 1500, 1500, 1500, 1500);
+			hit.color = cone_texture(hit.pos - hit.obj->pos, hit.obj->dir, ((__local t_cone *)hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)hit.obj)->diff_ratio, ((__local t_cone *)hit.obj)->diff_offset);
 
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)

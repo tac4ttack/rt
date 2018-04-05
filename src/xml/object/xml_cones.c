@@ -109,6 +109,9 @@ static void	xml_push_cone_effects(t_cone *cone)
 	cone->diff_offset.y = 0;
 	cone->diff_ratio.x = 1;
 	cone->diff_ratio.y = 1;
+	cone->u_axis.x = cone->dir.y;
+	cone->u_axis.y = cone->dir.z;
+	cone->u_axis.z = cone->dir.x;
 }
 
 void		xml_push_cone(t_env *e, t_node *list)
@@ -120,7 +123,7 @@ void		xml_push_cone(t_env *e, t_node *list)
 	cone.flags = 0;
 	cone.id = e->current_index_objects;
 	cone.pos = list->pos;
-	cone.dir = list->dir;
+	cone.dir = normalize_vect(list->dir);
 	cone.angle = list->angle;
 	cone.color = list->color;
 	cone.diff = list->diff;

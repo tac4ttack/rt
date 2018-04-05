@@ -44,6 +44,10 @@ void		ui_obj(t_env *e)
 			target = &obj->pos;
 		if (target)
 			ui_obj_apply(e, target);
+		if (obj->type == OBJ_CYLINDER || obj->type == OBJ_CONE)
+		{
+			
+		}
 		if (obj->flags & OBJF_FLAG_FIXLIMIT)
 		{
 			if (KEY_STATE_I || KEY_STATE_J || KEY_STATE_K || KEY_STATE_L \

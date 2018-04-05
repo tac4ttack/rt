@@ -33,6 +33,9 @@ static void	ui_add_plane_effects(t_plane *plane)
 	plane->diff_offset.y = 0;
 	plane->diff_ratio.x = 1;
 	plane->diff_ratio.y = 1;
+	plane->u_axis.x = plane->normal.y;
+	plane->u_axis.y = plane->normal.z;
+	plane->u_axis.z = plane->normal.x;
 }
 
 void	ui_add_plane(t_env *e)
