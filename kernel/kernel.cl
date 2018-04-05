@@ -33,7 +33,8 @@
 #define OBJ_FLAG_CHECKERED			(1 << 2)
 #define OBJ_FLAG_DIFF_MAP			(1 << 3)
 #define OBJ_FLAG_BUMP_MAP			(1 << 4)
-#define OBJ_FLAG_PLANE_LIMITED		(1 << 5)
+#define OBJ_FLAG_PLANE_LIMIT		(1 << 5)
+#define OBJ_FLAG_PLANE_LIMIT_FIX	(1 << 6)
 
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2
@@ -661,6 +662,9 @@ static float3	rotat_z(const float3 vect, const float angle)
 ////////////////////////////////////////////////////////////////////////////////
 
 
+/*
+** LIMIT WITH A PLANE FUNCTIONS ////////////////////////////////////////////////
+*/
 static float	inter_plan_private(const t_plane *plane, const float3 ray, const float3 origin)
 {
 	float		t;
@@ -674,7 +678,7 @@ static float	inter_plan_private(const t_plane *plane, const float3 ray, const fl
 	return (t);
 }
 
-t_ret	object_limited(t_object __local *object,
+static t_ret	object_limited(t_object __local *object,
 							const float res1, const float res2,
 							const float3 ray, const float3 origin)
 {
@@ -738,7 +742,7 @@ t_ret	object_limited(t_object __local *object,
 	}
 	return (ret);
 }
-
+////////////////////////////////////////////////////////////////////////////////
 
 
 /*
@@ -877,7 +881,7 @@ static t_ret	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, f
 
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
-	if (ellipsoid->flags & OBJ_FLAG_PLANE_LIMITED)
+	if (ellipsoid->flags & OBJ_FLAG_PLANE_LIMIT)
 		return (object_limited((t_object __local *)ellipsoid, res1, res2, save_ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		ret.dist = res1;
@@ -955,7 +959,7 @@ static t_ret	inter_plan(const __local t_plane *plane, const float3 ray, const fl
 		if (sqrt(d2) > plane->radius)
 			return (ret);
 	}
-	if (plane->flags & OBJ_FLAG_PLANE_LIMITED)
+	if (plane->flags & OBJ_FLAG_PLANE_LIMIT)
 		return (object_limited((t_object __local *)plane, t, t, ray, origin));
 	ret.dist = t;
 	return (ret);
@@ -1056,7 +1060,7 @@ static t_ret	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray
 	abc = get_cylinder_abc(cylinder->radius, fast_normalize(cylinder->dir), ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
-	if (cylinder->flags & OBJ_FLAG_PLANE_LIMITED)
+	if (cylinder->flags & OBJ_FLAG_PLANE_LIMIT)
 		return (object_limited((t_object __local *)cylinder, res1, res2, ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		ret.dist = res1;
@@ -1465,7 +1469,7 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 	abc = get_sphere_abc(sphere->radius, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
-	if (sphere->flags & OBJ_FLAG_PLANE_LIMITED)
+	if (sphere->flags & OBJ_FLAG_PLANE_LIMIT)
 		return (object_limited((t_object __local *)sphere, res1, res2, ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		ret.dist = res1;
@@ -1582,7 +1586,7 @@ static t_ret	inter_cone(const __local t_cone *cone, const float3 ray, const floa
 	abc = get_cone_abc(cone, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
-	if (cone->flags & OBJ_FLAG_PLANE_LIMITED)
+	if (cone->flags & OBJ_FLAG_PLANE_LIMIT)
 		return (object_limited((t_object __local *)cone, res1, res2, ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		ret.dist = res1;

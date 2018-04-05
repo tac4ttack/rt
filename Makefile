@@ -80,7 +80,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_diff.c \
 						ui/callback/cb_obj_dir.c \
 						ui/callback/cb_obj_jump.c \
-						ui/callback/cb_obj_limit_btn.c \
+						ui/callback/cb_obj_plane_limit_btn.c \
 						ui/callback/cb_obj_limit_dir.c \
 						ui/callback/cb_obj_limit_pos.c \
 						ui/callback/cb_obj_nav_add.c \

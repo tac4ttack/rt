@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 23:47:29 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/05 18:43:36 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@
 # define OBJ_FLAG_CHECKERED		(1 << 2)
 # define OBJ_FLAG_DIFF_MAP		(1 << 3)
 # define OBJ_FLAG_BUMP_MAP		(1 << 4)
-# define OBJ_FLAG_PLANELIMIT	(1 << 5)
-# define OBJF_FLAG_FIXLIMIT		(1 << 6)
+# define OBJ_FLAG_PLANE_LIMIT	(1 << 5)
+# define OBJ_FLAG_PLANE_LIMIT_FIX		(1 << 6)
 
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2

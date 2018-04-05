@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 14:31:31 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 18:04:13 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 19:39:25 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ void	init_gtk_object_limit(t_env *e)
 {
 	e->ui->obj_list_limit = GTK_WIDGET(gtk_builder_get_object(\
 	e->ui->builder, "obj_list_limit"));
-	e->ui->obj_limit_button = GTK_WIDGET(gtk_builder_get_object(\
-	e->ui->builder, "obj_limit_button"));
+	e->ui->obj_plane_limit_button = GTK_WIDGET(gtk_builder_get_object(\
+	e->ui->builder, "obj_plane_limit_button"));
+	e->ui->obj_plane_limit_fix_button = GTK_WIDGET(gtk_builder_get_object(\
+	e->ui->builder, "obj_plane_limit_fix_button"));
 	e->ui->obj_limit_dir_spin_x = GTK_WIDGET(gtk_builder_get_object(\
 	e->ui->builder, "obj_limit_dir_spin_x"));
 	e->ui->obj_limit_dir_spin_y = GTK_WIDGET(gtk_builder_get_object(\

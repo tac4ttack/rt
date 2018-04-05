@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 18:26:45 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 18:45:58 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ typedef	struct			s_ui
 	GtkWidget			*obj_torus_lilradius_spin;
 	GtkWidget			*obj_torus_bigradius_spin;
 	GtkWidget			*obj_list_limit;
-	GtkWidget			*obj_limit_button;
+	GtkWidget			*obj_plane_limit_button;
+	GtkWidget			*obj_plane_limit_fix_button;
 	GtkWidget			*obj_limit_dir_spin_x;
 	GtkWidget			*obj_limit_dir_spin_y;
 	GtkWidget			*obj_limit_dir_spin_z;
@@ -245,7 +246,9 @@ gboolean				cb_obj_dir_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_z(GtkSpinButton *spin, gpointer data);
 void					cb_obj_jump_combo(GtkComboBox *box, gpointer data);
-void					cb_obj_limit_btn(GtkButton *btn, gpointer data);
+void					cb_obj_plane_limit_btn(GtkButton *btn, gpointer data);
+void					cb_obj_plane_limit_fix_btn(GtkButton *btn, \
+													gpointer data);
 gboolean				cb_obj_limit_dir_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_limit_dir_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_limit_dir_z(GtkSpinButton *spin, gpointer data);
