@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 15:14:04 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 19:44:36 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,6 @@ void		xml_node_box(t_env *e, char *node)
 
 static void	xml_push_box_effects(t_box *box)
 {
-	box->limit_pos.x = 0;
-	box->limit_pos.y = 0;
-	box->limit_pos.z = 0;
-	box->limit_dir.x = 0;
-	box->limit_dir.y = 0;
-	box->limit_dir.z = 0;
 	box->waves_p1.x = 0.8;
 	box->waves_p1.y = 0.8;
 	box->waves_p1.z = 0.8;
