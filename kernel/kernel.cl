@@ -670,10 +670,10 @@ static float	inter_plan_private(const t_plane *plane, const float3 ray, const fl
 	float		t;
 
 	t = dot(fast_normalize(ray), plane->normal);
-	if (fabs(t) < 0.0005 || (plane->radius && t > plane->radius))
+	if (fabs(t) < EPSILON|| (plane->radius && t > plane->radius))
 		return (0);
 	t = (dot(plane->pos - origin, plane->normal)) / t;
-	if (t < 0.001)
+	if (t < EPSILON)
 		return (0);
 	return (t);
 }
@@ -1581,8 +1581,8 @@ static t_ret	inter_cone(const __local t_cone *cone, const float3 ray, const floa
 	abc = get_cone_abc(cone, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
-	if (cone->flags & OBJ_FLAG_PLANE_LIMIT)
-		return (object_limited((t_object __local *)cone, res1, res2, ray, origin));
+	//if (cone->flags & OBJ_FLAG_PLANE_LIMIT)
+	//	return (object_limited_cone((t_object __local *)cone, res1, res2, ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		ret.dist = res1;
 	else

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 18:43:36 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 23:59:44 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,6 +359,7 @@ typedef struct			s_node
 	cl_float			opacity;
 	cl_float3			limit_dir;
 	cl_float3			limit_pos;
+	cl_int				flags;
 	struct s_node		*next;
 }						t_node;
 
@@ -541,6 +542,8 @@ void					xml_data_color(t_env *e, char **attributes, \
 void					xml_data_diffiouse(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_dir(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_flag(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_height(t_env *e, char **attributes, \
 										int *i, t_node *node);
