@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:16:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 23:26:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/30 20:47:54 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ gboolean		cb_ellipsoid_radius(GtkSpinButton *spin, gpointer data)
 	t_ellipsoid	*ellipsoid;
 
 	e = data;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	ellipsoid = e->gen_objects->mem + e->target;
 	value = gtk_spin_button_get_value(spin);
 	ellipsoid->radius = (float)value;

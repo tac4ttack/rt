@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:16:41 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 23:27:47 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/30 20:50:45 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void		cb_cam_nav_prev(GtkButton *btn, gpointer data)
 
 	(void)btn;
 	e = data;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	e->scene->active_cam = ((int)e->scene->active_cam - 1 \
 	< 0 ? e->scene->n_cams - 1 : e->scene->active_cam - 1);
 	ui_cam_set_id(e);
@@ -42,7 +41,6 @@ void		cb_cam_nav_next(GtkButton *btn, gpointer data)
 
 	(void)btn;
 	e = data;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	e->scene->active_cam = (e->scene->active_cam + 1 \
 		< e->scene->n_cams ? e->scene->active_cam + 1 : 0);
 	ui_cam_set_id(e);

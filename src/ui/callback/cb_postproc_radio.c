@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:37 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 23:38:37 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/02 19:20:02 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void		cb_postproc_none(GtkToggleButton *button, gpointer data)
 
 	(void)button;
 	e = data;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	e->scene->flag ^= OPTION_BW;
 	e->scene->flag ^= OPTION_SEPIA;
 	e->scene->flag ^= OPTION_CARTOON_TWO;
@@ -31,7 +30,6 @@ void		cb_postproc_sepia(GtkToggleButton *button, gpointer data)
 
 	(void)button;
 	e = data;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	e->scene->flag ^= OPTION_BW;
 	e->scene->flag |= OPTION_SEPIA;
 }
@@ -42,7 +40,6 @@ void		cb_postproc_bw(GtkToggleButton *button, gpointer data)
 
 	(void)button;
 	e = data;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	e->scene->flag |= OPTION_BW;
 	e->scene->flag ^= OPTION_SEPIA;
 }
@@ -53,7 +50,6 @@ void		cb_postproc_invert(GtkToggleButton *button, gpointer data)
 
 	(void)button;
 	e = data;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	if (e->scene->flag & OPTION_INVERT)
 		e->scene->flag ^= OPTION_INVERT;
 	else

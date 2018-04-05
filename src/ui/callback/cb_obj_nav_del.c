@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:21 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 23:29:16 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/30 20:41:04 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void			cb_obj_nav_del(GtkButton *btn, gpointer data)
 
 	(void)btn;
 	e = data;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	obj = e->gen_objects->mem + e->target;
 	e->gen_objects->remove_mem_index(e->gen_objects, e->target);
 	if (e->gen_objects->length == 1)

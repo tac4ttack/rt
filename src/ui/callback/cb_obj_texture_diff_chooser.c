@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 15:47:45 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 23:31:25 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 19:22:23 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void		cb_obj_texture_diff_chooser(GtkComboBox *box, gpointer data)
 	//void	*obj;
 
 	e = data;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	(void)box;
 	ft_putendl("TOTO CACA!");
 	// index = gtk_combo_box_get_active(box);

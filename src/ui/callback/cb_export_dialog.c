@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:00 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 23:26:51 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/30 20:47:34 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void		cb_export_btn(GtkButton *btn, gpointer data)
 
 	(void)btn;
 	e = data;
-	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	filename = NULL;
 	e->ui->export_window = gtk_file_chooser_dialog_new("Export render to PNG", \
 								GTK_WINDOW(e->ui->main_window), \
