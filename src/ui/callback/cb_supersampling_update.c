@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:49 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:19:49 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 23:32:26 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ gboolean	cb_supersampling_update(GtkScale *scale, gpointer data)
 	t_env	*e;
 
 	e = data;
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	value = (gint)gtk_range_get_value(GTK_RANGE(scale));
 	if (value == 1)
 		e->scene->over_sampling = 1;

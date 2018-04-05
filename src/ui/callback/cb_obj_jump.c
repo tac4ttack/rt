@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:15 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:43:52 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 23:29:44 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void		cb_obj_jump_combo(GtkComboBox *box, gpointer data)
 	void	*obj;
 
 	e = data;
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	index = gtk_combo_box_get_active(box);
 	if (index > -1)
 	{

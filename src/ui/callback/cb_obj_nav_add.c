@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:19 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:43:31 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 23:29:20 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void			cb_obj_nav_add(GtkButton *btn, gpointer data)
 
 	(void)btn;
 	e = data;
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	t = gtk_combo_box_get_active((GtkComboBox*)e->ui->obj_nav_add_type_combo);
 	obj = obj_nav_create_obj(e, t);
 	if (!(cl_replace_buffer(e->cl, e->gen_objects->mem_size, 1)))

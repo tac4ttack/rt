@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:48 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:22:34 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 23:32:36 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ gboolean	cb_res_width_update(GtkSpinButton *spin, gpointer data)
 	t_env	*e;
 
 	e = data;
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	value = gtk_spin_button_get_value_as_int(spin);
 	ui_update_resolution(e, value, HEIGHT);
 	return (TRUE);
@@ -49,6 +50,7 @@ gboolean	cb_res_heigh_update(GtkSpinButton *spin, gpointer data)
 	t_env	*e;
 
 	e = data;
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	value = gtk_spin_button_get_value_as_int(spin);
 	ui_update_resolution(e, WIDTH, value);
 	return (TRUE);

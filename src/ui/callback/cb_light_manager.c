@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:02 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:41:54 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 23:26:44 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void		cb_light_manage_add(GtkButton *btn, gpointer data)
 
 	(void)btn;
 	e = data;
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	new_light.size = sizeof(t_light);
 	new_light.pos.x = 0;
 	new_light.pos.y = 0;
@@ -47,6 +48,7 @@ void		cb_light_manage_del(GtkButton *btn, gpointer data)
 
 	(void)btn;
 	e = data;
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	e->gen_lights->remove_index(e->gen_lights, e->ui->light_selector);
 	if (e->gen_lights->length == 1)
 	{

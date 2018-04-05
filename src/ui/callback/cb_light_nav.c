@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:03 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:42:42 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 23:26:34 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void		cb_light_nav_prev(GtkButton *btn, gpointer data)
 
 	(void)btn;
 	e = data;
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	e->ui->light_selector = ((int)e->ui->light_selector - 1 \
 	< 0 ? e->gen_lights->length - 1 : e->ui->light_selector - 1);
 	ui_light_set_id(e);
@@ -41,6 +42,7 @@ void		cb_light_nav_next(GtkButton *btn, gpointer data)
 
 	(void)btn;
 	e = data;
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	e->ui->light_selector = (e->ui->light_selector + 1 \
 	< e->gen_lights->length ? e->ui->light_selector + 1 : 0);
 	ui_light_set_id(e);

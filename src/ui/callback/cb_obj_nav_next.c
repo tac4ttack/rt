@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:24 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:38:08 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 23:29:08 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void			cb_obj_nav_next(GtkButton *btn, gpointer data)
 
 	(void)btn;
 	e = data;
+	ft_bzero(&e->ui->keys, sizeof(t_keystate));
 	obj = e->gen_objects->mem + e->target;
 	obj_index = gen_get_ptr_index(e->gen_objects, obj);
 	if (obj_index + 1 == (int)(e->gen_objects->length))
