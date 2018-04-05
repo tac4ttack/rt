@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:52 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 16:25:46 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 18:23:32 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	ui_add_plane(t_env *e)
 	plane.reflex = 0;
 	plane.refract = 0;
 	plane.opacity = 1;
+	plane.radius = 0;
 	ui_add_plane_effects(&plane);
 	e->gen_objects->add(e->gen_objects, (void*)&plane);
 }

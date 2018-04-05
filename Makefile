@@ -97,6 +97,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_spec.c \
 						ui/callback/cb_obj_texture_diff.c \
 						ui/callback/cb_obj_texture_diff_chooser.c \
+						ui/callback/cb_plane_disk_radius.c \
 						ui/callback/cb_postproc_radio.c \
 						ui/callback/cb_render_btnpress.c \
 						ui/callback/cb_render_btnrelease.c \

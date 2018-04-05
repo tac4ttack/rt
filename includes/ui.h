@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 16:29:07 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 18:26:45 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ typedef	struct			s_ui
 	GtkWidget			*obj_limit_pos_spin_y;
 	GtkWidget			*obj_limit_pos_spin_z;
 	GtkWidget			*obj_list_sinwave;
+	GtkWidget			*obj_plane_disk_spin;
 	GtkWidget			*obj_sinwave_button;
 	GtkWidget			*obj_sinwave_param1_spin_x;
 	GtkWidget			*obj_sinwave_param1_spin_y;
@@ -288,6 +289,8 @@ gboolean				cb_obj_texture_diff_offset_y(GtkSpinButton *spin, \
 gboolean				cb_obj_texture_diff_ratio_x(GtkSpinButton *spin, \
 													gpointer data);
 gboolean				cb_obj_texture_diff_ratio_y(GtkSpinButton *spin, \
+													gpointer data);
+gboolean				cb_plane_disk_radius(GtkSpinButton *spin, \
 													gpointer data);
 void					cb_play_btn(GtkButton *btn, gpointer data);
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 16:30:52 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 18:24:29 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ static void	init_cb_object_second_adds(t_env *e)
 	"changed", G_CALLBACK(cb_obj_combo_type), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_nav_add_btn), \
 	"clicked", G_CALLBACK(cb_obj_nav_add), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_plane_disk_spin), \
+	"value-changed", G_CALLBACK(cb_plane_disk_radius), (gpointer)e);
 }
 
 void		init_cb_object(t_env *e)
