@@ -40,6 +40,7 @@ Object informations have to be filled strictly like showed below:
 				max="4, 4, 4"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000001"
 				/>
 
 	<cone		pos="5, 0, 0"
@@ -53,6 +54,7 @@ Object informations have to be filled strictly like showed below:
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000001"
 				/>
 
 	<cylinder	pos="5, 0, 5"
@@ -67,6 +69,7 @@ Object informations have to be filled strictly like showed below:
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000001"
 				/>
 
 	<ellipsoid	pos="5, 0, 5"
@@ -81,6 +84,7 @@ Object informations have to be filled strictly like showed below:
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000001"
 				/>
 
 	<plane		pos="0, -10, 0"
@@ -94,6 +98,7 @@ Object informations have to be filled strictly like showed below:
 				radius="0"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000001"
 				/>
 
 	<sphere		pos="0, -5, 10"
@@ -107,6 +112,7 @@ Object informations have to be filled strictly like showed below:
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000001"
 				/>
 </scene>
 -->
@@ -137,6 +143,7 @@ Object informations have to be filled strictly like showed below:
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000001"
 				/>
 
 	<cylinder	pos="5, 0, 5"
@@ -151,6 +158,7 @@ Object informations have to be filled strictly like showed below:
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000001"
 				/>
 
 	<ellipsoid	pos="5, 0, 5"
@@ -165,6 +173,7 @@ Object informations have to be filled strictly like showed below:
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000001"
 				/>
 
 	<plane		pos="0, -10, 0"
@@ -178,6 +187,7 @@ Object informations have to be filled strictly like showed below:
 				radius="0"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000001"
 				/>
 
 	<sphere		pos="0, -5, 10"
@@ -191,5 +201,6 @@ Object informations have to be filled strictly like showed below:
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000001"
 				/>
 </scene>
