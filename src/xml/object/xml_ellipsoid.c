@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/06 00:50:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:52:08 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ static void	xml_ellipsoid_data_n(t_env *e, char **att, \
 		s_error("\x1b[2;31mEllipsoid error, P_LIMIT_DIR expected in #11\x1b[0m", e);
 	else
 		xml_data_plane_limit_dir(e, att, i, ellipsoid_node);
+	if (ft_strncmp(att[*i], "flags=\"", 7) != 0)
+		s_error("\x1b[1;31mEllipsoid error, FLAG expected in #12\x1b[0m", e);
+	else
+		xml_data_flag(e, att, i, ellipsoid_node);
 }
 
 static void	xml_ellipsoid_data(t_env *e, char **att, \
@@ -145,6 +149,7 @@ void		xml_push_ellipsoid(t_env *e, t_node *list)
 	ellipsoid.axis_size = list->axis_size;
 	ellipsoid.limit_pos = list->limit_pos;
 	ellipsoid.limit_dir = list->limit_dir;
+	ellipsoid.flags = list->flags;
 	xml_push_ellipsoid_effects(&ellipsoid);
 	e->gen_objects->add(e->gen_objects, (void*)&ellipsoid);
 }

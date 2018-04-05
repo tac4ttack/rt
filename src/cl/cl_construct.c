@@ -97,6 +97,7 @@ t_cl				*cl_construct(const char *path, \
 {
 	t_cl			*cl;
 	cl_ulong		size;
+	//type = CL_DEVICE_TYPE_CPU;
 
 	if (!(cl = ft_memalloc(sizeof(t_cl))))
 		return (NULL);

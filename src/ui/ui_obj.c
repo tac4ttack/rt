@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 19:39:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 23:01:37 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ void		ui_obj(t_env *e)
 		else
 			target = &obj->pos;
 		if (target)
+			ui_obj_apply(e, target);
+		if (obj->type == OBJ_CYLINDER)
+			target = &((t_cylinder *)obj)->u_axis; 
+		else if (obj->type == OBJ_CONE)
+			target = &((t_cone *)obj)->u_axis;
+		else if (obj->type == OBJ_PLANE)
+			target = &((t_plane *)obj)->u_axis;
+		if (obj->type == OBJ_CYLINDER || obj->type == OBJ_CONE || obj->type == OBJ_PLANE)
 			ui_obj_apply(e, target);
 		if (obj->flags & OBJ_FLAG_PLANE_LIMIT_FIX)
 		{

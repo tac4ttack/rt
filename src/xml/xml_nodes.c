@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 14:49:33 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:01:06 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ int					xml_check_node_format(char **node, int mod)
 	{
 		i.y = (mod == 1 ? 9 : i.y);
 		i.y = (mod == 4 ? 15 : i.y);
-		i.y = (mod == 10 ? 33 : i.y);
-		i.y = (mod == 7 ? 31 : i.y);
+		i.y = (mod == 10 ? 33 + 1 : i.y);
+		i.y = (mod == 7 ? 31 + 1 : i.y);
 		if (mod == 2 || mod == 5 || mod == 6)
-			i.y = 28;
+			i.y = 28 + 1;
 		if (mod == 3 || mod == 8 || mod == 9)
-			i.y = 29;
+			i.y = 29 + 1;
 		while (i.x <= i.y)
 		{
 			if (i.x == i.y && node[i.x] != NULL)
