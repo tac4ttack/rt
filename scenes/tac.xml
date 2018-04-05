@@ -12,9 +12,9 @@
 				reflex="0"
 				refract="0"
 				opacity="1"
-				radius="1"
+				radius="0"
 				p_limit_pos="0, 0, 0"
-				p_limit_dir="0, 0, 1"
+				p_limit_dir="0, 0, 0"
 				/>
 
 	<sphere		pos="-10, -5, 10"
