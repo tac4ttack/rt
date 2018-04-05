@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:25 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 16:43:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 18:23:14 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ static void	init_gtk_object_second_adds(t_env *e)
 
 static void	init_gtk_object_third_adds(t_env *e)
 {
+	e->ui->obj_plane_disk_spin = GTK_WIDGET(gtk_builder_get_object(\
+	e->ui->builder, "obj_plane_disk_spin"));
 	e->ui->obj_nav_prev_btn = GTK_WIDGET(gtk_builder_get_object(\
 	e->ui->builder, "obj_nav_prev_btn"));
 	e->ui->obj_nav_next_btn = GTK_WIDGET(gtk_builder_get_object(\

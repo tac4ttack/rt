@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 15:32:55 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 15:39:47 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 19:39:07 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 void	init_cb_object_limit(t_env *e)
 {
-	g_signal_connect(GTK_WIDGET(e->ui->obj_limit_button), \
-	"clicked", G_CALLBACK(cb_obj_limit_btn), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_plane_limit_button), \
+	"clicked", G_CALLBACK(cb_obj_plane_limit_btn), (gpointer)e);
+	g_signal_connect(GTK_WIDGET(e->ui->obj_plane_limit_fix_button), \
+	"clicked", G_CALLBACK(cb_obj_plane_limit_fix_btn), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_limit_dir_spin_x), \
 	"value-changed", G_CALLBACK(cb_obj_limit_dir_x), (gpointer)e);
 	g_signal_connect(GTK_WIDGET(e->ui->obj_limit_dir_spin_y), \
