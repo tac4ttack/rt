@@ -698,8 +698,8 @@ static t_ret	object_limited(t_object __local *object,
 	{
 		if (dot(t.normal, ray) > EPSILON)
 		{
-			if (res2 > dist_plan)
-				ret.dist = res2;
+			if (res2 < dist_plan)
+				return (ret);
 			else
 			{
 				ret.dist = dist_plan;
@@ -721,7 +721,7 @@ static t_ret	object_limited(t_object __local *object,
 		return (ret);
 	}
 
-	if (dot(t.normal, ray) > EPSILON)
+	if (dot(t.normal, ray) > 0)
 	{
 		if (res2 < dist_plan || dist_plan > MAX_DIST)
 			return (ret);
