@@ -670,10 +670,10 @@ static float	inter_plan_private(const t_plane *plane, const float3 ray, const fl
 	float		t;
 
 	t = dot(fast_normalize(ray), fast_normalize(plane->normal));
-	if (fabs(t) < 0.0005 || (plane->radius && t > plane->radius))
+	if (fabs(t) < EPSILON || (plane->radius && t > plane->radius))
 		return (0);
 	t = (dot(plane->pos - origin, fast_normalize(plane->normal))) / t;
-	if (t < 0.001)
+	if (t < EPSILON)
 		return (0);
 	return (t);
 }
@@ -693,14 +693,13 @@ static t_ret	object_limited(t_object __local *object,
 	t.radius = 0;
 	dist_plan = inter_plan_private(&t, ray, origin);
 
+	// IN OBJECT
 	if (res1 <= 0)
 	{
-		if (dot(t.normal, ray) > 0)
+		if (dot(t.normal, ray) > EPSILON)
 		{
 			if (res2 > dist_plan)
-			{
 				ret.dist = res2;
-			}
 			else
 			{
 				ret.dist = dist_plan;
@@ -721,9 +720,10 @@ static t_ret	object_limited(t_object __local *object,
 		}
 		return (ret);
 	}
-	if (dot(t.normal, ray) > 0)
+
+	if (dot(t.normal, ray) > EPSILON)
 	{
-		if (res2 < dist_plan)
+		if (res2 < dist_plan || dist_plan > MAX_DIST)
 			return (ret);
 		else if (res1 > dist_plan)
 			ret.dist = res1;
