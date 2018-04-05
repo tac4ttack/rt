@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 22:49:47 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:47:51 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,14 @@ static void	xml_push_cone_effects(t_cone *cone)
 	cone->diff_offset.y = 0;
 	cone->diff_ratio.x = 1;
 	cone->diff_ratio.y = 1;
+
+
+	cone->test_var1.x = 0;
+	cone->test_var1.y = 0;
+	cone->test_var2.x = 0;
+	cone->test_var2.y = 0;
+	cone->test_var3.x = 0;
+	cone->test_var3.y = 0;
 }
 
 void		xml_push_cone(t_env *e, t_node *list)

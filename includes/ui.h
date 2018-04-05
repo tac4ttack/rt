@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 18:45:58 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:41:00 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,14 @@ typedef	struct			s_ui
 	GtkWidget			*tool_fps_label;
 	GtkWidget			*export_window;
 	GtkWidget			*about_window;
+
+	GtkWidget			*test1_var1_spin_x;
+	GtkWidget			*test1_var1_spin_y;
+	GtkWidget			*test2_var2_spin_x;
+	GtkWidget			*test2_var2_spin_y;
+	GtkWidget			*test3_var3_spin_x;
+	GtkWidget			*test3_var3_spin_y;
+	
 }						t_ui;
 
 void					cb_about_btn(GtkButton *btn, gpointer data);
@@ -332,6 +340,15 @@ gboolean				cb_waves_p1_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_waves_p2_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_waves_p2_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_waves_p2_z(GtkSpinButton *spin, gpointer data);
+
+
+gboolean				cb_test_var1_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_test_var1_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_test_var2_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_test_var2_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_test_var3_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_test_var3_y(GtkSpinButton *spin, gpointer data);
+
 
 gboolean				gtk_main_loop(gpointer data);
 int						gtk_quit(GtkApplication *app, gpointer data);
