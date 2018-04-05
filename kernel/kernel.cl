@@ -96,6 +96,9 @@ typedef struct			s_object
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
+	float2				test_var1;
+	float2				test_var2;
+	float2				test_var3;
 }						t_object;
 
 typedef struct			s_box
@@ -120,6 +123,9 @@ typedef struct			s_box
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
+	float2				test_var1;
+	float2				test_var2;
+	float2				test_var3;
 
 	float3				min;
 	float3				max;
@@ -147,6 +153,9 @@ typedef struct			s_cone
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
+	float2				test_var1;
+	float2				test_var2;
+	float2				test_var3;
 
 	float				angle;
 	float3				u_axis;
@@ -174,6 +183,9 @@ typedef struct			s_cylinder
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
+	float2				test_var1;
+	float2				test_var2;
+	float2				test_var3;
 
 	float				height;
 	float3				base_dir;
@@ -203,6 +215,9 @@ typedef struct			s_plane
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
+	float2				test_var1;
+	float2				test_var2;
+	float2				test_var3;
 
 	float				radius;
 	float3				u_axis;
@@ -230,6 +245,9 @@ typedef struct			s_sphere
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
+	float2				test_var1;
+	float2				test_var2;
+	float2				test_var3;
 
 	float				radius;
 }						t_sphere;
@@ -256,6 +274,9 @@ typedef struct			s_ellipsoid
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
+	float2				test_var1;
+	float2				test_var2;
+	float2				test_var3;
 
 	float				radius;
 	float3				axis_size;
@@ -283,6 +304,9 @@ typedef struct			s_thor
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
+	float2				test_var1;
+	float2				test_var2;
+	float2				test_var3;
 
 	float				lil_radius;
 	float				big_radius;

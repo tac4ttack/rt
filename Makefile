@@ -182,7 +182,12 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/xml_list.c \
 						xml/xml_nodes.c \
 						xml/xml_scene.c \
-						xml/xml_tools.c
+						xml/xml_tools.c \
+						ui/init/init_test.c \
+						ui/init/init_cb_test.c \
+						ui/callback/cb_test_var1.c \
+						ui/callback/cb_test_var2.c \
+						ui/callback/cb_test_var3.c 
 
 default: gpu
 

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 00:12:40 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:52:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,13 @@ static void	xml_push_plane_effects(t_plane *plane)
 	plane->diff_offset.y = 0;
 	plane->diff_ratio.x = 1;
 	plane->diff_ratio.y = 1;
+
+	plane->test_var1.x = 0;
+	plane->test_var1.y = 0;
+	plane->test_var2.x = 0;
+	plane->test_var2.y = 0;
+	plane->test_var3.x = 0;
+	plane->test_var3.y = 0;
 	plane->u_axis.x = plane->normal.y;
 	plane->u_axis.y = plane->normal.z;
 	plane->u_axis.z = plane->normal.x;

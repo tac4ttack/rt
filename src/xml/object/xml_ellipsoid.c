@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xml_ellipsoid.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/06 00:12:47 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:52:08 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,14 @@ static void	xml_push_ellipsoid_effects(t_ellipsoid *ellipsoid)
 	ellipsoid->diff_offset.y = 0;
 	ellipsoid->diff_ratio.x = 1;
 	ellipsoid->diff_ratio.y = 1;
+
+
+	ellipsoid->test_var1.x = 0;
+	ellipsoid->test_var1.y = 0;
+	ellipsoid->test_var2.x = 0;
+	ellipsoid->test_var2.y = 0;
+	ellipsoid->test_var3.x = 0;
+	ellipsoid->test_var3.y = 0;
 }
 
 void		xml_push_ellipsoid(t_env *e, t_node *list)
