@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 19:39:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/05 23:01:37 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ void		ui_obj(t_env *e)
 			else if (obj->type == OBJ_PLANE)
 				target = &((t_plane *)obj)->u_axis;
 			ui_obj_apply(e, target);
+<<<<<<< HEAD
 		}
+=======
+>>>>>>> 0304a75043b8360bd8adcbc263c2bdca89629a15
 		if (obj->flags & OBJ_FLAG_PLANE_LIMIT_FIX)
 		{
 			if (KEY_STATE_I || KEY_STATE_J || KEY_STATE_K || KEY_STATE_L \

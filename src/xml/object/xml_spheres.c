@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 22:50:15 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:52:22 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ static void	xml_sphere_data_n(t_env *e, char **att, t_node *sphere_node, int *i)
 		s_error("\x1b[2;31mSphere error, P_LIMIT_DIR expected in #11\x1b[0m", e);
 	else
 		xml_data_plane_limit_dir(e, att, i, sphere_node);
+	if (ft_strncmp(att[*i], "flags=\"", 7) != 0)
+		s_error("\x1b[1;31mSphere error, FLAG expected in #12\x1b[0m", e);
+	else
+		xml_data_flag(e, att, i, sphere_node);
 }
 
 static void	xml_sphere_data(t_env *e, char **att, t_node *sphere_node, int *i)
@@ -110,6 +114,13 @@ static void	xml_push_sphere_effects(t_sphere *sphere)
 	sphere->diff_offset.y = 0;
 	sphere->diff_ratio.x = 1;
 	sphere->diff_ratio.y = 1;
+
+	sphere->test_var1.x = 0;
+	sphere->test_var1.y = 0;
+	sphere->test_var2.x = 0;
+	sphere->test_var2.y = 0;
+	sphere->test_var3.x = 0;
+	sphere->test_var3.y = 0;
 }
 
 void		xml_push_sphere(t_env *e, t_node *list)
@@ -131,6 +142,7 @@ void		xml_push_sphere(t_env *e, t_node *list)
 	sphere.opacity = list->opacity;
 	sphere.limit_pos = list->limit_pos;
 	sphere.limit_dir = list->limit_dir;
+	sphere.flags = list->flags;
 	xml_push_sphere_effects(&sphere);
 	e->gen_objects->add(e->gen_objects, (void*)&sphere);
 }

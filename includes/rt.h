@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 18:43:36 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:51:38 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,9 @@ typedef struct			s_object
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
+	cl_float2			test_var1;
+	cl_float2			test_var2;
+	cl_float2			test_var3;
 }						t_object;
 
 typedef struct			s_fps
@@ -165,6 +168,9 @@ typedef struct			s_box
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
+	cl_float2			test_var1;
+	cl_float2			test_var2;
+	cl_float2			test_var3;
 
 	cl_float3			min;
 	cl_float3			max;
@@ -192,6 +198,9 @@ typedef struct			s_cone
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
+	cl_float2			test_var1;
+	cl_float2			test_var2;
+	cl_float2			test_var3;
 
 	cl_float			angle;
 	cl_float3			u_axis;
@@ -219,6 +228,9 @@ typedef struct			s_cylinder
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
+	cl_float2			test_var1;
+	cl_float2			test_var2;
+	cl_float2			test_var3;
 
 	cl_float			height;
 	cl_float3			base_dir;
@@ -248,6 +260,9 @@ typedef struct			s_plane
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
+	cl_float2			test_var1;
+	cl_float2			test_var2;
+	cl_float2			test_var3;
 
 	cl_float			radius;
 	cl_float3			u_axis;
@@ -275,6 +290,9 @@ typedef struct			s_sphere
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
+	cl_float2			test_var1;
+	cl_float2			test_var2;
+	cl_float2			test_var3;
 
 	cl_float			radius;
 }						t_sphere;
@@ -300,6 +318,9 @@ typedef struct			s_torus
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
+	cl_float2			test_var1;
+	cl_float2			test_var2;
+	cl_float2			test_var3;
 
 	cl_float			opacity;
 	cl_float			lil_radius;
@@ -328,6 +349,9 @@ typedef struct			s_ellipsoid
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
+	cl_float2			test_var1;
+	cl_float2			test_var2;
+	cl_float2			test_var3;
 
 	cl_float			radius;
 	cl_float3			axis_size;
@@ -359,6 +383,7 @@ typedef struct			s_node
 	cl_float			opacity;
 	cl_float3			limit_dir;
 	cl_float3			limit_pos;
+	cl_int				flags;
 	struct s_node		*next;
 }						t_node;
 
@@ -542,6 +567,8 @@ void					xml_data_diffiouse(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_dir(t_env *e, char **attributes, \
 										int *i, t_node *node);
+void					xml_data_flag(t_env *e, char **attributes, \
+										int *i, t_node *node);
 void					xml_data_height(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_lil_radius(t_env *e, char **attributes, \
@@ -602,4 +629,6 @@ void					xml_push_sphere(t_env *e, t_node *list);
 void					xml_push_box(t_env *e, t_node *list);
 void					xml_push_torus(t_env *e, t_node *list);
 
+void					init_test_var(t_env *e);
+void					init_test_var_cb(t_env *e);
 #endif

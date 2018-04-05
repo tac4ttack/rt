@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 22:50:19 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:52:29 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ static void	xml_torus_data_n(t_env *e, char **att, t_node *torus_node, int *i)
 		s_error("\x1b[2;31mTorus error, P_LIMIT_DIR expected in #12\x1b[0m", e);
 	else
 		xml_data_plane_limit_dir(e, att, i, torus_node);
+	if (ft_strncmp(att[*i], "flags=\"", 7) != 0)
+		s_error("\x1b[1;31mTorus error, FLAG expected in #13\x1b[0m", e);
+	else
+		xml_data_flag(e, att, i, torus_node);
 }
 
 static void	xml_torus_data(t_env *e, char **att, t_node *torus_node, int *i)
@@ -113,6 +117,13 @@ static void	xml_push_torus_effects(t_torus *torus)
 	torus->diff_offset.y = 0;
 	torus->diff_ratio.x = 1;
 	torus->diff_ratio.y = 1;
+
+	torus->test_var1.x = 0;
+	torus->test_var1.y = 0;
+	torus->test_var2.x = 0;
+	torus->test_var2.y = 0;
+	torus->test_var3.x = 0;
+	torus->test_var3.y = 0;
 }
 
 void		xml_push_torus(t_env *e, t_node *list)
@@ -134,6 +145,7 @@ void		xml_push_torus(t_env *e, t_node *list)
 	torus.opacity = list->opacity;
 	torus.limit_pos = list->limit_pos;
 	torus.limit_dir = list->limit_dir;
+	torus.flags = list->flags;
 	xml_push_torus_effects(&torus);
 	e->gen_objects->add(e->gen_objects, (void*)&torus);
 }

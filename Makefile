@@ -151,6 +151,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						update_fps.c \
 						vectors.c \
 						xml/data/xml_data_angle.c \
+						xml/data/xml_data_flag.c \
 						xml/data/xml_data_axis_size.c \
 						xml/data/xml_data_brightness.c \
 						xml/data/xml_data_color.c \
@@ -181,7 +182,12 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/xml_list.c \
 						xml/xml_nodes.c \
 						xml/xml_scene.c \
-						xml/xml_tools.c
+						xml/xml_tools.c \
+						ui/init/init_test.c \
+						ui/init/init_cb_test.c \
+						ui/callback/cb_test_var1.c \
+						ui/callback/cb_test_var2.c \
+						ui/callback/cb_test_var3.c 
 
 default: gpu
 
@@ -314,7 +320,7 @@ installbrewshit:
 	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)pygtk$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f pygtk
 	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)adwaita-icon-theme$(EOC)$(B_GREEN) from brew...$(EOC)"
-	brew install -f adwaita-icon-theme	
+	brew install -f adwaita-icon-theme
 
 norme:
 	norminette $(SRC_PATH)

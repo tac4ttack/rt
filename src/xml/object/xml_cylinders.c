@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 22:48:41 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:52:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ static void	xml_cylinder_data_n(t_env *e, char **att, t_node *cyl_node, int *i)
 		s_error("\x1b[2;31mCylinder error, P_LIMIT_DIR expected in #11\x1b[0m", e);
 	else
 		xml_data_plane_limit_dir(e, att, i, cyl_node);
+	if (ft_strncmp(att[*i], "flags=\"", 7) != 0)
+		s_error("\x1b[1;31mCylinder error, FLAG expected in #12\x1b[0m", e);
+	else
+		xml_data_flag(e, att, i, cyl_node);
 }
 
 static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
@@ -113,6 +117,13 @@ static void	xml_push_cylinder_effects(t_cylinder *cylinder)
 	cylinder->diff_offset.y = 0;
 	cylinder->diff_ratio.x = 1;
 	cylinder->diff_ratio.y = 1;
+
+	cylinder->test_var1.x = 0;
+	cylinder->test_var1.y = 0;
+	cylinder->test_var2.x = 0;
+	cylinder->test_var2.y = 0;
+	cylinder->test_var3.x = 0;
+	cylinder->test_var3.y = 0;
 	cylinder->u_axis.x = cylinder->dir.y;
 	cylinder->u_axis.y = cylinder->dir.z;
 	cylinder->u_axis.z = -cylinder->dir.x;
@@ -139,6 +150,7 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	cylinder.base_dir = normalize_vect(list->dir);
 	cylinder.limit_pos = list->limit_pos;
 	cylinder.limit_dir = list->limit_dir;
+	cylinder.flags = list->flags;
 	xml_push_cylinder_effects(&cylinder);
 	e->gen_objects->add(e->gen_objects, (void*)&cylinder);
 }

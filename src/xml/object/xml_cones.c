@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 22:49:47 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:51:56 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ static void	xml_cone_data_n(t_env *e, char **att, t_node *cone_node, int *i)
 		s_error("\x1b[2;31mCone error, P_LIMIT_DIR expected in #11\x1b[0m", e);
 	else
 		xml_data_plane_limit_dir(e, att, i, cone_node);
+	if (ft_strncmp(att[*i], "flags=\"", 7) != 0)
+		s_error("\x1b[1;31mCone error, FLAG expected in #12\x1b[0m", e);
+	else
+		xml_data_flag(e, att, i, cone_node);
 }
 
 static void	xml_cone_data(t_env *e, char **att, t_node *cone_node, int *i)
@@ -109,6 +113,14 @@ static void	xml_push_cone_effects(t_cone *cone)
 	cone->diff_offset.y = 0;
 	cone->diff_ratio.x = 1;
 	cone->diff_ratio.y = 1;
+
+
+	cone->test_var1.x = 0;
+	cone->test_var1.y = 0;
+	cone->test_var2.x = 0;
+	cone->test_var2.y = 0;
+	cone->test_var3.x = 0;
+	cone->test_var3.y = 0;
 	cone->u_axis.x = cone->dir.y;
 	cone->u_axis.y = cone->dir.z;
 	cone->u_axis.z = -cone->dir.x;
@@ -133,6 +145,7 @@ void		xml_push_cone(t_env *e, t_node *list)
 	cone.opacity = list->opacity;
 	cone.limit_pos = list->limit_pos;
 	cone.limit_dir = list->limit_dir;
+	cone.flags = list->flags;
 	xml_push_cone_effects(&cone);
 	e->gen_objects->add(e->gen_objects, (void*)&cone);
 }

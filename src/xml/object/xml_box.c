@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 19:44:36 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 00:51:45 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ static void	xml_box_data_n(t_env *e, char **att, t_node *box_node, int *i)
 		s_error("\x1b[2;31mBox error, P_LIMIT_DIR expected in #11\x1b[0m", e);
 	else
 		xml_data_plane_limit_dir(e, att, i, box_node);
+	if (ft_strncmp(att[*i], "flags=\"", 7) != 0)
+		s_error("\x1b[1;31mBox error, FLAG expected in #12\x1b[0m", e);
+	else
+		xml_data_flag(e, att, i, box_node);
 }
 
 static void	xml_box_data(t_env *e, char **att, t_node *box_node, int *i)
@@ -113,6 +117,14 @@ static void	xml_push_box_effects(t_box *box)
 	box->diff_offset.y = 0;
 	box->diff_ratio.x = 1;
 	box->diff_ratio.y = 1;
+
+
+	box->test_var1.x = 0;
+	box->test_var1.y = 0;
+	box->test_var2.x = 0;
+	box->test_var2.y = 0;
+	box->test_var3.x = 0;
+	box->test_var3.y = 0;
 }
 
 void		xml_push_box(t_env *e, t_node *list)
@@ -135,6 +147,7 @@ void		xml_push_box(t_env *e, t_node *list)
 	box.max = list->max;
 	box.limit_pos = list->limit_pos;
 	box.limit_dir = list->limit_dir;
+	box.flags = list->flags;
 	xml_push_box_effects(&box);
 	e->gen_objects->add(e->gen_objects, (void*)&box);
 }
