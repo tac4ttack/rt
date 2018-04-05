@@ -44,15 +44,19 @@ void		ui_obj(t_env *e)
 			target = &obj->pos;
 		if (target)
 			ui_obj_apply(e, target);
-		if (obj->type == OBJ_CYLINDER)
-			target = &((t_cylinder *)obj)->u_axis; 
-		else if (obj->type == OBJ_CONE)
-			target = &((t_cone *)obj)->u_axis;
-		else if (obj->type == OBJ_PLANE)
-			target = &((t_plane *)obj)->u_axis;
-		if (obj->type == OBJ_CYLINDER || obj->type == OBJ_CONE || obj->type == OBJ_PLANE)
+		if ((obj->type == OBJ_CYLINDER || obj->type == OBJ_CONE || \
+		obj->type == OBJ_PLANE) && (KEY_STATE_I || KEY_STATE_J || \
+		KEY_STATE_K || KEY_STATE_L || KEY_STATE_U || KEY_STATE_O))
+		{
+			if (obj->type == OBJ_CYLINDER)
+				target = &((t_cylinder *)obj)->u_axis; 
+			else if (obj->type == OBJ_CONE)
+				target = &((t_cone *)obj)->u_axis;
+			else if (obj->type == OBJ_PLANE)
+				target = &((t_plane *)obj)->u_axis;
 			ui_obj_apply(e, target);
-		if (obj->flags & OBJF_FLAG_FIXLIMIT)
+		}
+		if (obj->flags & OBJ_FLAG_PLANE_LIMIT_FIX)
 		{
 			if (KEY_STATE_I || KEY_STATE_J || KEY_STATE_K || KEY_STATE_L \
 			|| KEY_STATE_U || KEY_STATE_O)

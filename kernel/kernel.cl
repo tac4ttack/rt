@@ -920,21 +920,37 @@ static unsigned int		plane_checkerboard(const float3 normale, const float3 pos, 
 	return (0);
 }
 
-static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, unsigned int __global *texture, int width, int height)
+static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, float2 ratio, float2 offset, unsigned int __global *texture, int width, int height)
 {
 	float3			v_axis;
 	int2			uv;
 
 	v_axis = cross(u_axis, normale);
-	uv.x = (int)floor(dot(pos, u_axis) * 10 /* + decalage */);// * le ratio
-	uv.y = (int)floor(dot(pos, v_axis) * 10 /* + decalage */);// idem
+	uv.x = (int)floor(dot(pos, u_axis) * ratio.x + offset.x);
+	uv.y = (int)floor(dot(pos, v_axis) * ratio.y + offset.y);
+	// if (uv.x < 0)
+	// {
+	// 	uv.x %= width;
+	// 	uv.x = (uv.x - width) * -1;
+	// }
+	// uv.x %= width;
+	// if (uv.y < 0)
+	// 	uv.y %= height;
+	// else
+	// {
+	// 	uv.y %= height;
+	// 	uv.y = (uv.y - height) * -1;
+	// }
 	uv.x %= width;
 	uv.y %= height;
 	if (uv.x < 0)
-		uv.x += width;
+		uv.x = (uv.x + width);
 	if (uv.y < 0)
-		uv.y += height;
-	uv.y = (uv.y - 1500) * -1;
+		uv.y = (uv.y + height);
+	// else
+	// 	uv.y = -uv.y;
+	//if (uv.x < 0 || uv.y < 0)
+	//printf("agrougrou");
 	return (texture[uv.y + uv.x * width]);
 }
 
@@ -990,19 +1006,16 @@ static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsig
 	npos = dot(pos, cyl->u_axis);
 	vpos = dot(pos, v_axis);
 	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * t_width * cyl->diff_ratio.x + cyl->diff_offset.x);
-	if (uv.x < 0)
-	{
-		uv.x %= t_width;
-		uv.x = (uv.x - t_width) * -1;
-	}
 	uv.x %= t_width;
+	uv.y %= t_height;
+	if (uv.x < 0)
+		uv.x = uv.x + t_width;
 	if (uv.y < 0)
-		uv.y %= t_height;
+		uv.y = -uv.y;
 	else
-	{
-		uv.y %= t_height;
 		uv.y = (uv.y - t_height) * -1;
-	}
+	uv.x %= t_width;
+	uv.y %= t_height;
 	// uv.y = (uv.y - height) * -1;
 	// if ((uv.x += decx) > width)   Decalage;
 	// 	uv.x -= width;
@@ -1488,7 +1501,7 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigne
 	float			vpos;
 	float			radius;
 	int2			uv;
-	// diff_map_size.z = echelle de la texture
+	// ratio = echelle de la texture
 
 	v_axis = cross(u_axis, dir);
 	npos = dot(pos, dir);
@@ -1497,24 +1510,21 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigne
 		npos -= 10;
 	while (npos < 0)
 		npos += 10;
-	uv.y = (int)floor((fast_length(npos * dir) / 10) * ratio.y * t_height + offset.y);
+	uv.y = (int)floor((fast_length(npos * dir) / 10) * ratio.y * (t_height - 1) + offset.y);
 	npos = dot(pos, u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * ratio.x * t_width + offset.x);
-	if (uv.x < 0)
-	{
-		uv.x %= t_width;
-		uv.x = (uv.x - t_width) * -1;
-	}
+	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * ratio.x * (t_width - 1) + offset.x);
 	uv.x %= t_width;
+	uv.y %= t_height;
+	if (uv.x < 0)
+		uv.x = uv.x + t_width;
 	if (uv.y < 0)
-		uv.y %= t_height;
+		uv.y = -uv.y;
 	else
-	{
-		uv.y %= t_height;
-		uv.y = (uv.y - t_height) * -1;
-	}
-	color = (unsigned int)texture[uv.x + (uv.y * t_width)];
+		uv.y = uv.y - t_height * -1;
+	uv.x %= t_width;
+	uv.y %= t_height;
+	 color = (unsigned int)texture[uv.x + (uv.y * t_width)];
 	return (color);
 }
 
@@ -2180,7 +2190,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
 
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = plane_texture(hit.normal, hit.pos, ((__local t_plane *)hit.obj)->u_axis, scene->texture_star, 1500, 1500);
+			hit.color = plane_texture(hit.normal, hit.pos, ((__local t_plane *)hit.obj)->u_axis, ((__local t_plane *)hit.obj)->diff_ratio, ((__local t_plane *)hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = plane_checkerboard(hit.normal, hit.pos, hit.obj->color, hit.obj->check_size);
 

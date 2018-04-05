@@ -111,7 +111,7 @@ static void	xml_push_plane_effects(t_plane *plane)
 	plane->diff_ratio.y = 1;
 	plane->u_axis.x = plane->normal.y;
 	plane->u_axis.y = plane->normal.z;
-	plane->u_axis.z = plane->normal.x;
+	plane->u_axis.z = -plane->normal.x;
 }
 
 void		xml_push_plane(t_env *e, t_node *list)

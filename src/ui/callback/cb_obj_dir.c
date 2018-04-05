@@ -22,22 +22,27 @@ gboolean		cb_obj_dir_x(GtkSpinButton *spin, gpointer data)
 	obj = e->gen_objects->mem + e->target;
 	value = gtk_spin_button_get_value(spin);
 	obj->dir.x = (float)value;
-	if (obj->type == OBJ_CYLINDER)
-	{
-		((t_cylinder *)obj)->u_axis.z = obj->dir.x;
-		((t_cylinder *)obj)->u_axis = normalize_vect(((t_cylinder *)obj)->u_axis);
-	}
-	else if (obj->type == OBJ_CONE)
-	{
-		((t_cone *)obj)->u_axis.z = obj->dir.x;
-		((t_cone *)obj)->u_axis = normalize_vect(((t_cone*)obj)->u_axis);
-	}
-	else if (obj->type == OBJ_PLANE)
-	{
-		((t_plane *)obj)->u_axis.z = obj->dir.x;
-		((t_plane *)obj)->u_axis = normalize_vect(((t_plane *)obj)->u_axis);
-	}
 	obj->dir = normalize_vect(obj->dir);
+	/*if (KEY_STATE_I == 0 && KEY_STATE_J == 0 && \
+		KEY_STATE_K == 0 && KEY_STATE_L == 0 && KEY_STATE_U == 0 && KEY_STATE_O == 0)
+	{
+		printf("i'm in love with the popo\n");
+		if (obj->type == OBJ_CYLINDER)
+		{
+			((t_cylinder *)obj)->u_axis.z = -obj->dir.x;
+			((t_cylinder *)obj)->u_axis = normalize_vect(((t_cylinder *)obj)->u_axis);
+		}
+		else if (obj->type == OBJ_CONE)
+		{
+			((t_cone *)obj)->u_axis.z = -obj->dir.x;
+			((t_cone *)obj)->u_axis = normalize_vect(((t_cone*)obj)->u_axis);
+		}
+		else if (obj->type == OBJ_PLANE)
+		{
+			((t_plane *)obj)->u_axis.z = -obj->dir.x;
+			((t_plane *)obj)->u_axis = normalize_vect(((t_plane *)obj)->u_axis);
+		}
+	}*/
 	return (TRUE);
 }
 
@@ -51,22 +56,26 @@ gboolean		cb_obj_dir_y(GtkSpinButton *spin, gpointer data)
 	obj = e->gen_objects->mem + e->target;
 	value = gtk_spin_button_get_value(spin);
 	obj->dir.y = (float)value;
-	if (obj->type == OBJ_CYLINDER)
-	{
-		((t_cylinder *)obj)->u_axis.x = obj->dir.y;
-		((t_cylinder *)obj)->u_axis = normalize_vect(((t_cylinder *)obj)->u_axis);
-	}
-	else if (obj->type == OBJ_CONE)
-	{
-		((t_cone *)obj)->u_axis.x = obj->dir.y;
-		((t_cone *)obj)->u_axis = normalize_vect(((t_cone *)obj)->u_axis);
-	}
-	else if (obj->type == OBJ_PLANE)
-	{
-		((t_plane *)obj)->u_axis.x = obj->dir.y;
-		((t_plane *)obj)->u_axis = normalize_vect(((t_plane *)obj)->u_axis);
-	}
 	obj->dir = normalize_vect(obj->dir);
+	/*if (KEY_STATE_I == 0 && KEY_STATE_J == 0 && \
+		KEY_STATE_K == 0 && KEY_STATE_L == 0 && KEY_STATE_U == 0 && KEY_STATE_O == 0)
+	{
+		if (obj->type == OBJ_CYLINDER)
+		{
+			((t_cylinder *)obj)->u_axis.x = obj->dir.y;
+			((t_cylinder *)obj)->u_axis = normalize_vect(((t_cylinder *)obj)->u_axis);
+		}
+		else if (obj->type == OBJ_CONE)
+		{
+			((t_cone *)obj)->u_axis.x = obj->dir.y;
+			((t_cone *)obj)->u_axis = normalize_vect(((t_cone *)obj)->u_axis);
+		}
+		else if (obj->type == OBJ_PLANE)
+		{
+			((t_plane *)obj)->u_axis.x = obj->dir.y;
+			((t_plane *)obj)->u_axis = normalize_vect(((t_plane *)obj)->u_axis);
+		}
+	}*/
 	return (TRUE);
 }
 
@@ -80,21 +89,25 @@ gboolean		cb_obj_dir_z(GtkSpinButton *spin, gpointer data)
 	obj = e->gen_objects->mem + e->target;
 	value = gtk_spin_button_get_value(spin);
 	obj->dir.z = (float)value;
-	if (obj->type == OBJ_CYLINDER)
-	{
-		((t_cylinder *)obj)->u_axis.y = obj->dir.z;
-		((t_cylinder *)obj)->u_axis = normalize_vect(((t_cylinder *)obj)->u_axis);
-	}
-	else if (obj->type == OBJ_CONE)
-	{
-		((t_cone *)obj)->u_axis.y = obj->dir.z;
-		((t_cone *)obj)->u_axis = normalize_vect(((t_cone *)obj)->u_axis);
-	}
-	else if (obj->type == OBJ_PLANE)
-	{
-		((t_plane *)obj)->u_axis.y = obj->dir.z;
-		((t_plane *)obj)->u_axis = normalize_vect(((t_plane *)obj)->u_axis);
-	}
 	obj->dir = normalize_vect(obj->dir);
+	/*if (KEY_STATE_I == 0 && KEY_STATE_J == 0 && \
+		KEY_STATE_K == 0 && KEY_STATE_L == 0 && KEY_STATE_U == 0 && KEY_STATE_O == 0)
+	{
+		if (obj->type == OBJ_CYLINDER)
+		{
+			((t_cylinder *)obj)->u_axis.y = obj->dir.z;
+			((t_cylinder *)obj)->u_axis = normalize_vect(((t_cylinder *)obj)->u_axis);
+		}
+		else if (obj->type == OBJ_CONE)
+		{
+			((t_cone *)obj)->u_axis.y = obj->dir.z;
+			((t_cone *)obj)->u_axis = normalize_vect(((t_cone *)obj)->u_axis);
+		}
+		else if (obj->type == OBJ_PLANE)
+		{
+			((t_plane *)obj)->u_axis.y = obj->dir.z;
+			((t_plane *)obj)->u_axis = normalize_vect(((t_plane *)obj)->u_axis);
+		}
+	}*/
 	return (TRUE);
 }

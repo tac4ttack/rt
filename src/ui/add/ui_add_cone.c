@@ -35,7 +35,7 @@ static void	ui_add_cone_effects(t_cone *cone)
 	cone->diff_ratio.y = 1;
 	cone->u_axis.x = cone->dir.y;
 	cone->u_axis.y = cone->dir.z;
-	cone->u_axis.z = cone->dir.x;
+	cone->u_axis.z = -cone->dir.x;
 }
 
 void	ui_add_cone(t_env *e)
