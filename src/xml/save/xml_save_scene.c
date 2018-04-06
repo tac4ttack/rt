@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 17:43:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 20:47:27 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 22:22:20 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void			xml_write_objects(t_env *e, int fd)
 	mem_index = 0;
 	index = 0;
 	gen = e->gen_objects;
-	while (index < gen->mem_size)
+	while (index < gen->length)
 	{
 		obj = gen->mem + index;
 		if (obj->type == OBJ_CONE)

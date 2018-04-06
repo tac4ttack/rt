@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 20:30:36 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 20:33:42 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 22:25:56 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	xml_write_color(const int color, const int fd)
 void	xml_write_flags(const int flags, const int fd)
 {
 	ft_putstr_fd("\tflags=\"", fd);
+	ft_putchar_fd('0', fd);
 	(flags & OBJ_FLAG_WAVES ? ft_putchar_fd('1', fd) \
 							: ft_putchar_fd('0', fd));
 	(flags & OBJ_FLAG_CHECKERED ? ft_putchar_fd('1', fd) \
