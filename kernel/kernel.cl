@@ -1802,18 +1802,6 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
 
-	// RESET NON UTILE?
-	col_r = 0;
-	col_g = 0;
-	col_b = 0;
-	obj_r = 0;
-	obj_g = 0;
-	obj_b = 0;
-	l_r = 0;
-	l_g = 0;
-	l_b = 0;
-	//
-
 	while (mem_index_lights < scene->mem_size_lights)
 	{
 		tmp = 0;
@@ -1830,7 +1818,6 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			{
 				brightness = (float __private)light->brightness;
 				diffuse = (float3 __private)obj->diff;
-				// hue = (int __private)obj->color; // marqué comme inutile dans branch texturegtk
 				hue_light = light->color;
 
 				col_r = (res_color & 0xFF0000) >> 16;
@@ -1855,11 +1842,11 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				(col_b > 255 ? col_b = 255 : 0);
 			//	col_b = (col_b > 255 ? col_b / (col_b + 1) : col_b);
 
-				if (scene->flag & OPTION_CARTOON_FOUR)
-					res_color = cartoonize_four(col_r, col_g, col_b);
-				else if (scene->flag & OPTION_CARTOON_TWO)
-				 	res_color = cartoonize_two(col_r, col_g, col_b);
-				else
+				// if (scene->flag & OPTION_CARTOON_FOUR)
+				// 	res_color = cartoonize_four(col_r, col_g, col_b);
+				// else if (scene->flag & OPTION_CARTOON_TWO)
+				//  	res_color = cartoonize_two(col_r, col_g, col_b);
+				// else
 					res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 
@@ -1890,6 +1877,10 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 			res_color = blend_factor(res_color, ((light_hit.opacity - 1) * -1));
+			if (scene->flag & OPTION_CARTOON_FOUR)
+			 	res_color = cartoonize_four(col_r, col_g, col_b);
+			else if (scene->flag & OPTION_CARTOON_TWO)
+			 	res_color = cartoonize_two(col_r, col_g, col_b);
 		}
 		mem_index_lights += light->size;
 	}

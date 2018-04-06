@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 20:53:12 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 22:31:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,8 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	cylinder.size = sizeof(t_cylinder);
 	cylinder.id = e->current_index_objects;
 	cylinder.type = OBJ_CYLINDER;
-	cylinder.flags = 0;
+	cylinder.flags = list->flags;
 	cylinder.pos = list->pos;
-	cylinder.dir = normalize_vect(list->dir);
 	cylinder.radius = list->radius;
 	cylinder.color = list->color;
 	cylinder.diff = list->diff;
@@ -147,10 +146,10 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	cylinder.refract = list->refract;
 	cylinder.opacity = list->opacity;
 	cylinder.height = 0;
-	cylinder.base_dir = normalize_vect(list->dir);
 	cylinder.limit_pos = list->limit_pos;
 	cylinder.limit_dir = list->limit_dir;
-	cylinder.flags = list->flags;
+	cylinder.dir = normalize_vect(list->dir);
+	cylinder.base_dir = normalize_vect(list->dir);
 	xml_push_cylinder_effects(&cylinder);
 	e->gen_objects->add(e->gen_objects, (void*)&cylinder);
 }

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/06 16:29:42 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 20:59:48 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,5 +142,5 @@ void		init(GtkApplication *app, gpointer data)
 	cl_init(e);
 	ft_putendl("\n\x1b[1;32m/\\ Loading UI... /\\\x1b[0m\n");
 	opencl_set_args(e, e->cl);
-	opencl_draw(e);
+	// opencl_draw(e);
 }
