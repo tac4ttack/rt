@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 00:51:38 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 20:39:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -628,6 +628,25 @@ void					xml_push_plane(t_env *e, t_node *list);
 void					xml_push_sphere(t_env *e, t_node *list);
 void					xml_push_box(t_env *e, t_node *list);
 void					xml_push_torus(t_env *e, t_node *list);
+
+void					xml_save_scene(t_env *e, char *filename);
+void					xml_write_flags(const int flags, const int fd);
+void					xml_write_color(const int color, const int fd);
+void					xml_write_int(const char *name, const float data, \
+										const int fd);
+void					xml_write_float(const char *name, const float data, \
+										const int fd);
+void					xml_write_float3(const char *name, \
+										const cl_float3 data, const int fd);
+
+void					xml_write_cameras(t_env *e, const int fd, \
+										t_cam *cameras);
+void					xml_write_cone(t_cone *cone, const int fd);
+void					xml_write_cylinder(t_cylinder *cyl, const int fd);
+void					xml_write_lights(t_env *e, const int fd);
+void					xml_write_ellipsoid(t_ellipsoid *elli, const int fd);
+void					xml_write_plane(t_plane *plane, const int fd);
+void					xml_write_sphere(t_sphere *sphere, const int fd);
 
 void					init_test_var(t_env *e);
 void					init_test_var_cb(t_env *e);

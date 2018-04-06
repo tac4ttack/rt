@@ -14,7 +14,8 @@
 			refract="0"
 			opacity="0"
 			p_limit_pos="0, 0, 0"
-				p_limit_dir="0, 0, 1"
+			p_limit_dir="0, 0, 1"
+			flags="000000"
 			/>
 <light 		type="0"
 			pos="-2, 0, -10"

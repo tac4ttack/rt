@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 00:41:00 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 17:39:39 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,10 +172,12 @@ typedef	struct			s_ui
 	GtkWidget			*tool_play_btn;
 	GtkWidget			*tool_stop_btn;
 	GtkWidget			*tool_render_btn;
+	GtkWidget			*tool_save_btn;
 	GtkWidget			*tool_export_btn;
 	GtkWidget			*tool_about_btn;
 	GtkWidget			*tool_fps_label;
 	GtkWidget			*export_window;
+	GtkWidget			*save_window;
 	GtkWidget			*about_window;
 
 	GtkWidget			*test1_var1_spin_x;
@@ -188,6 +190,7 @@ typedef	struct			s_ui
 }						t_ui;
 
 void					cb_about_btn(GtkButton *btn, gpointer data);
+void					cb_save_btn(GtkButton *btn, gpointer data);
 
 gboolean				cb_ambient_red_update(GtkSpinButton *spin, \
 										gpointer data);

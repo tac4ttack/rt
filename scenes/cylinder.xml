@@ -27,4 +27,5 @@
 			opacity="0"
 			p_limit_pos="0, 0, 0"
 			p_limit_dir="0, 0, 1"
+			flags="000000"
 			/>

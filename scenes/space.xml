@@ -25,13 +25,6 @@
 			shrink="1000"
 			color="0, 255, 255, 255"
 			/>			
-	<!--<plane 				pos="0, -10, 0"
-			normale="0, 1, 0"
-			color="0, 255, 0, 0"
-			diff="0.42, 0.42, 0.42"
-			spec="0, 0, 0"
-			reflex="0"
-			/>-->
 	<sphere 			pos="0, 50, 0"
 			dir="0, 0, 0"
 			radius="40"
@@ -43,6 +36,7 @@
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000000"
 			/>
     <sphere 			pos="120, 0, 0"
 			dir="0, 0, 0"
@@ -55,6 +49,7 @@
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000000"
 			/>
 	<sphere 			pos="-200, 0, 0"
 			dir="0, 0, 0"
@@ -67,6 +62,7 @@
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000000"
 			/>
 	<sphere 			pos="0, 0, -160"
 			dir="0, 0, 0"
@@ -79,6 +75,7 @@
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000000"
 			/>
 	<sphere 			pos="0, 200, 0"
 			dir="0, 0, 0"
@@ -91,6 +88,7 @@
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000000"
 			/>
 	<sphere 			pos="150, 175, 0"
 			dir="0, 0, 0"
@@ -103,6 +101,7 @@
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000000"
 			/>
 	<sphere 			pos="-150, 175, 0"
 			dir="0, 0, 0"
@@ -115,6 +114,7 @@
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000000"
 			/>
 	<sphere 			pos="0, 175, 150"
 			dir="0, 0, 0"
@@ -127,6 +127,7 @@
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000000"
 			/>
 	<sphere 			pos="0, 175, -150"
 			dir="0, 0, 0"
@@ -139,6 +140,7 @@
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000000"
 			/>
 	<cylinder 			pos="0, 50, 0"
 			dir="-1, 0, 0"
@@ -152,6 +154,7 @@
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000000"
 			/>
 	<!--<cylinder 			pos="-10, 10, 0"
 			dir="1, 1, 0"
@@ -165,5 +168,6 @@
 				opacity="1"
 				p_limit_pos="0, 0, 0"
 				p_limit_dir="0, 0, 1"
+				flags="000000"
 			/>-->
 </scene>

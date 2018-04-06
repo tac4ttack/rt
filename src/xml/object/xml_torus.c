@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 00:52:29 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 20:53:12 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ static void	xml_torus_data_n(t_env *e, char **att, t_node *torus_node, int *i)
 		s_error("\x1b[1;31mTorus error, SPECULAR expected in #7\x1b[0m", e);
 	else
 		xml_data_speculos(e, att, i, torus_node);
-	if (ft_strncmp(att[*i], "reflex=\"", 6) != 0)
+	if (ft_strncmp(att[*i], "reflex=\"", 8) != 0)
 		s_error("\x1b[1;31mTorus error, REFLEX expected in #8\x1b[0m", e);
 	else
 		xml_data_reflex(e, att, i, torus_node);
-	if (ft_strncmp(att[*i], "refract=\"", 6) != 0)
+	if (ft_strncmp(att[*i], "refract=\"", 9) != 0)
 		s_error("\x1b[2;31mTorus error, REFRACT expected in #9\x1b[0m", e);
 	else
 		xml_data_refract(e, att, i, torus_node);
-	if (ft_strncmp(att[*i], "opacity=\"", 6) != 0)
+	if (ft_strncmp(att[*i], "opacity=\"", 9) != 0)
 		s_error("\x1b[2;31mTorus error, OPACITY expected in #10\x1b[0m", e);
 	else
 		xml_data_opacity(e, att, i, torus_node);

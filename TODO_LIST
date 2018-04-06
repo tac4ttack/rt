@@ -10,12 +10,9 @@
 * créer gestionnaire de textures? -> ignore? ou on se chauffe?
 * bump mapping -> ignore? pas le temps?
 * light mapping -> ignore? pas le temps?
-* uv map? -> ignore? pas le temps?
 * status bar présente mais non utilisée -> ignore? pas de point
 * activer la diffuse map desactive le checkboard et vice versa!
 * rotation objet ou changement de direction ne suis pas avec la texture (O)
-* les box, fonctionnel ou pas? on garde ou pas?
-* si on garde les box il faut modifier ui_obj_update pour afficher son nom sur l'UI
 * check norme
 * check leaks
 * check asan

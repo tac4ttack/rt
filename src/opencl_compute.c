@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/06 01:03:22 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 18:40:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void			opencl_set_args(t_env *e, t_cl *cl)
 	cl->err |= clSetKernelArg(cl->kernel, 15, sizeof(cl_mem), &cl->mem[8]);
 	cl->err |= clSetKernelArg(cl->kernel, 16, sizeof(cl_mem), &cl->mem[9]);
 	
-	
+
 	if (cl->err != CL_SUCCESS)
 		s_error("Error: Failed to send arguments to kernel!", e);
 }
@@ -69,7 +69,7 @@ int				opencl_draw(t_env *e)
 	cl->compute(cl);
 	cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[0], CL_TRUE, 0,
 									e->scene->win_w * e->scene->win_h * 4,
-									e->pixel_data, 1, &cl->event, NULL);
+									e->pixel_data, 0, NULL, NULL);
 	if (e->scene->flag & OPTION_RUN)
 	{
 		cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[5], CL_FALSE, 0,

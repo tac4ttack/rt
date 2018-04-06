@@ -5,6 +5,8 @@
   <!-- interface-css-provider-path bidou/gtk.css -->
   <object class="GtkAboutDialog" id="about_window">
     <property name="can_focus">False</property>
+    <property name="modal">True</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">RT - Another Raytracer</property>
     <property name="version">0.42</property>
@@ -317,6 +319,11 @@ ntoniolo - Noé TONIOLO</property>
     <property name="tooltip_text" translatable="yes">Render scene with current settings</property>
     <property name="stock">gtk-refresh</property>
   </object>
+  <object class="GtkImage" id="img_save_button">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-floppy</property>
+  </object>
   <object class="GtkImage" id="img_stop_btn">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -601,6 +608,20 @@ ntoniolo - Noé TONIOLO</property>
                 <property name="label" translatable="yes">Render</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">img_render_btn</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="tool_save_btn">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Save scene as XML file</property>
+                <property name="label" translatable="yes">Save</property>
+                <property name="use_underline">True</property>
+                <property name="icon_widget">img_save_button</property>
               </object>
               <packing>
                 <property name="expand">False</property>

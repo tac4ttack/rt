@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 00:52:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 20:53:12 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 		s_error("\x1b[1;31mPlane error, SPECULAR expected in #5\x1b[0m", e);
 	else
 		xml_data_speculos(e, att, i, plane_node);
-	if (ft_strncmp(att[*i], "reflex=\"", 6) != 0)
+	if (ft_strncmp(att[*i], "reflex=\"", 8) != 0)
 		s_error("\x1b[1;31mPlane error, REFLEX expected in #6\x1b[0m", e);
 	else
 		xml_data_reflex(e, att, i, plane_node);
-	if (ft_strncmp(att[*i], "refract=\"", 6) != 0)
+	if (ft_strncmp(att[*i], "refract=\"", 9) != 0)
 		s_error("\x1b[2;31mPlane error, REFRACT expected in #7\x1b[0m", e);
 	else
 		xml_data_refract(e, att, i, plane_node);
-	if (ft_strncmp(att[*i], "opacity=\"", 6) != 0)
+	if (ft_strncmp(att[*i], "opacity=\"", 9) != 0)
 		s_error("\x1b[2;31mPlane error, OPACITY expected in #8\x1b[0m", e);
 	else
 		xml_data_opacity(e, att, i, plane_node);
@@ -111,8 +111,8 @@ static void	xml_push_plane_effects(t_plane *plane)
 	plane->diff_map_id = -1;
 	plane->diff_offset.x = 0;
 	plane->diff_offset.y = 0;
-	plane->diff_ratio.x = 1;
-	plane->diff_ratio.y = 1;
+	plane->diff_ratio.x = 100;
+	plane->diff_ratio.y = 100;
 
 	plane->test_var1.x = 0;
 	plane->test_var1.y = 0;
