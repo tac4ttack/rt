@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:52 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 18:23:32 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 18:36:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static void	ui_add_plane_effects(t_plane *plane)
 	plane->diff_map_id = -1;
 	plane->diff_offset.x = 0;
 	plane->diff_offset.y = 0;
-	plane->diff_ratio.x = 1;
-	plane->diff_ratio.y = 1;
+	plane->diff_ratio.x = 100;
+	plane->diff_ratio.y = 100;
 	plane->u_axis.x = plane->normal.y;
 	plane->u_axis.y = plane->normal.z;
 	plane->u_axis.z = -plane->normal.x;

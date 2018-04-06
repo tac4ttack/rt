@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/06 00:52:08 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 20:53:12 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ static void	xml_ellipsoid_data_n(t_env *e, char **att, \
 		s_error("\x1b[1;31mEllipsoid error, SPECULAR expected in #7\x1b[0m", e);
 	else
 		xml_data_speculos(e, att, i, ellipsoid_node);
-	if (ft_strncmp(att[*i], "reflex=\"", 6) != 0)
+	if (ft_strncmp(att[*i], "reflex=\"", 8) != 0)
 		s_error("\x1b[1;31mEllipsoid error, REFLEX expected in #8\x1b[0m", e);
 	else
 		xml_data_reflex(e, att, i, ellipsoid_node);
-	if (ft_strncmp(att[*i], "refract=\"", 6) != 0)
+	if (ft_strncmp(att[*i], "refract=\"", 9) != 0)
 		s_error("\x1b[2;31mEllipsoid error, REFRACT expected in #9\x1b[0m", e);
 	else
 		xml_data_refract(e, att, i, ellipsoid_node);
-	if (ft_strncmp(att[*i], "opacity=\"", 6) != 0)
+	if (ft_strncmp(att[*i], "opacity=\"", 9) != 0)
 		s_error("\x1b[2;31mEllipsoid error, OPACITY expected in #10\x1b[0m", e);
 	else
 		xml_data_opacity(e, att, i, ellipsoid_node);

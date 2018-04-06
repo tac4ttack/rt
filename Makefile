@@ -106,6 +106,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_render_keyrelease.c \
 						ui/callback/cb_render_update_size.c \
 						ui/callback/cb_resolution_update.c \
+						ui/callback/cb_save_btn.c \
 						ui/callback/cb_sphere_radius.c \
 						ui/callback/cb_supersampling_update.c \
 						ui/callback/cb_tool_bar.c \
@@ -177,6 +178,16 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/object/xml_planes.c \
 						xml/object/xml_spheres.c \
 						xml/object/xml_torus.c \
+						xml/save/xml_save_camera.c \
+						xml/save/xml_save_cone.c \
+						xml/save/xml_save_cylinder.c \
+						xml/save/xml_save_data.c \
+						xml/save/xml_save_ellipsoid.c \
+						xml/save/xml_save_light.c \
+						xml/save/xml_save_plane.c \
+						xml/save/xml_save_scene.c \
+						xml/save/xml_save_sphere.c \
+						xml/save/xml_save_torus.c \
 						xml/xml.c \
 						xml/xml_check_attr.c \
 						xml/xml_list.c \
@@ -209,6 +220,7 @@ $(OBJ_PATH):
 	@mkdir $(OBJ_PATH)/xml
 	@mkdir $(OBJ_PATH)/xml/data
 	@mkdir $(OBJ_PATH)/xml/object
+	@mkdir $(OBJ_PATH)/xml/save
 	@mkdir $(OBJ_PATH)/gen
 	@mkdir $(OBJ_PATH)/ui
 	@mkdir $(OBJ_PATH)/ui/add

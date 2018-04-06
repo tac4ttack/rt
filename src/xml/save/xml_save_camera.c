@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cl_compute.c                                       :+:      :+:    :+:   */
+/*   xml_save_camera.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/30 20:55:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 18:39:42 by fmessina         ###   ########.fr       */
+/*   Created: 2018/04/06 20:36:27 by fmessina          #+#    #+#             */
+/*   Updated: 2018/04/06 20:37:14 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cl.h"
+#include "rt.h"
 
-bool		cl_compute(t_cl *cl)
+void		xml_write_cameras(t_env *e, const int fd, t_cam *cameras)
 {
-	cl->event = 0;
-	cl->err = clEnqueueNDRangeKernel(cl->queue, cl->kernel, 2, NULL,
-										cl->dimension,
-										NULL,
-										0, NULL, &cl->event);
-	clWaitForEvents(1, &cl->event);
-	cl->err |= clFlush(cl->queue);
-	clReleaseEvent(cl->event);
-	if (cl->err)
-		return (cl_print_error(cl->err));
-	return (true);
+	int		i;
+	t_cam	*current_cam;
+
+	i = 0;
+	while (i < (int)e->scene->n_cams)
+	{
+		current_cam = &cameras[i];
+		ft_putstr_fd("\t<cam\n", fd);
+		xml_write_float3("\tpos", current_cam->pos, fd);
+		xml_write_float3("\tdir", current_cam->dir, fd);
+		xml_write_int("\tfov", (int)current_cam->fov, fd);
+		ft_putstr_fd("/>\n", fd);
+		i++;
+	}
 }

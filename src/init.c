@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/04 22:41:35 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/06 16:29:42 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void		init(GtkApplication *app, gpointer data)
 	ft_bzero(e->pixel_data, sizeof(int) * WIDTH * HEIGHT);
 	load_scene(e);
 	cl_init(e);
+	ft_putendl("\n\x1b[1;32m/\\ Loading UI... /\\\x1b[0m\n");
 	opencl_set_args(e, e->cl);
 	opencl_draw(e);
 }

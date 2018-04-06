@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:57:19 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 12:04:32 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/06 18:38:03 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ t_cl				*cl_construct(const char *path, \
 {
 	t_cl			*cl;
 	cl_ulong		size;
-	//type = CL_DEVICE_TYPE_CPU;
 
 	if (!(cl = ft_memalloc(sizeof(t_cl))))
 		return (NULL);
