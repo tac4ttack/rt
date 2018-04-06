@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 20:39:37 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/07 00:07:24 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@
 # define OBJ_ELLIPSOID		7
 # define OBJ_TORUS			8
 # define OBJ_BOX			9
+
+# define NB_TEXTURE			4
 
 typedef struct			s_object
 {

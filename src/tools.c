@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/06 16:45:28 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/07 00:07:13 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,17 @@
 
 void	flush(t_env *e)
 {
+	int i;
+
+	i = 0;
 	if (e)
 	{
+		while (i < NB_TEXTURE)
+		{
+			ft_memdel((void **)&e->texture[i].pixel_array);
+			i++;
+		}
+		ft_memdel((void **)&e->texture);
 		if (e->cl)
 		{
 			cl_destruct(&e->cl);
@@ -68,6 +77,9 @@ int		gtk_quit(GtkApplication *app, gpointer data)
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
 	flush(e);
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
+	ft_bzero(e, sizeof(t_env ));
+	while (1)
+		;
 	exit(EXIT_SUCCESS);
 	return (0);
 }

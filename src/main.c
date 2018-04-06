@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 21:09:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 19:36:39 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/07 00:06:05 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void		load_texture(t_env *e)
 	e->raw_texture.rowstride = gdk_pixbuf_get_rowstride(e->raw_texture.pixbuf);
 	e->raw_texture.width = gdk_pixbuf_get_width(e->raw_texture.pixbuf);
 	e->raw_texture.height = gdk_pixbuf_get_height(e->raw_texture.pixbuf);
-	if (!(e->texture = (t_tex *)malloc(sizeof(t_tex) * 4)) || \
+	if (!(e->texture = (t_tex *)malloc(sizeof(t_tex) * NB_TEXTURE)) || \
 	!(e->texture[0].pixel_array = (unsigned int *)malloc((sizeof(unsigned int) * (e->raw_texture.width * e->raw_texture.height)))))
 	{
 		ft_putendl("Definitly not Charlie\n");
