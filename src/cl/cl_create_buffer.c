@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cl_create_buffer.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 17:59:04 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/07 22:48:23 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/03/21 11:40:47 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ bool		cl_add_buffer(t_cl *cl, size_t size)
 		return (false);
 	cl->mem[cl->nb_mem] = clCreateBuffer(cl->context, CL_MEM_READ_WRITE,
 			size, NULL, &(cl->err));
-	if (cl->err != CL_SUCCESS)
+	if (cl->err)
 		return (false);
 	cl->nb_mem++;
 	return (true);
