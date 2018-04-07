@@ -329,6 +329,9 @@ typedef	struct			s_tor
 	uint				mem_index;
 	int					id;
 	int					type;
+	float				dist;
+	float				fr;
+	float				ft;
 }						t_tor;
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1641,7 +1644,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir, light_ray.dist);
-		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON) || light_hit.opacity < 1)
+		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON) || (light_hit.opacity < 1 && scene->depth != 0))
 		{
 			// diffuse part
 			tmp = (dot(hit.normal, light_ray.dir));
@@ -1682,7 +1685,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			}
 
 			// specular part
-			reflect = fast_normalize(((float)(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
+			reflect = fast_normalize(((float)(2.0f * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
 			tmp = dot(reflect, -ray);
 			if (tmp > EPSILON)
 			{
@@ -1857,7 +1860,7 @@ static float		reflect_ratio(float n1, float n2, float cos1, float sint)
 	return ((fr1 + fr2) / 2);
 }
 
-static t_tor		tor_push(float3 ray, float3 normale, float3 pos, float coef_ref, float coef_tra, float opacity, unsigned int color, uint mem_index, int id, int type)
+static t_tor		tor_push(float3 ray, float3 normale, float3 pos, float coef_ref, float coef_tra, float opacity, unsigned int color, uint mem_index, int id, int type, float fr, float ft)
 {
 	t_tor			tor;
 
@@ -1872,6 +1875,8 @@ static t_tor		tor_push(float3 ray, float3 normale, float3 pos, float coef_ref, f
 	tor.activate = 1;
 	tor.id = id;
 	tor.type = type;
+	tor.fr = fr;
+	tor.ft = ft;
 	return (tor);
 }
 
@@ -1889,19 +1894,28 @@ static unsigned int	tor_final_color(t_tor *tor)
 	int				i = 63;
 	unsigned int	color = 0;
 
+	while (i > 0 && tor[i].activate == 0)
+		i = i - 1;
+	if (i != 0)
+	{
+		if (i % 2 == 0)
+			i = (i / 2) - 1;
+		else
+			i = (i - 1) / 2;
+	}
 	while (i > 0)
 	{
-		if (tor[i].activate == 0 && tor[i * 2 + 1].mem_index == tor[i].mem_index)
+		if (tor[i].activate == 0 && (tor[i * 2 + 1].activate == 0 && tor[(i + 1) * 2].activate == 0))
 			;
 		else
 		{
-			color = blend_add(tor[(i + 1) * 2].color, tor[i * 2 + 1].color);
+			color = blend_add(blend_factor(tor[(i + 1) * 2].color, tor[(i + 1) * 2].fr), blend_factor(tor[i * 2 + 1].color, tor[i * 2 + 1].ft));
 			if (tor[i].coef_tra != 0)
 				tor[i].color = blend_add(blend_factor(tor[i].color, tor[i].opacity), blend_factor(color, 1 - tor[i].opacity));
 			else if (tor[i].coef_ref != 0)
 				tor[i].color = blend_add(blend_factor(tor[i].color, 1 - tor[i].coef_ref), blend_factor(color, tor[i].coef_ref));
-			else
-			tor[i].color = blend_add(color, tor[i].color);
+			// else
+			// tor[i].color = blend_add(color, tor[i].color);
 		}
 		i = i - 1;
 		while (i > 0 && tor[i].activate == 0)
@@ -1944,63 +1958,118 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 		tor[i].mem_index = 0;
 		tor[i].id = 0;
 		tor[i].type = 0;
+		tor[i].dist = 0;
 		i++;
 	}
 	i = 0;
-	tor[i] = tor_push(ray, old_hit.normal, old_hit.pos, old_hit.obj->reflex, old_hit.obj->refract, old_hit.obj->opacity, color, old_hit.mem_index, old_hit.obj->id, old_hit.obj->type);
+	tor[i] = tor_push(ray, old_hit.normal, old_hit.pos, old_hit.obj->reflex, old_hit.obj->refract, old_hit.obj->opacity, color, old_hit.mem_index, old_hit.obj->id, old_hit.obj->type, 0, 0);
 	while (i < 63 && i < depth)
 	{
-		eta = 1 / tor[i].coef_tra;
-		cos1 = dot(tor[i].normale, tor[i].prim);
-		if (cos1 >= 0)
-			eta = tor[i].coef_tra;
-		if (cos1 >= 0)
-			sint = tor[i].coef_tra * sqrt(1 - cos1 * cos1);
-		else
-			sint = 1 / tor[i].coef_tra * sqrt(1 - cos1 * cos1);
-		if (sint >= 1)
-			fr = 1;
-		else
-			fr = reflect_ratio(1, tor[i].coef_tra, cos1, sint);
-		if (fr > 0.9)
-			fr = 1;
-		if (fr < 0.1)
-			fr = 0;
-		ft = 1 - fr;
-		if (fr < 1)
+		if (tor[i].coef_tra != 0)
 		{
-			if (tor[i].type != OBJ_PLANE)
-				refract = refract_ray(scene, tor[i].prim, tor[i].normale, tor[i].coef_tra);
+			eta = 1 / tor[i].coef_tra;
+			cos1 = dot(tor[i].normale, tor[i].prim);
+			if (cos1 >= 0)
+				eta = tor[i].coef_tra;
+			if (cos1 >= 0)
+				sint = tor[i].coef_tra * sqrt(1 - cos1 * cos1);
 			else
-				refract = tor[i].prim;
-			if (cos1 < 0)
-				new_hit = ray_hit(scene, tor[i].pos + (0.0001f * 2 * -tor[i].normale), refract, 0);
+				sint = 1 / tor[i].coef_tra * sqrt(1 - cos1 * cos1);
+			if (sint >= 1)
+				fr = 1;
+			else if (cos1 < 0)
+				fr = reflect_ratio(1, tor[i].coef_tra, cos1, sint);
 			else
-				new_hit = ray_hit(scene, tor[i].pos, refract, 0);
-			if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
+				fr = reflect_ratio(tor[i].coef_tra, 1, cos1, sint);
+			// if (fr > 0.99)
+			// 	fr = 1;
+			// if (fr < 0.01)
+			// 	fr = 0;
+			ft = 1 - fr;
+			if (fr < 1)
 			{
-				if (cos1 < 0)
-					new_hit.pos = (new_hit.dist * refract) + tor[i].pos + (0.0001f * 2 * -tor[i].normale);
+				if (tor[i].type != OBJ_PLANE)
+					refract = refract_ray(scene, tor[i].prim, tor[i].normale, tor[i].coef_tra);
 				else
-					new_hit.pos = (new_hit.dist * refract) + tor[i].pos;
-				new_hit.normal = get_hit_normal(scene, refract, new_hit);
-				new_hit.pos = new_hit.pos + (new_hit.dist / 10000 * new_hit.normal);
-				ncolor = blend_factor(phong(scene, new_hit, refract), ft);
-				tor[i * 2 + 1] = tor_push(refract, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type);
+					refract = tor[i].prim;
+				if (cos1 < 0)
+					new_hit = ray_hit(scene, tor[i].pos + (0.001f * (2.f * -tor[i].normale)), refract, 0);
+				else
+					new_hit = ray_hit(scene, tor[i].pos, refract, 0);
+				if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
+				{
+					if (cos1 < 0)
+					 	new_hit.pos = (new_hit.dist * refract) + tor[i].pos + (0.001f * (2.f * -tor[i].normale));
+					else
+						new_hit.pos = (new_hit.dist * refract) + tor[i].pos;
+					new_hit.normal = get_hit_normal(scene, refract, new_hit);
+					new_hit.pos = new_hit.pos + (0.001f * new_hit.normal);
+
+
+					if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+						new_hit.color = sphere_texture(fast_normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)new_hit.obj)->diff_ratio, ((__local t_sphere *)new_hit.obj)->diff_offset);
+					if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+						new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
+
+					if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+						new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
+					if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+						new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
+
+					if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+						new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
+
+					if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+						new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
+
+
+					ncolor = phong(scene, new_hit, refract);
+					tor[i * 2 + 1] = tor_push(refract, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type, 0, ft);
+				}
 			}
 		}
+		else if (tor[i].coef_ref != 0)
+			fr = 1;
 		else
-		if ((tor[i].opacity < 1 && tor[i].coef_tra >= 1) || tor[i].coef_ref != 0)
+			fr = 0;
+		if (fr > 0)
 		{
+			cos1 = dot(tor[i].normale, tor[i].prim);
 			bounce = bounce_ray(scene, tor[i].prim, tor[i]);
-			new_hit = ray_hit(scene, tor[i].pos, bounce, 0);
+			if (cos1 >= 0)
+				new_hit = ray_hit(scene, tor[i].pos + (0.001f * (2.f * -tor[i].normale)), bounce, 0);
+			else
+				new_hit = ray_hit(scene, tor[i].pos, bounce, 0);
 			if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 			{
-				new_hit.pos = (new_hit.dist * bounce) + tor[i].pos;
+				if (cos1 >= 0)
+					new_hit.pos = (new_hit.dist * bounce) + tor[i].pos + (0.001f * (2.f * -tor[i].normale));
+				else
+					new_hit.pos = (new_hit.dist * bounce) + tor[i].pos;
 				new_hit.normal = get_hit_normal(scene, bounce, new_hit);
-				new_hit.pos = new_hit.pos + (new_hit.dist / 10000 * new_hit.normal);
-				ncolor = blend_factor(phong(scene, new_hit, bounce), fr);
-				tor[i * 2 + 2] = tor_push(bounce, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type);
+				new_hit.pos = new_hit.pos + (0.001f * new_hit.normal);
+
+
+				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					new_hit.color = sphere_texture(fast_normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)new_hit.obj)->diff_ratio, ((__local t_sphere *)new_hit.obj)->diff_offset);
+				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+					new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
+
+				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
+				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+					new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
+
+				if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
+
+				if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
+
+
+
+				ncolor = phong(scene, new_hit, bounce);
+				tor[i * 2 + 2] = tor_push(bounce, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type, fr, 0);
 			}
 		}
 		i = i + 1;
@@ -2029,11 +2098,11 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	{
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normal = get_hit_normal(scene, ray, hit);
-			hit.pos = hit.pos + (0.001f * hit.normal);
-		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
+		hit.pos = hit.pos + (0.001f * hit.normal);
+		//hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 
-		 if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			 hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)hit.obj)->diff_ratio, ((__local t_sphere *)hit.obj)->diff_offset);
+		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+			hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)hit.obj)->diff_ratio, ((__local t_sphere *)hit.obj)->diff_offset);
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
 
@@ -2050,7 +2119,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
-			return (fresnel(scene, ray, hit, depth, color));
+			return (fresnel(scene, ray, hit, depth + 1, color));
 
 		// c'est quoi ce bloc commenté en dessous?
 		/*else if (hit.obj->refract != 0 && hit.obj->opacity < 1)
