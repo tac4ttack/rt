@@ -8,7 +8,8 @@
 
 #define BACKCOLOR 0x00999999
 
-#define EPSILON 0.00000000005f
+#define EPSILON 0.00000000000000000000005
+#define EPSILONF 0.0000000005F
 #define MAX_DIST 10000000.0
 #define SHADOW_BIAS 1000
 
@@ -695,10 +696,10 @@ static float	inter_plan_private(const t_plane *plane, const float3 ray, const fl
 	float		t;
 
 	t = dot(fast_normalize(ray), plane->normal);
-	if (fabs(t) < EPSILON|| (plane->radius && t > plane->radius))
+	if (fabs(t) < EPSILONF|| (plane->radius && t > plane->radius))
 		return (0);
 	t = (dot(plane->pos - origin, plane->normal)) / t;
-	if (t < EPSILON)
+	if (t < EPSILONF)
 		return (0);
 	return (t);
 }
@@ -721,9 +722,9 @@ static t_ret	object_limited(t_object __local *object,
 	// IN OBJECT
 	if (res1 < 0)
 	{
-		if (dot(t.normal, ray) > EPSILON)
+		if (dot(t.normal, ray) > EPSILONF)
 		{
-			if (!dist_plan && res2 > EPSILON)
+			if (!dist_plan && res2 > EPSILONF)
 				ret.dist = res2;
 			else if (res2 < dist_plan)
 				return (ret);
@@ -748,7 +749,7 @@ static t_ret	object_limited(t_object __local *object,
 		return (ret);
 	}
 
-	if (dot(t.normal, ray) > EPSILON)
+	if (dot(t.normal, ray) > EPSILONF)
 	{
 		if (res2 < dist_plan || dist_plan > MAX_DIST)
 			return (ret);
@@ -778,6 +779,32 @@ static t_ret	object_limited(t_object __local *object,
 static float3	vector_get_rotate(const float3 *this, const __local float3 *rot)
 {
 	float3		n;
+	float		tmp;
+
+	n = *this;
+	if (rot->x)
+	{
+		tmp = n.y * cos(rot->x) - n.z * sin(rot->x);
+		n.z = n.y * sin(rot->x) + n.z * cos(rot->x);
+		n.y = tmp;
+	}
+	if (rot->y)
+	{
+		tmp = n.x * cos(rot->y) + n.z * sin(rot->y);
+		n.z = n.x * -sin(rot->y) + n.z * cos(rot->y);
+		n.x = tmp;
+	}
+	if (rot->z)
+	{
+		tmp = n.x * cos(rot->z) - n.y * sin(rot->z);
+		n.y = n.x * sin(rot->z) + n.y * cos(rot->z);
+		n.x = tmp;
+	}
+	return (n);
+}
+static double3	thor_get_rotate(const double3 *this, const __local float3 *rot)
+{
+	double3		n;
 	float		tmp;
 
 	n = *this;
@@ -840,7 +867,7 @@ static bool		solve_quadratic(const float a, const float b, const float c, float 
 	tmp = 0;
 	if (discr < 0)
 		return (false);
-	else if (discr < EPSILON)
+	else if (discr < EPSILONF)
 	{
 		*inter0 = -0.5 * b / a;
 		*inter1 = *inter0;
@@ -989,10 +1016,10 @@ static t_ret	inter_plan(const __local t_plane *plane, const float3 ray, const fl
 	ret.dist = 0;
 	ret.wall = 0;
 	t = dot(fast_normalize(ray), plane->normal);
-	if (fabs(t) < EPSILON || (plane->radius && t > plane->radius))
+	if (fabs(t) < EPSILONF || (plane->radius && t > plane->radius))
 		return (ret);
 	t = (dot(plane->pos - origin, plane->normal)) / t;
-	if (t < EPSILON)
+	if (t < EPSILONF)
 		return (ret);
 	if (plane->radius)
 	{
@@ -1229,33 +1256,30 @@ static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 	d_ray.x = (double)ray.x;
 	d_ray.y = (double)ray.y;
 	d_ray.z = (double)ray.z;
+	d_ray = thor_get_rotate(&d_ray, &thor->dir);
 
-	double3		d_origin;
-	d_origin.x = (double)origin.x;
-	d_origin.y = (double)origin.y;
-	d_origin.z = (double)origin.z;
-
-	double3		d_pos;
-	d_pos.x = (double)thor->pos.x;
-	d_pos.y = (double)thor->pos.y;
-	d_pos.z = (double)thor->pos.z;
+	double3		d_dir;
+	d_dir.x = (double)origin.x - (double)thor->pos.x;
+	d_dir.y = (double)origin.y - (double)thor->pos.y;
+	d_dir.z = (double)origin.z - (double)thor->pos.z;
+	d_dir = thor_get_rotate(&d_dir, &thor->dir);
 
 	double3		k;
 	k.x = (d_ray.x * d_ray.x) + (d_ray.y * d_ray.y) + (d_ray.z * d_ray.z);
 	k.y = 4.0f * big_radius;
-	k.z = (d_origin.x - d_pos.x) * d_ray.x \
-		+ (d_origin.y - d_pos.y) * d_ray.y \
-		+ (d_origin.z - d_pos.z) * d_ray.z;
+	k.z = (d_dir.x) * d_ray.x \
+		+ (d_dir.y) * d_ray.y \
+		+ (d_dir.z) * d_ray.z;
 
 	double		e;
-	e =	(d_origin.x - d_pos.x) * (d_origin.x - d_pos.x) + \
-		(d_origin.y - d_pos.y) * (d_origin.y - d_pos.y) + \
-		(d_origin.z - d_pos.z) * (d_origin.z - d_pos.z) - \
+	e =	(d_dir.x) * (d_dir.x) + \
+		(d_dir.y) * (d_dir.y) + \
+		(d_dir.z) * (d_dir.z) - \
 		big_radius - lil_radius;
 
 	double		c[5];
-	c[0] = e * e - k.y * (lil_radius - (d_origin.y - d_pos.y) * (d_origin.y - d_pos.y));
-	c[1] = 4.0f * k.z * e + 2.0f * k.y * (d_origin.y - d_pos.y) * d_ray.y;
+	c[0] = e * e - k.y * (lil_radius - (d_dir.y) * (d_dir.y));
+	c[1] = 4.0f * k.z * e + 2.0f * k.y * (d_dir.y) * d_ray.y;
 	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * d_ray.y * d_ray.y;
 	c[3] = 4.0f * k.x * k.z;
 	c[4] = k.x * k.x;
@@ -1296,7 +1320,7 @@ static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 // }
 
 
-static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
+static float3 get_thor_normal(const __local t_thor *thor, const float3 hitpos)
 {
 	__private float3	res = 0;
 	float	c = 0;
@@ -1304,16 +1328,16 @@ static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 	float	R = (float)(thor->lil_radius * thor->lil_radius);
 	float	r = (float)(thor->big_radius * thor->big_radius);
 
-	float	px = hit.pos.x - thor->pos.x;
-	float	py = hit.pos.y - thor->pos.y;
-	float	pz = hit.pos.z - thor->pos.z;
+	float3 pos = hitpos - thor->pos;
+	pos = vector_get_rotate(&pos, &thor->dir);
 
-	c = ((px * px) + (py * py) + (pz * pz) - r - R);
+	c = ((pos.x * pos.x) + (pos.y * pos.y) + (pos.z * pos.z) - r - R);
 
-	res.x = 4.0f * c * px;
-	res.y = 4.0f * py * (c + 2 * r);
-	res.z = 4.0f * c * pz;
+	res.x = 4.0f * c * pos.x;
+	res.y = 4.0f * pos.y * (c + 2 * r);
+	res.z = 4.0f * c * pos.z;
 
+	res = vector_get_inverse(&res, &thor->dir);
 	return (res);
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -1546,9 +1570,9 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 		   	ret = inter_ellipsoid((__local struct s_ellipsoid *)obj, ray, origin);
 		else if (obj->type == OBJ_THOR)
 			ret = inter_thor((__local struct s_thor *)obj, ray, origin);
-		if (lightdist > 0 && ret.dist < lightdist && ret.dist > EPSILON)
+		if (lightdist > 0 && ret.dist < lightdist && ret.dist > EPSILONF)
 			hit.opacity += obj->opacity;
-		if ((ret.dist < hit.dist || hit.dist == 0) && ret.dist > EPSILON)
+		if ((ret.dist < hit.dist || hit.dist == 0) && ret.dist > EPSILONF)
 		{
 			hit.dist = ret.dist;
 			hit.normal = ret.normal;
@@ -1581,7 +1605,7 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 		else if (hit.obj->type == OBJ_ELLIPSOID)
 			res = get_ellipsoid_normal((__local t_ellipsoid *)hit.obj, &hit);
 		else if (hit.obj->type == OBJ_THOR)
-			res = get_thor_normal((__local t_thor *)hit.obj, hit);
+			res = get_thor_normal((__local t_thor *)hit.obj, hit.pos);
 		else if (hit.obj->type == OBJ_PLANE)
 		{
 			if (dot(hit.obj->dir, -ray) < 0)
@@ -1699,11 +1723,11 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir, light_ray.dist);
-		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON) || light_hit.opacity < 1)
+		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILONF) || light_hit.opacity < 1)
 		{
 			// diffuse part
 			tmp = (dot(hit.normal, light_ray.dir));
-			if (tmp > EPSILON)
+			if (tmp > EPSILONF)
 			{
 				brightness = (float __private)light->brightness;
 				diffuse = (float3 __private)obj->diff;
@@ -1742,7 +1766,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			// specular part
 			reflect = fast_normalize(((float)(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
 			tmp = dot(reflect, -ray);
-			if (tmp > EPSILON)
+			if (tmp > EPSILONF)
 			{
 				speculos = obj->spec;
 				col_r = (res_color & 0x00FF0000) >> 16;
