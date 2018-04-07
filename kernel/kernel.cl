@@ -51,6 +51,7 @@
 */
 typedef struct			s_cam
 {
+	unsigned int		id;
 	float3				pos;
 	float3				dir;
 	float				fov;

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/07 16:33:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/07 18:32:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct			s_fps
 
 typedef struct			s_cam
 {
+	cl_uint				id;
 	cl_float3			pos;
 	cl_float3			dir;
 	cl_float			fov;
