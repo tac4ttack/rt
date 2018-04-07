@@ -164,7 +164,7 @@
 			/>
 
 <cylinder	pos="-5, 0, 10"
-			dir="0, 1, 0"
+			dir="1, 1, 0"
 			radius="3.0"
 			color="0, 0, 51, 255"
 			height="0"
