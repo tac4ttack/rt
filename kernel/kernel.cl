@@ -8,7 +8,7 @@
 
 #define BACKCOLOR 0x00999999
 
-#define EPSILON 0.0000000005f
+#define EPSILON 0.00000000005f
 #define MAX_DIST 10000000.0
 #define SHADOW_BIAS 1000
 
@@ -20,14 +20,14 @@
 #define SPHERE scene->spheres
 #define ACTIVECAM scene->cameras[scene->active_cam]
 
-#define OPTION_WAVE 		(1 << 1)
-#define OPTION_SEPIA		(1 << 2)
-#define OPTION_BW			(1 << 3)
-#define OPTION_RUN			(1 << 4)
-#define OPTION_INVERT		(1 << 7)
-#define OPTION_CARTOON_FOUR	(1 << 8)
-#define OPTION_STEREO		(1 << 9)
-#define OPTION_CARTOON_TWO	(1 << 10)
+#define OPTION_WAVE 				(1 << 1)
+#define OPTION_SEPIA				(1 << 2)
+#define OPTION_BW					(1 << 3)
+#define OPTION_RUN					(1 << 4)
+#define OPTION_INVERT				(1 << 7)
+#define OPTION_CARTOON_FOUR			(1 << 8)
+#define OPTION_STEREO				(1 << 9)
+#define OPTION_CARTOON_TWO			(1 << 10)
 
 #define OBJ_FLAG_WAVES				(1 << 1)
 #define OBJ_FLAG_CHECKERED			(1 << 2)
@@ -36,15 +36,15 @@
 #define OBJ_FLAG_PLANE_LIMIT		(1 << 5)
 #define OBJ_FLAG_PLANE_LIMIT_FIX	(1 << 6)
 
-# define OBJ_CAM			1
-# define OBJ_LIGHT			2
-# define OBJ_CONE			3
-# define OBJ_CYLINDER		4
-# define OBJ_PLANE			5
-# define OBJ_SPHERE			6
-# define OBJ_ELLIPSOID		7
-# define OBJ_THOR			8
-# define OBJ_BOX			9
+# define OBJ_CAM					1
+# define OBJ_LIGHT					2
+# define OBJ_CONE					3
+# define OBJ_CYLINDER				4
+# define OBJ_PLANE					5
+# define OBJ_SPHERE					6
+# define OBJ_ELLIPSOID				7
+# define OBJ_THOR					8
+# define OBJ_BOX					9
 
 /*
 ** CAM AND LIGHT STRUCTS ///////////////////////////////////////////////////////
@@ -989,10 +989,10 @@ static t_ret	inter_plan(const __local t_plane *plane, const float3 ray, const fl
 	ret.dist = 0;
 	ret.wall = 0;
 	t = dot(fast_normalize(ray), plane->normal);
-	if (fabs(t) < 0.0005 || (plane->radius && t > plane->radius))
+	if (fabs(t) < EPSILON || (plane->radius && t > plane->radius))
 		return (ret);
 	t = (dot(plane->pos - origin, plane->normal)) / t;
-	if (t < 0.001)
+	if (t < EPSILON)
 		return (ret);
 	if (plane->radius)
 	{
@@ -1118,9 +1118,9 @@ static double	ft_ret(double *tab)
 	i = 0;
 	while(i < 4)
 	{
-		if(tab[i] > 0.0000000001 && ret == -1)
+		if(tab[i] > EPSILON && ret == -1)
 			ret = tab[i];
-			if (tab[i] < ret && tab[i] > 0.0000000001 )
+			if (tab[i] < ret && tab[i] > EPSILON )
 			ret = tab[i];
 		i++;
 	}
@@ -1133,13 +1133,13 @@ static double3	ft_solve_3(double a, double b, double c, double d)
 {
 	double 	a1;
 	a1 = c / d;
-	
+
 	double a2;
 	a2 = b / d;
 
 	double a3;
 	a3 = a / d;
-	
+
 	double3 Result = 0;
 	double theta;
 	double sqrtQ;
@@ -1148,9 +1148,9 @@ static double3	ft_solve_3(double a, double b, double c, double d)
 	double R = (2.0f * a1 * a1 * a1 - 9.0f * a1 * a2 + 27.0f * a3) / 54.0f;
 	double Qcubed = Q * Q * Q;
 	d = Qcubed - R * R;
-	if ( d >= 0.0001f )
-	{	
-		if ( Q < 0.0f )
+	if ( d >= EPSILON )
+	{
+		if ( Q < EPSILON )
 		{
 			Result.x = 0.0f;
 			Result.y = 0.0f;
@@ -1164,9 +1164,9 @@ static double3	ft_solve_3(double a, double b, double c, double d)
 		Result.z = -2.0f * sqrtQ * cos((theta + 4.0f * M_PI) / 3.0f ) - a1 / 3.0f;
 	}
 	else
-	{	
-		e = pow(sqrt((double)-d) + fabs((double)R), (double)1.0f/ (double)3.0f);	
-		if ( R > 0.0001f )
+	{
+		e = pow(sqrt((double)-d) + fabs((double)R), (double)1.0f/ (double)3.0f);
+		if ( R > EPSILON )
 			e = -e;
 		Result.x = Result.y = Result.z = (e + Q / e) - a1 / 3.0f;
 	}
@@ -1192,10 +1192,10 @@ static double	ft_solve_4(double t[5])
 	Roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
 	double y = fmax(Roots.x, fmax(Roots.y, Roots.z));
 	double R = 0.25f * a3 * a3 - a2 + y;
-	if ( R < 0.0001f)
+	if (R < EPSILON)
 		return (0.0f);
 	R = sqrt(R);
-	if ( R == 0.0001f )
+	if ( R == EPSILON )
 	{
 		D = sqrt( 0.75f * a3 * a3 - 2.0f * a2 + 2.0f * sqrt( y * y - 4.0f * a0 ) );
 		E = sqrt( 0.75f * a3 * a3 - 2.0f * a2 - 2.0f * sqrt( y * y - 4.0f * a0 ) );
@@ -1221,10 +1221,10 @@ static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 	ret.dist = 0;
 	ret.normal = 0;
 	ret.wall = 0;
-	
+
 	double 		big_radius = thor->big_radius * thor->big_radius;
 	double		lil_radius = thor->lil_radius * thor->lil_radius;
-	
+
 	double3		d_ray;
 	d_ray.x = (double)ray.x;
 	d_ray.y = (double)ray.y;
@@ -1247,7 +1247,7 @@ static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 		+ (d_origin.y - d_pos.y) * d_ray.y \
 		+ (d_origin.z - d_pos.z) * d_ray.z;
 
-	double		e;	
+	double		e;
 	e =	(d_origin.x - d_pos.x) * (d_origin.x - d_pos.x) + \
 		(d_origin.y - d_pos.y) * (d_origin.y - d_pos.y) + \
 		(d_origin.z - d_pos.z) * (d_origin.z - d_pos.z) - \
@@ -1259,7 +1259,7 @@ static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * d_ray.y * d_ray.y;
 	c[3] = 4.0f * k.x * k.z;
 	c[4] = k.x * k.x;
-	
+
 	ret.dist = ft_solve_4(c);
 	return (ret);
 }
@@ -1277,7 +1277,7 @@ static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 // 	float3		k;
 // 	float		e;
 // 	float 		r = thor->big_radius;
-	
+
 // 	k.x = ray.x * ray.x + ray.y * ray.y + ray.z * ray.z;
 // 	e = (origin.x - thor->pos.x) * (origin.x - thor->pos.x) + (origin.y - thor->pos.y) *
 // 	(origin.y - thor->pos.y) + (origin.z - thor->pos.z) * (origin.z - thor->pos.z) -
@@ -1309,7 +1309,7 @@ static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 	float	pz = hit.pos.z - thor->pos.z;
 
 	c = ((px * px) + (py * py) + (pz * pz) - r - R);
-	
+
 	res.x = 4.0f * c * px;
 	res.y = 4.0f * py * (c + 2 * r);
 	res.z = 4.0f * c * pz;
