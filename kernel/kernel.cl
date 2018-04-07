@@ -308,8 +308,8 @@ typedef struct			s_thor
 	float2				test_var2;
 	float2				test_var3;
 
-	float				lil_radius;
-	float				big_radius;
+	double				lil_radius;
+	double				big_radius;
 }						t_thor;
 ////////////////////////////////////////////////////////////////////////////////
 

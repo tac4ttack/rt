@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 17:43:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 22:22:20 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/07 16:16:09 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void			xml_write_objects(t_env *e, int fd)
 	gen = e->gen_objects;
 	while (index < gen->length)
 	{
-		obj = gen->mem + index;
+		obj = gen->mem + mem_index;
 		if (obj->type == OBJ_CONE)
 			xml_write_cone((t_cone *)obj, fd);
 		else if (obj->type == OBJ_CYLINDER)
@@ -59,6 +59,8 @@ static void			xml_write_objects(t_env *e, int fd)
 			xml_write_plane((t_plane *)obj, fd);
 		else if (obj->type == OBJ_SPHERE)
 			xml_write_sphere((t_sphere *)obj, fd);
+		else if (obj->type == OBJ_TORUS)
+			xml_write_torus((t_torus *)obj, fd);
 		mem_index += *((int *)(gen->mem + mem_index));
 		index++;
 	}
