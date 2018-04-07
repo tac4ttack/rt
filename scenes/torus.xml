@@ -1,29 +1,149 @@
 <?xml version="1.0"?>
-<scene res="800, 600" ambient="0.5, 0.5, 0.5">
-<cam 		pos="0, 0, -30"
-			dir="0, 0, 1"
-			fov="30"
-			/>
-<torus	 	pos="5, 5, 0"
-			dir="0, 0, 0"
-			lil_radius="1"
-			big_radius="10"
-			color="0, 0, 0, 255"
-			diff="0.42, 0.42, 0.42"
-			spec="0.42, 0.42, 0.42"
-			reflex="0.42"
-			refract="0"
-			opacity="0"
-			p_limit_pos="0, 0, 0"
-			p_limit_dir="0, 0, 1"
-			flags="000000"
-			/>
-
-<light 		type="0"
-			pos="-2, 0, -10"
-			dir="0, 0, 0"
-			brightness="0.21"
-			shrink="21"
-			color="0, 255, 0, 0"
-			/>
+<scene	res="800, 600" ambient="0.1, 0.1, 0.1">
+	<cam
+	pos="0.0, 45.04270935, -59.52350997"
+	dir="0.0, 0.0, 1.0"
+	fov="30"
+/>
+	<cam
+	pos="30.0, 0.0, 0.0"
+	dir="0.0, 0.0, 1.0"
+	fov="90"
+/>
+	<cam
+	pos="-30.0, 0.0, 0.0"
+	dir="0.0, 0.0, 1.0"
+	fov="60"
+/>
+	<light
+	type="0"
+	pos="2.0, 0.0, -10.0"
+	dir="1.0, 0.0, 0.0"
+	brightness="0.21000001"
+	shrink="21"
+	color="0, 0, 0, 255"
+/>
+	<light
+	type="0"
+	pos="0.0, 0.0, -10.0"
+	dir="1.0, 0.0, 0.0"
+	brightness="0.21000001"
+	shrink="21"
+	color="0, 0, 255, 0"
+/>
+	<light
+	type="0"
+	pos="-2.0, 0.0, -10.0"
+	dir="1.0, 0.0, 0.0"
+	brightness="0.21000001"
+	shrink="21"
+	color="0, 255, 0, 0"
+/>
+	<light
+	type="0"
+	pos="0.0, 42.0, -100.0"
+	dir="0.0, 0.0, 0.0"
+	brightness="0.88000001"
+	shrink="21"
+	color="0, 255, 255, 255"
+/>
+	<sphere
+	pos="5.0, 5.0, 0.0"
+	dir="1.0, 0.0, 0.0"
+	radius="2.0"
+	color="0, 0, 0, 255"
+	diff="0.42000002, 0.42000002, 0.42000002"
+	spec="0.42000002, 0.42000002, 0.42000002"
+	reflex="0.42000002"
+	refract="0.0"
+	opacity="0.0"
+	p_limit_pos="0.0, 0.0, 0.0"
+	p_limit_dir="0.0, 0.0, 1.0"
+	flags="0000000"
+/>
+	<sphere
+	pos="0.0, 5.0, 0.0"
+	dir="1.0, 0.0, 0.0"
+	radius="2.0"
+	color="0, 255, 0, 0"
+	diff="0.42000002, 0.42000002, 0.42000002"
+	spec="1.0, 1.0, 1.0"
+	reflex="0.42000002"
+	refract="0.0"
+	opacity="0.0"
+	p_limit_pos="0.0, 0.0, 0.0"
+	p_limit_dir="0.0, 0.0, 1.0"
+	flags="0000000"
+/>
+	<sphere
+	pos="-5.0, 5.0, 0.0"
+	dir="1.0, 0.0, 0.0"
+	radius="2.0"
+	color="0, 0, 255, 0"
+	diff="0.42000002, 0.42000002, 0.42000002"
+	spec="1.0, 1.0, 1.0"
+	reflex="0.42000002"
+	refract="0.0"
+	opacity="0.0"
+	p_limit_pos="0.0, 0.0, 0.0"
+	p_limit_dir="0.0, 0.0, 1.0"
+	flags="0000000"
+/>
+	<sphere
+	pos="5.0, 0.0, 0.0"
+	dir="1.0, 0.0, 0.0"
+	radius="2.0"
+	color="0, 255, 255, 255"
+	diff="0.5, 0.5, 0.5"
+	spec="1.0, 1.0, 1.0"
+	reflex="0.42000002"
+	refract="0.0"
+	opacity="0.0"
+	p_limit_pos="0.0, 0.0, 0.0"
+	p_limit_dir="0.0, 0.0, 1.0"
+	flags="0000000"
+/>
+	<sphere
+	pos="0.0, 0.0, 0.0"
+	dir="1.0, 0.0, 0.0"
+	radius="2.0"
+	color="0, 255, 255, 255"
+	diff="0.1, 0.1, 0.1"
+	spec="0.1, 0.1, 0.1"
+	reflex="0.42000002"
+	refract="0.0"
+	opacity="0.0"
+	p_limit_pos="0.0, 0.0, 0.0"
+	p_limit_dir="0.0, 0.0, 1.0"
+	flags="0000000"
+/>
+	<sphere
+	pos="-5.0, 0.0, 0.0"
+	dir="1.0, 0.0, 0.0"
+	radius="2.0"
+	color="0, 255, 255, 255"
+	diff="0.42000002, 0.42000002, 0.42000002"
+	spec="0.5, 0.5, 0.5"
+	reflex="0.42000002"
+	refract="0.0"
+	opacity="0.0"
+	p_limit_pos="0.0, 0.0, 0.0"
+	p_limit_dir="0.0, 0.0, 1.0"
+	flags="0000000"
+/>
+	<torus
+	pos="0.0, 0.0, 0.0"
+	dir="0.0, 0.0, 1.0"
+	lil_radius="4.0"
+	big_radius="16.0"
+	color="0, 0, 65, 167"
+	diff="0.41999998, 0.41999998, 0.41999998"
+	spec="0.41999998, 0.41999998, 0.41999998"
+	reflex="0.0"
+	refract="0.0"
+	opacity="1.0"
+	p_limit_pos="0.0, 0.0, 0.0"
+	p_limit_dir="0.0, 0.0, 0.0"
+	flags="0000000"
+/>
 </scene>

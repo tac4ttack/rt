@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/07 15:19:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/07 18:32:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct			s_fps
 
 typedef struct			s_cam
 {
+	cl_uint				id;
 	cl_float3			pos;
 	cl_float3			dir;
 	cl_float			fov;
@@ -325,8 +326,8 @@ typedef struct			s_torus
 	cl_float2			test_var2;
 	cl_float2			test_var3;
 
-	cl_float			lil_radius;
-	cl_float			big_radius;
+	cl_double			lil_radius;
+	cl_double			big_radius;
 }						t_torus;
 
 typedef struct			s_ellipsoid
@@ -420,7 +421,7 @@ typedef struct			s_tex
 	unsigned int		*pixel_array;
 	int					width;
 	int					height;
-} 						t_tex;
+}						t_tex;
 
 typedef struct			s_scene
 {
@@ -649,6 +650,7 @@ void					xml_write_lights(t_env *e, const int fd);
 void					xml_write_ellipsoid(t_ellipsoid *elli, const int fd);
 void					xml_write_plane(t_plane *plane, const int fd);
 void					xml_write_sphere(t_sphere *sphere, const int fd);
+void					xml_write_torus(t_torus *torus, const int fd);
 
 void					init_test_var(t_env *e);
 void					init_test_var_cb(t_env *e);
