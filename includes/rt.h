@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/07 00:07:24 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/07 15:19:17 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,6 +312,7 @@ typedef struct			s_torus
 	cl_int				color;
 	cl_float			reflex;
 	cl_float			refract;
+	cl_float			opacity;
 	cl_float3			limit_pos;
 	cl_float3			limit_dir;
 	cl_float3			waves_p1;
@@ -324,7 +325,6 @@ typedef struct			s_torus
 	cl_float2			test_var2;
 	cl_float2			test_var3;
 
-	cl_float			opacity;
 	cl_float			lil_radius;
 	cl_float			big_radius;
 }						t_torus;
