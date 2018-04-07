@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/07 18:31:54 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/07 18:37:32 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,6 @@ void		xml_allocate_cam(t_env *e)
 
 void		xml_push_cam(t_env *e, t_node *list)
 {
-	list->pos.x, list->pos.y, list->pos.z, \
-	list->dir.x, list->dir.y, list->dir.z, list->fov);
 	e->cameras[list->id].id = list->id;
 	e->cameras[list->id].pos = list->pos;
 	e->cameras[list->id].dir = list->dir;

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 20:37:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 22:18:19 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/07 18:40:46 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void		xml_write_lights(t_env *e, const int fd)
 	mem_index = 0;
 	index = 0;
 	gen = e->gen_lights;
-	while (mem_index < gen->length)
+	while (index < gen->length)
 	{
 		light = gen->mem + mem_index;
 		xml_write_light_data(light, fd);

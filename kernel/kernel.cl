@@ -1110,17 +1110,17 @@ static t_ret	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray
 /*
 ** TORUS FUNCTIONS /////////////////////////////////////////////////////////////
 */
-static float	ft_ret(float *tab)
+static double	ft_ret(double *tab)
 {
-	float		ret;
+	double		ret;
 	int			i;
 	ret = -1.0;
 	i = 0;
 	while(i < 4)
 	{
-		if(tab[i] > 0.0001 && ret == -1)
+		if(tab[i] > 0.0000000001 && ret == -1)
 			ret = tab[i];
-			if (tab[i] < ret && tab[i] > 0.0001 )
+			if (tab[i] < ret && tab[i] > 0.0000000001 )
 			ret = tab[i];
 		i++;
 	}
@@ -1129,21 +1129,24 @@ static float	ft_ret(float *tab)
 	return (ret);
 }
 
-static float3	ft_solve_3(float a, float b, float c, float d)
+static double3	ft_solve_3(double a, double b, double c, double d)
 {
-	float 	a1;
+	double 	a1;
 	a1 = c / d;
-	float a2;
+	
+	double a2;
 	a2 = b / d;
-	float a3;
+
+	double a3;
 	a3 = a / d;
-	float3 Result;
-	float theta;
-	float sqrtQ;
-	float e;
-	float Q = (a1 * a1 - 3.0f * a2) / 9.0f;
-	float R = (2.0f * a1 * a1 * a1 - 9.0f * a1 * a2 + 27.0f * a3) / 54.0f;
-	float Qcubed = Q * Q * Q;
+	
+	double3 Result = 0;
+	double theta;
+	double sqrtQ;
+	double e;
+	double Q = (a1 * a1 - 3.0f * a2) / 9.0f;
+	double R = (2.0f * a1 * a1 * a1 - 9.0f * a1 * a2 + 27.0f * a3) / 54.0f;
+	double Qcubed = Q * Q * Q;
 	d = Qcubed - R * R;
 	if ( d >= 0.0001f )
 	{	
@@ -1162,32 +1165,33 @@ static float3	ft_solve_3(float a, float b, float c, float d)
 	}
 	else
 	{	
-		e = pow(sqrt(-d) + fabs(R), 1.0f/ 3.0f);	
+		e = pow(sqrt((double)-d) + fabs((double)R), (double)1.0f/ (double)3.0f);	
 		if ( R > 0.0001f )
 			e = -e;
 		Result.x = Result.y = Result.z = (e + Q / e) - a1 / 3.0f;
 	}
 	return (Result);
 }
-static float	ft_solve_4(float t[5])
+
+static double	ft_solve_4(double t[5])
 {
-	float Result[4];
-	float3 Roots;
-	float Rsquare;
-	float Rrec;
-	float a0= t[0] / t[4];
-	float a1 = t[1] / t[4];
-	float a2 = t[2] / t[4];
-	float  a3 = t[3] / t[4];
-	float D;
-	float E;
-	float3 b;
+	double Result[4];
+	double3 Roots;
+	double Rsquare;
+	double Rrec;
+	double a0= t[0] / t[4];
+	double a1 = t[1] / t[4];
+	double a2 = t[2] / t[4];
+	double a3 = t[3] / t[4];
+	double D;
+	double E;
+	double3 b;
 	b.x = 4.0f * a2 * a0 - a1 * a1 - a3 * a3 * a0;
 	b.y = a1 * a3 - 4.0f * a0;
 	b.z = -a2;
 	Roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
-	float	y = fmax(Roots.x, fmax(Roots.y, Roots.z));
-	float R = 0.25f * a3 * a3 - a2 + y;
+	double y = fmax(Roots.x, fmax(Roots.y, Roots.z));
+	double R = 0.25f * a3 * a3 - a2 + y;
 	if ( R < 0.0001f)
 		return (0.0f);
 	R = sqrt(R);
@@ -1217,27 +1221,80 @@ static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 	ret.dist = 0;
 	ret.normal = 0;
 	ret.wall = 0;
+	
+	double 		big_radius = thor->big_radius * thor->big_radius;
+	double		lil_radius = thor->lil_radius * thor->lil_radius;
+	
+	double3		d_ray;
+	d_ray.x = (double)ray.x;
+	d_ray.y = (double)ray.y;
+	d_ray.z = (double)ray.z;
 
-	float		c[5];
-	float3	k;
-	float		e;
-	float r = thor->big_radius;
-	k.x = ray.x * ray.x + ray.y * ray.y + ray.z * ray.z;
-	e = (origin.x - thor->pos.x) * (origin.x - thor->pos.x) + (origin.y - thor->pos.y) *
-	(origin.y - thor->pos.y) + (origin.z - thor->pos.z) * (origin.z - thor->pos.z) -
-	r * r - thor->lil_radius * thor->lil_radius;
-	k.z = (origin.x - thor->pos.x) * ray.x + (origin.y - thor->pos.y) * ray.y +
-	(origin.z - thor->pos.z) * ray.z;
-	k.y = 4.0f * r * r;
-	c[0] = e * e - k.y * (thor->lil_radius * thor->lil_radius - (origin.y - thor->pos.y) *
-	(origin.y - thor->pos.y));
-	c[1] = 4.0f * k.z * e + 2.0f * k.y * (origin.y - thor->pos.y) * ray.y;
-	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * ray.y * ray.y;
+	double3		d_origin;
+	d_origin.x = (double)origin.x;
+	d_origin.y = (double)origin.y;
+	d_origin.z = (double)origin.z;
+
+	double3		d_pos;
+	d_pos.x = (double)thor->pos.x;
+	d_pos.y = (double)thor->pos.y;
+	d_pos.z = (double)thor->pos.z;
+
+	double3		k;
+	k.x = (d_ray.x * d_ray.x) + (d_ray.y * d_ray.y) + (d_ray.z * d_ray.z);
+	k.y = 4.0f * big_radius;
+	k.z = (d_origin.x - d_pos.x) * d_ray.x \
+		+ (d_origin.y - d_pos.y) * d_ray.y \
+		+ (d_origin.z - d_pos.z) * d_ray.z;
+
+	double		e;	
+	e =	(d_origin.x - d_pos.x) * (d_origin.x - d_pos.x) + \
+		(d_origin.y - d_pos.y) * (d_origin.y - d_pos.y) + \
+		(d_origin.z - d_pos.z) * (d_origin.z - d_pos.z) - \
+		big_radius - lil_radius;
+
+	double		c[5];
+	c[0] = e * e - k.y * (lil_radius - (d_origin.y - d_pos.y) * (d_origin.y - d_pos.y));
+	c[1] = 4.0f * k.z * e + 2.0f * k.y * (d_origin.y - d_pos.y) * d_ray.y;
+	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * d_ray.y * d_ray.y;
 	c[3] = 4.0f * k.x * k.z;
 	c[4] = k.x * k.x;
+	
 	ret.dist = ft_solve_4(c);
 	return (ret);
 }
+
+
+// ORIGINAL one
+// static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
+// {
+// 	t_ret		ret;
+// 	ret.dist = 0;
+// 	ret.normal = 0;
+// 	ret.wall = 0;
+
+// 	float		c[5];
+// 	float3		k;
+// 	float		e;
+// 	float 		r = thor->big_radius;
+	
+// 	k.x = ray.x * ray.x + ray.y * ray.y + ray.z * ray.z;
+// 	e = (origin.x - thor->pos.x) * (origin.x - thor->pos.x) + (origin.y - thor->pos.y) *
+// 	(origin.y - thor->pos.y) + (origin.z - thor->pos.z) * (origin.z - thor->pos.z) -
+// 	r * r - thor->lil_radius * thor->lil_radius;
+// 	k.z = (origin.x - thor->pos.x) * ray.x + (origin.y - thor->pos.y) * ray.y +
+// 	(origin.z - thor->pos.z) * ray.z;
+// 	k.y = 4.0f * r * r;
+// 	c[0] = e * e - k.y * (thor->lil_radius * thor->lil_radius - (origin.y - thor->pos.y) *
+// 	(origin.y - thor->pos.y));
+// 	c[1] = 4.0f * k.z * e + 2.0f * k.y * (origin.y - thor->pos.y) * ray.y;
+// 	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * ray.y * ray.y;
+// 	c[3] = 4.0f * k.x * k.z;
+// 	c[4] = k.x * k.x;
+// 	ret.dist = ft_solve_4(c);
+// 	return (ret);
+// }
+
 
 static float3 get_thor_normal(const __local t_thor *thor, const t_hit hit)
 {
@@ -1540,7 +1597,7 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 			save.y = res.y + object->waves_p1.x * sin((hit.pos.x + scene->u_time));
 		else
 		{
-			save.x = res.x + object->waves_p1.x * sin(res.y * object->waves_p2.x + scene->u_time); //p1.x p2.x
+			save.x = res.x + object->waves_p1.x * sin(res.y * object->waves_p2.x + scene->u_time);
 			save.z = res.z + object->waves_p1.y * sin(res.x * object->waves_p2.y + scene->u_time);
 			save.y = res.y + object->waves_p1.z * sin(res.x * object->waves_p2.z + scene->u_time);
 		}
