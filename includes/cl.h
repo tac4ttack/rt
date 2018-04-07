@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:20 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 17:38:21 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/07 22:39:59 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,7 @@ bool					cl_add_buffer(t_cl *cl, size_t size);
 bool					cl_replace_buffer(t_cl *cl, size_t size, size_t target);
 bool					cl_print_error(int err);
 bool					cl_compute(t_cl *cl);
+void					opencl_error(const char *err, const void *p,
+													size_t cb, void *u);
 
 #endif

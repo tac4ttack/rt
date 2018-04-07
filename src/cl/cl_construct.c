@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:57:19 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 18:38:03 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/07 23:12:20 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,17 @@ static bool			cl_create_base(t_cl *cl, int type)
 	if ((cl->err = clGetPlatformIDs(1, &cl->platform_id, &cl->num_platforms)) \
 																!= CL_SUCCESS)
 		return (cl_builderrors(cl, 1, cl->err));
-	if ((cl->err = clGetDeviceIDs(NULL, type, 1, &cl->device_id, NULL)) \
+	if ((cl->err = clGetDeviceIDs(cl->platform_id, type, 1, &cl->device_id, &cl->num_platforms)) \
 																!= CL_SUCCESS)
 		return (cl_builderrors(cl, 1, cl->err));
-	if (!(cl->context = clCreateContext(0, 1, \
-			(const cl_device_id *)&cl->device_id, NULL, NULL, &cl->err)))
+	if (!(cl->context = clCreateContext(NULL, 1, \
+			(const cl_device_id *)&cl->device_id, opencl_error, NULL, &cl->err)))
 		return (cl_builderrors(cl, 2, cl->err));
 	if (!(cl->queue = clCreateCommandQueue(cl->context, cl->device_id, \
 															0, &cl->err)))
 		return (cl_builderrors(cl, 3, cl->err));
 	if (!(cl->program = clCreateProgramWithSource(cl->context, 1, \
-							(const char **)&cl->kernel_src, NULL, &cl->err)))
+							(const char **)&cl->kernel_src, (const size_t *)&cl->src_size, &cl->err)))
 		return (cl_builderrors(cl, 4, cl->err));
 	(void)type;
 	return (true);
@@ -79,8 +79,8 @@ static bool			cl_create_base(t_cl *cl, int type)
 
 static bool			cl_build(t_cl *cl)
 {
-	if ((cl->err = clBuildProgram(cl->program, 0, NULL, \
-				"-Werror -I ./kernel/includes/ ", NULL, NULL)) != CL_SUCCESS)
+	if ((cl->err = clBuildProgram(cl->program, 1, &(cl->device_id), \
+				"-cl-fast-relaxed-math -cl-single-precision-constant", NULL, NULL)) != CL_SUCCESS)
 		return (cl_builderrors(cl, 5, cl->err));
 	if (!(cl->kernel = clCreateKernel(cl->program, "ray_trace", &cl->err)) \
 										|| cl->err != CL_SUCCESS)

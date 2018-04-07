@@ -736,7 +736,7 @@ static bool		solve_quadratic(const float a, const float b, const float c, float 
 	tmp = 0;
 	if (discr < 0)
 		return (false);
-	else if (discr < 0.f)
+	else if (discr < EPSILON)
 	{
 		*inter0 = -0.5 * b / a;
 		*inter1 = *inter0;
