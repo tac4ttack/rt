@@ -417,24 +417,8 @@ static t_hit	hit_init(void)
 	hit.color = 0;
 	hit.pos = 0.f;
 	hit.mem_index = 0;
-	hit.opacity = 0;
+	hit.opacity = 0.f;
 	return (hit);
-}
-////////////////////////////////////////////////////////////////////////////////
-
-
-
-/*
-** PRINT FUNCTIONS /////////////////////////////////////////////////////////////
-*/
-static void			print_mem(__local t_cone *cone)
-{
-	printf("dir : x = %f, y = %f, z = %f\npos : x = %f, y = %f, z = %f\nangle = %f\n\n", cone->dir.x, cone->dir.y, cone->dir.z, cone->pos.x, cone->pos.y, cone->pos.z, cone->angle);
-}
-
-static void			print_vect(float3 v)
-{
-	printf("ray : x = %f, y = %f, z = %f\n\n", v.x, v.y, v.z);
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -513,9 +497,9 @@ static unsigned int	sepiarize(const unsigned int color)
 	base.x = (color & 0x00FF0000) >> 16;
 	base.y = (color & 0x0000FF00) >> 8;
 	base.z = (color & 0x000000FF);
-	cooking_pot.x = (base.x * 0.393) + (base.y * 0.769) + (base.z * 0.189);
-	cooking_pot.y = (base.x * 0.349) + (base.y * 0.686) + (base.z * 0.168);
-	cooking_pot.z = (base.x * 0.272) + (base.y * 0.534) + (base.z * 0.131);
+	cooking_pot.x = (base.x * 0.393f) + (base.y * 0.769f) + (base.z * 0.189f);
+	cooking_pot.y = (base.x * 0.349f) + (base.y * 0.686f) + (base.z * 0.168f);
+	cooking_pot.z = (base.x * 0.272f) + (base.y * 0.534f) + (base.z * 0.131f);
 	(cooking_pot.x > 255 ? cooking_pot.x = 255 : 0);
 	(cooking_pot.y > 255 ? cooking_pot.y = 255 : 0);
 	(cooking_pot.z > 255 ? cooking_pot.z = 255 : 0);
@@ -540,7 +524,7 @@ static unsigned int	desaturate(const unsigned int color)
 	rgb.x = (color & 0x00FF0000) >> 16;
 	rgb.y = (color & 0x0000FF00) >> 8;
 	rgb.z = (color & 0x000000FF);
-	float 	average = (rgb.x + rgb.y + rgb.z) / 3;
+	float 	average = (rgb.x + rgb.y + rgb.z) / 3.f;
 	return (((uint)average << 16) + ((uint)average << 8) + (uint)average);
 }
 
@@ -613,9 +597,9 @@ static unsigned int	get_ambient(const __local t_scene *scene, const unsigned int
 	r = (obj_color & 0x00FF0000) >> 16;
 	g = (obj_color & 0x0000FF00) >> 8;
 	b = (obj_color & 0x000000FF);
-	r = (0.01 + r * scene->ambient.x > 255 ? 255 : 0.01 + r * scene->ambient.x);
-	g = (0.01 + g * scene->ambient.y > 255 ? 255 : 0.01 + g * scene->ambient.y);
-	b = (0.01 + b * scene->ambient.z > 255 ? 255 : 0.01 + b * scene->ambient.z);
+	r = (0.01 + r * scene->ambient.x > 255 ? 255 : 0.01f + r * scene->ambient.x);
+	g = (0.01 + g * scene->ambient.y > 255 ? 255 : 0.01f + g * scene->ambient.y);
+	b = (0.01 + b * scene->ambient.z > 255 ? 255 : 0.01f + b * scene->ambient.z);
 	return ((r << 16) + (g << 8) + b);
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -656,9 +640,9 @@ static float3	rotat_x(const float3 vect, const float angle)
 	float3 		res = 0;
 	float		teta = radians(angle);
 
-	res.x = (vect.x * 1) + (vect.y * 0) + (vect.z * 0);
-	res.y = (vect.x * 0) + (vect.y * cos(teta)) + (vect.z * -sin(teta));
-	res.z = (vect.x * 0) + (vect.y * sin(teta)) + (vect.z * cos(teta));
+	res.x = (vect.x * 1.f) + (vect.y * 0.f) + (vect.z * 0.f);
+	res.y = (vect.x * 0.f) + (vect.y * cos(teta)) + (vect.z * -sin(teta));
+	res.z = (vect.x * 0.f) + (vect.y * sin(teta)) + (vect.z * cos(teta));
 	return (res);
 }
 
@@ -667,9 +651,9 @@ static float3	rotat_y(const float3 vect, const float angle)
 	float3 		res = 0;
 	float		teta = radians(angle);
 
-	res.x = (vect.x * cos(teta)) + (vect.y * 0) + (vect.z * sin(teta));
-	res.y = (vect.x * 0) + (vect.y * 1) + (vect.z * 0);
-	res.z = (vect.x * -sin(teta)) + (vect.y * 0) + (vect.z * cos(teta));
+	res.x = (vect.x * cos(teta)) + (vect.y * 0.f) + (vect.z * sin(teta));
+	res.y = (vect.x * 0.f) + (vect.y * 1.f) + (vect.z * 0.f);
+	res.z = (vect.x * -sin(teta)) + (vect.y * 0.f) + (vect.z * cos(teta));
 	return (res);
 }
 
@@ -678,9 +662,9 @@ static float3	rotat_z(const float3 vect, const float angle)
 	float3 		res = 0;
 	float		teta = radians(angle);
 
-	res.x = (vect.x * cos(teta)) + (vect.y * -sin(teta)) + (vect.z * 0);
-	res.y = (vect.x * sin(teta)) + (vect.y * cos(teta)) + (vect.z * 0);
-	res.z = (vect.x * 0) + (vect.y * 0) + (vect.z * 1);
+	res.x = (vect.x * cos(teta)) + (vect.y * -sin(teta)) + (vect.z * 0.f);
+	res.y = (vect.x * sin(teta)) + (vect.y * cos(teta)) + (vect.z * 0.f);
+	res.z = (vect.x * 0.f) + (vect.y * 0.f) + (vect.z * 1.f);
 	return (res);
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -835,18 +819,18 @@ static bool		solve_quadratic(const float a, const float b, const float c, float 
 	float 		q;
 
 	q = 0;
-	discr = b * b - 4 * a * c;
+	discr = b * b - 4.f * a * c;
 	tmp = 0;
 	if (discr < 0)
 		return (false);
 	else if (discr < EPSILON)
 	{
-		*inter0 = -0.5 * b / a;
+		*inter0 = -0.5f * b / a;
 		*inter1 = *inter0;
 	}
 	else
 	{
-		q = (b > 0) ? (-0.5 * (b + sqrt(discr))): (-0.5 * (b - sqrt(discr)));
+		q = (b > 0) ? (-0.5f * (b + sqrt(discr))): (-0.5f * (b - sqrt(discr)));
 		*inter0 = q / a;
 		*inter1 = c / q;
 	}
@@ -898,9 +882,9 @@ static t_ret	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, f
 	abc.x = (ray.x * ray.x +
 	 	ray.y * ray.y +
 	 	ray.z * ray.z);
-	abc.y = (2 * pos.x * ray.x +
-		 2 * pos.y * ray.y +
-		 2 * pos.z * ray.z);
+	abc.y = (2.f * pos.x * ray.x +
+		 2.f * pos.y * ray.y +
+		 2.f * pos.z * ray.z);
 	abc.z = (pos.x * pos.x +
 		 pos.y * pos.y +
 		 pos.z * pos.z) - (ellipsoid->radius * ellipsoid->radius);
@@ -988,10 +972,10 @@ static t_ret	inter_plan(const __local t_plane *plane, const float3 ray, const fl
 	ret.dist = 0;
 	ret.wall = 0;
 	t = dot(fast_normalize(ray), plane->normal);
-	if (fabs(t) < 0.0005 || (plane->radius && t > plane->radius))
+	if (fabs(t) < 0.0005f || (plane->radius && t > plane->radius))
 		return (ret);
 	t = (dot(plane->pos - origin, plane->normal)) / t;
-	if (t < 0.001)
+	if (t < 0.001f)
 		return (ret);
 	if (plane->radius)
 	{
@@ -1027,11 +1011,11 @@ static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsig
 	while (npos > 10)
 		npos -= 10;
 	if (dot(pos, cyl->dir) < 0)
-		npos = (npos - 10) * -1;
-	uv.y = (int)floor((npos / 10) * t_height * cyl->diff_ratio.y + cyl->diff_offset.y);
+		npos = (npos - 10.f) * -1.f;
+	uv.y = (int)floor((npos / 10.f) * t_height * cyl->diff_ratio.y + cyl->diff_offset.y);
 	npos = dot(pos, cyl->u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * t_width * cyl->diff_ratio.x + cyl->diff_offset.x);
+	uv.x = (int)floor((0.5f + (atan2(npos, vpos) / (2.f * M_PI))) * t_width * cyl->diff_ratio.x + cyl->diff_offset.x);
 	uv.x %= t_width;
 	uv.y %= t_height;
 	if (uv.x < 0)
@@ -1117,9 +1101,9 @@ static float	ft_ret(float *tab)
 	i = 0;
 	while(i < 4)
 	{
-		if(tab[i] > 0.0001 && ret == -1)
+		if(tab[i] > 0.0001f && ret == -1)
 			ret = tab[i];
-			if (tab[i] < ret && tab[i] > 0.0001 )
+			if (tab[i] < ret && tab[i] > 0.0001f )
 			ret = tab[i];
 		i++;
 	}
@@ -1269,8 +1253,8 @@ static unsigned int		sphere_checkerboard(const float3 dir, const unsigned int co
 {
 	int2	uv;
 
-	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415))) * check_size.x);
-	uv.y = (int)floor((0.5 - (asin(dir.y) / 3.1415)) * check_size.y);
+	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415f))) * check_size.x);
+	uv.y = (int)floor((0.5 - (asin(dir.y) / 3.1415f)) * check_size.y);
 	if (uv.x % 2 == 0)
 	{
 		if (uv.y % 2 == 0)
@@ -1291,8 +1275,8 @@ static unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, 
 
 	size.x = (int)floor(t_width * ratio.x);
 	size.y = (int)floor(t_height * ratio.y);
-	uv.x = (int)floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * size.x + offset.x);
-	uv.y = (int)floor((0.5 - (asin(pos.y) / M_PI)) * size.y + offset.y);
+	uv.x = (int)floor((0.5f + (atan2(pos.z, pos.x) / (2.f * M_PI))) * size.x + offset.x);
+	uv.y = (int)floor((0.5f - (asin(pos.y) / M_PI)) * size.y + offset.y);
 	if (uv.x < 0)
 	{
 		uv.x %= t_width;
@@ -1316,7 +1300,7 @@ static float3	get_sphere_abc(const float radius, const float3 ray, const float3 
 	float3		abc = 0;
 
 	abc.x = dot(ray, ray);
-	abc.y = 2 * dot(ray, origin);
+	abc.y = 2.f * dot(ray, origin);
 	abc.z = dot(origin, origin) - (radius * radius);
 	return (abc);
 }
@@ -1368,10 +1352,10 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigne
 		npos -= 10;
 	while (npos < 0)
 		npos += 10;
-	uv.y = (int)floor((fast_length(npos * dir) / 10) * ratio.y * (t_height - 1) + offset.y);
+	uv.y = (int)floor((fast_length(npos * dir) / 10.f) * ratio.y * (t_height - 1.f) + offset.y);
 	npos = dot(pos, u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * ratio.x * (t_width - 1) + offset.x);
+	uv.x = (int)floor((0.5f + (atan2(npos, vpos) / (2.f * M_PI))) * ratio.x * (t_width - 1.f) + offset.x);
 	uv.x %= t_width;
 	uv.y %= t_height;
 	if (uv.x < 0)
@@ -1379,7 +1363,7 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigne
 	if (uv.y < 0)
 		uv.y = -uv.y;
 	else
-		uv.y = uv.y - t_height * -1;
+		uv.y = uv.y - t_height * -1.f;
 	uv.x %= t_width;
 	uv.y %= t_height;
 	 color = (unsigned int)texture[uv.x + (uv.y * t_width)];
@@ -1424,9 +1408,9 @@ static float3	get_cone_abc(const __local t_cone *cone, const float3 ray, const f
 	float		k = radians(cone->angle);
 
 	k = tan(k);
-	k = 1 + k * k;
+	k = 1.f + k * k;
 	abc.x = dot(ray, ray) - (k * (dot(ray, cone->dir) * dot(ray, cone->dir)));
-	abc.y = 2 * (dot(ray, origin) - (k * \
+	abc.y = 2.f * (dot(ray, origin) - (k * \
 			(dot(ray, cone->dir) * dot(origin, cone->dir))));
 	abc.z = (dot(origin, origin) - \
 			(k * (dot(origin, cone->dir) * dot(origin, cone->dir))));
@@ -1628,9 +1612,9 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	col_r = (hue & 0x00FF0000) >> 16;
 	col_g = (hue & 0x0000FF00) >> 8;
 	col_b = (hue & 0x000000FF);
-	col_r = (0.01 + col_r * scene->ambient.x > 255 ? 255 : 0.01 + col_r * scene->ambient.x);
-	col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
-	col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
+	col_r = (0.01f + col_r * scene->ambient.x > 255 ? 255 : 0.01f + col_r * scene->ambient.x);
+	col_g = (0.01f + col_g * scene->ambient.y > 255 ? 255 : 0.01f + col_g * scene->ambient.y);
+	col_b = (0.01f + col_b * scene->ambient.z > 255 ? 255 : 0.01f + col_b * scene->ambient.z);
 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
 
 	while (mem_index_lights < scene->mem_size_lights)
@@ -1741,7 +1725,7 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hi
 		{
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
 			new_hit.normal = get_hit_normal(scene, reflex, new_hit);
-			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normal);
+			new_hit.pos = new_hit.pos + ((new_hit.dist / 100.f) * new_hit.normal);
 			color = blend_factor(blend_add(color, phong(scene, new_hit, reflex)), reflex_coef);
 		}
 		if (new_hit.obj->reflex == 0)
@@ -1762,7 +1746,7 @@ static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_h
 	float			base = 1;
 	int				i = 0;
 
-	old_hit.pos = old_hit.pos + ((old_hit.dist / SHADOW_BIAS) * -(old_hit.normal * 2)); //pour refract, inverser le decalage de la position
+	old_hit.pos = old_hit.pos + ((old_hit.dist / SHADOW_BIAS) * -(old_hit.normal * 2.f)); //pour refract, inverser le decalage de la position
 	while (old_hit.obj->refract != 0 && old_hit.obj->opacity < 1 && ++i < 50)
 	{
 		c1 = dot(old_hit.normal, refract);
@@ -1774,7 +1758,7 @@ static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_h
 			old_hit.normal = -old_hit.normal;
 			eta = old_hit.obj->refract / base;
 		}
-		c2 = sqrt(1 - ((eta * eta) * (1 - (c1 * c1))));
+		c2 = sqrt(1.f - ((eta * eta) * (1.f - (c1 * c1))));
 		// DEUXIEME LOIS DE SNELL-DECARTES /////////////////////////////////////////////
 		refract = fast_normalize((eta * refract) + ((eta * c1) - c2) * old_hit.normal);
 		////////////////////////////////////////////////////////////////////////////////
@@ -1785,9 +1769,9 @@ static unsigned int		refract(const __local t_scene *scene, const float3 ray, t_h
 			new_hit.pos = (new_hit.dist * refract) + old_hit.pos;
 			new_hit.normal = get_hit_normal(scene, refract, new_hit);
 			if (new_hit.mem_index != old_hit.mem_index && new_hit.obj->refract != 0 && new_hit.obj->opacity < 1)
-				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000) * -new_hit.normal);	//pour refract en chaine, inverser la normale pour le decalage de la position
+				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000.f) * -new_hit.normal);	//pour refract en chaine, inverser la normale pour le decalage de la position
 			else
-				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000) * new_hit.normal);
+				new_hit.pos = new_hit.pos + ((new_hit.dist / 10000.f) * new_hit.normal);
 			if (new_hit.obj->refract == 0)
 				return (phong(scene, new_hit, refract));
 		}
@@ -1814,7 +1798,7 @@ static float3		refract_ray(const __local t_scene *scene, const float3 ray, float
 		normale = -normale;
 		eta = tra;
 	}
-	c2 = sqrt(1 - ((eta * eta) * (1 - (c1 * c1))));
+	c2 = sqrt(1.f - ((eta * eta) * (1.f - (c1 * c1))));
 	// DEUXIEME LOIS DE SNELL-DECARTES /////////////////////////////////////////////
 	refract = fast_normalize((eta * ray) + ((eta * c1) - c2) * normale);
 	////////////////////////////////////////////////////////////////////////////////
@@ -1829,7 +1813,7 @@ static float3		bounce_ray(const __local t_scene *scene, const float3 ray, t_tor 
 	reflex = 0;
 	reflex_coef = 0;
 	// PREMIÈRE LOI DE SNELL-DESCARTES ///////////////////////////////////////////////////////////
-	reflex = fast_normalize(ray - (2 * (float)dot(tor.normale, ray) * tor.normale));
+	reflex = fast_normalize(ray - (2.f * (float)dot(tor.normale, ray) * tor.normale));
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	return (reflex);
 }
@@ -1838,7 +1822,7 @@ static float		reflect_ratio(float n1, float n2, float cos1, float sint)
 {
 	float			fr1 = 0;
 	float			fr2 = 0;
-	float			cos2 = sqrt(1 - sint * sint);
+	float			cos2 = sqrt(1.f - sint * sint);
 
 	if (cos1 >= 0)
 	{
@@ -1848,13 +1832,13 @@ static float		reflect_ratio(float n1, float n2, float cos1, float sint)
 	}
 	else
 		cos1 = -cos1;
-	if (n1 / n2 * sqrt(1 - cos1 * cos1) > 1)
+	if (n1 / n2 * sqrt(1.f - cos1 * cos1) > 1)
 		return (1);
 	fr1 = (n2 * cos1 - n1 * cos2) / (n2 * cos1 + n1 * cos2);
 	fr2 = (n1 * cos2 - n2 * cos1) / (n1 * cos2 + n2 * cos1);
 	fr1 *= fr1;
 	fr2 *= fr2;
-	return ((fr1 + fr2) / 2);
+	return ((fr1 + fr2) / 2.f);
 }
 
 static t_tor		tor_push(float3 ray, float3 normale, float3 pos, float coef_ref, float coef_tra, float opacity, unsigned int color, uint mem_index, int id, int type)
@@ -1955,9 +1939,9 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 		if (cos1 >= 0)
 			eta = tor[i].coef_tra;
 		if (cos1 >= 0)
-			sint = tor[i].coef_tra * sqrt(1 - cos1 * cos1);
+			sint = tor[i].coef_tra * sqrt(1.f - cos1 * cos1);
 		else
-			sint = 1 / tor[i].coef_tra * sqrt(1 - cos1 * cos1);
+			sint = 1 / tor[i].coef_tra * sqrt(1.f - cos1 * cos1);
 		if (sint >= 1)
 			fr = 1;
 		else
@@ -1974,17 +1958,17 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 			else
 				refract = tor[i].prim;
 			if (cos1 < 0)
-				new_hit = ray_hit(scene, tor[i].pos + (0.0001f * 2 * -tor[i].normale), refract, 0);
+				new_hit = ray_hit(scene, tor[i].pos + (0.0001f * 2.f * -tor[i].normale), refract, 0);
 			else
 				new_hit = ray_hit(scene, tor[i].pos, refract, 0);
 			if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 			{
 				if (cos1 < 0)
-					new_hit.pos = (new_hit.dist * refract) + tor[i].pos + (0.0001f * 2 * -tor[i].normale);
+					new_hit.pos = (new_hit.dist * refract) + tor[i].pos + (0.0001f * 2.f * -tor[i].normale);
 				else
 					new_hit.pos = (new_hit.dist * refract) + tor[i].pos;
 				new_hit.normal = get_hit_normal(scene, refract, new_hit);
-				new_hit.pos = new_hit.pos + (new_hit.dist / 10000 * new_hit.normal);
+				new_hit.pos = new_hit.pos + (new_hit.dist / 10000.f * new_hit.normal);
 				ncolor = blend_factor(phong(scene, new_hit, refract), ft);
 				tor[i * 2 + 1] = tor_push(refract, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type);
 			}
@@ -1998,7 +1982,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 			{
 				new_hit.pos = (new_hit.dist * bounce) + tor[i].pos;
 				new_hit.normal = get_hit_normal(scene, bounce, new_hit);
-				new_hit.pos = new_hit.pos + (new_hit.dist / 10000 * new_hit.normal);
+				new_hit.pos = new_hit.pos + (new_hit.dist / 10000.f * new_hit.normal);
 				ncolor = blend_factor(phong(scene, new_hit, bounce), fr);
 				tor[i * 2 + 2] = tor_push(bounce, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type);
 			}
@@ -2073,8 +2057,8 @@ static float3		get_ray_cam(__local t_scene *scene, const uint2 pix, const uint w
 	float3			cam_ray = 0;
 	float			ratio = ((float)width) / ((float)height);
 
-	cam_ray.x = ((2 * ((pix.x + 0.5) / width)) - 1) * ratio * (tan(radians(ACTIVECAM.fov / 2)));
-	cam_ray.y = ((1 - (2 * ((pix.y + 0.5) / height))) * tan(radians(ACTIVECAM.fov / 2)));
+	cam_ray.x = ((2.f * ((pix.x + 0.5f) / width)) - 1.f) * ratio * (tan(radians(ACTIVECAM.fov / 2.f)));
+	cam_ray.y = ((1.f - (2.f * ((pix.y + 0.5f) / height))) * tan(radians(ACTIVECAM.fov / 2.f)));
 	cam_ray.z = 1;
 	cam_ray = rotat_zyx(cam_ray, ACTIVECAM.pitch, ACTIVECAM.yaw, 0);
 	return(fast_normalize(cam_ray));
