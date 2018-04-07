@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 12:36:39 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/07 16:28:38 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,14 @@ void		xml_allocate_cam(t_env *e)
 
 void		xml_push_cam(t_env *e, t_node *list)
 {
+	printf("pos.x = %f | pos.y = %f | pos.z = %f \
+	dir.x = %f | dir.y = %f | dir.z = %f \
+	fov = %f\n", \
+	list->pos.x, list->pos.y, list->pos.z, \
+	list->dir.x, list->dir.y, list->dir.z, list->fov);
+	
+	
+	
 	e->cameras[list->id].pos = list->pos;
 	e->cameras[list->id].dir = list->dir;
 	e->cameras[list->id].dir.x = 0;
@@ -94,4 +102,11 @@ void		xml_push_cam(t_env *e, t_node *list)
 	e->cameras[list->id].pitch = 0;
 	e->cameras[list->id].yaw = 0;
 	e->cameras[list->id].roll = 0;
+	
+	
+	printf("pos.x = %f | pos.y = %f | pos.z = %f \
+	dir.x = %f | dir.y = %f | dir.z = %f \
+	fov = %f\n", \
+	e->cameras[list->id].pos.x, e->cameras[list->id].pos.y, e->cameras[list->id].pos.z, \
+	e->cameras[list->id].dir.x, e->cameras[list->id].dir.y, e->cameras[list->id].dir.z, e->cameras[list->id].fov);
 }
