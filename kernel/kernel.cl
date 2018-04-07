@@ -1235,27 +1235,32 @@ static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 	d_origin.y = (double)origin.y;
 	d_origin.z = (double)origin.z;
 
-	double3		d_pos;
-	d_pos.x = (double)thor->pos.x;
-	d_pos.y = (double)thor->pos.y;
-	d_pos.z = (double)thor->pos.z;
+	double3		d_thor_pos;
+	d_thor_pos.x = (double)thor->pos.x;
+	d_thor_pos.y = (double)thor->pos.y;
+	d_thor_pos.z = (double)thor->pos.z;
+
+	double3		d_thor_dir;
+	d_thor_dir.x = (double)thor->dir.x;
+	d_thor_dir.y = (double)thor->dir.y;
+	d_thor_dir.z = (double)thor->dir.z;
 
 	double3		k;
 	k.x = (d_ray.x * d_ray.x) + (d_ray.y * d_ray.y) + (d_ray.z * d_ray.z);
 	k.y = 4.0f * big_radius;
-	k.z = (d_origin.x - d_pos.x) * d_ray.x \
-		+ (d_origin.y - d_pos.y) * d_ray.y \
-		+ (d_origin.z - d_pos.z) * d_ray.z;
+	k.z = (d_origin.x - d_thor_pos.x) * d_ray.x \
+		+ (d_origin.y - d_thor_pos.y) * d_ray.y \
+		+ (d_origin.z - d_thor_pos.z) * d_ray.z;
 
 	double		e;
-	e =	(d_origin.x - d_pos.x) * (d_origin.x - d_pos.x) + \
-		(d_origin.y - d_pos.y) * (d_origin.y - d_pos.y) + \
-		(d_origin.z - d_pos.z) * (d_origin.z - d_pos.z) - \
+	e =	(d_origin.x - d_thor_pos.x) * (d_origin.x - d_thor_pos.x) + \
+		(d_origin.y - d_thor_pos.y) * (d_origin.y - d_thor_pos.y) + \
+		(d_origin.z - d_thor_pos.z) * (d_origin.z - d_thor_pos.z) - \
 		big_radius - lil_radius;
 
 	double		c[5];
-	c[0] = e * e - k.y * (lil_radius - (d_origin.y - d_pos.y) * (d_origin.y - d_pos.y));
-	c[1] = 4.0f * k.z * e + 2.0f * k.y * (d_origin.y - d_pos.y) * d_ray.y;
+	c[0] = e * e - k.y * (lil_radius - (d_origin.y - d_thor_pos.y) * (d_origin.y - d_thor_pos.y));
+	c[1] = 4.0f * k.z * e + 2.0f * k.y * (d_origin.y - d_thor_pos.y) * d_ray.y;
 	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * d_ray.y * d_ray.y;
 	c[3] = 4.0f * k.x * k.z;
 	c[4] = k.x * k.x;
