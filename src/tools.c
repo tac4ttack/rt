@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/07 18:32:02 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/08 01:36:03 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	flush(t_env *e)
 		ft_memdel((void **)&e->texture);
 		if (e->cl)
 		{
-			cl_destruct(&e->cl);
 			gen_destruct(&e->gen_objects);
 			gen_destruct(&e->gen_lights);
 		}

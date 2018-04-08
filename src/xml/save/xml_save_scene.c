@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 17:43:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/07 16:16:09 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/08 05:42:43 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	xml_write_scene_res(int width, int height, int fd)
 	ft_putstr_fd("\" ", fd);
 }
 
-static void	xml_write_scene_ambient(cl_float3 ambient, int fd)
+static void	xml_write_scene_ambient(t_float3 ambient, int fd)
 {
 	ft_putstr_fd("ambient=\"", fd);
 	ft_putstr_fd(ft_ftoa(ambient.x), fd);

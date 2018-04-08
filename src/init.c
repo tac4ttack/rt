@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/07 18:32:11 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/08 02:50:05 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void		env_init(t_env *e)
 	e->ui->redraw = 1;
 	ft_putendl("\x1b[1;29mRT environnement initialized!\n\x1b[0m");
 }
-
+/*
 void		cl_init(t_env *e)
 {
 	if (!(e->cl = cl_construct("./kernel/kernel.cl", WIDTH, HEIGHT,
@@ -118,7 +118,7 @@ void		cl_init(t_env *e)
 							sizeof(unsigned int) * e->texture[3].width * e->texture[3].height,
 							e->texture[3].pixel_array, 0, NULL, NULL)))
 		s_error("Error: Failed to send text3 arguments to kernel!", e);
-}
+}*/
 
 void		init(GtkApplication *app, gpointer data)
 {
@@ -139,8 +139,6 @@ void		init(GtkApplication *app, gpointer data)
 		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
 	ft_bzero(e->pixel_data, sizeof(int) * WIDTH * HEIGHT);
 	load_scene(e);
-	cl_init(e);
 	ft_putendl("\n\x1b[1;32m/\\ Loading UI... /\\\x1b[0m\n");
-	opencl_set_args(e, e->cl);
-	// opencl_draw(e);
+	 opencl_draw(e);
 }

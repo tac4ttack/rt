@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   opencl_compute.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/06 18:40:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/08 23:18:08 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
+/*
 static void		cl_write_buffer(t_env *e, t_cl *cl)
 {
 	if ((cl->err = clEnqueueWriteBuffer(cl->queue, cl->mem[1], CL_TRUE, 0,
@@ -54,7 +54,7 @@ void			opencl_set_args(t_env *e, t_cl *cl)
 	cl->err |= clSetKernelArg(cl->kernel, 14, sizeof(cl_mem), &cl->mem[7]);
 	cl->err |= clSetKernelArg(cl->kernel, 15, sizeof(cl_mem), &cl->mem[8]);
 	cl->err |= clSetKernelArg(cl->kernel, 16, sizeof(cl_mem), &cl->mem[9]);
-	
+
 
 	if (cl->err != CL_SUCCESS)
 		s_error("Error: Failed to send arguments to kernel!", e);
@@ -78,4 +78,41 @@ int				opencl_draw(t_env *e)
 		e->scene->flag ^= OPTION_RUN;
 	}
 	return (0);
+}
+*/
+
+int				opencl_draw(t_env *e)
+{
+	(void)e;
+	bzero(e->pixel_data, (e->scene->win_w * e->scene->win_h) *4);
+	//printf("CPU %x\n", ((t_sphere *)e->gen_objects->mem)->color);
+	render_cuda(e->scene->win_w, e->scene->win_h,
+					e->pixel_data,
+					e->gen_objects,
+					e->gen_lights,
+					e->fps.u_time,
+					e->scene,
+					e->cameras);
+	/*printf("CPU\n");
+	printf("t_cam %zu\n", sizeof(t_cam));
+	printf("t_scene %zu\n", sizeof(t_scene));
+	printf("t_object %zu\n", sizeof(t_object));
+	printf("t_gen %zu\n", sizeof(t_gen));
+	printf("t_sphere %zu\n", sizeof(t_sphere));
+	printf("t_light %zu\n", sizeof(t_light));
+	printf("t_cylinder %zu\n", sizeof(t_cylinder));
+	printf("t_sphere %zu\n", sizeof(t_sphere));
+	printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
+	printf("t_plane %zu\n", sizeof(t_plane));
+	printf("t_cone %zu\n", sizeof(t_cone));
+	printf("t_cone %zu\n", sizeof(t_cone));
+	printf("t_box %zu\n", sizeof(t_box));
+	printf("\n");*/
+
+//	for (int i = (e->scene->win_w * e->scene->win_h) - 10; i < (int)(e->scene->win_w * e->scene->win_h); i++) {
+/*	for (int i = 0; i < 10; i++) {
+		printf("%x\n", ((int *)e->pixel_data)[i]);
+		//e->pixel_data[i] = 0xFF000000;
+	}*/
+ 	return (0);
 }
