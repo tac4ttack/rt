@@ -452,7 +452,7 @@ __host__ __device__ float3 normalize(const float3 a)
 
 __host__ __device__ float length(const float3 a)
 {
-	return (fabs((a.x * a.x)) + fabs((a.y * a.y)) + fabs((a.z * a.z)));
+	return sqrt(fabs((a.x * a.x)) + fabs((a.y * a.y)) + fabs((a.z * a.z)));
 }
 
 inline __host__ __device__ float radians(double degree) {
@@ -978,33 +978,23 @@ __host__ __device__ t_ret	inter_ellipsoid(const  t_ellipsoid *ellipsoid, float3 
 __host__ __device__ float3	get_cone_normal(const  t_cone *cone, const t_hit hit)
 {
 	float3		res;
-	float3		final;
+	float3		fi;
 	float3		v;
 	float3		project;
+	float3		dir;
 	float		doty;
 	float		m;
-//	float		r;	// UNUSED
-	//float		k;
+	float		r;	// UNUSED
+	float		k;
 
 	v = hit.pos - cone->pos;
 	doty = dot(v, cone->dir);
 	project = doty * cone->dir;
 	m = length(project);
 	res = v - project;
-	final = res;
+	fi = res;
 
-	//  ABORT DAMNED
-	/*r = length(res);
-	if (m < 0)
-		m = -m;
-	k = r / m;
-	k = m * k * k;
-	dir = k * dir;
-	final.x = v.x - dir.x;
-	final.y = v.y - dir.y;
-	final.z = v.z - dir.z;*/
-	// res = v - res;
-	return (normalize(final));
+	return (normalize(fi));
 }
 
 __host__ __device__ float3	get_cone_abc(const  t_cone *cone, const float3 ray, const float3 origin)
@@ -1185,6 +1175,7 @@ __host__ __device__  unsigned int			phong(const  t_scene *scene, const t_hit hit
 		light_ray.dir = light->pos - hit.pos;
 		light_ray.dist = length(light_ray.dir);
 		light_ray.dir = normalize(light_ray.dir);
+		//printf("Light dir %.2f %.2f %.2f\n", light_ray.dir.x, light_ray.dir.y, light_ray.dir.z);
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir, light_ray.dist);
 		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON) || (light_hit.opacity < 1 && scene->depth != 0))
 		{
