@@ -548,6 +548,60 @@ inline __host__ __device__ void operator/=(float3 &a, float s)
     a *= inv;
 }
 
+__host__ __device__ float3	vector_get_rotate(const float3 *me, const float3 *rot)
+{
+	float3		n;
+	float		tmp;
+
+	n = *me;
+	if (rot->x)
+	{
+		tmp = n.y * cos(rot->x) - n.z * sin(rot->x);
+		n.z = n.y * sin(rot->x) + n.z * cos(rot->x);
+		n.y = tmp;
+	}
+	if (rot->y)
+	{
+		tmp = n.x * cos(rot->y) + n.z * sin(rot->y);
+		n.z = n.x * -sin(rot->y) + n.z * cos(rot->y);
+		n.x = tmp;
+	}
+	if (rot->z)
+	{
+		tmp = n.x * cos(rot->z) - n.y * sin(rot->z);
+		n.y = n.x * sin(rot->z) + n.y * cos(rot->z);
+		n.x = tmp;
+	}
+	return (n);
+}
+
+__host__ __device__ float3	vector_get_inverse(const float3 *me, const float3 *rot)
+{
+	float3		n;
+	float		tmp;
+
+	n = *me;
+	if (rot->z)
+	{
+		tmp = n.x * cos(rot->z) - n.y * -sin(rot->z);
+		n.y = n.x * -sin(rot->z) + n.y * cos(rot->z);
+		n.x = tmp;
+	}
+	if (rot->y)
+	{
+		tmp = n.x * cos(rot->y) + n.z * -sin(rot->y);
+		n.z = n.x * sin(rot->y) + n.z * cos(rot->y);
+		n.x = tmp;
+	}
+	if (rot->x)
+	{
+		tmp = n.y * cos(rot->x) - n.z * -sin(rot->x);
+		n.z = n.y * -sin(rot->x) + n.z * cos(rot->x);
+		n.y = tmp;
+	}
+	return (n);
+}
+
 __host__ __device__ t_hit	hit_init(void)
 {
 	t_hit		hit;
@@ -764,12 +818,12 @@ __host__ __device__ float3	get_sphere_abc(const float radius, const float3 ray, 
 }
 
 
-__host__ __device__ t_ret	inter_sphere(const t_sphere *sphere, const float3 ray, const float3 origin)
+__host__ __device__ t_ret	inter_sphere(const  t_sphere *sphere, const float3 ray, const float3 origin)
 {
-	float3		abc = make_float3(0);
+	float3		abc = make_float3(0.f);
+	float3		pos = make_float3(0.f);
 	float		res1 = 0;
 	float		res2 = 0;
-	float3		pos = make_float3(0);
 	t_ret		ret;
 
 	ret.dist = 0;
@@ -788,13 +842,220 @@ __host__ __device__ t_ret	inter_sphere(const t_sphere *sphere, const float3 ray,
 
 }
 
+__host__ __device__ float3	get_cylinder_normal(const  t_cylinder *cylinder, t_hit hit)
+{
+	float3		res;
+	float3		v;
+	float3		project;
+	float		doty;
+
+	res = make_float3(0.f);
+	project = make_float3(0.f);
+	v = make_float3(0.f);
+	doty = 0;
+	v = hit.pos - cylinder->pos;
+	doty = dot(v, cylinder->dir);
+	project = doty * cylinder->dir;
+	res = v - project;
+	return (normalize(res));
+}
+
+__host__ __device__ float3	get_cylinder_abc(const float radius, const float3 dir, const float3 ray, const float3 origin)
+{
+	float3		abc;
+
+	// SEMBLE OK
+	abc.x = dot(ray, ray) - (dot(ray, dir) * dot(ray, dir));
+	abc.y = 2 * (dot(ray, origin) - (dot(ray, dir) * dot(origin, dir)));
+	abc.z = dot(origin, origin) - (dot(origin, dir) * dot(origin, dir)) - (radius * radius);
+	return (abc);
+}
+
+__host__ __device__ t_ret	inter_cylinder(const  t_cylinder *cylinder, const float3 ray, const float3 origin)
+{
+	float3		abc;
+	float3		pos;
+	float		res1;
+	float		res2;
+	t_ret		ret;
+
+	ret.dist = 0;
+	ret.wall = 0;
+	pos = origin - cylinder->pos;
+	abc = get_cylinder_abc(cylinder->radius, cylinder->dir, ray, pos);
+	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
+		return (ret);
+	//if (cylinder->flags & OBJ_FLAG_PLANE_LIMIT)
+	//	return (object_limited((t_object  *)cylinder, res1, res2, ray, origin));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		ret.dist = res1;
+	else
+		ret.dist = res2;
+	return (ret);
+}
+
+__host__ __device__ t_ret	inter_plan(const  t_plane *plane, const float3 ray, const float3 origin)
+{
+	float		t;
+	t_ret		ret;
+
+	ret.dist = 0;
+	ret.wall = 0;
+	t = dot(normalize(ray), plane->normal);
+	if (fabs(t) < EPSILONF || (plane->radius && t > plane->radius))
+		return (ret);
+	t = (dot(plane->pos - origin, plane->normal)) / t;
+	if (t < EPSILONF)
+		return (ret);
+	if (plane->radius)
+	{
+		float3 p = origin + ray * t;
+		float3 v = p - plane->pos;
+		float d2 = dot(v, v);
+		if (sqrt(d2) > plane->radius)
+			return (ret);
+	}
+	//if (plane->flags & OBJ_FLAG_PLANE_LIMIT)
+	//	return (object_limited((t_object  *)plane, t, t, ray, origin));
+	ret.dist = t;
+	return (ret);
+}
+
+__host__ __device__ float3		get_ellipsoid_normal(const  t_ellipsoid *ellipsoid, const t_hit *hit)
+{
+	float3 pos = hit->pos - ellipsoid->pos;
+	pos = vector_get_rotate(&pos, &ellipsoid->dir);
+
+	float3 res;
+
+	res.x = (pos.x) / (ellipsoid->axis_size.x * ellipsoid->axis_size.x);
+	res.y = (pos.y) / (ellipsoid->axis_size.y * ellipsoid->axis_size.y);
+	res.z = (pos.z) / (ellipsoid->axis_size.z * ellipsoid->axis_size.z);
+	res = vector_get_inverse(&res, &ellipsoid->dir);
+	return (res);
+}
+
+__host__ __device__ t_ret	inter_ellipsoid(const  t_ellipsoid *ellipsoid, float3 ray, float3 origin)
+{
+	float3		abc;
+	float		res1, res2;
+	float3		pos;
+	float3		save_ray;
+	t_ret		ret;
+
+	ret.dist = 0;
+	ret.wall = 0;
+	abc = make_float3(0.f);
+	pos = make_float3(0.f);
+	save_ray = ray;
+	pos = origin - ellipsoid->pos;
+	pos = vector_get_rotate(&pos, &ellipsoid->dir);
+	ray = vector_get_rotate(&ray, &ellipsoid->dir);
+	ray = ray / ellipsoid->axis_size;
+	pos = pos / ellipsoid->axis_size;
+
+	abc.x = (ray.x * ray.x +
+	 	ray.y * ray.y +
+	 	ray.z * ray.z);
+	abc.y = (2 * pos.x * ray.x +
+		 2 * pos.y * ray.y +
+		 2 * pos.z * ray.z);
+	abc.z = (pos.x * pos.x +
+		 pos.y * pos.y +
+		 pos.z * pos.z) - (ellipsoid->radius * ellipsoid->radius);
+
+	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
+		return (ret);
+	//if (ellipsoid->flags & OBJ_FLAG_PLANE_LIMIT)
+	//	return (object_limited((t_object  *)ellipsoid, res1, res2, save_ray, origin));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		ret.dist = res1;
+	else
+		ret.dist = res2;
+	return (ret);
+}
+
+__host__ __device__ float3	get_cone_normal(const  t_cone *cone, const t_hit hit)
+{
+	float3		res;
+	float3		final;
+	float3		v;
+	float3		project;
+	float		doty;
+	float		m;
+//	float		r;	// UNUSED
+	//float		k;
+
+	v = hit.pos - cone->pos;
+	doty = dot(v, cone->dir);
+	project = doty * cone->dir;
+	m = length(project);
+	res = v - project;
+	final = res;
+
+	//  ABORT DAMNED
+	/*r = length(res);
+	if (m < 0)
+		m = -m;
+	k = r / m;
+	k = m * k * k;
+	dir = k * dir;
+	final.x = v.x - dir.x;
+	final.y = v.y - dir.y;
+	final.z = v.z - dir.z;*/
+	// res = v - res;
+	return (normalize(final));
+}
+
+__host__ __device__ float3	get_cone_abc(const  t_cone *cone, const float3 ray, const float3 origin)
+{
+	float3		abc = make_float3(0.f);
+	float		k = radians(cone->angle);
+
+	k = tan(k);
+	k = 1 + k * k;
+	abc.x = dot(ray, ray) - (k * (dot(ray, cone->dir) * dot(ray, cone->dir)));
+	abc.y = 2 * (dot(ray, origin) - (k * \
+			(dot(ray, cone->dir) * dot(origin, cone->dir))));
+	abc.z = (dot(origin, origin) - \
+			(k * (dot(origin, cone->dir) * dot(origin, cone->dir))));
+	return (abc);
+}
+
+__host__ __device__ t_ret	inter_cone(const  t_cone *cone, const float3 ray, const float3 origin)
+{
+	float3		abc;
+	float		res1 = 0;
+	float		res2 = 0;
+	float3		pos;
+	t_ret		ret;
+
+	ret.dist = 0;
+	ret.wall = 0;
+	pos = make_float3(0.f);
+	abc = make_float3(0.f);
+	pos = origin - cone->pos;
+	abc = get_cone_abc(cone, ray, pos);
+	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
+		return (ret);
+	//if (cone->flags & OBJ_FLAG_PLANE_LIMIT)
+	//	return (object_limited_cone((t_object  *)cone, res1, res2, ray, origin));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		ret.dist = res1;
+	else
+		ret.dist = res2;
+	return (ret);
+}
+
 __host__ __device__ t_hit			ray_hit(const t_scene *scene, const float3 origin, const float3 ray, float lightdist)
 {
 	t_hit						hit;
-	t_object 					*obj;
-	int							mem_index_obj;
+	float						dist;
+	t_object 				*obj;
+	unsigned int 				mem_index_obj;
 	t_ret						ret;
 
+	dist = 0;
 	hit = hit_init();
 	mem_index_obj = 0;
 	obj = 0;
@@ -804,8 +1065,8 @@ __host__ __device__ t_hit			ray_hit(const t_scene *scene, const float3 origin, c
 	{
 		obj = (t_object *)((char *)scene->mem_obj + mem_index_obj);
 		if (obj->type == OBJ_SPHERE)
-		 	ret = inter_sphere((struct s_sphere *)obj, ray, origin);
-		/*else if (obj->type == OBJ_CYLINDER)
+		 	ret = inter_sphere(( struct s_sphere *)obj, ray, origin);
+		else if (obj->type == OBJ_CYLINDER)
 		 	ret = inter_cylinder(( struct s_cylinder *)obj, ray, origin);
 		else if (obj->type == OBJ_PLANE)
 		 	ret = inter_plan(( struct s_plane *)obj, ray, origin);
@@ -813,10 +1074,10 @@ __host__ __device__ t_hit			ray_hit(const t_scene *scene, const float3 origin, c
 		 	ret = inter_cone(( struct s_cone *)obj, ray, origin);
 		else if (obj->type == OBJ_ELLIPSOID)
 		   	ret = inter_ellipsoid(( struct s_ellipsoid *)obj, ray, origin);
-		else if (obj->type == OBJ_THOR)
-			ret = inter_thor(( struct s_thor *)obj, ray, origin);
+		/*else if (obj->type == OBJ_THOR)
+			ret = inter_thor(( struct s_thor *)obj, ray, origin);*/
 		if (lightdist > 0 && ret.dist < lightdist && ret.dist > EPSILONF)
-			hit.opacity += obj->opacity;*/
+			hit.opacity = hit.opacity + obj->opacity;
 		if ((ret.dist < hit.dist || hit.dist == 0) && ret.dist > EPSILONF)
 		{
 			hit.dist = ret.dist;
@@ -824,29 +1085,16 @@ __host__ __device__ t_hit			ray_hit(const t_scene *scene, const float3 origin, c
 			hit.wall = ret.wall;
 			hit.obj = obj;
 			hit.mem_index = mem_index_obj;
-/*
-			printf("Sphere\nType:%i\nFlags%i\nColor %x\nPos %.2f %.2f %.2f\n\
-								Dir %.2f %.2f %.2f\n \
-								DIff %.2f %.2f %.2f\n \
-								SPec %.2f %.2f %.2f\n \
-								",
-						obj->type, obj->flags, obj->color,
-						obj->pos.x, obj->pos.y, obj->pos.z,
-						obj->dir.x, obj->dir.y, obj->dir.z,
-						obj->diff.x, obj->diff.y, obj->diff.z,
-						obj->spec.x, obj->spec.y, obj->spec.z
-						);
-						*/
 		}
-		mem_index_obj += obj->size;
+		mem_index_obj = mem_index_obj + obj->size;
 	}
 	return (hit);
 }
 
-__host__ __device__ float3			get_hit_normal(const t_scene *scene, float3 ray, t_hit hit)
+__host__ __device__ float3			get_hit_normal(const  t_scene *scene, float3 ray, t_hit hit)
 {
 	float3				res, save;
-	t_object 			*object;
+	t_object 	*object;
 
 	object = hit.obj;
 	res = make_float3(0.f);
@@ -855,21 +1103,18 @@ __host__ __device__ float3			get_hit_normal(const t_scene *scene, float3 ray, t_
 	else
 	{
 		if (hit.obj->type == OBJ_SPHERE)
-		{
 		 	res = hit.pos - hit.obj->pos;
-		}
-		/*else if (hit.obj->type == OBJ_CYLINDER)
+		else if (hit.obj->type == OBJ_CYLINDER)
 			res = get_cylinder_normal(( t_cylinder *)hit.obj, hit);
 		else if (hit.obj->type == OBJ_CONE)
 			res = get_cone_normal(( t_cone *)hit.obj, hit);
 		else if (hit.obj->type == OBJ_ELLIPSOID)
 			res = get_ellipsoid_normal(( t_ellipsoid *)hit.obj, &hit);
-		else if (hit.obj->type == OBJ_THOR)
+		/*else if (hit.obj->type == OBJ_THOR)
 			res = get_thor_normal(( t_thor *)hit.obj, hit.pos);*/
 		else if (hit.obj->type == OBJ_PLANE)
 		{
-			save = ray * -1;
-			if (dot(hit.obj->dir, save) < 0)
+			if (dot(hit.obj->dir, ray * -1) < 0)
 				res = hit.obj->dir * -1;
 			else
 				res = hit.obj->dir;
@@ -893,20 +1138,26 @@ __host__ __device__ float3			get_hit_normal(const t_scene *scene, float3 ray, t_
 
 __host__ __device__  unsigned int			phong(const  t_scene *scene, const t_hit hit, const float3 ray)
 {
-	float3					reflect, diffuse, speculos;
-	float					tmp, brightness, pow_of_spec;
-	unsigned int  			col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g, hue_light, hue, res_color;
-	int						mem_index_lights, light_color;
 	t_object 				*obj;
 	t_light 				*light;
+	unsigned int			mem_index_lights;
+
+	unsigned int			res_color;
+	float					tmp;
+	float3					reflect;
+	float3 					diffuse;
+	float 					brightness;
+	unsigned int  			hue, hue_light, col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g;
 	t_light_ray				light_ray;
 	t_hit					light_hit;
-
+	float 			 		pow_of_spec;
+	int  					light_color;
+	float3  				speculos;
 
 	tmp = 0;
 	reflect = make_float3(0.f);
-	speculos = make_float3(0.f);
 	diffuse = make_float3(0.f);
+	speculos = make_float3(0.f);
 	brightness = 0;
 	hue_light = 0;
 	pow_of_spec = 0;
@@ -914,12 +1165,10 @@ __host__ __device__  unsigned int			phong(const  t_scene *scene, const t_hit hit
 	mem_index_lights = 0;
 
 	obj = hit.obj;
-	/*if ((hit.obj->flags & OBJ_FLAG_CHECKERED) || hit.obj->flags & OBJ_FLAG_DIFF_MAP)
+	if ((hit.obj->flags & OBJ_FLAG_CHECKERED) || hit.obj->flags & OBJ_FLAG_DIFF_MAP)
 		hue = hit.color;
-	else*/
+	else
 		hue = obj->color;
-//	printf("%x\n", hue);
-//	return (obj->color);
 
 	col_r = (hue & 0x00FF0000) >> 16;
 	col_g = (hue & 0x0000FF00) >> 8;
@@ -946,28 +1195,21 @@ __host__ __device__  unsigned int			phong(const  t_scene *scene, const t_hit hit
 				brightness = (float )light->brightness;
 				diffuse = (float3 )obj->diff;
 				hue_light = light->color;
-				//printf("%.f %.2f %.2f %.2f %x\n", brightness, diffuse.x, diffuse.y, diffuse.z, hue_light);
+
 				col_r = (res_color & 0xFF0000) >> 16;
 				col_g = (res_color & 0x00FF00) >> 8;
 				col_b = (res_color & 0x0000FF);
 				obj_r = (hue & 0xFF0000) >> 16;
 				obj_g = (hue & 0x00FF00) >> 8;
 				obj_b = (hue & 0x00000FF);
-				//printf("%x = %x | %x | %x\n", hue, col_r, col_g, col_b);
 				l_r = (hue_light & 0xFF0000) >> 16;
 				l_g = (hue_light & 0x00FF00) >> 8;
 				l_b = (hue_light & 0x0000FF);
-				col_r += ((l_r * brightness) + obj_r) * tmp * diffuse.x;
-				col_g += ((l_g * brightness) + obj_g) * tmp * diffuse.y;
-				col_b += ((l_b * brightness) + obj_b) * tmp * diffuse.z;
-				//printf("%x\n", hue);
-/*
-				printf("%x == l_r ([%x] * [%.2f] + %x) * [%.2f] * %.2f\n%x == l_g ([%x] * [%.2f] + %x) * [%.2f] * %.2f\n%x == l_b ([%x] * [%.2f] + %x) * [%.2f] * %.2f\n",
-								col_r, l_r, brightness, obj_r, tmp, diffuse.x,
-								col_g, l_g, brightness, obj_g, tmp, diffuse.y,
-								col_b, l_b, brightness, obj_b, tmp, diffuse.z
-							);
-*/
+
+				col_r = col_r + ((l_r * brightness) + obj_r) * tmp * diffuse.x;
+				col_g = col_g + ((l_g * brightness) + obj_g) * tmp * diffuse.y;
+				col_b = col_b + ((l_b * brightness) + obj_b) * tmp * diffuse.z;
+
 				(col_r > 255 ? col_r = 255 : 0);
 				// commented lines are failed tonemaping test
 			//	col_r = (col_r > 255 ? col_r / (col_r + 1) : col_r);
@@ -981,18 +1223,12 @@ __host__ __device__  unsigned int			phong(const  t_scene *scene, const t_hit hit
 				// else if (scene->flag & OPTION_CARTOON_TWO)
 				//  	res_color = cartoonize_two(col_r, col_g, col_b);
 				// else
-				res_color = ((col_r << 16) + (col_g << 8) + col_b);
-				printf("%x\n", ((col_r << 16) + (col_g << 8) + col_b));
-				return (res_color);
+					res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
-/*
+
 			// specular part
 			reflect = normalize(((float)(2.0f * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
-			float3 tmp2;
-			tmp2.x = -ray.x;
-			tmp2.y = -ray.y;
-			tmp2.z = -ray.z;
-			tmp = dot(reflect, tmp2);
+			tmp = dot(reflect, ray * -1);
 			if (tmp > EPSILONF)
 			{
 				speculos = obj->spec;
@@ -1016,20 +1252,18 @@ __host__ __device__  unsigned int			phong(const  t_scene *scene, const t_hit hit
 
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
-	*/
-	/*		res_color = blend_factor(res_color, ((light_hit.opacity - 1) * -1));
+			res_color = blend_factor(res_color, ((light_hit.opacity - 1) * -1));
 			if (scene->flag & OPTION_CARTOON_FOUR)
 			 	res_color = cartoonize_four(col_r, col_g, col_b);
 			else if (scene->flag & OPTION_CARTOON_TWO)
 			 	res_color = cartoonize_two(col_r, col_g, col_b);
-		*/
 		}
 		mem_index_lights += light->size;
 	}
 	return (res_color);
 }
 
-__host__ __device__ unsigned int	get_pixel_color(const t_scene *scene, float3 ray, int *target, bool isHim)
+__host__ __device__ unsigned int	get_pixel_color(const  t_scene *scene, float3 ray,  int *target, bool isHim)
 {
 	t_hit			hit;
 	int				depth;
@@ -1039,17 +1273,17 @@ __host__ __device__ unsigned int	get_pixel_color(const t_scene *scene, float3 ra
 	hit = hit_init();
 	hit.dist = MAX_DIST;
 	depth = scene->depth;
-	color = 0x00FF0F0F;
+	color = 0;
 	bounce_color = 0;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
 	if ((isHim == 1) && (hit.obj != NULL))
 		*target = hit.mem_index;
 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
-		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
+		hit.pos = (ray * hit.dist) + (ACTIVECAM.pos);
 		hit.normal = get_hit_normal(scene, ray, hit);
 		hit.pos = hit.pos + (0.001f * hit.normal);
-		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
+		//hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 /*
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = sphere_texture(normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, (( t_sphere *)hit.obj)->diff_ratio, (( t_sphere *)hit.obj)->diff_offset);
@@ -1068,14 +1302,23 @@ __host__ __device__ unsigned int	get_pixel_color(const t_scene *scene, float3 ra
 			hit.color = cone_texture(hit.pos - hit.obj->pos, hit.obj->dir, (( t_cone *)hit.obj)->u_axis, scene->texture_star, 1500, 1500, (( t_cone *)hit.obj)->diff_ratio, (( t_cone *)hit.obj)->diff_offset);
 */
 		color = phong(scene, hit, ray);
-		//if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
-		//	return (fresnel(scene, ray, hit, depth + 1, color));
-		//printf("%x\n", color);
-		return (color  + 0xFF000000);
-		//return (blend_add(color, bounce_color));
+	//	if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
+	//		return (fresnel(scene, ray, hit, depth + 1, color));
+
+		// c'est quoi ce bloc commenté en dessous?
+		/*else if (hit.obj->refract != 0 && hit.obj->opacity < 1)
+		{
+			bounce_color = refract(scene, ray, hit);
+			if (bounce_color == 0)
+				return (blend_med(bounce_color, blend_factor(color, ((hit.obj->opacity - 1) * -1))));
+			bounce_color = blend_factor(bounce_color, ((hit.obj->opacity - 1) * -1));
+		}
+		else if (depth > 0 && hit.obj->reflex > 0)
+			bounce_color = bounce(scene, ray, hit, depth);*/
+
+		return (blend_add(color, bounce_color));
 	}
-	//return (get_ambient(scene, BACKCOLOR));
-	return (0xFF0000FF);
+	return (get_ambient(scene, BACKCOLOR));
 }
 
 __host__ __device__ float3		get_ray_cam(t_scene *scene, const int x, const int y, const int width, const int height)
@@ -1141,16 +1384,15 @@ __host__ __device__ unsigned int	ray_trace(	int				index,
 		final_color = desaturate(final_color);
 	if (scene->flag & OPTION_INVERT)
 		final_color = invert(final_color);*/
-/*
+
 
 	// ALPHA INSERT and RGB SWAP
-	int4 swap;
-	swap.w = 255;
-	swap.x = (final_color & 0x00FF0000) >> 16;
-	swap.y = (final_color & 0x0000FF00) >> 8;
-	swap.z = (final_color & 0x000000FF);
-	final_color = ((swap.w << 24) + (swap.z << 16) + (swap.y << 8) + swap.x);
-	((__global unsigned int *)output)[id] = final_color;*/
+	int nw, nx, ny, nz;
+	nw = 255;
+	nx = (final_color & 0x00FF0000) >> 16;
+	ny = (final_color & 0x0000FF00) >> 8;
+	nz = (final_color & 0x000000FF);
+	final_color = ((nw << 24) + (nz << 16) + (ny << 8) + nx);
 	return (final_color);
 }
 

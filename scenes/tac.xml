@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <scene			res="1024, 768" ambient="0.15, 0.15, 0.15">
-	<cam		pos="-5, -5, 0"
+	<cam		pos="0, 0, 0"
 				dir="1, 0, 0"
 				fov="30"
 				/>
-	<sphere		pos="-10, -5, 10"
+	<sphere		pos="0, 0, 0"
 				dir="0, 0, 0"
 				radius="2"
 				color="0, 0, 255, 0"
@@ -18,7 +18,7 @@
 				flags="000000"
 				/>
 	<light		type="1"
-				pos="5, 0, -15"
+				pos="0, 0, 15"
 				dir="0, 0, 0"
 				brightness="0.51"
 				shrink="420"
