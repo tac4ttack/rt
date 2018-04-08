@@ -15,13 +15,6 @@
 			shrink="42"
 			color="0, 255, 255, 255"
 			/>
-<light		type="1"
-			pos="0, 0, -20"
-			dir="0, 0, 0"
-			brightness="0.51"
-			shrink="42"
-			color="0, 255, 255, 255"
-			/>
 
 <plane		pos="0, 20, 0"
 			normale="0, 1, 0"
@@ -31,7 +24,7 @@
 			reflex="0"
 			refract="0"
 			opacity="1"
-			radius="0"	
+			radius="0"
 			p_limit_pos="0, 0, 0"
 			p_limit_dir="0, 0, 1"
 			flags="000000"

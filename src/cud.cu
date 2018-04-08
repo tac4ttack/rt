@@ -433,7 +433,12 @@ __host__ __device__ float dot(const float3 a, const float3 b)
 
 __host__ __device__ float sqrt_magnitude(const float3 a)
 {
-	return (sqrt(fabs(a.x * a.x) + fabs(a.y * a.y) + fabs(a.z * a.z)));
+	return (sqrtf(fabs(a.x * a.x) + fabs(a.y * a.y) + fabs(a.z * a.z)));
+}
+
+__host__ __device__ float length(const float3 a)
+{
+	return sqrtf(dot(a, a));
 }
 
 __host__ __device__ float3 normalize(const float3 a)
@@ -441,18 +446,13 @@ __host__ __device__ float3 normalize(const float3 a)
 	float3		newv;
 	float		ret_magnitude;
 
-	ret_magnitude = sqrt_magnitude(a);
+	ret_magnitude = length(a);
 	if (fabs(ret_magnitude) < EPSILONF)
 		return (a);
 	newv.x = a.x / ret_magnitude;
 	newv.y = a.y / ret_magnitude;
 	newv.z = a.z / ret_magnitude;
 	return (newv);
-}
-
-__host__ __device__ float length(const float3 a)
-{
-	return sqrt(fabs((a.x * a.x)) + fabs((a.y * a.y)) + fabs((a.z * a.z)));
 }
 
 inline __host__ __device__ float radians(double degree) {
@@ -978,23 +978,19 @@ __host__ __device__ t_ret	inter_ellipsoid(const  t_ellipsoid *ellipsoid, float3 
 __host__ __device__ float3	get_cone_normal(const  t_cone *cone, const t_hit hit)
 {
 	float3		res;
-	float3		fi;
 	float3		v;
 	float3		project;
 	float3		dir;
 	float		doty;
 	float		m;
-	float		r;	// UNUSED
-	float		k;
 
 	v = hit.pos - cone->pos;
 	doty = dot(v, cone->dir);
 	project = doty * cone->dir;
 	m = length(project);
 	res = v - project;
-	fi = res;
 
-	return (normalize(fi));
+	return (normalize(res));
 }
 
 __host__ __device__ float3	get_cone_abc(const  t_cone *cone, const float3 ray, const float3 origin)
@@ -1180,7 +1176,7 @@ __host__ __device__  unsigned int			phong(const  t_scene *scene, const t_hit hit
 		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON) || (light_hit.opacity < 1 && scene->depth != 0))
 		{
 			// diffuse part
-			tmp = (dot(hit.normal, light_ray.dir));
+/*			tmp = (dot(hit.normal, light_ray.dir));
 			if (tmp > EPSILONF)
 			{
 				brightness = (float )light->brightness;
@@ -1216,7 +1212,7 @@ __host__ __device__  unsigned int			phong(const  t_scene *scene, const t_hit hit
 				// else
 					res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
-
+*/
 			// specular part
 			reflect = normalize(((float)(2.0f * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
 			tmp = dot(reflect, ray * -1);
