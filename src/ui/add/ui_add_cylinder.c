@@ -36,9 +36,9 @@ static void	ui_add_cylinder_effects(t_cylinder *cylinder)
 	cylinder->diff_offset.y = 0;
 	cylinder->diff_ratio.x = 1;
 	cylinder->diff_ratio.y = 1;
-	cylinder->u_axis.x = 0;
-	cylinder->u_axis.y = 1;
-	cylinder->u_axis.z = 0;
+	cylinder->u_axis.x = cylinder->dir.y;
+	cylinder->u_axis.y = cylinder->dir.z;
+	cylinder->u_axis.z = -cylinder->dir.x;
 }
 
 void	ui_add_cylinder(t_env *e)
