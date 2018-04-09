@@ -45,7 +45,6 @@
 # define OBJ_SPHERE					6
 # define OBJ_ELLIPSOID				7
 # define OBJ_THOR					8
-# define OBJ_BOX					9
 
 /*
 ** CAM AND LIGHT STRUCTS ///////////////////////////////////////////////////////
@@ -102,36 +101,6 @@ typedef struct			s_object
 	float2				test_var2;
 	float2				test_var3;
 }						t_object;
-
-typedef struct			s_box
-{
-	int					size;
-	int					type;
-	int					flags;
-	int					id;
-	float3				pos;
-	float3				dir;
-	float3				diff;
-	float3				spec;
-	int					color;
-	float				reflex;
-	float				refract;
-	float				opacity;
-	float3				limit_pos;
-	float3				limit_dir;
-	float3				waves_p1;
-	float3				waves_p2;
-	float2				check_size;
-	int					diff_map_id;
-	float2				diff_offset;
-	float2				diff_ratio;
-	float2				test_var1;
-	float2				test_var2;
-	float2				test_var3;
-
-	float3				min;
-	float3				max;
-}						t_box;
 
 typedef struct			s_cone
 {
@@ -353,6 +322,7 @@ typedef struct			s_hit
 	float				opacity;
 	unsigned int		color;
 	int					wall; // WIP
+	int					lock; // WIP
 }						t_hit;
 
 typedef struct			s_tex
@@ -413,13 +383,14 @@ static t_hit	hit_init(void)
 	hit.dist = 0.f;
 	hit.normal = 0.f;
 
-	hit.obj = -1; // dangling dangerouss!
+	hit.obj = 0; // dangling dangerouss!
 
 	hit.wall = 0;
 	hit.color = 0;
 	hit.pos = 0.f;
 	hit.mem_index = 0;
 	hit.opacity = 0;
+	hit.lock = 0;
 	return (hit);
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -1578,6 +1549,7 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 			hit.normal = ret.normal;
 			hit.wall = ret.wall;
 			hit.obj = obj;
+			hit.lock = 1;
 			hit.mem_index = mem_index_obj;
 		}
 		mem_index_obj += obj->size;
@@ -2105,7 +2077,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	color = 0;
 	bounce_color = 0;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
-	if ((isHim == 1) && ((int)hit.obj != -1))
+	if ((isHim == 1) && (hit.lock == 1))
 		*target = hit.mem_index;
 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
