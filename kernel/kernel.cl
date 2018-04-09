@@ -569,9 +569,9 @@ static unsigned int	get_ambient(const __local t_scene *scene, const unsigned int
 	r = (obj_color & 0x00FF0000) >> 16;
 	g = (obj_color & 0x0000FF00) >> 8;
 	b = (obj_color & 0x000000FF);
-	r = (0.01 + r * scene->ambient.x > 255 ? 255 : 0.01 + r * scene->ambient.x);
-	g = (0.01 + g * scene->ambient.y > 255 ? 255 : 0.01 + g * scene->ambient.y);
-	b = (0.01 + b * scene->ambient.z > 255 ? 255 : 0.01 + b * scene->ambient.z);
+	r = (0.01f + r * scene->ambient.x > 255 ? 255 : 0.01f + r * scene->ambient.x);
+	g = (0.01f + g * scene->ambient.y > 255 ? 255 : 0.01f + g * scene->ambient.y);
+	b = (0.01f + b * scene->ambient.z > 255 ? 255 : 0.01f + b * scene->ambient.z);
 	return ((r << 16) + (g << 8) + b);
 }
 ////////////////////////////////////////////////////////////////////////////////
