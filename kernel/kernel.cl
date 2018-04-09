@@ -2161,11 +2161,11 @@ __kernel void		ray_trace(	__global	char		*output,
 {
 
  	event_t			ev;
-	int				id;
-	uint2			pix;
-	float3			prim_ray;
-	unsigned int	final_color_o[32];
-	unsigned int	final_color;
+	unsigned int	id = 0;
+	uint2			pix = 0;
+	float3			prim_ray = 0;
+	unsigned int	final_color_o[32] = {0};
+	unsigned int	final_color = 0;
 	uint3			rgb = 0;
 
 	ev = async_work_group_copy((__local char *)mem_objects, (__global char *)global_mem_objects, mem_size_objects, 0);
@@ -2177,13 +2177,8 @@ __kernel void		ray_trace(	__global	char		*output,
 	ev = async_work_group_copy((__local char *)mem_lights, (__global char *)global_mem_lights, mem_size_lights, 0);
 	wait_group_events(1, &ev);
 
-	// int boo = get_global_id(0) + get_global_id(1); // unused, remove?
-
-	pix.x = get_global_id(0);// % scene->win_w;
-	pix.y = get_global_id(1);// / scene->win_w;
-
-
-	 // if (!pix.x && !pix.y) printf("%zu\n", sizeof(size_t));
+	pix.x = get_global_id(0);
+	pix.y = get_global_id(1);
 
 	id = pix.x + (scene->win_w * pix.y);
 	if (id >= (scene->win_w * scene->win_h))
@@ -2199,8 +2194,10 @@ __kernel void		ray_trace(	__global	char		*output,
 	scene->texture_earth_cloud = texture_earth_cloud;
 	scene->texture_moon = texture_moon;
 	scene->texture_star = texture_star;
+
 	if (scene->flag & OPTION_RUN && pix.x == scene->mou_x && pix.y == scene->mou_y)
 		*target = -1;
+
 	final_color = 0;
 	if (scene->over_sampling > 1)
 	{
