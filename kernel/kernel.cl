@@ -890,9 +890,9 @@ static t_ret	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, f
 */
 static unsigned int		plane_checkerboard(const float3 normale, const float3 pos, const unsigned int color, const float2 check_size)
 {
-	float3			u_axis;
-	float3			v_axis;
-	int2			uv;
+	float3			u_axis = 0;
+	float3			v_axis = 0;
+	int2			uv = 0;
 
 	u_axis.x = normale.y;
 	u_axis.y = normale.z;
@@ -914,8 +914,8 @@ static unsigned int		plane_checkerboard(const float3 normale, const float3 pos, 
 
 static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, float2 ratio, float2 offset, unsigned int __global *texture, int width, int height)
 {
-	float3			v_axis;
-	int2			uv;
+	float3			v_axis = 0;
+	int2			uv = 0;
 
 	v_axis = cross(u_axis, normale);
 	uv.x = (int)floor(dot(pos, u_axis) * ratio.x + offset.x);
@@ -948,11 +948,12 @@ static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, fl
 
 static t_ret	inter_plan(const __local t_plane *plane, const float3 ray, const float3 origin)
 {
-	float		t;
+	float		t = 0;
 	t_ret		ret;
 
 	ret.dist = 0;
 	ret.wall = 0;
+	ret.normal = 0;
 	t = dot(fast_normalize(ray), plane->normal);
 	if (fabs(t) < EPSILONF || (plane->radius && t > plane->radius))
 		return (ret);
