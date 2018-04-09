@@ -1284,7 +1284,7 @@ static float3 get_thor_normal(const __local t_thor *thor, const float3 hitpos)
 */
 static unsigned int		sphere_checkerboard(const float3 dir, const unsigned int color, const float2 check_size)
 {
-	int2	uv;
+	int2	uv = 0;
 
 	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415))) * check_size.x);
 	uv.y = (int)floor((0.5 - (asin(dir.y) / 3.1415)) * check_size.y);
@@ -1303,8 +1303,8 @@ static unsigned int		sphere_checkerboard(const float3 dir, const unsigned int co
 static unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, int t_width, int t_height, float2 ratio, float2 offset)
 {
 	unsigned int	color = 0;
-	int2			uv;
-	int2			size;
+	int2			uv = 0;
+	int2			size = 0;
 
 	size.x = (int)floor(t_width * ratio.x);
 	size.y = (int)floor(t_height * ratio.y);
@@ -1348,6 +1348,7 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 
 	ret.dist = 0;
 	ret.wall = 0;
+	ret.normal = 0;
 	pos = origin - sphere->pos;
 	abc = get_sphere_abc(sphere->radius, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
