@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/06 18:40:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/09 13:51:53 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int				opencl_draw(t_env *e)
 									e->pixel_data, 0, NULL, NULL);
 	if (e->scene->flag & OPTION_RUN)
 	{
-		cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[5], CL_FALSE, 0,
+		cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[5], CL_TRUE, 0,
 			sizeof(int),
 			&e->target, 0, NULL, NULL);
 		e->scene->flag ^= OPTION_RUN;
