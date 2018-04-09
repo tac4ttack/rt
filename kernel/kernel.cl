@@ -2082,7 +2082,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
 	if ((isHim == 1) && (hit.lock == 1))
 		*target = hit.mem_index;
-	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
+	if (hit.dist > EPSILON && hit.dist < MAX_DIST)
 	{
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normal = get_hit_normal(scene, ray, hit);
@@ -2108,18 +2108,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
 			return (fresnel(scene, ray, hit, depth, color));
-
-		// c'est quoi ce bloc commenté en dessous?
-		/*else if (hit.obj->refract != 0 && hit.obj->opacity < 1)
-		{
-			bounce_color = refract(scene, ray, hit);
-			if (bounce_color == 0)
-				return (blend_med(bounce_color, blend_factor(color, ((hit.obj->opacity - 1) * -1))));
-			bounce_color = blend_factor(bounce_color, ((hit.obj->opacity - 1) * -1));
-		}
-		else if (depth > 0 && hit.obj->reflex > 0)
-			bounce_color = bounce(scene, ray, hit, depth);*/
-
+			
 		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
