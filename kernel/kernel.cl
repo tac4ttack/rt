@@ -1372,12 +1372,11 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigned int __global *texture, int t_width, int t_height, float2 ratio, float2 offset)
 {
 	unsigned int	color = 0;
-	float3			v_axis;
-	float			npos;
-	float			vpos;
-	float			radius;
-	int2			uv;
-	// ratio = echelle de la texture
+	float3			v_axis = 0;
+	float			npos = 0;
+	float			vpos = 0;
+	float			radius = 0;
+	int2			uv = 0;
 
 	v_axis = cross(u_axis, dir);
 	npos = dot(pos, dir);
@@ -1406,34 +1405,19 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigne
 
 static float3	get_cone_normal(const __local t_cone *cone, const t_hit hit)
 {
-	float3		res;
-	float3		final;
-	float3		v;
-	float3		project;
-	float		doty;
-	float		m;
-//	float		r;	// UNUSED
-	//float		k;
+	float3		res = 0;
+	float3		v = 0;
+	float3		project = 0;
+	float		doty = 0;
+	float		m = 0;
 
 	v = hit.pos - cone->pos;
 	doty = dot(v, cone->dir);
 	project = doty * cone->dir;
 	m = fast_length(project);
 	res = v - project;
-	final = res;
 
-	//  ABORT DAMNED
-	/*r = fast_length(res);
-	if (m < 0)
-		m = -m;
-	k = r / m;
-	k = m * k * k;
-	dir = k * dir;
-	final.x = v.x - dir.x;
-	final.y = v.y - dir.y;
-	final.z = v.z - dir.z;*/
-	// res = v - res;
-	return (fast_normalize(final));
+	return (fast_normalize(res));
 }
 
 static float3	get_cone_abc(const __local t_cone *cone, const float3 ray, const float3 origin)
@@ -1461,12 +1445,14 @@ static t_ret	inter_cone(const __local t_cone *cone, const float3 ray, const floa
 
 	ret.dist = 0;
 	ret.wall = 0;
+	ret.normal = 0;
 	pos = origin - cone->pos;
 	abc = get_cone_abc(cone, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
-	//if (cone->flags & OBJ_FLAG_PLANE_LIMIT)
-	//	return (object_limited_cone((t_object __local *)cone, res1, res2, ray, origin));
+	// BUGGY NEED TO BE FIXED!!!!!!!!
+	if (cone->flags & OBJ_FLAG_PLANE_LIMIT)
+		return (object_limited((t_object __local *)cone, res1, res2, ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		ret.dist = res1;
 	else
@@ -1479,15 +1465,16 @@ static t_ret	inter_cone(const __local t_cone *cone, const float3 ray, const floa
 
 static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const float3 ray, float lightdist)
 {
-	t_hit						hit;
-	float						dist;
-	t_object 		__local		*obj;
-	uint						mem_index_obj;
-	t_ret						ret;
+	t_hit				hit;
+	float				dist = 0;
+	t_object __local	*obj;
+	uint				mem_index_obj = 0;
+	t_ret				ret;
 
-	dist = 0;
 	hit = hit_init();
-	mem_index_obj = 0;
+	ret.dist = 0;
+	ret.wall = 0;
+	ret.normal = 0;
 	obj = 0;
 	if (lightdist == 0)
 		hit.opacity = 1;
