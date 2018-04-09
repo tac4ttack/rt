@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:44:30 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/09 12:10:08 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ gboolean		cb_obj_dir_x(GtkSpinButton *spin, gpointer data)
 	obj = e->gen_objects->mem + e->target;
 	value = gtk_spin_button_get_value(spin);
 	obj->dir.x = (float)value;
+	if (obj->dir.x == 0.0f && obj->dir.y == 0.0f && obj->dir.z == 0.0f)
+		obj->dir.x = 0.1;
 	obj->dir = normalize_vect(obj->dir);
 	/*if (KEY_STATE_I == 0 && KEY_STATE_J == 0 && \
 		KEY_STATE_K == 0 && KEY_STATE_L == 0 && KEY_STATE_U == 0 && KEY_STATE_O == 0)
@@ -56,6 +58,8 @@ gboolean		cb_obj_dir_y(GtkSpinButton *spin, gpointer data)
 	obj = e->gen_objects->mem + e->target;
 	value = gtk_spin_button_get_value(spin);
 	obj->dir.y = (float)value;
+	if (obj->dir.x == 0.0f && obj->dir.y == 0.0f && obj->dir.z == 0.0f)
+		obj->dir.y = 0.1;
 	obj->dir = normalize_vect(obj->dir);
 	/*if (KEY_STATE_I == 0 && KEY_STATE_J == 0 && \
 		KEY_STATE_K == 0 && KEY_STATE_L == 0 && KEY_STATE_U == 0 && KEY_STATE_O == 0)
@@ -89,6 +93,8 @@ gboolean		cb_obj_dir_z(GtkSpinButton *spin, gpointer data)
 	obj = e->gen_objects->mem + e->target;
 	value = gtk_spin_button_get_value(spin);
 	obj->dir.z = (float)value;
+	if (obj->dir.x == 0.0f && obj->dir.y == 0.0f && obj->dir.z == 0.0f)
+		obj->dir.z = 0.1;
 	obj->dir = normalize_vect(obj->dir);
 	/*if (KEY_STATE_I == 0 && KEY_STATE_J == 0 && \
 		KEY_STATE_K == 0 && KEY_STATE_L == 0 && KEY_STATE_U == 0 && KEY_STATE_O == 0)
