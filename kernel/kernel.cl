@@ -1685,11 +1685,9 @@ static float3		refract_ray(const __local t_scene *scene, const float3 ray, float
 
 static float3		bounce_ray(const __local t_scene *scene, const float3 ray, t_tor tor)
 {
-	float3			reflex;
-	float			reflex_coef;
+	float3			reflex = 0;
+	float			reflex_coef = 0;
 
-	reflex = 0;
-	reflex_coef = 0;
 	// PREMIÈRE LOI DE SNELL-DESCARTES ///////////////////////////////////////////////////////////
 	reflex = fast_normalize(ray - (2 * (float)dot(tor.normale, ray) * tor.normale));
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -1700,8 +1698,9 @@ static float		reflect_ratio(float n1, float n2, float cos1, float sint)
 {
 	float			fr1 = 0;
 	float			fr2 = 0;
-	float			cos2 = sqrt(1 - sint * sint);
-
+	float			cos2 = 0;
+	
+	cos2 = sqrt(1 - sint * sint);
 	if (cos1 >= 0)
 	{
 		fr1 = n1;
