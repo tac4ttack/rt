@@ -1069,8 +1069,8 @@ static t_ret	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray
 */
 static double3	thor_get_rotate(const double3 *that, const __local float3 *rot)
 {
-	double3		n;
-	float		tmp;
+	double3		n = 0;
+	float		tmp = 0;
 
 	n = *that;
 	if (rot->x)
@@ -1096,10 +1096,9 @@ static double3	thor_get_rotate(const double3 *that, const __local float3 *rot)
 
 static double	ft_ret(double *tab)
 {
-	double		ret;
-	int			i;
-	ret = -1.0;
-	i = 0;
+	double		ret = -1.0;
+	int			i = 0;
+	
 	while(i < 4)
 	{
 		if(tab[i] > EPSILON && ret == -1)
@@ -1115,22 +1114,24 @@ static double	ft_ret(double *tab)
 
 static double3	ft_solve_3(double a, double b, double c, double d)
 {
-	double 	a1;
+	double		a1 = 0;
+	double		a2 = 0;
+	double		a3 = 0;
+	double3		Result = 0;
+	double		theta = 0;
+	double		sqrtQ = 0;
+	double		e = 0;
+	double		Q = 0;
+	double		R = 0;
+	double		Qcubed = 0;
+
 	a1 = c / d;
-
-	double a2;
-	a2 = b / d;
-
-	double a3;
+	a2 = b / d;	
 	a3 = a / d;
 
-	double3 Result = 0;
-	double theta;
-	double sqrtQ;
-	double e;
-	double Q = (a1 * a1 - 3.0f * a2) / 9.0f;
-	double R = (2.0f * a1 * a1 * a1 - 9.0f * a1 * a2 + 27.0f * a3) / 54.0f;
-	double Qcubed = Q * Q * Q;
+	Q = (a1 * a1 - 3.0f * a2) / 9.0f;
+	R = (2.0f * a1 * a1 * a1 - 9.0f * a1 * a2 + 27.0f * a3) / 54.0f;
+	Qcubed = Q * Q * Q;
 	d = Qcubed - R * R;
 	if ( d >= EPSILON )
 	{
@@ -1159,23 +1160,32 @@ static double3	ft_solve_3(double a, double b, double c, double d)
 
 static double	ft_solve_4(double t[5])
 {
-	double Result[4];
-	double3 Roots;
-	double Rsquare;
-	double Rrec;
-	double a0= t[0] / t[4];
-	double a1 = t[1] / t[4];
-	double a2 = t[2] / t[4];
-	double a3 = t[3] / t[4];
-	double D;
-	double E;
-	double3 b;
+	double		Result[4] = {0};
+	double3		Roots = 0;
+	double		Rsquare = 0;
+	double		Rrec = 0;
+	double		D = 0;
+	double		E = 0;
+	double3		b = 0;
+	double		a0 = 0;
+	double		a1 = 0;
+	double		a2 = 0;
+	double		a3 = 0;
+	double		R = 0;
+	double		y = 0;
+
+	a0 = t[0] / t[4];
+	a1 = t[1] / t[4];
+	a2 = t[2] / t[4];
+	a3 = t[3] / t[4];
+
 	b.x = 4.0f * a2 * a0 - a1 * a1 - a3 * a3 * a0;
 	b.y = a1 * a3 - 4.0f * a0;
 	b.z = -a2;
 	Roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
-	double y = fmax(Roots.x, fmax(Roots.y, Roots.z));
-	double R = 0.25f * a3 * a3 - a2 + y;
+	y = fmax(Roots.x, fmax(Roots.y, Roots.z));
+	R = 0.25f * a3 * a3 - a2 + y;
+
 	if (R < EPSILON)
 		return (0.0f);
 	R = sqrt(R);
@@ -1201,7 +1211,7 @@ return (0.0f);
 
 static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
 {
-	t_ret		ret;
+	t_ret			ret;
 	ret.dist = 0;
 	ret.normal = 0;
 	ret.wall = 0;
@@ -1279,7 +1289,7 @@ static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 
 static float3 get_thor_normal(const __local t_thor *thor, const float3 hitpos)
 {
-	__private float3	res = 0;
+	float3	res = 0;
 	float	c = 0;
 
 	float	R = (float)(thor->lil_radius * thor->lil_radius);
