@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/07 18:32:11 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/09 12:21:36 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void		load_scene_objects(t_env *e)
 			xml_push_sphere(e, list);
 		if (list->type == OBJ_ELLIPSOID)
 			xml_push_ellipsoid(e, list);
-		if (list->type == OBJ_BOX)
-			xml_push_box(e, list);
 		if (list->type == OBJ_TORUS)
 			xml_push_torus(e, list);
 		list = list->next;
