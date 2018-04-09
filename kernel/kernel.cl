@@ -984,10 +984,10 @@ static t_ret	inter_plan(const __local t_plane *plane, const float3 ray, const fl
 static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsigned int __global *texture, int t_width, int t_height)
 {
 	unsigned int	color = 0;
-	float3			v_axis;
-	float			npos;
-	float			vpos;
-	int2			uv;
+	float3			v_axis = 0;
+	float			npos = 0;
+	float			vpos = 0;
+	int2			uv = 0;
 
 	v_axis = cross(cyl->u_axis, cyl->dir);
 	npos = fast_length(dot(pos, cyl->dir) * cyl->dir);
@@ -1009,20 +1009,14 @@ static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsig
 		uv.y = (uv.y - t_height) * -1;
 	uv.x %= t_width;
 	uv.y %= t_height;
-	// uv.y = (uv.y - height) * -1;
-	// if ((uv.x += decx) > width)   Decalage;
-	// 	uv.x -= width;
-	// if ((uv.y += decy) > height)
-	// 	uv.y -= height;
 	color = (unsigned int)texture[uv.x + (uv.y * t_width)];
 	return (color);
 }
 
 static float3	get_cylinder_abc(const float radius, const float3 dir, const float3 ray, const float3 origin)
 {
-	float3		abc;
+	float3		abc = 0;
 
-	// SEMBLE OK
 	abc.x = dot(ray, ray) - (dot(ray, dir) * dot(ray, dir));
 	abc.y = 2 * (dot(ray, origin) - (dot(ray, dir) * dot(origin, dir)));
 	abc.z = dot(origin, origin) - (dot(origin, dir) * dot(origin, dir)) - (radius * radius);
@@ -1031,15 +1025,11 @@ static float3	get_cylinder_abc(const float radius, const float3 dir, const float
 
 static float3	get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
 {
-	float3		res;
-	float3		v;
-	float3		project;
-	float		doty;
+	float3		res = 0;
+	float3		v = 0;
+	float3		project = 0;
+	float		doty = 0;
 
-	res = 0;
-	v = 0;
-	project = 0;
-	doty = 0;
 	v = hit.pos - cylinder->pos;
 	doty = dot(v, cylinder->dir);
 	project = doty * cylinder->dir;
@@ -1049,14 +1039,15 @@ static float3	get_cylinder_normal(const __local t_cylinder *cylinder, t_hit hit)
 
 static t_ret	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray, const float3 origin)
 {
-	float3		abc;
-	float3		pos;
-	float		res1;
-	float		res2;
+	float3		abc = 0;
+	float3		pos = 0;
+	float		res1 = 0;
+	float		res2 = 0;
 	t_ret		ret;
 
 	ret.dist = 0;
 	ret.wall = 0;
+	ret.normal = 0;
 	pos = origin - cylinder->pos;
 	abc = get_cylinder_abc(cylinder->radius, cylinder->dir, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
