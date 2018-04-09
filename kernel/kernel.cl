@@ -648,7 +648,7 @@ static float3	rotat_z(const float3 vect, const float angle)
 */
 static float	inter_plan_private(const t_plane *plane, const float3 ray, const float3 origin)
 {
-	float		t;
+	float		t = 0;
 
 	t = dot(fast_normalize(ray), plane->normal);
 	if (fabs(t) < EPSILONF|| (plane->radius && t > plane->radius))
@@ -665,10 +665,11 @@ static t_ret	object_limited(t_object __local *object,
 {
 	t_ret		ret;
 	t_plane		t;
-	float		dist_plan;
+	float		dist_plan = 0;
 
 	ret.dist = 0;
 	ret.wall = 0;
+	ret.normal = 0;
 	t.pos = object->limit_pos;
 	t.normal = object->limit_dir;
 	t.radius = 0;
