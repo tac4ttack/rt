@@ -90,6 +90,11 @@ inline __host__ __device__ uint2 make_uint2(int2 a)
     return make_uint2(uint(a.x), uint(a.y));
 }
 
+inline __host__ __device__ double3 make_double3(double s)
+{
+    return make_double3(s, s, s);
+}
+
 inline __host__ __device__ float3 make_float3(float s)
 {
     return make_float3(s, s, s);

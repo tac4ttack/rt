@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/08 23:18:08 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/09 23:44:27 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ int				opencl_draw(t_env *e)
 	(void)e;
 	bzero(e->pixel_data, (e->scene->win_w * e->scene->win_h) *4);
 	//printf("CPU %x\n", ((t_sphere *)e->gen_objects->mem)->color);
-	render_cuda(e->scene->win_w, e->scene->win_h,
-					e->pixel_data,
+	render_cuda(&e->cuda, e->pixel_data,
 					e->gen_objects,
 					e->gen_lights,
 					e->fps.u_time,

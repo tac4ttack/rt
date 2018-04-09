@@ -381,13 +381,6 @@ typedef struct			s_hit
 	int					wall; // WIP
 }						t_hit;
 
-typedef struct			s_tex
-{
-	unsigned int		pixel_array[12076155];
-	int					width;
-	int					height;
-}						t_tex;
-
 typedef struct			s_ret
 {
 	int					wall;
@@ -425,129 +418,32 @@ typedef struct			s_scene
 	unsigned int		*texture_earth_cloud;
 	unsigned int		*texture_star;
 }						t_scene;
-/*
-__host__ __device__ float dot(const float3 a, const float3 b)
-{
-	return ((a.x * b.x) + (a.y * b.y) + (a.z * b.z));
-}
 
-__host__ __device__ float sqrt_magnitude(const float3 a)
+typedef struct			s_cuda
 {
-	return (sqrtf(fabs(a.x * a.x) + fabs(a.y * a.y) + fabs(a.z * a.z)));
-}
+	unsigned int		*output;
+	char				*mem_objects;
+	char				*mem_lights;
+	t_cam				*cameras;
+	t_scene				*scene;
+	unsigned char 		*texture_0;
+	unsigned char 		*texture_1;
+	unsigned char 		*texture_2;
+	unsigned char 		*texture_3;
+}						t_cuda;
 
-__host__ __device__ float length(const float3 a)
+typedef struct			s_tex
 {
-	return sqrtf(dot(a, a));
-}
+	unsigned int		*pixel_array;
+	int					width;
+	int					height;
+}						t_tex;
 
-__host__ __device__ float3 normalize(const float3 a)
-{
-	float3		newv;
-	float		ret_magnitude;
 
-	ret_magnitude = length(a);
-	if (fabs(ret_magnitude) < EPSILONF)
-		return (a);
-	newv.x = a.x / ret_magnitude;
-	newv.y = a.y / ret_magnitude;
-	newv.z = a.z / ret_magnitude;
-	return (newv);
-}
-*/
 inline __host__ __device__ float radians(double degree) {
     return (degree * M_PI / 180.0f);
 }
-/*
-// additional constructors
-inline __host__ __device__ float3 make_float3(float s)
-{
-    return make_float3(s, s, s);
-}
-inline __host__ __device__ float3 make_float3(float2 a)
-{
-    return make_float3(a.x, a.y, 0.0f);
-}
-inline __host__ __device__ float3 make_float3(float2 a, float s)
-{
-    return make_float3(a.x, a.y, s);
-}
-inline __host__ __device__ float3 make_float3(float4 a)
-{
-    return make_float3(a.x, a.y, a.z);  // discards w
-}
-inline __host__ __device__ float3 make_float3(int3 a)
-{
-    return make_float3(float(a.x), float(a.y), float(a.z));
-}
 
-// addition
-inline __host__ __device__ float3 operator+(float3 a, float3 b)
-{
-    return make_float3(a.x + b.x, a.y + b.y, a.z + b.z);
-}
-inline __host__ __device__ float3 operator+(float3 a, float b)
-{
-    return make_float3(a.x + b, a.y + b, a.z + b);
-}
-inline __host__ __device__ void operator+=(float3 &a, float3 b)
-{
-    a.x += b.x; a.y += b.y; a.z += b.z;
-}
-
-// subtract
-inline __host__ __device__ float3 operator-(float3 a, float3 b)
-{
-    return make_float3(a.x - b.x, a.y - b.y, a.z - b.z);
-}
-inline __host__ __device__ float3 operator-(float3 a, float b)
-{
-    return make_float3(a.x - b, a.y - b, a.z - b);
-}
-inline __host__ __device__ void operator-=(float3 &a, float3 b)
-{
-    a.x -= b.x; a.y -= b.y; a.z -= b.z;
-}
-
-// multiply
-inline __host__ __device__ float3 operator*(float3 a, float3 b)
-{
-    return make_float3(a.x * b.x, a.y * b.y, a.z * b.z);
-}
-inline __host__ __device__ float3 operator*(float3 a, float s)
-{
-    return make_float3(a.x * s, a.y * s, a.z * s);
-}
-inline __host__ __device__ float3 operator*(float s, float3 a)
-{
-    return make_float3(a.x * s, a.y * s, a.z * s);
-}
-inline __host__ __device__ void operator*=(float3 &a, float s)
-{
-    a.x *= s; a.y *= s; a.z *= s;
-}
-
-// divide
-inline __host__ __device__ float3 operator/(float3 a, float3 b)
-{
-    return make_float3(a.x / b.x, a.y / b.y, a.z / b.z);
-}
-inline __host__ __device__ float3 operator/(float3 a, float s)
-{
-    float inv = 1.0f / s;
-    return a * inv;
-}
-inline __host__ __device__ float3 operator/(float s, float3 a)
-{
-    float inv = 1.0f / s;
-    return a * inv;
-}
-inline __host__ __device__ void operator/=(float3 &a, float s)
-{
-    float inv = 1.0f / s;
-    a *= inv;
-}
-*/
 __host__ __device__ float3	vector_get_rotate(const float3 *me, const float3 *rot)
 {
 	float3		n;
@@ -807,6 +703,214 @@ __host__ __device__  bool		solve_quadratic(const float a, const float b, const f
 	return (true);
 }
 
+__host__ __device__ double3	thor_get_rotate(const double3 *that, const  float3 *rot)
+{
+	double3		n = make_double3(0.f);
+	float		tmp = 0;
+
+	n = *that;
+	if (rot->x)
+	{
+		tmp = n.y * cos(rot->x) - n.z * sin(rot->x);
+		n.z = n.y * sin(rot->x) + n.z * cos(rot->x);
+		n.y = tmp;
+	}
+	if (rot->y)
+	{
+		tmp = n.x * cos(rot->y) + n.z * sin(rot->y);
+		n.z = n.x * -sin(rot->y) + n.z * cos(rot->y);
+		n.x = tmp;
+	}
+	if (rot->z)
+	{
+		tmp = n.x * cos(rot->z) - n.y * sin(rot->z);
+		n.y = n.x * sin(rot->z) + n.y * cos(rot->z);
+		n.x = tmp;
+	}
+	return (n);
+}
+
+__host__ __device__ double	ft_ret(double *tab)
+{
+	double		ret = -1.0;
+	int			i = 0;
+
+	while(i < 4)
+	{
+		if(tab[i] > EPSILON && ret == -1)
+			ret = tab[i];
+			if (tab[i] < ret && tab[i] > EPSILON )
+			ret = tab[i];
+		i++;
+	}
+	if (ret == -1.0)
+		ret = 0.0;
+	return (ret);
+}
+
+__host__ __device__ double3	ft_solve_3(double a, double b, double c, double d)
+{
+	double		a1 = 0;
+	double		a2 = 0;
+	double		a3 = 0;
+	double3		Result = make_double3(0.f);
+	double		theta = 0;
+	double		sqrtQ = 0;
+	double		e = 0;
+	double		Q = 0;
+	double		R = 0;
+	double		Qcubed = 0;
+
+	a1 = c / d;
+	a2 = b / d;
+	a3 = a / d;
+
+	Q = (a1 * a1 - 3.0f * a2) / 9.0f;
+	R = (2.0f * a1 * a1 * a1 - 9.0f * a1 * a2 + 27.0f * a3) / 54.0f;
+	Qcubed = Q * Q * Q;
+	d = Qcubed - R * R;
+	if ( d >= EPSILON )
+	{
+		if ( Q < EPSILON )
+		{
+			Result.x = 0.0f;
+			Result.y = 0.0f;
+			Result.z = 0.0f;
+				return (Result);
+		}
+		theta = acos(R / sqrt(Qcubed));
+		sqrtQ = sqrt(Q);
+		Result.x = -2.0f * sqrtQ * cos(theta / 3.0f) - a1 / 3.0f;
+		Result.y = -2.0f * sqrtQ * cos((theta + 2.0f * M_PI) / 3.0f ) - a1 / 3.0f;
+		Result.z = -2.0f * sqrtQ * cos((theta + 4.0f * M_PI) / 3.0f ) - a1 / 3.0f;
+	}
+	else
+	{
+		e = pow(sqrt((double)-d) + fabs((double)R), (double)1.0f/ (double)3.0f);
+		if ( R > EPSILON )
+			e = -e;
+		Result.x = Result.y = Result.z = (e + Q / e) - a1 / 3.0f;
+	}
+	return (Result);
+}
+
+__host__ __device__ double	ft_solve_4(double t[5])
+{
+	double		Result[4] = {0};
+	double3		Roots = make_double3(0.f);
+	double		Rsquare = 0;
+	double		Rrec = 0;
+	double		D = 0;
+	double		E = 0;
+	double3		b = make_double3(0.f);
+	double		a0 = 0;
+	double		a1 = 0;
+	double		a2 = 0;
+	double		a3 = 0;
+	double		R = 0;
+	double		y = 0;
+
+	a0 = t[0] / t[4];
+	a1 = t[1] / t[4];
+	a2 = t[2] / t[4];
+	a3 = t[3] / t[4];
+
+	b.x = 4.0f * a2 * a0 - a1 * a1 - a3 * a3 * a0;
+	b.y = a1 * a3 - 4.0f * a0;
+	b.z = -a2;
+	Roots = ft_solve_3(b.x, b.y, b.z, 1.0f);
+	y = fmax(Roots.x, fmax(Roots.y, Roots.z));
+	R = 0.25f * a3 * a3 - a2 + y;
+
+	if (R < EPSILON)
+		return (0.0f);
+	R = sqrt(R);
+	if ( R == EPSILON )
+	{
+		D = sqrt( 0.75f * a3 * a3 - 2.0f * a2 + 2.0f * sqrt( y * y - 4.0f * a0 ) );
+		E = sqrt( 0.75f * a3 * a3 - 2.0f * a2 - 2.0f * sqrt( y * y - 4.0f * a0 ) );
+	}
+	else
+	{
+		Rsquare = R * R;
+		Rrec = 1.0f / R;
+		D = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 + 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
+		E = sqrt( 0.75f * a3 * a3 - Rsquare - 2.0f * a2 - 0.25f * Rrec * (4.0f * a3 * a2 - 8.0f * a1 - a3 * a3 * a3) );
+	}
+	Result[0] = -0.25f * a3 + 0.5f * R + 0.5f * D;
+	Result[1] = -0.25f * a3 + 0.5f * R - 0.5f * D;
+	Result[2] =  -0.25f * a3 - 0.5f * R + 0.5f * E;
+	Result[3] = -0.25f * a3 - 0.5f * R - 0.5f * E;
+	return(ft_ret(Result));
+}
+
+__host__ __device__ t_ret		inter_thor(const  t_thor *thor, const float3 ray, const float3 origin)
+{
+	t_ret			ret;
+	ret.dist = 0;
+	ret.normal = make_float3(0.f);
+	ret.wall = 0;
+
+	double 		big_radius = thor->big_radius * thor->big_radius;
+	double		lil_radius = thor->lil_radius * thor->lil_radius;
+
+	double3		d_ray;
+	d_ray.x = (double)ray.x;
+	d_ray.y = (double)ray.y;
+	d_ray.z = (double)ray.z;
+	d_ray = thor_get_rotate(&d_ray, &thor->dir);
+
+	double3		d_dir;
+	d_dir.x = (double)origin.x - (double)thor->pos.x;
+	d_dir.y = (double)origin.y - (double)thor->pos.y;
+	d_dir.z = (double)origin.z - (double)thor->pos.z;
+	d_dir = thor_get_rotate(&d_dir, &thor->dir);
+
+	double3		k;
+	k.x = (d_ray.x * d_ray.x) + (d_ray.y * d_ray.y) + (d_ray.z * d_ray.z);
+	k.y = 4.0f * big_radius;
+	k.z = (d_dir.x) * d_ray.x \
+		+ (d_dir.y) * d_ray.y \
+		+ (d_dir.z) * d_ray.z;
+
+	double		e;
+	e =	(d_dir.x) * (d_dir.x) + \
+		(d_dir.y) * (d_dir.y) + \
+		(d_dir.z) * (d_dir.z) - \
+		big_radius - lil_radius;
+
+	double		c[5];
+	c[0] = e * e - k.y * (lil_radius - (d_dir.y) * (d_dir.y));
+	c[1] = 4.0f * k.z * e + 2.0f * k.y * (d_dir.y) * d_ray.y;
+	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * d_ray.y * d_ray.y;
+	c[3] = 4.0f * k.x * k.z;
+	c[4] = k.x * k.x;
+
+	ret.dist = ft_solve_4(c);
+	return (ret);
+}
+
+__host__ __device__ float3 get_thor_normal(const  t_thor *thor, const float3 hitpos)
+{
+	float3	res = make_float3(0.f);
+	float	c = 0;
+
+	float	R = (float)((thor->lil_radius * thor->lil_radius));
+	float	r = (float)((thor->big_radius * thor->big_radius));
+
+	float3 pos = hitpos - thor->pos;
+	pos = vector_get_rotate(&pos, &thor->dir);
+
+	c = ((pos.x * pos.x) + (pos.y * pos.y) + (pos.z * pos.z) - r - R);
+
+	res.x = 4.0f * c * pos.x;
+	res.y = 4.0f * pos.y * (c + 2 * r);
+	res.z = 4.0f * c * pos.z;
+
+	res = vector_get_inverse(&res, &thor->dir);
+	return (res);
+}
+
 __host__ __device__ float3	get_sphere_abc(const float radius, const float3 ray, const float3 origin)
 {
 	float3		abc = make_float3(0.f);
@@ -831,8 +935,8 @@ __host__ __device__ t_ret	inter_sphere(const  t_sphere *sphere, const float3 ray
 	abc = get_sphere_abc(sphere->radius, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
-//	if (sphere->flags & OBJ_FLAG_PLANE_LIMIT)
-//		return (object_limited((t_object  *)sphere, res1, res2, ray, origin));
+	//if (sphere->flags & OBJ_FLAG_PLANE_LIMIT)
+	//	return (object_limited((t_object  *)sphere, res1, res2, ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		ret.dist = res1;
 	else
@@ -1086,8 +1190,8 @@ __host__ __device__ t_hit			ray_hit(const  t_scene *scene, const float3 origin, 
 		 	ret = inter_cone(( struct s_cone *)obj, ray, origin);
 		else if (obj->type == OBJ_ELLIPSOID)
 		   	ret = inter_ellipsoid(( struct s_ellipsoid *)obj, ray, origin);
-		//else if (obj->type == OBJ_THOR)
-		//	ret = inter_thor(( struct s_thor *)obj, ray, origin);
+		else if (obj->type == OBJ_THOR)
+			ret = inter_thor(( struct s_thor *)obj, ray, origin);
 		if (lightdist > 0 && ret.dist < lightdist && ret.dist > EPSILON)
 			hit.opacity += obj->opacity;
 		if ((ret.dist < hit.dist || hit.dist == 0) && ret.dist > EPSILON)
@@ -1118,13 +1222,13 @@ __host__ __device__ float3			get_hit_normal(const  t_scene *scene, float3 ray, t
 		if (hit.obj->type == OBJ_SPHERE)
 		 	res = hit.pos - hit.obj->pos;
 		else if (hit.obj->type == OBJ_CYLINDER)
-			res = get_cylinder_normal(( t_cylinder *)hit.obj, hit);
+			res = get_cylinder_normal((t_cylinder *)hit.obj, hit);
 		else if (hit.obj->type == OBJ_CONE)
-			res = get_cone_normal(( t_cone *)hit.obj, hit);
+			res = get_cone_normal((t_cone *)hit.obj, hit);
 		else if (hit.obj->type == OBJ_ELLIPSOID)
 			res = get_ellipsoid_normal(( t_ellipsoid *)hit.obj, &hit);
-		//else if (hit.obj->type == OBJ_THOR)
-		//	res = get_thor_normal(( t_thor *)hit.obj, hit);
+		else if (hit.obj->type == OBJ_THOR)
+			res = get_thor_normal((t_thor *)hit.obj, hit.pos);
 		else if (hit.obj->type == OBJ_PLANE)
 		{
 			if (dot(hit.obj->dir, ray * -1) < 0)
@@ -1710,16 +1814,34 @@ __global__ void test(unsigned int *output, unsigned int width, unsigned int heig
 							mem_lights, mem_size_lights, 0, NULL, NULL, NULL, NULL);
 }
 
-extern "C" void render_cuda(unsigned int width, unsigned int height,
-							int 		*pixel_data,
-							t_gen		*gen_objects,
-							t_gen		*gen_lights,
-							float		u_time,
+extern "C" void init_cuda(t_cuda *cuda, t_scene *scene, t_gen *gen_objects, t_gen *gen_lights, t_tex *texture)
+{
+	cudaMalloc(&cuda->output, scene->win_w * scene->win_h * sizeof(int));
+	cudaMalloc(&cuda->mem_objects, gen_objects->mem_size);
+	cudaMalloc(&cuda->mem_lights, gen_lights->mem_size);
+	cudaMalloc(&cuda->scene, sizeof(t_scene));
+	cudaMalloc(&cuda->cameras, sizeof(t_cam) * scene->n_cams);
+	/*cudaMalloc(&cuda->texture_0, sizeof(unsigned int) * texture[0].width * texture[0].height);
+	cudaMalloc(&cuda->texture_1, sizeof(unsigned int) * texture[1].width * texture[1].height);
+	cudaMalloc(&cuda->texture_2, sizeof(unsigned int) * texture[2].width * texture[2].height);
+	cudaMalloc(&cuda->texture_3, sizeof(unsigned int) * texture[3].width * texture[3].height);
+	cudaMemcpy(cuda->texture_0, texture[0].pixel_array, sizeof(unsigned int) * texture[0].width * texture[0].height, cudaMemcpyHostToDevice);
+	cudaMemcpy(cuda->texture_1, texture[1].pixel_array, sizeof(unsigned int) * texture[1].width * texture[1].height, cudaMemcpyHostToDevice);
+	cudaMemcpy(cuda->texture_2, texture[2].pixel_array, sizeof(unsigned int) * texture[2].width * texture[2].height, cudaMemcpyHostToDevice);
+	cudaMemcpy(cuda->texture_3, texture[3].pixel_array, sizeof(unsigned int) * texture[3].width * texture[3].height, cudaMemcpyHostToDevice);*/
+
+}
+
+extern "C" void render_cuda(t_cuda *cuda,
+							int 			*pixel_data,
+							t_gen			*gen_objects,
+							t_gen			*gen_lights,
+							float			u_time,
 							t_scene			*scene_data,
 							t_cam			*cameras_data)
 {
 	dim3					threads_per_block(8, 8);
-	dim3					grid_size(width / threads_per_block.x, height / threads_per_block.y);
+	dim3					grid_size(scene_data->win_w / threads_per_block.x, scene_data->win_h / threads_per_block.y);
 
 	/*printf("GPU\n");
 	printf("t_cam %zu\n", sizeof(t_cam));
@@ -1731,26 +1853,34 @@ extern "C" void render_cuda(unsigned int width, unsigned int height,
 	printf("\n");*/
 	//printf("\n{[(%.2f)]}\n\n", cameras_data[0].fov);
 
-	unsigned int *output = NULL;
-	cudaMalloc(&output, width * height * sizeof(int));
-	char *mem_objects = NULL;
-	cudaMalloc(&mem_objects, gen_objects->mem_size);
-	cudaMemcpy(mem_objects, gen_objects->mem, gen_objects->mem_size, cudaMemcpyHostToDevice);
-	char *mem_lights = NULL;
-	cudaMalloc(&mem_lights, gen_lights->mem_size);
-	cudaMemcpy(mem_lights, gen_lights->mem, gen_lights->mem_size, cudaMemcpyHostToDevice);
-	t_scene *scene = NULL;
-	cudaMalloc(&scene, sizeof(t_scene));
-	cudaMemcpy(scene, scene_data, sizeof(t_scene), cudaMemcpyHostToDevice);
-	t_cam *cameras = NULL;
-	cudaMalloc(&cameras, sizeof(t_cam) * scene_data->n_cams); /////////////////*******************
-	cudaMemcpy(cameras, cameras_data, sizeof(t_cam), cudaMemcpyHostToDevice);
+		/*cudaMalloc(&output, width * height * sizeof(int));
+		cudaMalloc(&mem_objects, gen_objects->mem_size);
+		cudaMalloc(&mem_lights, gen_lights->mem_size);
+		cudaMalloc(&scene, sizeof(t_scene));
+		cudaMalloc(&cameras, sizeof(t_cam) * scene_data->n_cams);
+		*/
 
-	test <<< grid_size, threads_per_block >>> (output, width, height,
-												mem_objects, gen_objects->mem_size,
+	cudaMemcpy(cuda->mem_objects, gen_objects->mem, gen_objects->mem_size, cudaMemcpyHostToDevice);
+	cudaMemcpy(cuda->mem_lights, gen_lights->mem, gen_lights->mem_size, cudaMemcpyHostToDevice);
+	cudaMemcpy(cuda->scene, scene_data, sizeof(t_scene), cudaMemcpyHostToDevice);
+	cudaMemcpy(cuda->cameras, cameras_data, sizeof(t_cam), cudaMemcpyHostToDevice);
+
+/*
+	if (!(e->cl->add_buffer(e->cl, )))
+	 	s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[1].width * e->texture[1].height)))
+	 	s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[2].width * e->texture[2].height)))
+	 	s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
+	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[3].width * e->texture[3].height)))
+		s_error("\x1b[2;31mError creation cl_mem failed bite\x1b[0m", e);
+*/
+
+	test <<< grid_size, threads_per_block >>> (cuda->output, scene_data->win_w, scene_data->win_h,
+												cuda->mem_objects, gen_objects->mem_size,
 												u_time,
-												scene, cameras,
-												mem_lights, gen_lights->mem_size);
+												cuda->scene, cuda->cameras,
+												cuda->mem_lights, gen_lights->mem_size);
 	cudaDeviceSynchronize();
 
 	// check for errors
@@ -1758,11 +1888,11 @@ extern "C" void render_cuda(unsigned int width, unsigned int height,
 	if (error != cudaSuccess) {
 	  fprintf(stderr, "ERROR: %s \n", cudaGetErrorString(error));
 	}
-	cudaMemcpy(pixel_data, output, width * height * sizeof(int), cudaMemcpyDeviceToHost);
-	if (output != NULL)
+	cudaMemcpy(pixel_data, cuda->output, scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost);
+	/*if (output != NULL)
 		cudaFree(output);
 	if (mem_objects != NULL)
 		cudaFree(mem_objects);
 	if (mem_lights != NULL)
-		cudaFree(mem_lights);
+		cudaFree(mem_lights);*/
 }

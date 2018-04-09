@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/08 23:13:43 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/09 23:44:35 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@
 # include <sys/time.h>
 # include "libft.h"
 
-# include </usr/local/cuda/include/cuda.h>
-
 # include "cl.h"
 # include "ui.h"
 # include "gen.h"
+
+#include <float.h>
+#include <stdbool.h>
+#include <stdint.h>
 
 # ifdef GPU
 #  define IS_GPU			1
@@ -461,6 +463,19 @@ typedef struct			s_scene
 	unsigned int		*texture_star;
 }						t_scene;
 
+typedef struct			s_cuda
+{
+	unsigned int		*output;
+	char				*mem_objects;
+	char				*mem_lights;
+	t_cam				*cameras;
+	t_scene				*scene;
+	unsigned char 		*texture_0;
+	unsigned char 		*texture_1;
+	unsigned char 		*texture_2;
+	unsigned char 		*texture_3;
+}						t_cuda;
+
 typedef	struct			s_env
 {
 	t_cl				*cl;
@@ -485,12 +500,16 @@ typedef	struct			s_env
 	int					target;
 	t_rtx				raw_texture;
 	t_tex				*texture;
+
+	t_cuda				cuda;
+
 	int					current_index_objects;
 }						t_env;
 
 
-void					render_cuda(unsigned int width, unsigned int height,
-							int 		*pixel_data,
+void init_cuda(t_cuda *cuda, t_scene *scene, t_gen *mem_obj, t_gen *mem_lights, t_tex *texture);
+
+void					render_cuda(t_cuda *cuda, int 		*pixel_data,
 							t_gen		*gen_objects,
 							t_gen		*gen_lights,
 							float		u_time,

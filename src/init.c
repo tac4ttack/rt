@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/08 02:50:05 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/09 23:33:40 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,5 +140,8 @@ void		init(GtkApplication *app, gpointer data)
 	ft_bzero(e->pixel_data, sizeof(int) * WIDTH * HEIGHT);
 	load_scene(e);
 	ft_putendl("\n\x1b[1;32m/\\ Loading UI... /\\\x1b[0m\n");
-	 opencl_draw(e);
+
+	init_cuda(&e->cuda, e->scene, e->gen_objects, e->gen_lights, e->texture);
+
+	opencl_draw(e);
 }
