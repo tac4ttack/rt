@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:57:19 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/09 13:51:11 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/09 18:50:59 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ t_cl				*cl_construct(const char *path, \
 	t_cl			*cl;
 	cl_ulong		size;
 
+	ft_putendl("\n\x1b[1;32m/\\ Initializing OpenCL /\\\x1b[0m\n");
 	if (!(cl = ft_memalloc(sizeof(t_cl))))
 		return (NULL);
 	if (!(cl->kernel_src = (char *)ft_memalloc(MAX_SOURCE_SIZE)))
