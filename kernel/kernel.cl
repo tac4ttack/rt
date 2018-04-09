@@ -2186,6 +2186,9 @@ __kernel void		ray_trace(	__global	char		*output,
 	 // if (!pix.x && !pix.y) printf("%zu\n", sizeof(size_t));
 
 	id = pix.x + (scene->win_w * pix.y);
+	if (id >= (scene->win_w * scene->win_h))
+		return;
+
 	scene->cameras = cameras;
 	scene->mem_lights = mem_lights;
 	scene->u_time = u_time;
