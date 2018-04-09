@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <scene			res="1024, 768" ambient="0.15, 0.15, 0.15">
-	<cam		pos="0, 0, 0"
+	<cam		pos="-6, 0, -20"
 				dir="1, 0, 0"
 				fov="30"
 				/>
