@@ -1557,31 +1557,20 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 {
 	t_object __local		*obj;
 	t_light __local			*light;
-	uint					mem_index_lights;
-
-	unsigned int			res_color;
-	float					tmp;
-	float3					reflect;
-	float3 __private		diffuse;
-	float __private			brightness;
-	unsigned int __private 	hue;
-	unsigned int __private	hue_light;
-	unsigned int __private 	col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g;
 	t_light_ray				light_ray;
 	t_hit					light_hit;
-	float __private 		pow_of_spec;
-	int __private 			light_color;
-	float3 __private 		speculos;
-
-	tmp = 0;
-	reflect = 0;
-	diffuse = 0;
-	brightness = 0;
-	hue_light = 0;
-	pow_of_spec = 0;
-	light_color = 0;
-	speculos = 0;
-	mem_index_lights = 0;
+	uint					mem_index_lights = 0;
+	unsigned int			res_color = 0;
+	float					tmp = 0;
+	float3					reflect = 0;
+	float3 					diffuse = 0;
+	float 					brightness = 0;
+	unsigned int 		 	hue = 0;
+	unsigned int 			hue_light = 0;
+	unsigned int 		 	col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g = 0;
+	float 			 		pow_of_spec = 0;
+	int 					light_color = 0;
+	float3 			 		speculos = 0;
 
 	obj = hit.obj;
 	if ((hit.obj->flags & OBJ_FLAG_CHECKERED) || hit.obj->flags & OBJ_FLAG_DIFF_MAP)
@@ -1630,19 +1619,10 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				col_b += ((l_b * brightness) + obj_b) * tmp * diffuse.z;
 
 				(col_r > 255 ? col_r = 255 : 0);
-				// commented lines are failed tonemaping test
-			//	col_r = (col_r > 255 ? col_r / (col_r + 1) : col_r);
 				(col_g > 255 ? col_g = 255 : 0);
-			//	col_g = (col_g > 255 ? col_g / (col_g + 1) : col_g);
 				(col_b > 255 ? col_b = 255 : 0);
-			//	col_b = (col_b > 255 ? col_b / (col_b + 1) : col_b);
-
-				// if (scene->flag & OPTION_CARTOON_FOUR)
-				// 	res_color = cartoonize_four(col_r, col_g, col_b);
-				// else if (scene->flag & OPTION_CARTOON_TWO)
-				//  	res_color = cartoonize_two(col_r, col_g, col_b);
-				// else
-					res_color = ((col_r << 16) + (col_g << 8) + col_b);
+			
+				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 
 			// specular part
@@ -1663,15 +1643,13 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				col_b += (light_color & 0x0000FF) * pow_of_spec * speculos.z;
 
 				(col_r > 255 ? col_r = 255 : 0);
-			//	col_r = (col_r > 255 ? col_r / (col_r + 1) : col_r);
 				(col_g > 255 ? col_g = 255 : 0);
-			//	col_g = (col_g > 255 ? col_g / (col_g + 1) : col_g);
 				(col_b > 255 ? col_b = 255 : 0);
-			//	col_b = (col_b > 255 ? col_b / (col_b + 1) : col_b);
 
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 			res_color = blend_factor(res_color, ((light_hit.opacity - 1) * -1));
+			
 			if (scene->flag & OPTION_CARTOON_FOUR)
 			 	res_color = cartoonize_four(col_r, col_g, col_b);
 			else if (scene->flag & OPTION_CARTOON_TWO)
