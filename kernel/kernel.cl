@@ -1255,38 +1255,6 @@ static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const flo
 	return (ret);
 }
 
-
-// ORIGINAL one
-// static t_ret		inter_thor(const __local t_thor *thor, const float3 ray, const float3 origin)
-// {
-// 	t_ret		ret;
-// 	ret.dist = 0;
-// 	ret.normal = 0;
-// 	ret.wall = 0;
-
-// 	float		c[5];
-// 	float3		k;
-// 	float		e;
-// 	float 		r = thor->big_radius;
-
-// 	k.x = ray.x * ray.x + ray.y * ray.y + ray.z * ray.z;
-// 	e = (origin.x - thor->pos.x) * (origin.x - thor->pos.x) + (origin.y - thor->pos.y) *
-// 	(origin.y - thor->pos.y) + (origin.z - thor->pos.z) * (origin.z - thor->pos.z) -
-// 	r * r - thor->lil_radius * thor->lil_radius;
-// 	k.z = (origin.x - thor->pos.x) * ray.x + (origin.y - thor->pos.y) * ray.y +
-// 	(origin.z - thor->pos.z) * ray.z;
-// 	k.y = 4.0f * r * r;
-// 	c[0] = e * e - k.y * (thor->lil_radius * thor->lil_radius - (origin.y - thor->pos.y) *
-// 	(origin.y - thor->pos.y));
-// 	c[1] = 4.0f * k.z * e + 2.0f * k.y * (origin.y - thor->pos.y) * ray.y;
-// 	c[2] = 2.0f * k.x * e + 4.0f * k.z * k.z + k.y * ray.y * ray.y;
-// 	c[3] = 4.0f * k.x * k.z;
-// 	c[4] = k.x * k.x;
-// 	ret.dist = ft_solve_4(c);
-// 	return (ret);
-// }
-
-
 static float3 get_thor_normal(const __local t_thor *thor, const float3 hitpos)
 {
 	float3	res = 0;
