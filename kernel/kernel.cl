@@ -2108,7 +2108,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
 			return (fresnel(scene, ray, hit, depth, color));
-			
+
 		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
@@ -2173,8 +2173,12 @@ __kernel void		ray_trace(	__global	char		*output,
 	pix.y = get_global_id(1);
 
 	id = pix.x + (scene->win_w * pix.y);
+	//DEBUG
 	if (id >= (scene->win_w * scene->win_h))
+	{
+		printf("!WARNING!\n ray_trace | id is out of bound!\n");
 		return;
+	}
 
 	scene->cameras = cameras;
 	scene->mem_lights = mem_lights;
@@ -2207,7 +2211,7 @@ __kernel void		ray_trace(	__global	char		*output,
 			rgb.x += (final_color_o[lap] & 0x00FF0000);
 			rgb.y += (final_color_o[lap] & 0x0000FF00);
 			rgb.z += (final_color_o[lap] & 0x000000FF);
-			i++;
+			lap++;
 		}
 		final_color += ((rgb.x / (scene->over_sampling * 2)) & 0x00FF0000);
 		final_color += ((rgb.y / (scene->over_sampling * 2)) & 0x0000FF00);
