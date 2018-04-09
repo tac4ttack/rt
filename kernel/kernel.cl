@@ -728,42 +728,15 @@ static t_ret	object_limited(t_object __local *object,
 }
 ////////////////////////////////////////////////////////////////////////////////
 
-
 /*
-** ELLIPSOID FUNCTIONS
+** 2 LONELY VECTOR FUNCTIONS
 */
-static float3	vector_get_rotate(const float3 *this, const __local float3 *rot)
+static float3	vector_get_rotate(const float3 *that, const __local float3 *rot)
 {
-	float3		n;
-	float		tmp;
+	float3		n = 0;
+	float		tmp = 0;
 
-	n = *this;
-	if (rot->x)
-	{
-		tmp = n.y * cos(rot->x) - n.z * sin(rot->x);
-		n.z = n.y * sin(rot->x) + n.z * cos(rot->x);
-		n.y = tmp;
-	}
-	if (rot->y)
-	{
-		tmp = n.x * cos(rot->y) + n.z * sin(rot->y);
-		n.z = n.x * -sin(rot->y) + n.z * cos(rot->y);
-		n.x = tmp;
-	}
-	if (rot->z)
-	{
-		tmp = n.x * cos(rot->z) - n.y * sin(rot->z);
-		n.y = n.x * sin(rot->z) + n.y * cos(rot->z);
-		n.x = tmp;
-	}
-	return (n);
-}
-static double3	thor_get_rotate(const double3 *this, const __local float3 *rot)
-{
-	double3		n;
-	float		tmp;
-
-	n = *this;
+	n = *that;
 	if (rot->x)
 	{
 		tmp = n.y * cos(rot->x) - n.z * sin(rot->x);
@@ -785,12 +758,12 @@ static double3	thor_get_rotate(const double3 *this, const __local float3 *rot)
 	return (n);
 }
 
-static float3	vector_get_inverse(const float3 *this, const __local float3 *rot)
+static float3	vector_get_inverse(const float3 *that, const __local float3 *rot)
 {
-	float3		n;
-	float		tmp;
+	float3		n = 0;
+	float		tmp = 0;
 
-	n = *this;
+	n = *that;
 	if (rot->z)
 	{
 		tmp = n.x * cos(rot->z) - n.y * -sin(rot->z);
@@ -811,6 +784,13 @@ static float3	vector_get_inverse(const float3 *this, const __local float3 *rot)
 	}
 	return (n);
 }
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+/*
+** ELLIPSOID FUNCTIONS
+*/
 
 static bool		solve_quadratic(const float a, const float b, const float c, float *inter0, float *inter1)
 {
@@ -1093,6 +1073,33 @@ static t_ret	inter_cylinder(const __local t_cylinder *cylinder, const float3 ray
 /*
 ** TORUS FUNCTIONS /////////////////////////////////////////////////////////////
 */
+static double3	thor_get_rotate(const double3 *that, const __local float3 *rot)
+{
+	double3		n;
+	float		tmp;
+
+	n = *that;
+	if (rot->x)
+	{
+		tmp = n.y * cos(rot->x) - n.z * sin(rot->x);
+		n.z = n.y * sin(rot->x) + n.z * cos(rot->x);
+		n.y = tmp;
+	}
+	if (rot->y)
+	{
+		tmp = n.x * cos(rot->y) + n.z * sin(rot->y);
+		n.z = n.x * -sin(rot->y) + n.z * cos(rot->y);
+		n.x = tmp;
+	}
+	if (rot->z)
+	{
+		tmp = n.x * cos(rot->z) - n.y * sin(rot->z);
+		n.y = n.x * sin(rot->z) + n.y * cos(rot->z);
+		n.x = tmp;
+	}
+	return (n);
+}
+
 static double	ft_ret(double *tab)
 {
 	double		ret;
