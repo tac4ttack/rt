@@ -449,6 +449,7 @@ typedef	struct			s_env
 
 cl_float4				add_cl_float(cl_float4 v1, cl_float4 v2);
 cl_float3				sub_cl_float(cl_float3 v1, cl_float3 v2);
+cl_float3				cross_vect(cl_float3 v1);
 cl_float3				rotz(cl_float3 dir, float roll);
 cl_float3				roty(cl_float3 dir, float yaw);
 cl_float3				rotx(cl_float3 dir, float pitch);

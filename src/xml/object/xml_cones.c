@@ -121,9 +121,7 @@ static void	xml_push_cone_effects(t_cone *cone)
 	cone->test_var2.y = 0;
 	cone->test_var3.x = 0;
 	cone->test_var3.y = 0;
-	cone->u_axis.x = cone->dir.y;
-	cone->u_axis.y = cone->dir.z;
-	cone->u_axis.z = -cone->dir.x;
+	cone->u_axis = cross_vect(cone->dir);
 }
 
 void		xml_push_cone(t_env *e, t_node *list)
