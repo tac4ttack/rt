@@ -794,13 +794,11 @@ static float3	vector_get_inverse(const float3 *that, const __local float3 *rot)
 
 static bool		solve_quadratic(const float a, const float b, const float c, float *inter0, float *inter1)
 {
-	float 		discr;
-	float 		tmp;
-	float 		q;
+	float 		discr = 0;
+	float 		tmp = 0;
+	float 		q = 0;
 
-	q = 0;
 	discr = b * b - 4 * a * c;
-	tmp = 0;
 	if (discr < 0)
 		return (false);
 	else if (discr < EPSILONF)
@@ -830,10 +828,11 @@ static bool		solve_quadratic(const float a, const float b, const float c, float 
 
 static float3		get_ellipsoid_normal(const __local t_ellipsoid *ellipsoid, const t_hit *hit)
 {
-	float3 pos = hit->pos - ellipsoid->pos;
-	pos = vector_get_rotate(&pos, &ellipsoid->dir);
+	float3 pos = 0;
+	float3 res = 0;
 
-	float3 res;
+	pos = hit->pos - ellipsoid->pos;
+	pos = vector_get_rotate(&pos, &ellipsoid->dir);
 
 	res.x = (pos.x) / (ellipsoid->axis_size.x * ellipsoid->axis_size.x);
 	res.y = (pos.y) / (ellipsoid->axis_size.y * ellipsoid->axis_size.y);
@@ -845,29 +844,32 @@ static float3		get_ellipsoid_normal(const __local t_ellipsoid *ellipsoid, const 
 static t_ret	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, float3 origin)
 {
 	float3		abc = 0;
-	float		res1, res2;
+	float		res1, res2 = 0;
 	float3		pos = 0;
-	float3		save_ray;
+	float3		save_ray = 0;
 	t_ret		ret;
 
 	ret.dist = 0;
 	ret.wall = 0;
+	ret.normal = 0;
 	save_ray = ray;
+
 	pos = origin - ellipsoid->pos;
 	pos = vector_get_rotate(&pos, &ellipsoid->dir);
 	ray = vector_get_rotate(&ray, &ellipsoid->dir);
 	ray /= ellipsoid->axis_size;
 	pos /= ellipsoid->axis_size;
 
-	abc.x = (ray.x * ray.x +
-	 	ray.y * ray.y +
-	 	ray.z * ray.z);
-	abc.y = (2 * pos.x * ray.x +
-		 2 * pos.y * ray.y +
-		 2 * pos.z * ray.z);
-	abc.z = (pos.x * pos.x +
-		 pos.y * pos.y +
-		 pos.z * pos.z) - (ellipsoid->radius * ellipsoid->radius);
+	abc.x = (ray.x * ray.x + \
+	 		ray.y * ray.y + \
+	 		ray.z * ray.z);
+	abc.y = (2 * pos.x * ray.x + \
+		 	2 * pos.y * ray.y + \
+		 	2 * pos.z * ray.z);
+	abc.z = (pos.x * pos.x + \
+		 	pos.y * pos.y + \
+		 	pos.z * pos.z) - \
+			(ellipsoid->radius * ellipsoid->radius);
 
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
