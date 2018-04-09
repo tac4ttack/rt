@@ -43,3 +43,26 @@ cl_float3			sub_cl_float(cl_float3 v1, cl_float3 v2)
 	res.z = v1.z - v2.z;
 	return (res);
 }
+
+cl_float3			cross_vect(cl_float3 v1)
+{
+	cl_float3		res;
+	cl_float3		v2;
+
+	if (v1.x == 1 || v1.x == -1)
+	{
+		v2.x = 0;
+		v2.y = 1;
+		v2.z = 0;
+	}
+	else
+	{
+		v2.x = 1;
+		v2.y = 0;
+		v2.z = 0;
+	}
+	res.x = v1.y * v2.z - v1.z * v2.y;
+	res.y = v1.z * v2.x - v1.x * v2.z;
+	res.z = v1.x * v2.y - v1.y * v2.x;
+	return (normalize_vect(res));
+}

@@ -124,9 +124,7 @@ static void	xml_push_cylinder_effects(t_cylinder *cylinder)
 	cylinder->test_var2.y = 0;
 	cylinder->test_var3.x = 0;
 	cylinder->test_var3.y = 0;
-	cylinder->u_axis.x = cylinder->dir.y;
-	cylinder->u_axis.y = cylinder->dir.z;
-	cylinder->u_axis.z = -cylinder->dir.x;
+	cylinder->u_axis = cross_vect(cylinder->dir);
 }
 
 void		xml_push_cyl(t_env *e, t_node *list)

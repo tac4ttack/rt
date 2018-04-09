@@ -120,9 +120,7 @@ static void	xml_push_plane_effects(t_plane *plane)
 	plane->test_var2.y = 0;
 	plane->test_var3.x = 0;
 	plane->test_var3.y = 0;
-	plane->u_axis.x = plane->normal.y;
-	plane->u_axis.y = plane->normal.z;
-	plane->u_axis.z = -plane->normal.x;
+	plane->u_axis = cross_vect(plane->normal);
 }
 
 void		xml_push_plane(t_env *e, t_node *list)
