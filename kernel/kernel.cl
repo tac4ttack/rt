@@ -898,8 +898,8 @@ static unsigned int		plane_checkerboard(const float3 normale, const float3 pos, 
 	u_axis.y = normale.z;
 	u_axis.z = -normale.x;
 	v_axis = cross(u_axis, normale);
-	uv.x = (int)floor(dot(pos, u_axis) / check_size.x);
-	uv.y = (int)floor(dot(pos, v_axis) / check_size.y);
+	uv.x = convert_int(floor(dot(pos, u_axis) / check_size.x));
+	uv.y = convert_int(floor(dot(pos, v_axis) / check_size.y));
 	if (uv.x % 2 == 0)
 	{
 		if (uv.y % 2 == 0)
@@ -918,8 +918,8 @@ static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, fl
 	int2			uv = 0;
 
 	v_axis = cross(u_axis, normale);
-	uv.x = (int)floor(dot(pos, u_axis) * ratio.x + offset.x);
-	uv.y = (int)floor(dot(pos, v_axis) * ratio.y + offset.y);
+	uv.x = convert_int(floor(dot(pos, u_axis) * ratio.x + offset.x));
+	uv.y = convert_int(floor(dot(pos, v_axis) * ratio.y + offset.y));
 	// if (uv.x < 0)
 	// {
 	// 	uv.x %= width;
@@ -995,10 +995,10 @@ static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsig
 		npos -= 10;
 	if (dot(pos, cyl->dir) < 0)
 		npos = (npos - 10) * -1;
-	uv.y = (int)floor((npos / 10) * t_height * cyl->diff_ratio.y + cyl->diff_offset.y);
+	uv.y = convert_int(floor((npos / 10) * t_height * cyl->diff_ratio.y + cyl->diff_offset.y));
 	npos = dot(pos, cyl->u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * t_width * cyl->diff_ratio.x + cyl->diff_offset.x);
+	uv.x = convert_int(floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * t_width * cyl->diff_ratio.x + cyl->diff_offset.x));
 	uv.x %= t_width;
 	uv.y %= t_height;
 	if (uv.x < 0)
@@ -1286,8 +1286,8 @@ static unsigned int		sphere_checkerboard(const float3 dir, const unsigned int co
 {
 	int2	uv = 0;
 
-	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415))) * check_size.x);
-	uv.y = (int)floor((0.5 - (asin(dir.y) / 3.1415)) * check_size.y);
+	uv.x = convert_int(floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415))) * check_size.x));
+	uv.y = convert_int(floor((0.5 - (asin(dir.y) / 3.1415)) * check_size.y));
 	if (uv.x % 2 == 0)
 	{
 		if (uv.y % 2 == 0)
@@ -1306,10 +1306,10 @@ static unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, 
 	int2			uv = 0;
 	int2			size = 0;
 
-	size.x = (int)floor(t_width * ratio.x);
-	size.y = (int)floor(t_height * ratio.y);
-	uv.x = (int)floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * size.x + offset.x);
-	uv.y = (int)floor((0.5 - (asin(pos.y) / M_PI)) * size.y + offset.y);
+	size.x = convert_int(floor(t_width * ratio.x));
+	size.y = convert_int(floor(t_height * ratio.y));
+	uv.x = convert_int(floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * size.x + offset.x));
+	uv.y = convert_int(floor((0.5 - (asin(pos.y) / M_PI)) * size.y + offset.y));
 	if (uv.x < 0)
 	{
 		uv.x %= t_width;
@@ -1385,10 +1385,10 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigne
 		npos -= 10;
 	while (npos < 0)
 		npos += 10;
-	uv.y = (int)floor((fast_length(npos * dir) / 10) * ratio.y * (t_height - 1) + offset.y);
+	uv.y = convert_int(floor((fast_length(npos * dir) / 10) * ratio.y * (t_height - 1) + offset.y));
 	npos = dot(pos, u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * ratio.x * (t_width - 1) + offset.x);
+	uv.x = convert_int(floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * ratio.x * (t_width - 1) + offset.x));
 	uv.x %= t_width;
 	uv.y %= t_height;
 	if (uv.x < 0)
@@ -1790,7 +1790,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 	t_tor			tor[128];
 	int				i = 0;
 
-	depth = (int)pow(2.f, (float)depth) - 1;
+	depth = convert_int(pow(2.f, (float)depth)) - 1;
 	i = 0;
 	while (i < 128)
 	{
