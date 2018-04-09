@@ -535,7 +535,7 @@ static unsigned int	blend_med(const unsigned int c1, const unsigned int c2)
 
 static unsigned int	blend_add(const unsigned int c1, const unsigned int c2)
 {
-	unsigned int r, g, b;
+	unsigned int r, g, b = 0;
 	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
 	unsigned int g1 = (c1 & 0x0000FF00) >> 8;
 	unsigned int b1 = (c1 & 0x000000FF);
@@ -551,7 +551,7 @@ static unsigned int	blend_add(const unsigned int c1, const unsigned int c2)
 
 static unsigned int	blend_factor(const unsigned int c1, const float factor)
 {
-	unsigned int r, g, b;
+	unsigned int r, g, b = 0;
 	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
 	unsigned int g1 = (c1 & 0x0000FF00) >> 8;
 	unsigned int b1 = (c1 & 0x000000FF);
@@ -564,7 +564,7 @@ static unsigned int	blend_factor(const unsigned int c1, const float factor)
 
 static unsigned int	get_ambient(const __local t_scene *scene, const unsigned int obj_color)
 {
-	unsigned int r, g, b;
+	unsigned int r, g, b = 0;
 
 	r = (obj_color & 0x00FF0000) >> 16;
 	g = (obj_color & 0x0000FF00) >> 8;
