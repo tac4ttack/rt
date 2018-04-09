@@ -1511,11 +1511,10 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 
 static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit hit)
 {
-	float3				res, save;
+	float3				res, save = 0;
 	t_object __local	*object;
 
 	object = hit.obj;
-	res = 0;
 	if (hit.wall)
 		res = hit.normal;
 	else
@@ -1553,47 +1552,6 @@ static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit h
 
 	return (fast_normalize(save));
 }
-
-/*static float3			wave(t_scene __local *scene, t_hit *hit, float3 normal)
-{
-	float3 res;
-
-	if (hit->obj->type == OBJ_PLANE)
-		res.y = normal.y + hit->obj->waves_p1.x * sin((hit->pos.x + scene->u_time));
-	else
-	{
-		res.x = normal.x + hit->obj->waves_p1.x * sin(normal.y * hit->obj->waves_p2.x + scene->u_time); //p1.x p2.x
-		res.z = normal.z + hit->obj->waves_p1.y * sin(normal.x * hit->obj->waves_p2.y + scene->u_time);
-		res.y = normal.y + hit->obj->waves_p1.z * sin(normal.x * hit->obj->waves_p2.z + scene->u_time);
-	}
-	return (res);
-}
-
-static float3			get_hit_normal(const __local t_scene *scene, float3 ray, t_hit hit)
-{
-	float3		res;
-
-	res = 0;
-	if (hit.obj->type == OBJ_SPHERE)
-	 	res = hit.pos - hit.obj->pos;
-	else if (hit.obj->type == OBJ_CYLINDER)
-		res = get_cylinder_normal((__local t_cylinder *)hit.obj, hit);
-	else if (hit.obj->type == OBJ_CONE)
-		res = get_cone_normal((__local t_cone *)hit.obj, hit);
-	else if (hit.obj->type == OBJ_ELLIPSOID)
-		res = get_ellipsoid_normal((__local t_ellipsoid *)hit.obj, &hit);
-//	ABORT
-//	else if (hit.obj->type == OBJ_THOR)
-//		res = get_thor_normal(hit.obj, hit);
-	else if (hit.obj->type == OBJ_PLANE)
-	{
-		if (dot(hit.obj->dir, -ray) < 0)
-			res = -hit.obj->dir;
-		else
-			res = hit.obj->dir;
-	}
-	return (fast_normalize(res));
-}*/
 
 static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3 ray)
 {
