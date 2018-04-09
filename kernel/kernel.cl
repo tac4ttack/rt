@@ -2067,15 +2067,18 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __global int *target, bool isHim)
 {
 	t_hit			hit;
-	int				depth;
-	unsigned int	color;
-	unsigned int	bounce_color;
+	int				depth = 0;
+	unsigned int	color = 0;
+	unsigned int	bounce_color = 0;
 
 	hit = hit_init();
 	hit.dist = MAX_DIST;
 	depth = scene->depth;
-	color = 0;
-	bounce_color = 0;
+	
+	// DEBUG
+	if (depth < 0)
+		printf("!WARNING!\nget_pixel_color | depth < 0 !!!!\n");
+
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
 	if ((isHim == 1) && (hit.lock == 1))
 		*target = hit.mem_index;
@@ -2202,19 +2205,19 @@ __kernel void		ray_trace(	__global	char		*output,
 	if (scene->over_sampling > 1)
 	{
 		uint2 true_pix = pix;
-		unsigned int i = 0;
+		unsigned int lap = 0;
 		pix.x *= scene->over_sampling;
 		pix.y *= scene->over_sampling;
 
-		while (i < scene->over_sampling * 2)
+		while (lap < scene->over_sampling * 2)
 		{
-			pix.x += (i % 2);
-			pix.y += !(i % 2);
+			pix.x += (lap % 2);
+			pix.y += !(lap % 2);
 			prim_ray = get_ray_cam(scene, pix, scene->win_w * scene->over_sampling, scene->win_h * scene->over_sampling);
-			final_color_o[i] = get_pixel_color(scene, prim_ray, target, (scene->flag & OPTION_RUN && true_pix.x == scene->mou_x && true_pix.y == scene->mou_y));
-			rgb.x += (final_color_o[i] & 0x00FF0000);
-			rgb.y += (final_color_o[i] & 0x0000FF00);
-			rgb.z += (final_color_o[i] & 0x000000FF);
+			final_color_o[lap] = get_pixel_color(scene, prim_ray, target, (scene->flag & OPTION_RUN && true_pix.x == scene->mou_x && true_pix.y == scene->mou_y));
+			rgb.x += (final_color_o[lap] & 0x00FF0000);
+			rgb.y += (final_color_o[lap] & 0x0000FF00);
+			rgb.z += (final_color_o[lap] & 0x000000FF);
 			i++;
 		}
 		final_color += ((rgb.x / (scene->over_sampling * 2)) & 0x00FF0000);
