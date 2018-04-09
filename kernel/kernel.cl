@@ -1662,15 +1662,13 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 
 static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hit old_hit, int depth)
 {
-	unsigned int	color;
-	float3			reflex;
 	t_hit			new_hit;
-	float			reflex_coef;
+	unsigned int	color = 0;
+	float3			reflex = 0;
+	float			reflex_coef = 0;
 
-	reflex = ray;
 	new_hit = hit_init();
-	color = 0;
-	reflex_coef = 0;
+	reflex = ray;
 	while (depth > 0)
 	{
 		// PREMIÈRE LOI DE SNELL-DESCARTES ///////////////////////////////////////////////////////////
