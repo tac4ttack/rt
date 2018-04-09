@@ -1260,8 +1260,8 @@ static float3 get_thor_normal(const __local t_thor *thor, const float3 hitpos)
 	float3	res = 0;
 	float	c = 0;
 
-	float	R = (float)(thor->lil_radius * thor->lil_radius);
-	float	r = (float)(thor->big_radius * thor->big_radius);
+	float	R = convert_float((thor->lil_radius * thor->lil_radius));
+	float	r = convert_float((thor->big_radius * thor->big_radius));
 
 	float3 pos = hitpos - thor->pos;
 	pos = vector_get_rotate(&pos, &thor->dir);
@@ -1466,7 +1466,6 @@ static t_ret	inter_cone(const __local t_cone *cone, const float3 ray, const floa
 static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const float3 ray, float lightdist)
 {
 	t_hit				hit;
-	float				dist = 0;
 	t_object __local	*obj;
 	uint				mem_index_obj = 0;
 	t_ret				ret;
@@ -1626,7 +1625,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			}
 
 			// specular part
-			reflect = fast_normalize(((float)(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
+			reflect = fast_normalize(((convert_float(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal)) - light_ray.dir);
 			tmp = dot(reflect, -ray);
 			if (tmp > EPSILONF)
 			{
@@ -1686,10 +1685,9 @@ static float3		refract_ray(const __local t_scene *scene, const float3 ray, float
 static float3		bounce_ray(const __local t_scene *scene, const float3 ray, t_tor tor)
 {
 	float3			reflex = 0;
-	float			reflex_coef = 0;
 
 	// PREMIÈRE LOI DE SNELL-DESCARTES ///////////////////////////////////////////////////////////
-	reflex = fast_normalize(ray - (2 * (float)dot(tor.normale, ray) * tor.normale));
+	reflex = fast_normalize(ray - (2 * convert_float(dot(tor.normale, ray)) * tor.normale));
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	return (reflex);
 }
@@ -1790,7 +1788,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 	t_tor			tor[128];
 	int				i = 0;
 
-	depth = convert_int(pow(2.f, (float)depth)) - 1;
+	depth = convert_int(pow(2.f, convert_float(depth))) - 1;
 	i = 0;
 	while (i < 128)
 	{
@@ -1924,7 +1922,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 static float3		get_ray_cam(__local t_scene *scene, const uint2 pix, const uint width, const uint height)
 {
 	float3			cam_ray = 0;
-	float			ratio = ((float)width) / ((float)height);
+	float			ratio = (convert_float(width)) / (convert_float(height));
 
 	cam_ray.x = ((2 * ((pix.x + 0.5) / width)) - 1) * ratio * (tan(radians(ACTIVECAM.fov / 2)));
 	cam_ray.y = ((1 - (2 * ((pix.y + 0.5) / height))) * tan(radians(ACTIVECAM.fov / 2)));
