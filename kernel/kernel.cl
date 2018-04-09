@@ -584,7 +584,7 @@ static unsigned int	get_ambient(const __local t_scene *scene, const unsigned int
 */
 static float3	rotat_zyx(const float3 vect, const float pitch, const float yaw, const float roll)
 {
-	float3		res;
+	float3		res = 0;
 	float		rad_pitch = radians(pitch);
 	float		rad_yaw = radians(yaw);
 	float		rad_roll = radians(roll);
@@ -597,7 +597,7 @@ static float3	rotat_zyx(const float3 vect, const float pitch, const float yaw, c
 
 static float3	rotat_xyz(const float3 vect, const float pitch, const float yaw, const float roll)
 {
-	float3		res;
+	float3		res = 0;
 	float		rad_pitch = radians(pitch);
 	float		rad_yaw = radians(yaw);
 	float		rad_roll = radians(roll);
