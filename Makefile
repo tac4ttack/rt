@@ -169,7 +169,6 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/data/xml_data_shrink.c \
 						xml/data/xml_data_specular.c \
 						xml/data/xml_data_type.c \
-						xml/object/xml_box.c \
 						xml/object/xml_cameras.c \
 						xml/object/xml_cones.c \
 						xml/object/xml_cylinders.c \

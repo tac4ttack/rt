@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/07 18:32:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/09 12:25:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # ifdef GPU
 #  define IS_GPU			1
 # else
-#  define IS_GPU			1
+#  define IS_GPU			0
 # endif
 
 # ifdef DEBUG
@@ -85,7 +85,6 @@
 # define OBJ_SPHERE			6
 # define OBJ_ELLIPSOID		7
 # define OBJ_TORUS			8
-# define OBJ_BOX			9
 
 # define NB_TEXTURE			4
 
@@ -148,36 +147,6 @@ typedef struct			s_light
 	cl_float			brightness;
 	cl_int				color;
 }						t_light;
-
-typedef struct			s_box
-{
-	cl_int				size;
-	cl_int				type;
-	cl_int				flags;
-	cl_int				id;
-	cl_float3			pos;
-	cl_float3			dir;
-	cl_float3			diff;
-	cl_float3			spec;
-	cl_int				color;
-	cl_float			reflex;
-	cl_float			refract;
-	cl_float			opacity;
-	cl_float3			limit_pos;
-	cl_float3			limit_dir;
-	cl_float3			waves_p1;
-	cl_float3			waves_p2;
-	cl_float2			check_size;
-	cl_int				diff_map_id;
-	cl_float2			diff_offset;
-	cl_float2			diff_ratio;
-	cl_float2			test_var1;
-	cl_float2			test_var2;
-	cl_float2			test_var3;
-
-	cl_float3			min;
-	cl_float3			max;
-}						t_box;
 
 typedef struct			s_cone
 {
@@ -618,7 +587,6 @@ void					xml_node_light(t_env *e, char *node);
 void					xml_node_plane(t_env *e, char *node);
 void					xml_node_scene(t_env *e, char *node, char mod);
 void					xml_node_sphere(t_env *e, char *node);
-void					xml_node_box(t_env *e, char *node);
 void					xml_node_torus(t_env *e, char *node);
 
 void					xml_parse_nodes(t_env *e);
@@ -629,7 +597,6 @@ void					xml_push_ellipsoid(t_env *e, t_node *list);
 void					xml_push_light(t_env *e, t_node *list);
 void					xml_push_plane(t_env *e, t_node *list);
 void					xml_push_sphere(t_env *e, t_node *list);
-void					xml_push_box(t_env *e, t_node *list);
 void					xml_push_torus(t_env *e, t_node *list);
 
 void					xml_save_scene(t_env *e, char *filename);

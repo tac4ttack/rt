@@ -28,21 +28,6 @@ Object informations have to be filled strictly like showed below:
 				color="0, 255, 250, 250"
 				/>
 	
-	<box 		pos="-5, 0, 0"
-				dir="0, 0, 0"
-				color="0, 255, 255, 255"
-				diff="0.5, 0.5, 0.5"
-				spec="0.5, 0.5, 0.5"
-				reflex="0.42"
-				refract="0"
-				opacity="0"
-				min="0, 0, 0"
-				max="4, 4, 4"
-				p_limit_pos="0, 0, 0"
-				p_limit_dir="0, 0, 1"
-				flags="000001"
-				/>
-
 	<cone		pos="5, 0, 0"
 				dir="0, 1, 0"
 				angle="10"
