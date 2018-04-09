@@ -564,6 +564,7 @@ static unsigned int	blend_factor(const unsigned int c1, const float factor)
 
 static unsigned int	get_ambient(const __local t_scene *scene, const unsigned int obj_color)
 {
+	// maybe unstable
 	unsigned int r, g, b = 0;
 
 	r = (obj_color & 0x00FF0000) >> 16;
@@ -2156,6 +2157,7 @@ __kernel void		ray_trace(	__global	char		*output,
 	pix.y = get_global_id(1);
 
 	id = pix.x + (scene->win_w * pix.y);
+	barrier(CLK_LOCAL_MEM_FENCE);;
 	//DEBUG
 	if (id >= (scene->win_w * scene->win_h))
 	{
@@ -2213,7 +2215,7 @@ __kernel void		ray_trace(	__global	char		*output,
 	if (scene->flag & OPTION_INVERT)
 		final_color = invert(final_color);
 
-
+	barrier(CLK_LOCAL_MEM_FENCE | CLK_GLOBAL_MEM_FENCE);
 	// ALPHA INSERT and RGB SWAP
 	int4 swap;
 	swap.w = 255;
