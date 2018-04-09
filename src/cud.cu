@@ -911,6 +911,52 @@ __host__ __device__ float3 get_thor_normal(const  t_thor *thor, const float3 hit
 	return (res);
 }
 
+__host__ __device__ unsigned int		sphere_texture(float3 pos, unsigned int  *texture, int t_width, int t_height, float3 ratio, float3 offset)
+{
+	unsigned int	color = 0;
+	int3			uv;
+	int3			size;
+
+	size.x = (int)(floor(t_width * ratio.x));
+	size.y = (int)(floor(t_height * ratio.y));
+	uv.x = (int)(floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * size.x + offset.x));
+	uv.y = (int)(floor((0.5 - (asin(pos.y) / M_PI)) * size.y + offset.y));
+	if (uv.x < 0)
+	{
+		uv.x %= t_width;
+		uv.x = (uv.x - t_width) * -1;
+	}
+	else
+		uv.x %= t_width;
+	if (uv.y < 0)
+		uv.y %= t_height;
+	else
+	{
+		uv.y %= t_height;
+		uv.y = (uv.y - t_height) * -1;
+	}
+	color = texture[uv.x + uv.y * t_width];
+	return (color);
+}
+
+__host__ __device__ unsigned int		sphere_checkerboard(const float3 dir, const unsigned int color, const float3 check_size)
+{
+	int2	uv;
+
+	uv.x = (int)(floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415))) * check_size.x));
+	uv.y = (int)(floor((0.5 - (asin(dir.y) / 3.1415)) * check_size.y));
+	if (uv.x % 2 == 0)
+	{
+		if (uv.y % 2 == 0)
+			return (0);
+		else
+			return (color);
+	}
+	else if (uv.y % 2 == 0)
+			return (color);
+	return (0);
+}
+
 __host__ __device__ float3	get_sphere_abc(const float radius, const float3 ray, const float3 origin)
 {
 	float3		abc = make_float3(0.f);
@@ -1251,6 +1297,38 @@ __host__ __device__ float3			get_hit_normal(const  t_scene *scene, float3 ray, t
 	}
 
 	return (normalize(save));
+}
+
+__host__ __device__ unsigned int		cylinder_texture(float3 pos,  t_cylinder *cyl, unsigned int *texture, int t_width, int t_height)
+{
+	unsigned int	color = 0;
+	float3			v_axis = make_float3(0);
+	float			npos = 0;
+	float			vpos = 0;
+	int2			uv;
+
+	v_axis = cross(cyl->u_axis, cyl->dir);
+	npos = length(dot(pos, cyl->dir) * cyl->dir);
+	while (npos > 10)
+		npos -= 10;
+	if (dot(pos, cyl->dir) < 0)
+		npos = (npos - 10) * -1;
+	uv.y = (int)(floor((npos / 10) * t_height * cyl->diff_ratio.y + cyl->diff_offset.y));
+	npos = dot(pos, cyl->u_axis);
+	vpos = dot(pos, v_axis);
+	uv.x = (int)(floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * t_width * cyl->diff_ratio.x + cyl->diff_offset.x));
+	uv.x %= t_width;
+	uv.y %= t_height;
+	if (uv.x < 0)
+		uv.x = uv.x + t_width;
+	if (uv.y < 0)
+		uv.y = -uv.y;
+	else
+		uv.y = (uv.y - t_height) * -1;
+	uv.x %= t_width;
+	uv.y %= t_height;
+	color = (unsigned int)texture[uv.x + (uv.y * t_width)];
+	return (color);
 }
 
 __host__ __device__ unsigned int			phong(const  t_scene *scene, const t_hit hit, const float3 ray)
@@ -1687,26 +1765,26 @@ __host__ __device__ unsigned int	get_pixel_color(const  t_scene *scene, float3 r
 		hit.normal = get_hit_normal(scene, ray, hit);
 		//hit.pos = hit.pos + (0.001f * hit.normal);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
-/*
+
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = sphere_texture(normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, (( t_sphere *)hit.obj)->diff_ratio, (( t_sphere *)hit.obj)->diff_offset);
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = sphere_checkerboard(normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
-
+/*
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = plane_texture(hit.normal, hit.pos, (( t_plane *)hit.obj)->u_axis, (( t_plane *)hit.obj)->diff_ratio, (( t_plane *)hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = plane_checkerboard(hit.normal, hit.pos, hit.obj->color, hit.obj->check_size);
-
+*/
 		if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = cylinder_texture(hit.pos - hit.obj->pos, ( t_cylinder *)hit.obj, scene->texture_star, 1500, 1500);
-
+			hit.color = cylinder_texture(hit.pos - hit.obj->pos, ( t_cylinder *)hit.obj, scene->texture_earth, 4915, 2457);
+/*
 		if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = cone_texture(hit.pos - hit.obj->pos, hit.obj->dir, (( t_cone *)hit.obj)->u_axis, scene->texture_star, 1500, 1500, (( t_cone *)hit.obj)->diff_ratio, (( t_cone *)hit.obj)->diff_offset);
 */
 		color = phong(scene, hit, ray);
-		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
-			return (fresnel(scene, ray, hit, depth + 1, color));
+	//	if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
+	//		return (fresnel(scene, ray, hit, depth + 1, color));
 
 		// c'est quoi ce bloc commenté en dessous?
 		/*else if (hit.obj->refract != 0 && hit.obj->opacity < 1)
@@ -1803,7 +1881,11 @@ __global__ void test(unsigned int *output, unsigned int width, unsigned int heig
 							char *mem_objects, int mem_size_objects,
 							float u_time,
 							t_scene *scene_data, t_cam *cameras_data,
-							char *mem_lights, int mem_size_lights)
+							char *mem_lights, int mem_size_lights,
+							unsigned int *texture_0,
+							unsigned int *texture_1,
+							unsigned int *texture_2,
+							unsigned int *texture_3)
 {
 	int col = blockIdx.x * blockDim.x + threadIdx.x;
 	int row = blockIdx.y * blockDim.y + threadIdx.y;
@@ -1811,7 +1893,7 @@ __global__ void test(unsigned int *output, unsigned int width, unsigned int heig
 	output[index] = ray_trace(index, mem_objects, mem_size_objects,
 								u_time,
 							scene_data, cameras_data,
-							mem_lights, mem_size_lights, 0, NULL, NULL, NULL, NULL);
+							mem_lights, mem_size_lights, 0, texture_0, texture_1, texture_2, texture_3);
 }
 
 extern "C" void init_cuda(t_cuda *cuda, t_scene *scene, t_gen *gen_objects, t_gen *gen_lights, t_tex *texture)
@@ -1821,14 +1903,14 @@ extern "C" void init_cuda(t_cuda *cuda, t_scene *scene, t_gen *gen_objects, t_ge
 	cudaMalloc(&cuda->mem_lights, gen_lights->mem_size);
 	cudaMalloc(&cuda->scene, sizeof(t_scene));
 	cudaMalloc(&cuda->cameras, sizeof(t_cam) * scene->n_cams);
-	/*cudaMalloc(&cuda->texture_0, sizeof(unsigned int) * texture[0].width * texture[0].height);
+	cudaMalloc(&cuda->texture_0, sizeof(unsigned int) * texture[0].width * texture[0].height);
 	cudaMalloc(&cuda->texture_1, sizeof(unsigned int) * texture[1].width * texture[1].height);
 	cudaMalloc(&cuda->texture_2, sizeof(unsigned int) * texture[2].width * texture[2].height);
-	cudaMalloc(&cuda->texture_3, sizeof(unsigned int) * texture[3].width * texture[3].height);
+	//cudaMalloc(&cuda->texture_3, sizeof(unsigned int) * texture[3].width * texture[3].height);
 	cudaMemcpy(cuda->texture_0, texture[0].pixel_array, sizeof(unsigned int) * texture[0].width * texture[0].height, cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->texture_1, texture[1].pixel_array, sizeof(unsigned int) * texture[1].width * texture[1].height, cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->texture_2, texture[2].pixel_array, sizeof(unsigned int) * texture[2].width * texture[2].height, cudaMemcpyHostToDevice);
-	cudaMemcpy(cuda->texture_3, texture[3].pixel_array, sizeof(unsigned int) * texture[3].width * texture[3].height, cudaMemcpyHostToDevice);*/
+	//cudaMemcpy(cuda->texture_3, texture[3].pixel_array, sizeof(unsigned int) * texture[3].width * texture[3].height, cudaMemcpyHostToDevice);
 
 }
 
@@ -1880,7 +1962,11 @@ extern "C" void render_cuda(t_cuda *cuda,
 												cuda->mem_objects, gen_objects->mem_size,
 												u_time,
 												cuda->scene, cuda->cameras,
-												cuda->mem_lights, gen_lights->mem_size);
+												cuda->mem_lights, gen_lights->mem_size,
+												(unsigned int *)cuda->texture_0,
+												(unsigned int *)cuda->texture_1,
+												(unsigned int *)cuda->texture_2,
+												(unsigned int *)cuda->texture_3);
 	cudaDeviceSynchronize();
 
 	// check for errors
