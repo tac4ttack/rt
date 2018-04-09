@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:57:19 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 18:38:03 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/09 13:51:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,12 @@ t_cl				*cl_construct(const char *path, \
 		return (NULL);
 	if (!(cl->kernel_src = (char *)ft_memalloc(MAX_SOURCE_SIZE)))
 		return (cl_destruct(&cl));
+	if (type == CL_DEVICE_TYPE_GPU)
+		ft_putendl("\x1b[1;29mInitializing OpenCL for GPU device\n\x1b[0m");
+	else if (type == CL_DEVICE_TYPE_CPU)
+		ft_putendl("\x1b[1;29mInitializing OpenCL for CPU device\n\x1b[0m");
+	else
+		ft_putendl("\x1b[1;29mInitializing OpenCL for unknown device\n\x1b[0m");
 	if (!cl_load_src(cl, path) ||
 		!cl_create_base(cl, type) ||
 		!cl_build(cl))

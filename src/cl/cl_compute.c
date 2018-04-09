@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:55:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 18:39:42 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/09 13:50:47 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 bool		cl_compute(t_cl *cl)
 {
 	cl->event = 0;
+	
+	// DEBUG, ajout pour voir si ça supprime l'abort sauvage
+	// 09/04/2018 13:50:30 putain je viens de foutre le truc et j'abort direct....
+	clFinish(cl->queue);
+
 	cl->err = clEnqueueNDRangeKernel(cl->queue, cl->kernel, 2, NULL,
 										cl->dimension,
 										NULL,
