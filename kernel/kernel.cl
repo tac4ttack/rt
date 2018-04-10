@@ -1613,9 +1613,9 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				l_g = (hue_light & 0x00FF00) >> 8;
 				l_b = (hue_light & 0x0000FF);
 
-				col_r += ((l_r * brightness) + obj_r) * tmp * diffuse.x;
-				col_g += ((l_g * brightness) + obj_g) * tmp * diffuse.y;
-				col_b += ((l_b * brightness) + obj_b) * tmp * diffuse.z;
+				col_r += (((l_r * brightness) * obj_r) * tmp * diffuse.x) / 255.0;
+				col_g += (((l_g * brightness) * obj_g) * tmp * diffuse.y) / 255.0;
+				col_b += (((l_b * brightness) * obj_b) * tmp * diffuse.z) / 255.0;
 
 				(col_r > 255 ? col_r = 255 : 0);
 				(col_g > 255 ? col_g = 255 : 0);
