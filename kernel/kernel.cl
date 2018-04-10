@@ -386,6 +386,24 @@ static t_hit	hit_init(void)
 	return (hit);
 }
 
+static unsigned int		skybox(const float3 dir, unsigned int __global *texture, int t_width, int t_height)
+{
+	unsigned int	color = 0;
+	int2			uv = 0;
+
+	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * M_PI))) * t_width);
+	uv.y = (int)floor((0.5 - (asin(dir.y) / M_PI)) * t_height);
+	if (uv.x < 0)
+		uv.x = -uv.x;
+	if (uv.y < 0)
+		uv.y = -uv.y;
+	if (uv.x >= t_width)
+		uv.x %= (t_width - 1);
+	if (uv.y >= t_height)
+		uv.y %= (t_height - 1);
+	color = texture[uv.x + uv.y * t_width];
+	return (color);
+}
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -1275,26 +1293,6 @@ static float3 get_thor_normal(const __local t_thor *thor, const float3 hitpos)
 /*
 ** SPHERES FUNCTIONS ///////////////////////////////////////////////////////////
 */
-
-static unsigned int		skybox(const float3 dir, unsigned int __global *texture, int t_width, int t_height)
-{
-	unsigned int	color = 0;
-	int2			uv = 0;
-
-	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * M_PI))) * t_width);
-	uv.y = (int)floor((0.5 - (asin(dir.y) / M_PI)) * t_height);
-	if (uv.x < 0)
-		uv.x = -uv.x;
-	if (uv.y < 0)
-		uv.y = -uv.y;
-	if (uv.x >= t_width)
-		uv.x %= (t_width - 1);
-	if (uv.y >= t_height)
-		uv.y %= (t_height - 1);
-	color = texture[uv.x + uv.y * t_width];
-	return (color);
-}
-
 static t_ret			sphere_cut(const __local t_sphere *sphere, float2 tmp, const float3 ray, const float3 origin)
 {
 	t_ret		ret;
@@ -1304,7 +1302,7 @@ static t_ret			sphere_cut(const __local t_sphere *sphere, float2 tmp, const floa
 	ret.dist = 0;
 	ret.wall = 0;
 	ret.normal = 0;
-	
+
 	sphere->cut_max.x = sphere->radius;
 	sphere->cut_min.x = sphere->radius;
 	sphere->cut_max.y = sphere->radius;
