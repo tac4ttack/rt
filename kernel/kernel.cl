@@ -29,6 +29,7 @@
 #define OPTION_CARTOON_FOUR			(1 << 8)
 #define OPTION_STEREO				(1 << 9)
 #define OPTION_CARTOON_TWO			(1 << 10)
+#define OPTION_SKYBOX				(1 << 11)
 
 #define OBJ_FLAG_WAVES				(1 << 1)
 #define OBJ_FLAG_CHECKERED			(1 << 2)
@@ -36,6 +37,7 @@
 #define OBJ_FLAG_BUMP_MAP			(1 << 4)
 #define OBJ_FLAG_PLANE_LIMIT		(1 << 5)
 #define OBJ_FLAG_PLANE_LIMIT_FIX	(1 << 6)
+#define OBJ_FLAG_CUT				(1 << 7)
 
 # define OBJ_CAM					1
 # define OBJ_LIGHT					2
@@ -97,9 +99,8 @@ typedef struct			s_object
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
-	float2				test_var1;
-	float2				test_var2;
-	float2				test_var3;
+	float3				cut_min;
+	float3				cut_max;
 }						t_object;
 
 typedef struct			s_cone
@@ -124,9 +125,8 @@ typedef struct			s_cone
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
-	float2				test_var1;
-	float2				test_var2;
-	float2				test_var3;
+	float3				cut_min;
+	float3				cut_max;
 
 	float				angle;
 	float3				u_axis;
@@ -154,9 +154,8 @@ typedef struct			s_cylinder
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
-	float2				test_var1;
-	float2				test_var2;
-	float2				test_var3;
+	float3				cut_min;
+	float3				cut_max;
 
 	float				radius;
 	float3				u_axis;
@@ -184,9 +183,8 @@ typedef struct			s_plane
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
-	float2				test_var1;
-	float2				test_var2;
-	float2				test_var3;
+	float3				cut_min;
+	float3				cut_max;
 
 	float				radius;
 	float3				u_axis;
@@ -214,9 +212,8 @@ typedef struct			s_sphere
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
-	float2				test_var1;
-	float2				test_var2;
-	float2				test_var3;
+	float3				cut_min;
+	float3				cut_max;
 
 	float				radius;
 }						t_sphere;
@@ -243,9 +240,8 @@ typedef struct			s_ellipsoid
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
-	float2				test_var1;
-	float2				test_var2;
-	float2				test_var3;
+	float3				cut_min;
+	float3				cut_max;
 
 	float				radius;
 	float3				axis_size;
@@ -273,9 +269,8 @@ typedef struct			s_thor
 	int					diff_map_id;
 	float2				diff_offset;
 	float2				diff_ratio;
-	float2				test_var1;
-	float2				test_var2;
-	float2				test_var3;
+	float3				cut_min;
+	float3				cut_max;
 
 	double				lil_radius;
 	double				big_radius;
@@ -2006,8 +2001,14 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 
 		return (blend_add(color, bounce_color));
 	}
-	color = skybox(ray, scene->texture_skybox, 4096, 2048);
-	return (color);
+	
+	if (scene->flag & OPTION_SKYBOX)
+	{
+		color = skybox(ray, scene->texture_skybox, 4096, 2048);
+		return (color);
+	}
+	else
+		return (get_ambient(scene, BACKCOLOR));
 }
 
 static float3		get_ray_cam(__local t_scene *scene, const uint2 pix, const uint width, const uint height)
