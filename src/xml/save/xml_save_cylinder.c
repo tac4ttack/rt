@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 20:35:02 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 20:48:19 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:38:38 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	xml_write_cylinder(t_cylinder *cyl, const int fd)
 	xml_write_float3("\tdir", cyl->dir, fd);
 	xml_write_float("\tradius", cyl->radius, fd);
 	xml_write_color(cyl->color, fd);
-	xml_write_float("\theight", cyl->height, fd);
 	xml_write_float3("\tdiff", cyl->diff, fd);
 	xml_write_float3("\tspec", cyl->spec, fd);
 	xml_write_float("\treflex", cyl->reflex, fd);

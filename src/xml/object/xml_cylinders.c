@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 16:30:32 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:35:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,6 @@ static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
 		s_error("\x1b[1;31mCylinder error, COLOR expected in #4\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, cyl_node);
-	if (ft_strncmp(att[*i], "height=\"", 8) != 0)
-		s_error("\x1b[1;31mCylinder error, HEIGHT expected in #5\x1b[0m", e);
-	else
-		xml_data_height(e, att, i, cyl_node);
 	xml_cylinder_data_n(e, att, cyl_node, i);
 }
 
@@ -143,7 +139,6 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	cylinder.reflex = list->reflex;
 	cylinder.refract = list->refract;
 	cylinder.opacity = list->opacity;
-	cylinder.height = 0;
 	cylinder.limit_pos = list->limit_pos;
 	cylinder.limit_dir = list->limit_dir;
 	cylinder.dir = normalize_vect(list->dir);

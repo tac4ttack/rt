@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:56 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 16:30:28 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:32:27 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	ui_add_cylinder(t_env *e)
 	cylinder.radius = 1;
 	cylinder.flags = 0;
 	cylinder.color = rand();
-	cylinder.height = 0;
 	cylinder.diff.x = 0.42;
 	cylinder.diff.y = 0.42;
 	cylinder.diff.z = 0.42;
