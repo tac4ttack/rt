@@ -32,7 +32,6 @@ void		load_texture(t_env *e)
 	}
 	e->texture[0].width = e->raw_texture.width;
 	e->texture[0].height = e->raw_texture.height;
-	printf("w : %i, h : %i\n", e->texture[0].width, e->texture[0].height);
 	while (j < e->texture[0].height)
 	{
 		i = 0;
@@ -70,7 +69,7 @@ void		load_texture(t_env *e)
 		j++;
 	}
 	j = 0;
-	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file("./textures/earth_cloudshd.jpg", NULL);
+	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file("./textures/starmap_g4k.jpg", NULL);
 	e->raw_texture.pixels = gdk_pixbuf_get_pixels(e->raw_texture.pixbuf);
 	e->raw_texture.n_channels = gdk_pixbuf_get_n_channels(e->raw_texture.pixbuf);
 	e->raw_texture.rowstride = gdk_pixbuf_get_rowstride(e->raw_texture.pixbuf);
@@ -83,6 +82,7 @@ void		load_texture(t_env *e)
 	}
 	e->texture[2].width = e->raw_texture.width;
 	e->texture[2].height = e->raw_texture.height;
+	printf("w : %i, h : %i\n", e->texture[2].width, e->texture[2].height);
 	while (j < e->texture[2].height)
 	{
 		i = 0;
