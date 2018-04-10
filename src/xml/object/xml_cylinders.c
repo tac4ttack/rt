@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/07 18:24:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:30:32 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,6 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	cylinder.limit_pos = list->limit_pos;
 	cylinder.limit_dir = list->limit_dir;
 	cylinder.dir = normalize_vect(list->dir);
-	cylinder.base_dir = normalize_vect(list->dir);
 	xml_push_cylinder_effects(&cylinder);
 	e->gen_objects->add(e->gen_objects, (void*)&cylinder);
 }

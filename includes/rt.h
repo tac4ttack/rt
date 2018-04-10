@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/09 12:25:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:30:12 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,6 @@ typedef struct			s_cylinder
 	cl_float2			test_var3;
 
 	cl_float			height;
-	cl_float3			base_dir;
 	cl_float			radius;
 	cl_float3			u_axis;
 }						t_cylinder;

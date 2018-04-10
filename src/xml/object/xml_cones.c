@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 20:53:12 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:29:29 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,11 @@ void		xml_push_cone(t_env *e, t_node *list)
 	t_cone cone;
 
 	cone.size = sizeof(t_cone);
-	cone.type = OBJ_CONE;
-	cone.flags = 0;
 	cone.id = e->current_index_objects;
+	cone.type = OBJ_CONE;
+	cone.flags = list->flags;
 	cone.pos = list->pos;
-	cone.dir = normalize_vect(list->dir);
+
 	cone.angle = list->angle;
 	cone.color = list->color;
 	cone.diff = list->diff;
@@ -143,7 +143,7 @@ void		xml_push_cone(t_env *e, t_node *list)
 	cone.opacity = list->opacity;
 	cone.limit_pos = list->limit_pos;
 	cone.limit_dir = list->limit_dir;
-	cone.flags = list->flags;
+	cone.dir = normalize_vect(list->dir);
 	xml_push_cone_effects(&cone);
 	e->gen_objects->add(e->gen_objects, (void*)&cone);
 }

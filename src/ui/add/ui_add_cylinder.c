@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:56 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 11:08:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:30:28 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ void	ui_add_cylinder(t_env *e)
 	cylinder.diff.y = 0.42;
 	cylinder.diff.z = 0.42;
 	cylinder.spec = cylinder.diff;
-	cylinder.base_dir = cylinder.dir;
-	cylinder.base_dir = normalize_vect(cylinder.dir);
 	ui_add_cylinder_effects(&cylinder);
 	e->gen_objects->add(e->gen_objects, (void*)&cylinder);
 }
