@@ -897,8 +897,8 @@ static unsigned int		plane_checkerboard(const float3 normale, const float3 pos, 
 	u_axis.y = normale.z;
 	u_axis.z = -normale.x;
 	v_axis = cross(u_axis, normale);
-	uv.x = (int)floor(dot(pos, u_axis) / check_size.x);
-	uv.y = (int)floor(dot(pos, v_axis) / check_size.y);
+	uv.x = convert_int(floor(dot(pos, u_axis) / check_size.x));
+	uv.y = convert_int(floor(dot(pos, v_axis) / check_size.y));
 	if (uv.x % 2 == 0)
 	{
 		if (uv.y % 2 == 0)
@@ -917,8 +917,8 @@ static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, fl
 	int2			uv = 0;
 
 	v_axis = cross(u_axis, normale);
-	uv.x = (int)floor(dot(pos, u_axis) * ratio.x + offset.x);
-	uv.y = (int)floor(dot(pos, v_axis) * ratio.y + offset.y);
+	uv.x = convert_int(floor(dot(pos, u_axis) * ratio.x + offset.x));
+	uv.y = convert_int(floor(dot(pos, v_axis) * ratio.y + offset.y));
 	// if (uv.x < 0)
 	// {
 	// 	uv.x %= width;
@@ -994,10 +994,10 @@ static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsig
 		npos -= 10;
 	if (dot(pos, cyl->dir) < 0)
 		npos = (npos - 10) * -1;
-	uv.y = (int)floor((npos / 10) * t_height * cyl->diff_ratio.y + cyl->diff_offset.y);
+	uv.y = convert_int(floor((npos / 10) * t_height * cyl->diff_ratio.y + cyl->diff_offset.y));
 	npos = dot(pos, cyl->u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * t_width * cyl->diff_ratio.x + cyl->diff_offset.x);
+	uv.x = convert_int(floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * t_width * cyl->diff_ratio.x + cyl->diff_offset.x));
 	uv.x %= t_width;
 	uv.y %= t_height;
 	if (uv.x < 0)
@@ -1259,8 +1259,8 @@ static float3 get_thor_normal(const __local t_thor *thor, const float3 hitpos)
 	float3	res = 0;
 	float	c = 0;
 
-	float	R = (float)(thor->lil_radius * thor->lil_radius);
-	float	r = (float)(thor->big_radius * thor->big_radius);
+	float	R = convert_float((thor->lil_radius * thor->lil_radius));
+	float	r = convert_float((thor->big_radius * thor->big_radius));
 
 	float3 pos = hitpos - thor->pos;
 	pos = vector_get_rotate(&pos, &thor->dir);
@@ -1305,8 +1305,13 @@ static unsigned int		sphere_checkerboard(const float3 dir, const unsigned int co
 {
 	int2	uv = 0;
 
+<<<<<<< HEAD
 	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * M_PI))) * check_size.x);
 	uv.y = (int)floor((0.5 - (asin(dir.y) / M_PI)) * check_size.y);
+=======
+	uv.x = convert_int(floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415))) * check_size.x));
+	uv.y = convert_int(floor((0.5 - (asin(dir.y) / 3.1415)) * check_size.y));
+>>>>>>> 7dc547b8ec7e6507bdf5f642c74da4771ba37378
 	if (uv.x % 2 == 0)
 	{
 		if (uv.y % 2 == 0)
@@ -1325,10 +1330,10 @@ static unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, 
 	int2			uv = 0;
 	int2			size = 0;
 
-	size.x = (int)floor(t_width * ratio.x);
-	size.y = (int)floor(t_height * ratio.y);
-	uv.x = (int)floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * size.x + offset.x);
-	uv.y = (int)floor((0.5 - (asin(pos.y) / M_PI)) * size.y + offset.y);
+	size.x = convert_int(floor(t_width * ratio.x));
+	size.y = convert_int(floor(t_height * ratio.y));
+	uv.x = convert_int(floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * size.x + offset.x));
+	uv.y = convert_int(floor((0.5 - (asin(pos.y) / M_PI)) * size.y + offset.y));
 	if (uv.x < 0)
 	{
 		uv.x %= (t_width - 1);
@@ -1404,10 +1409,10 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigne
 		npos -= 10;
 	while (npos < 0)
 		npos += 10;
-	uv.y = (int)floor((fast_length(npos * dir) / 10) * ratio.y * (t_height - 1) + offset.y);
+	uv.y = convert_int(floor((fast_length(npos * dir) / 10) * ratio.y * (t_height - 1) + offset.y));
 	npos = dot(pos, u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * ratio.x * (t_width - 1) + offset.x);
+	uv.x = convert_int(floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * ratio.x * (t_width - 1) + offset.x));
 	uv.x %= t_width;
 	uv.y %= t_height;
 	if (uv.x < 0)
@@ -1646,7 +1651,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			}
 
 			// specular part
-			reflect = fast_normalize(((float)(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal) - light_ray.dir);
+			reflect = fast_normalize(((convert_float(2.0 * dot(hit.normal, light_ray.dir)) * hit.normal)) - light_ray.dir);
 			tmp = dot(reflect, -ray);
 			if (tmp > EPSILONF)
 			{
@@ -1708,7 +1713,7 @@ static float3		bounce_ray(const __local t_scene *scene, const float3 ray, t_tor 
 	float3			reflex = 0;
 
 	// PREMIÈRE LOI DE SNELL-DESCARTES ///////////////////////////////////////////////////////////
-	reflex = fast_normalize(ray - (2 * (float)dot(tor.normale, ray) * tor.normale));
+	reflex = fast_normalize(ray - (2 * convert_float(dot(tor.normale, ray)) * tor.normale));
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	return (reflex);
 }
@@ -1814,7 +1819,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 	t_tor			tor[64];
 	int				i = 0;
 
-	depth = (int)pow(2.f, (float)depth) - 1;
+	depth = convert_int(pow(2.f, convert_float(depth))) - 1;
 	i = 0;
 	while (i < 64)
 	{
@@ -2012,7 +2017,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 static float3		get_ray_cam(__local t_scene *scene, const uint2 pix, const uint width, const uint height)
 {
 	float3			cam_ray = 0;
-	float			ratio = ((float)width) / ((float)height);
+	float			ratio = (convert_float(width)) / (convert_float(height));
 
 	cam_ray.x = ((2 * ((pix.x + 0.5) / width)) - 1) * ratio * (tan(radians(ACTIVECAM.fov / 2)));
 	cam_ray.y = ((1 - (2 * ((pix.y + 0.5) / height))) * tan(radians(ACTIVECAM.fov / 2)));
