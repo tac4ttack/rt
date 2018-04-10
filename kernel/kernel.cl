@@ -158,8 +158,6 @@ typedef struct			s_cylinder
 	float2				test_var2;
 	float2				test_var3;
 
-	float				height;
-	float3				base_dir;
 	float				radius;
 	float3				u_axis;
 }						t_cylinder;
@@ -1305,13 +1303,8 @@ static unsigned int		sphere_checkerboard(const float3 dir, const unsigned int co
 {
 	int2	uv = 0;
 
-<<<<<<< HEAD
-	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * M_PI))) * check_size.x);
-	uv.y = (int)floor((0.5 - (asin(dir.y) / M_PI)) * check_size.y);
-=======
 	uv.x = convert_int(floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415))) * check_size.x));
 	uv.y = convert_int(floor((0.5 - (asin(dir.y) / 3.1415)) * check_size.y));
->>>>>>> 7dc547b8ec7e6507bdf5f642c74da4771ba37378
 	if (uv.x % 2 == 0)
 	{
 		if (uv.y % 2 == 0)
