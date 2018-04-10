@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <!-- interface-css-provider-path bidou/gtk.css -->
@@ -48,6 +48,9 @@ fmessina - Florian MESSINA
 ntoniolo - Noé TONIOLO</property>
     <property name="logo">logo.png</property>
     <property name="license_type">custom</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="about_box">
         <property name="can_focus">False</property>
@@ -66,39 +69,6 @@ ntoniolo - Noé TONIOLO</property>
         </child>
       </object>
     </child>
-    <child>
-      <placeholder/>
-    </child>
-  </object>
-  <object class="GtkAdjustment" id="adjustment1">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment2">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment3">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment4">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment5">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment6">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="blue_ambient_adjustement">
     <property name="upper">1</property>
@@ -564,6 +534,9 @@ ntoniolo - Noé TONIOLO</property>
     <property name="is_focus">True</property>
     <property name="window_position">center</property>
     <property name="has_resize_grip">True</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkBox" id="main_box">
         <property name="visible">True</property>
@@ -1869,37 +1842,33 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="margin_top">3</property>
                                                         <property name="margin_bottom">3</property>
                                                         <child>
-                                                          <object class="GtkButton" id="obj_plane_limit_button">
+                                                          <object class="GtkCheckButton" id="obj_plane_limit_button">
                                                             <property name="label" translatable="yes">Enable/Disable
    "Plane limit"</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
-                                                            <property name="receives_default">True</property>
-                                                            <property name="tooltip_text" translatable="yes">Limit the object with plane defined below</property>
-                                                            <property name="margin_left">10</property>
-                                                            <property name="margin_right">10</property>
+                                                            <property name="receives_default">False</property>
+                                                            <property name="draw_indicator">True</property>
                                                           </object>
                                                           <packing>
                                                             <property name="expand">False</property>
                                                             <property name="fill">True</property>
-                                                            <property name="position">0</property>
+                                                            <property name="position">2</property>
                                                           </packing>
                                                         </child>
                                                         <child>
-                                                          <object class="GtkButton" id="obj_plane_limit_fix_button">
+                                                          <object class="GtkCheckButton" id="obj_plane_limit_fix_button">
                                                             <property name="label" translatable="yes"> Enable/Disable
 "Plane limit lock"</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
-                                                            <property name="receives_default">True</property>
-                                                            <property name="tooltip_text" translatable="yes">Limit the object with plane defined below</property>
-                                                            <property name="margin_left">10</property>
-                                                            <property name="margin_right">10</property>
+                                                            <property name="receives_default">False</property>
+                                                            <property name="draw_indicator">True</property>
                                                           </object>
                                                           <packing>
                                                             <property name="expand">False</property>
                                                             <property name="fill">True</property>
-                                                            <property name="position">1</property>
+                                                            <property name="position">3</property>
                                                           </packing>
                                                         </child>
                                                       </object>
@@ -2115,6 +2084,271 @@ ntoniolo - Noé TONIOLO</property>
                                           </object>
                                         </child>
                                         <child>
+                                          <object class="GtkListBoxRow" id="obj_list_cut">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="margin_top">10</property>
+                                            <child>
+                                              <object class="GtkExpander" id="obj_expand_cut">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <child>
+                                                  <object class="GtkBox" id="obj_cut_box">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="orientation">vertical</property>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_cut_button_box">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="halign">center</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">3</property>
+                                                        <child>
+                                                          <object class="GtkCheckButton" id="obj_cut_check">
+                                                            <property name="label" translatable="yes">Enable/Disable
+     "Cutting"</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="receives_default">False</property>
+                                                            <property name="draw_indicator">True</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_cut_y_box">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">10</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_cut_y_label">
+                                                            <property name="width_request">60</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="label" translatable="yes">Y axis</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_cut_x_min_spin">
+                                                            <property name="width_request">133</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="margin_left">10</property>
+                                                            <property name="margin_right">10</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">1,00</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">1</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_cut_x_max_spin">
+                                                            <property name="width_request">133</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="margin_left">10</property>
+                                                            <property name="margin_right">10</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">1,00</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">1</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_cut_z_box">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="margin_top">3</property>
+                                                        <property name="margin_bottom">10</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_cut_z_label">
+                                                            <property name="width_request">60</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="label" translatable="yes">Z axis</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_cut_y_min_spin">
+                                                            <property name="width_request">133</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="margin_left">10</property>
+                                                            <property name="margin_right">10</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">1,00</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">1</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_cut_y_max_spin">
+                                                            <property name="width_request">133</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="margin_left">10</property>
+                                                            <property name="margin_right">10</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">1,00</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">1</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">2</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="obj_cut_x_box">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="obj_cut_x_label">
+                                                            <property name="width_request">60</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="label" translatable="yes">X axis</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_cut_z_min_spin">
+                                                            <property name="width_request">133</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="margin_left">10</property>
+                                                            <property name="margin_right">10</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">1,00</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">1</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="obj_cut_z_max_spin">
+                                                            <property name="width_request">133</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="margin_left">10</property>
+                                                            <property name="margin_right">10</property>
+                                                            <property name="width_chars">0</property>
+                                                            <property name="text" translatable="yes">1,00</property>
+                                                            <property name="input_purpose">number</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">2</property>
+                                                            <property name="wrap">True</property>
+                                                            <property name="update_policy">if-valid</property>
+                                                            <property name="value">1</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">3</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child type="label">
+                                                  <object class="GtkLabel" id="obj_expand_cut_label">
+                                                    <property name="visible">True</property>
+                                                    <property name="sensitive">False</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">Object cutting</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
                                           <object class="GtkListBoxRow" id="obj_list_sinwave">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
@@ -2136,13 +2370,13 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="margin_top">3</property>
                                                         <property name="margin_bottom">3</property>
                                                         <child>
-                                                          <object class="GtkButton" id="obj_sinwave_button">
+                                                          <object class="GtkCheckButton" id="obj_sinwave_button">
                                                             <property name="label" translatable="yes">Enable/Disable
    "Sin Wave"</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
-                                                            <property name="receives_default">True</property>
-                                                            <property name="tooltip_text" translatable="yes">Disturb current object's normal with a sinusoidal wave effect</property>
+                                                            <property name="receives_default">False</property>
+                                                            <property name="draw_indicator">True</property>
                                                           </object>
                                                           <packing>
                                                             <property name="expand">False</property>
@@ -2397,13 +2631,13 @@ settings 2</property>
                                                         <property name="margin_top">3</property>
                                                         <property name="margin_bottom">3</property>
                                                         <child>
-                                                          <object class="GtkButton" id="obj_checkboard_button">
+                                                          <object class="GtkCheckButton" id="obj_checkboard_button">
                                                             <property name="label" translatable="yes">  Enable/Disable  
 "Checked Pattern"</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
-                                                            <property name="receives_default">True</property>
-                                                            <property name="tooltip_text" translatable="yes">Texture current object with a checked pattern</property>
+                                                            <property name="receives_default">False</property>
+                                                            <property name="draw_indicator">True</property>
                                                           </object>
                                                           <packing>
                                                             <property name="expand">False</property>
@@ -2545,18 +2779,18 @@ settings 2</property>
                                                         <property name="margin_top">3</property>
                                                         <property name="margin_bottom">3</property>
                                                         <child>
-                                                          <object class="GtkButton" id="obj_texture_diff_button">
+                                                          <object class="GtkCheckButton" id="obj_texture_diff_button">
                                                             <property name="label" translatable="yes">Enable/Disable
  "Diffuse Map"</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
-                                                            <property name="receives_default">True</property>
-                                                            <property name="tooltip_text" translatable="yes">Texture current object with choosed diffuse map</property>
+                                                            <property name="receives_default">False</property>
+                                                            <property name="draw_indicator">True</property>
                                                           </object>
                                                           <packing>
                                                             <property name="expand">False</property>
                                                             <property name="fill">True</property>
-                                                            <property name="position">1</property>
+                                                            <property name="position">0</property>
                                                           </packing>
                                                         </child>
                                                       </object>
@@ -3425,7 +3659,7 @@ High setting decreases a lot the rendering speed</property>
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">True</property>
-                                            <property name="position">1</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -3438,6 +3672,20 @@ High setting decreases a lot the rendering speed</property>
                                             <property name="margin_right">5</property>
                                             <property name="draw_indicator">True</property>
                                             <property name="group">scene_postproc_none_radio</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkCheckButton" id="scene_skybox_check">
+                                            <property name="label" translatable="yes">Skybox</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="draw_indicator">True</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -4299,166 +4547,13 @@ High setting decreases a lot the rendering speed</property>
                                     <property name="orientation">vertical</property>
                                     <property name="homogeneous">True</property>
                                     <child>
-                                      <object class="GtkBox" id="test1">
-                                        <property name="height_request">35</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <child>
-                                          <object class="GtkLabel" id="test1_float2_var1_label">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="margin_left">10</property>
-                                            <property name="margin_right">10</property>
-                                            <property name="label" translatable="yes">float2 var1</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="test1_var1_spin_x">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="margin_left">10</property>
-                                            <property name="margin_right">10</property>
-                                            <property name="adjustment">adjustment1</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="test1_var1_spin_y">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="margin_left">10</property>
-                                            <property name="margin_right">10</property>
-                                            <property name="adjustment">adjustment2</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">0</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="test2">
-                                        <property name="height_request">35</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <child>
-                                          <object class="GtkLabel" id="test2_float2_var2_label">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="margin_left">10</property>
-                                            <property name="margin_right">10</property>
-                                            <property name="label" translatable="yes">float2 var2</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="test2_var2_spin_x">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="margin_left">10</property>
-                                            <property name="margin_right">10</property>
-                                            <property name="adjustment">adjustment3</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="test2_var2_spin_y">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="margin_left">10</property>
-                                            <property name="margin_right">10</property>
-                                            <property name="adjustment">adjustment4</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">1</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="test3">
-                                        <property name="height_request">35</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <child>
-                                          <object class="GtkLabel" id="test3_float2_var3_label">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="margin_left">10</property>
-                                            <property name="margin_right">10</property>
-                                            <property name="label" translatable="yes">float2 var3</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="test3_var3_spin_x">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="margin_left">10</property>
-                                            <property name="margin_right">10</property>
-                                            <property name="adjustment">adjustment5</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="test3_var3_spin_y">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="margin_left">10</property>
-                                            <property name="margin_right">10</property>
-                                            <property name="adjustment">adjustment6</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">3</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                   </object>
                                 </child>
@@ -4521,9 +4616,6 @@ High setting decreases a lot the rendering speed</property>
           </packing>
         </child>
       </object>
-    </child>
-    <child type="titlebar">
-      <placeholder/>
     </child>
   </object>
 </interface>

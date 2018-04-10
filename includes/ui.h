@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 17:39:39 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 19:20:58 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,12 +180,14 @@ typedef	struct			s_ui
 	GtkWidget			*save_window;
 	GtkWidget			*about_window;
 
-	GtkWidget			*test1_var1_spin_x;
-	GtkWidget			*test1_var1_spin_y;
-	GtkWidget			*test2_var2_spin_x;
-	GtkWidget			*test2_var2_spin_y;
-	GtkWidget			*test3_var3_spin_x;
-	GtkWidget			*test3_var3_spin_y;
+	GtkWidget			*scene_skybox_check; // todo
+	GtkWidget			*obj_cut_check;
+	GtkWidget			*obj_cut_x_min_spin; // wip
+	GtkWidget			*obj_cut_x_max_spin;
+	GtkWidget			*obj_cut_y_min_spin;
+	GtkWidget			*obj_cut_y_max_spin;
+	GtkWidget			*obj_cut_z_min_spin;
+	GtkWidget			*obj_cut_z_max_spin;
 	
 }						t_ui;
 
@@ -250,6 +252,16 @@ gboolean				cb_obj_checkboard_height(GtkSpinButton *spin, \
 												gpointer data);
 void					cb_obj_color(GtkColorButton *button, gpointer data);
 void					cb_obj_combo_type(GtkComboBox *box, gpointer data);
+
+void					cb_obj_cut_check(GtkToggleButton *button, \
+										gpointer data);
+gboolean				cb_obj_cut_x_min(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_cut_x_max(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_cut_y_min(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_cut_y_max(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_cut_z_min(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_cut_z_max(GtkSpinButton *spin, gpointer data);
+
 gboolean				cb_obj_diff_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_diff_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_diff_z(GtkSpinButton *spin, gpointer data);
@@ -329,6 +341,9 @@ void					cb_render_update_size(GtkContainer *box, gpointer data);
 gboolean				cb_res_heigh_update(GtkSpinButton *spin, gpointer data);
 gboolean				cb_res_width_update(GtkSpinButton *spin, gpointer data);
 
+void					cb_skybox_check(GtkToggleButton *button, \
+										gpointer data);
+
 gboolean				cb_sphere_radius(GtkSpinButton *spin, gpointer data);
 
 void					cb_stop_btn(GtkButton *btn, gpointer data);
@@ -343,15 +358,6 @@ gboolean				cb_waves_p1_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_waves_p2_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_waves_p2_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_waves_p2_z(GtkSpinButton *spin, gpointer data);
-
-
-gboolean				cb_test_var1_x(GtkSpinButton *spin, gpointer data);
-gboolean				cb_test_var1_y(GtkSpinButton *spin, gpointer data);
-gboolean				cb_test_var2_x(GtkSpinButton *spin, gpointer data);
-gboolean				cb_test_var2_y(GtkSpinButton *spin, gpointer data);
-gboolean				cb_test_var3_x(GtkSpinButton *spin, gpointer data);
-gboolean				cb_test_var3_y(GtkSpinButton *spin, gpointer data);
-
 
 gboolean				gtk_main_loop(gpointer data);
 int						gtk_quit(GtkApplication *app, gpointer data);

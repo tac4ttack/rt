@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 16:35:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 18:45:00 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,15 @@
 # define OPTION_CARTOON_FOUR	(1 << 8)
 # define OPTION_STEREO			(1 << 9)
 # define OPTION_CARTOON_TWO		(1 << 10)
+# define OPTION_SKYBOX			(1 << 11)
 
-# define OBJ_FLAG_WAVES			(1 << 1)
-# define OBJ_FLAG_CHECKERED		(1 << 2)
-# define OBJ_FLAG_DIFF_MAP		(1 << 3)
-# define OBJ_FLAG_BUMP_MAP		(1 << 4)
-# define OBJ_FLAG_PLANE_LIMIT	(1 << 5)
-# define OBJ_FLAG_PLANE_LIMIT_FIX		(1 << 6)
+# define OBJ_FLAG_WAVES				(1 << 1)
+# define OBJ_FLAG_CHECKERED			(1 << 2)
+# define OBJ_FLAG_DIFF_MAP			(1 << 3)
+# define OBJ_FLAG_BUMP_MAP			(1 << 4)
+# define OBJ_FLAG_PLANE_LIMIT		(1 << 5)
+# define OBJ_FLAG_PLANE_LIMIT_FIX	(1 << 6)
+# define OBJ_FLAG_CUT				(1 << 7)
 
 # define OBJ_CAM			1
 # define OBJ_LIGHT			2
@@ -110,9 +112,8 @@ typedef struct			s_object
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
-	cl_float2			test_var1;
-	cl_float2			test_var2;
-	cl_float2			test_var3;
+	cl_float3			cut_min;
+	cl_float3			cut_max;
 }						t_object;
 
 typedef struct			s_fps
@@ -170,9 +171,8 @@ typedef struct			s_cone
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
-	cl_float2			test_var1;
-	cl_float2			test_var2;
-	cl_float2			test_var3;
+	cl_float3			cut_min;
+	cl_float3			cut_max;
 
 	cl_float			angle;
 	cl_float3			u_axis;
@@ -200,9 +200,8 @@ typedef struct			s_cylinder
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
-	cl_float2			test_var1;
-	cl_float2			test_var2;
-	cl_float2			test_var3;
+	cl_float3			cut_min;
+	cl_float3			cut_max;
 
 	cl_float			radius;
 	cl_float3			u_axis;
@@ -230,9 +229,8 @@ typedef struct			s_plane
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
-	cl_float2			test_var1;
-	cl_float2			test_var2;
-	cl_float2			test_var3;
+	cl_float3			cut_min;
+	cl_float3			cut_max;
 
 	cl_float			radius;
 	cl_float3			u_axis;
@@ -260,9 +258,8 @@ typedef struct			s_sphere
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
-	cl_float2			test_var1;
-	cl_float2			test_var2;
-	cl_float2			test_var3;
+	cl_float3			cut_min;
+	cl_float3			cut_max;
 
 	cl_float			radius;
 }						t_sphere;
@@ -289,9 +286,8 @@ typedef struct			s_torus
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
-	cl_float2			test_var1;
-	cl_float2			test_var2;
-	cl_float2			test_var3;
+	cl_float3			cut_min;
+	cl_float3			cut_max;
 
 	cl_double			lil_radius;
 	cl_double			big_radius;
@@ -319,9 +315,8 @@ typedef struct			s_ellipsoid
 	cl_int				diff_map_id;
 	cl_float2			diff_offset;
 	cl_float2			diff_ratio;
-	cl_float2			test_var1;
-	cl_float2			test_var2;
-	cl_float2			test_var3;
+	cl_float3			cut_min;
+	cl_float3			cut_max;
 
 	cl_float			radius;
 	cl_float3			axis_size;
@@ -617,6 +612,6 @@ void					xml_write_plane(t_plane *plane, const int fd);
 void					xml_write_sphere(t_sphere *sphere, const int fd);
 void					xml_write_torus(t_torus *torus, const int fd);
 
-void					init_test_var(t_env *e);
-void					init_test_var_cb(t_env *e);
+void					init_gtk_obj_cut(t_env *e);
+void					init_cb_obj_cut(t_env *e);
 #endif

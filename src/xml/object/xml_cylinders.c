@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 16:35:19 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 18:37:09 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,13 +113,6 @@ static void	xml_push_cylinder_effects(t_cylinder *cylinder)
 	cylinder->diff_offset.y = 0;
 	cylinder->diff_ratio.x = 1;
 	cylinder->diff_ratio.y = 1;
-
-	cylinder->test_var1.x = 0;
-	cylinder->test_var1.y = 0;
-	cylinder->test_var2.x = 0;
-	cylinder->test_var2.y = 0;
-	cylinder->test_var3.x = 0;
-	cylinder->test_var3.y = 0;
 	cylinder->u_axis = cross_vect(cylinder->dir);
 }
 

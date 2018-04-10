@@ -193,11 +193,13 @@ SRC_NAME =	 			cl/cl_compute.c \
 						xml/xml_nodes.c \
 						xml/xml_scene.c \
 						xml/xml_tools.c \
-						ui/init/init_test.c \
-						ui/init/init_cb_test.c \
-						ui/callback/cb_test_var1.c \
-						ui/callback/cb_test_var2.c \
-						ui/callback/cb_test_var3.c 
+						ui/callback/cb_skybox_check.c \
+						ui/callback/cb_obj_cut_check.c \
+						ui/init/init_gtk_obj_cut.c \
+						ui/init/init_cb_obj_cut.c \
+						ui/callback/cb_obj_cut_x.c \
+						ui/callback/cb_obj_cut_y.c \
+						ui/callback/cb_obj_cut_z.c 
 
 default: gpu
 

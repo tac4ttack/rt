@@ -6,11 +6,78 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/10 16:44:30 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:57:22 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+
+void		print_list(t_node *list)
+{
+	if (list->type == OBJ_CONE)
+	{
+		ft_putendl("\nCONE:\n-----");
+		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
+		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
+		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
+		list->id, list->type,\
+		list->dir.x, list->dir.y, list->dir.z,\
+		list->pos.x, list->pos.y, list->pos.z);
+	}
+	else if (list->type == OBJ_CYLINDER)
+	{
+		ft_putendl("\nCYLINDER:\n---------");
+		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
+		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
+		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
+		list->id, list->type,\
+		list->dir.x, list->dir.y, list->dir.z,\
+		list->pos.x, list->pos.y, list->pos.z);
+	}
+	else if (list->type == OBJ_ELLIPSOID)
+	{
+		ft_putendl("\nELLIPSOID:\n----------");
+		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
+		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
+		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
+		list->id, list->type,\
+		list->dir.x, list->dir.y, list->dir.z,\
+		list->pos.x, list->pos.y, list->pos.z);
+	}
+	else if (list->type == OBJ_PLANE)
+	{
+		ft_putendl("\nPLANE:\n------");
+		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
+		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
+		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
+		list->id, list->type,\
+		list->dir.x, list->dir.y, list->dir.z,\
+		list->pos.x, list->pos.y, list->pos.z);
+	}
+	else if (list->type == OBJ_SPHERE)
+	{
+		ft_putendl("\nSPHERE:\n-------");
+		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
+		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
+		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
+		list->id, list->type,\
+		list->dir.x, list->dir.y, list->dir.z,\
+		list->pos.x, list->pos.y, list->pos.z);
+	}
+	else if (list->type == OBJ_TORUS)
+	{
+		ft_putendl("TORUS:\n------");
+		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
+		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
+		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
+		list->id, list->type,\
+		list->dir.x, list->dir.y, list->dir.z,\
+		list->pos.x, list->pos.y, list->pos.z);
+	}
+	
+}
+
 
 void		load_scene_objects(t_env *e)
 {
@@ -19,6 +86,7 @@ void		load_scene_objects(t_env *e)
 	list = XML->node_lst;
 	while (list != NULL)
 	{
+		print_list(list);
 		e->current_index_objects++;
 		if (list->type == OBJ_CONE)
 			xml_push_cone(e, list);

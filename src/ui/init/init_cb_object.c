@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 18:24:29 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 18:49:55 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,5 @@ void		init_cb_object(t_env *e)
 	"value-changed", G_CALLBACK(cb_obj_diff_z), (gpointer)e);
 	init_cb_object_first_adds(e);
 	init_cb_object_second_adds(e);
+	init_cb_obj_cut(e);
 }

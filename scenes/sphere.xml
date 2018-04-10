@@ -115,4 +115,18 @@ ambient="0.1, 0.1, 0.1">
 			shrink="21"
 			color="0, 0, 0, 255"
 			/>
+<cone		pos="0, 0, 0"
+				dir="0, 1, 0"
+				angle="-6"
+				color="0, 0, 0, 255"
+				diff="0.42, 0.42, 0.42"
+				spec="0.42, 0.42, 0.42"
+				reflex="1"
+				refract="0"
+				opacity="1"
+				p_limit_pos="0, 0, 0"
+				p_limit_dir="0, 0, 1"
+				flags="000000"
+				/>
+	
 </scene>

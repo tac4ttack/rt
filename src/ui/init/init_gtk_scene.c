@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:23 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 19:17:51 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 18:49:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ static void	init_gtk_cartoon(t_env *e)
 	e->ui->builder, "scene_cartoon_four_radio"));
 	g_signal_connect(GTK_WIDGET(e->ui->scene_cartoon_four_radio), \
 	"toggled", G_CALLBACK(cb_cartoon_four), (gpointer)e);
+	e->ui->scene_skybox_check = GTK_WIDGET(gtk_builder_get_object(\
+	e->ui->builder, "scene_skybox_check"));
+	g_signal_connect(GTK_WIDGET(e->ui->scene_skybox_check), \
+	"toggled", G_CALLBACK(cb_skybox_check), (gpointer)e);
 }
 
 static void	init_gtk_scene_adds(t_env *e)

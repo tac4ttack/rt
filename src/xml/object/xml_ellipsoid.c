@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 17:32:51 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/06 20:53:12 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 18:38:47 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,14 +119,12 @@ static void	xml_push_ellipsoid_effects(t_ellipsoid *ellipsoid)
 	ellipsoid->diff_offset.y = 0;
 	ellipsoid->diff_ratio.x = 1;
 	ellipsoid->diff_ratio.y = 1;
-
-
-	ellipsoid->test_var1.x = 0;
-	ellipsoid->test_var1.y = 0;
-	ellipsoid->test_var2.x = 0;
-	ellipsoid->test_var2.y = 0;
-	ellipsoid->test_var3.x = 0;
-	ellipsoid->test_var3.y = 0;
+	ellipsoid->cut_min.x = 0;
+	ellipsoid->cut_min.y = 0;
+	ellipsoid->cut_min.z = 0;
+	ellipsoid->cut_max.x = 0;
+	ellipsoid->cut_max.y = 0;
+	ellipsoid->cut_max.z = 0;
 }
 
 void		xml_push_ellipsoid(t_env *e, t_node *list)

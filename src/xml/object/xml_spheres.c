@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 20:53:12 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 18:38:29 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,12 @@ static void	xml_push_sphere_effects(t_sphere *sphere)
 	sphere->diff_offset.y = 0;
 	sphere->diff_ratio.x = 1;
 	sphere->diff_ratio.y = 1;
-
-	sphere->test_var1.x = 0;
-	sphere->test_var1.y = 0;
-	sphere->test_var2.x = 0;
-	sphere->test_var2.y = 0;
-	sphere->test_var3.x = 0;
-	sphere->test_var3.y = 0;
+	sphere->cut_min.x = 0;
+	sphere->cut_min.y = 0;
+	sphere->cut_min.z = 0;
+	sphere->cut_max.x = 0;
+	sphere->cut_max.y = 0;
+	sphere->cut_max.z = 0;
 }
 
 void		xml_push_sphere(t_env *e, t_node *list)
