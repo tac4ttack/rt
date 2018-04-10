@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:37 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 11:07:27 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 15:41:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	ui_add_torus(t_env *e)
 	torus.pos.z = 0;
 	torus.flags = 0;
 	torus.dir = torus.pos;
-	torus.dir.z = 1;
-	torus.lil_radius = 4;
-	torus.big_radius = 16;
+	torus.dir.y = 1;
+	torus.lil_radius = 2;
+	torus.big_radius = 5;
 	torus.color = rand();
 	torus.diff.x = 0.42;
 	torus.diff.y = 0.42;
