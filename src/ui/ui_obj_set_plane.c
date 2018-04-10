@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:11:49 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 18:22:39 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 19:48:43 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	show_only_plane(t_env *e)
 	gtk_widget_show(e->ui->obj_list_limit);
 	gtk_widget_show(e->ui->obj_list_sinwave);
 	gtk_widget_show(e->ui->obj_list_texture_diff);
+	gtk_widget_hide(e->ui->obj_list_cut); // WIP
 }
 
 void		ui_obj_set_plane(t_env *e, t_plane *obj)

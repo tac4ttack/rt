@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 19:20:58 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 19:39:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,9 +180,10 @@ typedef	struct			s_ui
 	GtkWidget			*save_window;
 	GtkWidget			*about_window;
 
-	GtkWidget			*scene_skybox_check; // todo
+	GtkWidget			*scene_skybox_check;
 	GtkWidget			*obj_cut_check;
-	GtkWidget			*obj_cut_x_min_spin; // wip
+	GtkWidget			*obj_list_cut;
+	GtkWidget			*obj_cut_x_min_spin;
 	GtkWidget			*obj_cut_x_max_spin;
 	GtkWidget			*obj_cut_y_min_spin;
 	GtkWidget			*obj_cut_y_max_spin;

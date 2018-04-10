@@ -135,6 +135,42 @@ ntoniolo - Noé TONIOLO</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">1</property>
   </object>
+  <object class="GtkAdjustment" id="cut_max_x_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="cut_max_y_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="cut_max_z_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="cut_min_x_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="cut_min_y_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="cut_min_z_adjustement">
+    <property name="lower">-100</property>
+    <property name="upper">100</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="cylinder_height_adjustement">
     <property name="upper">10000</property>
     <property name="step_increment">0.01</property>
@@ -454,7 +490,7 @@ ntoniolo - Noé TONIOLO</property>
   <object class="GtkAdjustment" id="red_ambient_adjustement">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
-    <property name="page_increment">1</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="res_height_adjustement">
     <property name="lower">5</property>
@@ -2127,17 +2163,17 @@ ntoniolo - Noé TONIOLO</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkBox" id="obj_cut_y_box">
+                                                      <object class="GtkBox" id="obj_cut_x_box">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
                                                         <property name="margin_top">3</property>
                                                         <property name="margin_bottom">10</property>
                                                         <child>
-                                                          <object class="GtkLabel" id="obj_cut_y_label">
+                                                          <object class="GtkLabel" id="obj_cut_x_label">
                                                             <property name="width_request">60</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
-                                                            <property name="label" translatable="yes">Y axis</property>
+                                                            <property name="label" translatable="yes">X axis</property>
                                                           </object>
                                                           <packing>
                                                             <property name="expand">False</property>
@@ -2155,6 +2191,7 @@ ntoniolo - Noé TONIOLO</property>
                                                             <property name="width_chars">0</property>
                                                             <property name="text" translatable="yes">1,00</property>
                                                             <property name="input_purpose">number</property>
+                                                            <property name="adjustment">cut_min_x_adjustement</property>
                                                             <property name="climb_rate">0.01</property>
                                                             <property name="digits">2</property>
                                                             <property name="wrap">True</property>
@@ -2177,6 +2214,7 @@ ntoniolo - Noé TONIOLO</property>
                                                             <property name="width_chars">0</property>
                                                             <property name="text" translatable="yes">1,00</property>
                                                             <property name="input_purpose">number</property>
+                                                            <property name="adjustment">cut_max_x_adjustement</property>
                                                             <property name="climb_rate">0.01</property>
                                                             <property name="digits">2</property>
                                                             <property name="wrap">True</property>
@@ -2197,17 +2235,17 @@ ntoniolo - Noé TONIOLO</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkBox" id="obj_cut_z_box">
+                                                      <object class="GtkBox" id="obj_cut_y_box">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
                                                         <property name="margin_top">3</property>
                                                         <property name="margin_bottom">10</property>
                                                         <child>
-                                                          <object class="GtkLabel" id="obj_cut_z_label">
+                                                          <object class="GtkLabel" id="obj_cut_y_label">
                                                             <property name="width_request">60</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
-                                                            <property name="label" translatable="yes">Z axis</property>
+                                                            <property name="label" translatable="yes">Y axis</property>
                                                           </object>
                                                           <packing>
                                                             <property name="expand">False</property>
@@ -2225,6 +2263,7 @@ ntoniolo - Noé TONIOLO</property>
                                                             <property name="width_chars">0</property>
                                                             <property name="text" translatable="yes">1,00</property>
                                                             <property name="input_purpose">number</property>
+                                                            <property name="adjustment">cut_min_y_adjustement</property>
                                                             <property name="climb_rate">0.01</property>
                                                             <property name="digits">2</property>
                                                             <property name="wrap">True</property>
@@ -2247,6 +2286,7 @@ ntoniolo - Noé TONIOLO</property>
                                                             <property name="width_chars">0</property>
                                                             <property name="text" translatable="yes">1,00</property>
                                                             <property name="input_purpose">number</property>
+                                                            <property name="adjustment">cut_max_y_adjustement</property>
                                                             <property name="climb_rate">0.01</property>
                                                             <property name="digits">2</property>
                                                             <property name="wrap">True</property>
@@ -2267,15 +2307,15 @@ ntoniolo - Noé TONIOLO</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkBox" id="obj_cut_x_box">
+                                                      <object class="GtkBox" id="obj_cut_z_box">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
                                                         <child>
-                                                          <object class="GtkLabel" id="obj_cut_x_label">
+                                                          <object class="GtkLabel" id="obj_cut_z_label">
                                                             <property name="width_request">60</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
-                                                            <property name="label" translatable="yes">X axis</property>
+                                                            <property name="label" translatable="yes">Z axis</property>
                                                           </object>
                                                           <packing>
                                                             <property name="expand">False</property>
@@ -2293,6 +2333,7 @@ ntoniolo - Noé TONIOLO</property>
                                                             <property name="width_chars">0</property>
                                                             <property name="text" translatable="yes">1,00</property>
                                                             <property name="input_purpose">number</property>
+                                                            <property name="adjustment">cut_min_z_adjustement</property>
                                                             <property name="climb_rate">0.01</property>
                                                             <property name="digits">2</property>
                                                             <property name="wrap">True</property>
@@ -2315,6 +2356,7 @@ ntoniolo - Noé TONIOLO</property>
                                                             <property name="width_chars">0</property>
                                                             <property name="text" translatable="yes">1,00</property>
                                                             <property name="input_purpose">number</property>
+                                                            <property name="adjustment">cut_max_z_adjustement</property>
                                                             <property name="climb_rate">0.01</property>
                                                             <property name="digits">2</property>
                                                             <property name="wrap">True</property>

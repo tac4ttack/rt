@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:11:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 18:35:36 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 19:41:16 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	show_only_ellipsoid(t_env *e)
 	gtk_widget_show(e->ui->obj_list_limit);
 	gtk_widget_show(e->ui->obj_list_sinwave);
 	gtk_widget_hide(e->ui->obj_list_texture_diff);
+	gtk_widget_hide(e->ui->obj_cut_check); // WIP
 }
 
 void		ui_obj_set_ellipsoid(t_env *e, t_ellipsoid *obj)

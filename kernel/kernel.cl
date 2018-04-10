@@ -385,6 +385,37 @@ static t_hit	hit_init(void)
 	hit.lock = 0;
 	return (hit);
 }
+
+static t_ret			limit(const __local t_sphere *sphere, float2 tmp, const float3 ray, const float3 origin)
+{
+	t_ret		ret;
+	float 		pt_y;
+	float 		pt_ys;
+
+	ret.dist = 0;
+	ret.wall = 0;
+	sphere->cut_max.x = sphere->radius;
+	sphere->cut_min.x = sphere->radius;
+	sphere->cut_max.y = sphere->radius;
+	sphere->cut_min.y = sphere->radius;
+	sphere->cut_max.z = sphere->radius;
+	sphere->cut_min.z = sphere->radius;
+
+	pt_y = origin.y + ray.y * tmp.x;
+	pt_ys = origin.y + ray.y * tmp.y;
+	if (pt_y <= sphere->pos.y + 2 )
+	{
+		ret.dist = tmp.x;
+		return (ret);
+	}
+	else if (pt_ys <= sphere->pos.y +2)
+	{
+		ret.dist = tmp.y;
+		return (ret);
+	}
+	ret.dist = 0;
+	return (ret);
+}
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -1350,29 +1381,74 @@ static float3	get_sphere_abc(const float radius, const float3 ray, const float3 
 	return (abc);
 }
 
+
+// ACTUAL ONE
+// static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, const float3 origin)
+// {
+// 	float3		abc = 0;
+// 	float		res1 = 0;
+// 	float		res2 = 0;
+// 	float3		pos = 0;
+// 	float		d = 0;
+// 	float2		tmp = 0;
+// 	t_ret		ret;
+
+// 	ret.dist = 0;
+// 	ret.wall = 0;
+// 	ret.normal = 0;
+// 	pos = origin - sphere->pos;
+// 	abc = get_sphere_abc(sphere->radius, ray, pos);
+	
+// 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
+// 		return (ret);
+// 	if (sphere->flags & OBJ_FLAG_PLANE_LIMIT)
+// 		return (object_limited((t_object __local *)sphere, res1, res2, ray, origin));
+// 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+// 		ret.dist = res1;
+// 	else
+// 		ret.dist = res2;
+// 	return (ret);
+
+// }
+
+// ANROCHE ONE
 static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
 	float		res1 = 0;
 	float		res2 = 0;
 	float3		pos = 0;
-	t_ret		ret;
+	
+	float       d;
+	float2       tmp;
 
-	ret.dist = 0;
-	ret.wall = 0;
-	ret.normal = 0;
 	pos = origin - sphere->pos;
 	abc = get_sphere_abc(sphere->radius, ray, pos);
-	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
-		return (ret);
-	if (sphere->flags & OBJ_FLAG_PLANE_LIMIT)
-		return (object_limited((t_object __local *)sphere, res1, res2, ray, origin));
-	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
-		ret.dist = res1;
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	// if (d < 0)
+		
+	if (d == 0)
+	{
+		tmp.x =  ((-abc[1]) / (2 * abc[0]));
+		tmp.y =  ((-abc[1]) / (2 * abc[0]));
+	}
 	else
-		ret.dist = res2;
-	return (ret);
-
+	{
+		res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+		res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+		if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		{
+			tmp.x =(res1);
+			tmp.y =(res2);
+		}
+		else
+		{
+			tmp.x =  (res2);
+			tmp.y = (res1);
+		}
+	}
+	
+	return (limit(sphere, tmp, ray, origin));
 }
 ////////////////////////////////////////////////////////////////////////////////
 
