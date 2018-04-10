@@ -386,36 +386,6 @@ static t_hit	hit_init(void)
 	return (hit);
 }
 
-static t_ret			limit(const __local t_sphere *sphere, float2 tmp, const float3 ray, const float3 origin)
-{
-	t_ret		ret;
-	float 		pt_y;
-	float 		pt_ys;
-
-	ret.dist = 0;
-	ret.wall = 0;
-	sphere->cut_max.x = sphere->radius;
-	sphere->cut_min.x = sphere->radius;
-	sphere->cut_max.y = sphere->radius;
-	sphere->cut_min.y = sphere->radius;
-	sphere->cut_max.z = sphere->radius;
-	sphere->cut_min.z = sphere->radius;
-
-	pt_y = origin.y + ray.y * tmp.x;
-	pt_ys = origin.y + ray.y * tmp.y;
-	if (pt_y <= sphere->pos.y + 2 )
-	{
-		ret.dist = tmp.x;
-		return (ret);
-	}
-	else if (pt_ys <= sphere->pos.y +2)
-	{
-		ret.dist = tmp.y;
-		return (ret);
-	}
-	ret.dist = 0;
-	return (ret);
-}
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -1325,6 +1295,39 @@ static unsigned int		skybox(const float3 dir, unsigned int __global *texture, in
 	return (color);
 }
 
+static t_ret			sphere_cut(const __local t_sphere *sphere, float2 tmp, const float3 ray, const float3 origin)
+{
+	t_ret		ret;
+	float 		pt_y;
+	float 		pt_ys;
+
+	ret.dist = 0;
+	ret.wall = 0;
+	ret.normal = 0;
+	
+	sphere->cut_max.x = sphere->radius;
+	sphere->cut_min.x = sphere->radius;
+	sphere->cut_max.y = sphere->radius;
+	sphere->cut_min.y = sphere->radius;
+	sphere->cut_max.z = sphere->radius;
+	sphere->cut_min.z = sphere->radius;
+
+	pt_y = origin.y + ray.y * tmp.x;
+	pt_ys = origin.y + ray.y * tmp.y;
+	if (pt_y <= sphere->pos.y + 2 )
+	{
+		ret.dist = tmp.x;
+		return (ret);
+	}
+	else if (pt_ys <= sphere->pos.y +2)
+	{
+		ret.dist = tmp.y;
+		return (ret);
+	}
+	ret.dist = 0;
+	return (ret);
+}
+
 static unsigned int		sphere_checkerboard(const float3 dir, const unsigned int color, const float2 check_size)
 {
 	int2	uv = 0;
@@ -1419,8 +1422,8 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 	float		res2 = 0;
 	float3		pos = 0;
 	
-	float       d;
-	float2       tmp;
+	float       d = 0;
+	float2      tmp = 0;
 
 	pos = origin - sphere->pos;
 	abc = get_sphere_abc(sphere->radius, ray, pos);
@@ -1448,7 +1451,7 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 		}
 	}
 	
-	return (limit(sphere, tmp, ray, origin));
+	return (sphere_cut(sphere, tmp, ray, origin));
 }
 ////////////////////////////////////////////////////////////////////////////////
 
