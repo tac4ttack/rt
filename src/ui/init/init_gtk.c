@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:17 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 21:36:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/10 13:42:26 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		init_gtk(GtkApplication *app, gpointer data)
 	gtk_widget_show_all(e->ui->main_window);
 	ui_obj_jump_list(e);
 	ui_obj_update(e, e->gen_objects->mem + e->target);
-	ft_putendl("UI successfully loaded!\n");
+	ft_putendl("\x1b[1;29mUI successfully loaded!\n\x1b[0m");
 	g_idle_add(gtk_main_loop, (gpointer)e);
 	gtk_main();
 }
