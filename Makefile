@@ -8,8 +8,6 @@ RM := 					rm -rf
 INC = $(addprefix $(INC_PATH)/,$(INC_NAMES))
 INC_PATH = ./includes
 
-4_CUDA = -L/Users/ntoniolo/.brew/Cellar/gtk+3/3.22.29/lib -L/Users/ntoniolo/.brew/Cellar/pango/1.42.0_1/lib -L/Users/ntoniolo/.brew/Cellar/atk/2.28.1_1/lib -L/Users/ntoniolo/.brew/Cellar/cairo/1.14.12/lib -L/Users/ntoniolo/.brew/Cellar/gdk-pixbuf/2.36.11_1/lib -L/Users/ntoniolo/.brew/Cellar/glib/2.56.0/lib -L/Users/ntoniolo/.brew/opt/gettext/lib -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lintl
-
 LIBFT := $(LIBFT_PATH)/libft.a
 LIBFT_PATH := ./libft
 LIBFT_INC_PATH := ./libft
@@ -17,10 +15,9 @@ LIBFTFLAGS := -lft
 
 LIBMATHFLAGS := -lm
 
-GTK_CFLAGS	=	$(shell pkg-config --cflags gtk+-3.0)
-GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
-
-OPENCL :=
+GTK_CFLAGS		=	$(shell pkg-config --cflags gtk+-3.0)
+GTK_CLIBS		=	$(shell pkg-config --libs gtk+-3.0)
+GTK_CUDALIBS	=	$(shell pkg-config --libs-only-L --libs-only-l gtk+-3.0)
 
 INC_NAMES = 			$(NAME).h \
 						ui.h \
@@ -206,13 +203,8 @@ all: libft
 
 $(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
-	#$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(GTK_CLIBS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
-	/usr/local/cuda/bin/nvcc -g -o cudart $(OBJ) src/cud.cu -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(4_CUDA) $(ASANFLAGS)
+	/usr/local/cuda/bin/nvcc -g -o rt $(OBJ) src/cud.cu -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
 
-CUDA: cud
-
-cud:
-	/usr/local/cuda/bin/nvcc -g -o cudart $(OBJ) src/cud.cu -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(4_CUDA) $(ASANFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
 	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
