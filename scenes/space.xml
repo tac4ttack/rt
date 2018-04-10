@@ -146,7 +146,6 @@
 			dir="-1, 0, 0"
 			radius="20"
 			color="0, 150, 200, 105"
-			height="300"
 			diff="0.42, 0.42, 0.42"
 			spec="0.42, 0.42, 0.42"
 			reflex="0.42"
@@ -156,18 +155,5 @@
 				p_limit_dir="0, 0, 1"
 				flags="000000"
 			/>
-	<!--<cylinder 			pos="-10, 10, 0"
-			dir="1, 1, 0"
-			radius="3"
-			color="0, 0, 200, 105"
-			height="0"
-			diff="0.42, 0.42, 0.42"
-			spec="0.42, 0.42, 0.42"
-			reflex="0.42"
-			refract="0"
-				opacity="1"
-				p_limit_pos="0, 0, 0"
-				p_limit_dir="0, 0, 1"
-				flags="000000"
-			/>-->
+
 </scene>
