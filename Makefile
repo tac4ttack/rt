@@ -247,14 +247,14 @@ gpu: libft GPU
 gpu_flags:
 	$(eval GPU_MACRO = -DGPU)
 
-debuggpu: fclean debuglibft
+debuggpu: debuglibft
 	@echo "$(GREEN)So you want to compile RT with GPU and DEBUG enabled hu?$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
-	@echo "$(GREEN)Checking for GPU accelerated RT with ASAN debug flags enabled$(EOC)"
+	@echo "$(GREEN)Checking for GPU accelerated RT with debug flags enabled$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
 	@make debug_flag gpu_flags $(NAME)
 
-debugasangpu: fclean debugasanlibft
+debugasangpu: debugasanlibft
 	@echo "$(GREEN)So you want to compile RT with GPU and DEBUG enabled hu?$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
 	@echo "$(GREEN)Checking for GPU accelerated RT with ASAN debug flags enabled$(EOC)"
@@ -262,12 +262,19 @@ debugasangpu: fclean debugasanlibft
 	@make debug_asan_flag gpu_flags $(NAME)
 
 
-debugcpu: fclean debuglibft
+debugcpu: debuglibft
+	@echo "$(GREEN)So you want to compile RT with CPU mode forced and DEBUG enabled hu?$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
+	@echo "$(GREEN)Checking for CPU ONLY RT with debug flags enabled$(EOC)"
+	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
+	@make debug_flag cpu_flags $(NAME)
+
+debugasancpu: debugasanlibft
 	@echo "$(GREEN)So you want to compile RT with CPU mode forced and DEBUG enabled hu?$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
 	@echo "$(GREEN)Checking for CPU ONLY RT with ASAN debug flags enabled$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make debug_flag cpu_flags $(NAME)
+	@make debug_asan_flag cpu_flags $(NAME)
 
 debug_flag:
 	$(eval DEBUG_MACRO = -DDEBUG -g)
