@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/07 18:32:02 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/11 12:23:22 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,13 @@ void	flush(t_env *e)
 {
 	int i;
 
-	i = 0;
+	i = -1;
 	if (e)
 	{
-		while (i < NB_TEXTURE)
-		{
+		while (++i < NB_TEXTURE)
 			ft_memdel((void **)&e->texture[i].pixel_array);
-			i++;
-		}
 		ft_memdel((void **)&e->texture);
+
 		if (e->cl)
 		{
 			cl_destruct(&e->cl);
@@ -33,11 +31,22 @@ void	flush(t_env *e)
 		}
 		if (e->ui->surface)
 			cairo_surface_destroy(e->ui->surface);
-		if (XML)
-			free(XML);
+		ft_memdel((void**)&e->xml);
 		ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
-		if (e)
-			free(e);
+
+		ft_memdel((void**)&e->cameras);
+		ft_putendl("\x1b[1;29mFreed cameras array\x1b[0m");
+
+		ft_memdel((void**)&e->scene);
+		ft_putendl("\x1b[1;29mFreed scene datas\x1b[0m");
+
+		ft_memdel((void**)&e->pixel_data);
+		ft_putendl("\x1b[1;29mFreed pixel buffer\x1b[0m");
+
+		ft_memdel((void**)&e->ui);
+		ft_putendl("\x1b[1;29mFreed UI environnement\x1b[0m");
+
+		ft_memdel((void**)&e);
 		ft_putendl("\x1b[1;29mFreed RT environnement\x1b[0m");
 	}
 }
@@ -73,14 +82,15 @@ int		gtk_quit(GtkApplication *app, gpointer data)
 	(void)app;
 	e = data;
 	gtk_main_quit();
+	gtk_widget_destroy(e->ui->main_window);
 	g_object_unref(e->ui->app);
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
 	flush(e);
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
 	ft_bzero(e, sizeof(t_env ));
 	// DEBUG
-	// while (1)
-	// 	;
+	 while (1)
+	 	;
 	exit(EXIT_SUCCESS);
 	return (0);
 }

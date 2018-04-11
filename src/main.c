@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 21:09:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/07 00:06:05 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/11 11:48:53 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void		load_texture(t_env *e)
 		}
 		j++;
 	}
+	g_object_unref(e->raw_texture.pixbuf);
 	j = 0;
 	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file("./textures/Moonhd.jpg", NULL);
 	e->raw_texture.pixels = gdk_pixbuf_get_pixels(e->raw_texture.pixbuf);
@@ -68,6 +69,7 @@ void		load_texture(t_env *e)
 		}
 		j++;
 	}
+	g_object_unref(e->raw_texture.pixbuf);
 	j = 0;
 	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file("./textures/starmap_g4k.jpg", NULL);
 	e->raw_texture.pixels = gdk_pixbuf_get_pixels(e->raw_texture.pixbuf);
@@ -94,6 +96,7 @@ void		load_texture(t_env *e)
 		}
 		j++;
 	}
+	g_object_unref(e->raw_texture.pixbuf);
 	j = 0;
 	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file("./textures/pierres_jaune/pierres_jaune.png", NULL);
 	e->raw_texture.pixels = gdk_pixbuf_get_pixels(e->raw_texture.pixbuf);
@@ -119,6 +122,7 @@ void		load_texture(t_env *e)
 		}
 		j++;
 	}
+	g_object_unref(e->raw_texture.pixbuf);
 }
 
 void			print_usage(void)
