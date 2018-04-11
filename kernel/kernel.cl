@@ -1971,7 +1971,12 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 						ncolor = 0;
 				}
 				else
-					ncolor = skybox(refract, scene->texture_skybox, 4096, 2048);
+				{
+					if (scene->flag & OPTION_SKYBOX)
+						ncolor = skybox(refract, scene->texture_skybox, 4096, 2048);
+					else
+						ncolor = phong(scene, new_hit, refract);
+				}
 				tor[i * 2 + 1] = tor_push(refract, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, old_hit.obj->type, 0, ft);
 			}
 			// else if (tor[i].coef_ref != 0)
@@ -2020,7 +2025,12 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 						ncolor = 0;
 				}
 				else
-					ncolor = skybox(bounce, scene->texture_skybox, 4096, 2048);
+				{
+					if (scene->flag & OPTION_SKYBOX)
+						ncolor = skybox(bounce, scene->texture_skybox, 4096, 2048);
+					else
+						ncolor = phong(scene, new_hit, bounce);
+				}
 				tor[(i + 1) * 2] = tor_push(bounce, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, old_hit.obj->type, fr, 0);
 			}
 		}
