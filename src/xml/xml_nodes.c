@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/11 12:33:08 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/11 12:54:28 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void				xml_parse_nodes(t_env *e)
 			xml_node_generic(e, XML->nodes[i], 0);
 		else
 			xml_process_node(e, XML->nodes[i]);
+		ft_memdel((void**)&XML->nodes[i]);
 		i++;
 	}
 	ft_memdel((void**)&e->scene_file);

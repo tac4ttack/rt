@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:17 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 13:42:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/11 12:43:10 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void		init_gtk(GtkApplication *app, gpointer data)
 	init_cb_light(e);
 	init_cb_object(e);
 	g_object_unref(e->ui->builder);
+	e->ui->builder = NULL;
 	gtk_widget_show_all(e->ui->main_window);
 	ui_obj_jump_list(e);
 	ui_obj_update(e, e->gen_objects->mem + e->target);
