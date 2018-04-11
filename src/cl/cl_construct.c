@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:57:19 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/09 18:50:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/11 17:44:57 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static bool			cl_load_src(t_cl *cl, const char *path)
 
 static bool			cl_create_base(t_cl *cl, int type)
 {
+	cl->device_type = type;
 	if ((cl->err = clGetPlatformIDs(1, &cl->platform_id, &cl->num_platforms)) \
 																!= CL_SUCCESS)
 		return (cl_builderrors(cl, 1, cl->err));
