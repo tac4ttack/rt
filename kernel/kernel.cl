@@ -944,12 +944,12 @@ static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, fl
 	// 	uv.y %= height;
 	// 	uv.y = (uv.y - height) * -1;
 	// }
-	uv.x %= width;
-	uv.y %= height;
+	uv.x %= width - 1;
+	uv.y %= height - 1;
 	if (uv.x < 0)
-		uv.x = (uv.x + width);
+		uv.x = (uv.x + width - 1);
 	if (uv.y < 0)
-		uv.y = (uv.y + height);
+		uv.y = (uv.y + height - 1);
 	// else
 	// 	uv.y = -uv.y;
 	//if (uv.x < 0 || uv.y < 0)
@@ -1010,16 +1010,16 @@ static unsigned int		cylinder_texture(float3 pos, __local t_cylinder *cyl, unsig
 	npos = dot(pos, cyl->u_axis);
 	vpos = dot(pos, v_axis);
 	uv.x = convert_int(floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * t_width * cyl->diff_ratio.x + cyl->diff_offset.x));
-	uv.x %= t_width;
-	uv.y %= t_height;
+	uv.x %= t_width - 1;
+	uv.y %= t_height - 1;
 	if (uv.x < 0)
-		uv.x = uv.x + t_width;
+		uv.x = uv.x + t_width - 1;
 	if (uv.y < 0)
 		uv.y = -uv.y;
 	else
-		uv.y = (uv.y - t_height) * -1;
-	uv.x %= t_width;
-	uv.y %= t_height;
+		uv.y = (uv.y - t_height - 1) * -1;
+	uv.x %= t_width - 1;
+	uv.y %= t_height - 1;
 	color = (unsigned int)texture[uv.x + (uv.y * t_width)];
 	return (color);
 }
@@ -1478,16 +1478,16 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigne
 	npos = dot(pos, u_axis);
 	vpos = dot(pos, v_axis);
 	uv.x = convert_int(floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * ratio.x * (t_width - 1) + offset.x));
-	uv.x %= t_width;
-	uv.y %= t_height;
+	uv.x %= t_width - 1;
+	uv.y %= t_height - 1;
 	if (uv.x < 0)
-		uv.x = uv.x + t_width;
+		uv.x = uv.x + t_width - 1;
 	if (uv.y < 0)
 		uv.y = -uv.y;
 	else
-		uv.y = uv.y - t_height * -1;
-	uv.x %= t_width;
-	uv.y %= t_height;
+		uv.y = (uv.y - t_height - 1) * -1;
+	uv.x %= t_width - 1;
+	uv.y %= t_height - 1;
 	 color = (unsigned int)texture[uv.x + (uv.y * t_width)];
 	return (color);
 }
@@ -1949,21 +1949,21 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 
 
 					// if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					// 	new_hit.color = sphere_texture(fast_normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)new_hit.obj)->diff_ratio, ((__local t_sphere *)new_hit.obj)->diff_offset);
-					// if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-					//  	new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
+						// new_hit.color = sphere_texture(fast_normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)new_hit.obj)->diff_ratio, ((__local t_sphere *)new_hit.obj)->diff_offset);
+					if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+					 	new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
 
-					// // else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					// // 	new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
-					// else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-					//  	new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
+					// else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+						// new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
+					else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+					 	new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
 
-					// // else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					// // 	new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
+					// else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					// 	new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
 
-					// // else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					// // 	new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
-					// else
+					// else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					// 	new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
+					else
 						new_hit.color = new_hit.obj->color;
 	
 					ncolor = phong(scene, new_hit, refract);
@@ -2003,21 +2003,21 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 
 					// if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 					// 	new_hit.color = sphere_texture(fast_normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)new_hit.obj)->diff_ratio, ((__local t_sphere *)new_hit.obj)->diff_offset);
-					// if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-					//   	new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
+					if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+					  	new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
 
-					// // else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					// // 	new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
-					// else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-					//  	new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
+					// else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					// 	new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
+					else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+					 	new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
 
-					// // else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					// // 	new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
+					// else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					// 	new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
 
-					// // else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					// // 	new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
+					// else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					// 	new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
 
-					// else
+					else
 						new_hit.color = new_hit.obj->color;
 
 					ncolor = phong(scene, new_hit, bounce);
