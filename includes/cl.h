@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:20 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 17:38:21 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/11 16:34:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct			s_cl
 	char				*kernel_src;
 	size_t				src_size;
 	cl_event			event;
+	int					device_type;
 	bool				(*add_buffer)(struct s_cl *, size_t);
 	bool				(*compute)(struct s_cl *);
 }						t_cl;
