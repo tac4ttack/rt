@@ -1390,8 +1390,6 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 	float		res1 = 0;
 	float		res2 = 0;
 	float3		pos = 0;
-	float		d = 0;
-	float2		tmp = 0;
 	t_ret		ret;
 
 	ret.dist = 0;
@@ -1954,15 +1952,15 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 					//  	new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
 
 					// // else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					// // 	new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
-					// else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-					//  	new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
+					// 	new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
+					// if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+					 	// new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
 
-					// // else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					// // 	new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
+					// else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					// 	new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
 
-					// // else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					// // 	new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
+					// else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					// 	new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
 					// else
 						new_hit.color = new_hit.obj->color;
 	
@@ -2163,7 +2161,6 @@ __kernel void		ray_trace(	__global	char		*output,
 	pix.x = id % scene->win_w;
 	pix.y = id / scene->win_w;
 
-	barrier(CLK_LOCAL_MEM_FENCE);;
 	//DEBUG
 	if (id >= (scene->win_w * scene->win_h))
 	{
@@ -2221,7 +2218,6 @@ __kernel void		ray_trace(	__global	char		*output,
 	if (scene->flag & OPTION_INVERT)
 		final_color = invert(final_color);
 
-	barrier(CLK_LOCAL_MEM_FENCE | CLK_GLOBAL_MEM_FENCE);
 	// ALPHA INSERT and RGB SWAP
 	int4 swap;
 	swap.w = 255;
