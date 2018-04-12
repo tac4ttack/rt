@@ -10,8 +10,8 @@
 
 #define EPSILON 0.00000000000000000000005
 #define EPSILONF 0.0000000005F
-#define MAX_DIST 10000000.0
-#define SHADOW_BIAS 1000
+#define MAX_DIST 1000000000.0
+#define SHADOW_BIAS 10000.0F
 
 #define CAM scene->cameras
 #define CONES scene->cones
@@ -318,13 +318,6 @@ typedef struct			s_hit
 	int					wall; // WIP
 	int					lock; // WIP
 }						t_hit;
-
-typedef struct			s_tex
-{
-	unsigned int		pixel_array[12076155];
-	int					width;
-	int					height;
-}						t_tex;
 
 typedef struct			s_ret
 {
@@ -2051,8 +2044,8 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	depth = scene->depth;
 	
 	// DEBUG
-	// if (depth < 0)
-	// 	printf("!WARNING!\nget_pixel_color | depth < 0 !!!!\n");
+	if (depth < 0)
+		printf("!WARNING!\nget_pixel_color | depth < 0 !!!!\n");
 
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
 	if ((isHim == 1) && (hit.lock == 1))
@@ -2061,10 +2054,9 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	{
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normal = get_hit_normal(scene, ray, hit);
-		hit.pos = hit.pos + (hit.dist / 10000 * hit.normal);
-		// hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
+		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
 
-		 if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			 hit.color = sphere_texture(fast_normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)hit.obj)->diff_ratio, ((__local t_sphere *)hit.obj)->diff_offset);
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = sphere_checkerboard(fast_normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
