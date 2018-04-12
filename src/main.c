@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 21:09:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/11 12:48:48 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/12 13:25:44 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void		load_texture(t_env *e)
 	}
 	g_object_unref(e->raw_texture.pixbuf);
 	j = 0;
-	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file("./textures/pierres_jaune/pierres_jaune.png", NULL);
+	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file("./textures/pierres_jaune.png", NULL);
 	e->raw_texture.pixels = gdk_pixbuf_get_pixels(e->raw_texture.pixbuf);
 	e->raw_texture.n_channels = gdk_pixbuf_get_n_channels(e->raw_texture.pixbuf);
 	e->raw_texture.rowstride = gdk_pixbuf_get_rowstride(e->raw_texture.pixbuf);
