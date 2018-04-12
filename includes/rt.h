@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/12 11:45:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/12 15:21:05 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -406,10 +406,7 @@ typedef struct			s_scene
 	cl_uint				over_sampling;
 	cl_uint				mem_size_obj;
 	cl_uint				mem_size_lights;
-	cl_float3			check_p1;
-	cl_float3			check_p2;
-	cl_float3			waves_p1;
-	cl_float3			waves_p2;
+
 }						t_scene;
 
 typedef	struct			s_env

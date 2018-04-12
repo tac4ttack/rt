@@ -351,10 +351,6 @@ typedef struct			s_scene
 	unsigned int		over_sampling;
 	unsigned int		mem_size_obj;
 	unsigned int		mem_size_lights;
-	float3				check_p1;
-	float3				check_p2;
-	float3				waves_p1;
-	float3				waves_p2;
 }						t_scene;
 ////////////////////////////////////////////////////////////////////////////////
 
