@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 18:45:00 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/12 11:45:26 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -506,6 +506,7 @@ void					ui_obj_set_sphere(t_env *e, t_sphere *obj);
 void					ui_obj_set_torus(t_env *e, t_torus *obj);
 void					ui_obj_update(t_env *e, t_object *obj);
 void					ui_obj_update_checkboard(t_env *e, t_object *obj);
+void					ui_obj_update_cut(t_env *e, t_object *obj);
 void					ui_obj_update_diff_map(t_env *e, t_object *obj);
 void					ui_obj_update_limit(t_env *e, t_object *obj);
 void					ui_obj_update_sinwave(t_env *e, t_object *obj);

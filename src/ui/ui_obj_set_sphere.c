@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:12:01 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 19:48:45 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/12 11:45:48 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void		ui_obj_set_sphere(t_env *e, t_sphere *obj)
 {
 	show_only_sphere(e);
 	ui_obj_update_checkboard(e, (t_object *)obj);
+	ui_obj_update_cut(e, (t_object*)obj);
 	ui_obj_update_diff_map(e, (t_object *)obj);
 	ui_obj_update_limit(e, (t_object *)obj);
 	ui_obj_update_sinwave(e, (t_object *)obj);

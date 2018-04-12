@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/03 17:34:29 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/12 11:58:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ gboolean	cb_render_btnrelease(GtkWidget *widget, GdkEvent *ev, gpointer data)
 	e = data;
 	if (gtk_widget_is_focus(widget) == FALSE)
 		gtk_widget_grab_focus(widget);
-	ui_obj_update(e, e->gen_objects->mem + e->target);
+	if (e->target > -1)
+		ui_obj_update(e, e->gen_objects->mem + e->target);
 	return (TRUE);
 }

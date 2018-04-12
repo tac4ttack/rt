@@ -6,12 +6,14 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 19:39:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/12 12:03:54 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UI_H
 # define UI_H
+
+# define GTB	GTK_TOGGLE_BUTTON
 
 # include "gtk/gtk.h"
 
