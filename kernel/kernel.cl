@@ -1741,10 +1741,23 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
-
-			
-			// opacite de l'ombre
-			res_color = blend_factor(res_color, 1 - (light_hit.opacity / 2));
+			// if (light_hit.opacity != 0)
+			// {
+			// 	light_hit.opacity = 1 - light_hit.opacity;
+			// 	if (light_hit.opacity > scene->ambient.x)
+			// 		col_r = (0.01 + col_r * light_hit.opacity > 255 ? 255 : 0.01 + col_r * light_hit.opacity);
+			// 	else
+			// 		col_r = (0.01 + col_r * scene->ambient.x > 255 ? 255 : 0.01 + col_r * scene->ambient.x);
+			// 	if (light_hit.opacity > scene->ambient.y)
+			// 		col_g = (0.01 + col_g * light_hit.opacity > 255 ? 255 : 0.01 + col_g * light_hit.opacity);
+			// 	else
+			// 		col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
+			// 	if (light_hit.opacity > scene->ambient.z)
+			// 		col_b = (0.01 + col_b * light_hit.opacity > 255 ? 255 : 0.01 + col_b * light_hit.opacity);					
+			// 	else
+			// 		col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
+			// 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
+			// }
 			
 
 			if (scene->flag & OPTION_CARTOON_FOUR)
@@ -2054,7 +2067,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 
 static unsigned int	rip_tor_final_color(t_tor *tor)
 {
-	int				i = 18;
+	int				i = 8;
 
 	while (i >= 0)
 	{
@@ -2072,7 +2085,7 @@ static unsigned int	rip_tor_final_color(t_tor *tor)
 
 static unsigned int	rip_fresnel(const __local t_scene *scene, float3 ray, t_hit old_hit, int depth, unsigned int color)
 {
-	t_tor			tor[20];
+	t_tor			tor[10];
 	int				i = 0;
 	float			cos1;
 	float3			new_ray;
@@ -2080,7 +2093,7 @@ static unsigned int	rip_fresnel(const __local t_scene *scene, float3 ray, t_hit 
 	unsigned int	ncolor;
 
 	new_hit = hit_init();
-	while (i < 20)
+	while (i < 10)
 	{
 		tor[i].activate = 0;
 		tor[i].prim = 0;
@@ -2098,9 +2111,9 @@ static unsigned int	rip_fresnel(const __local t_scene *scene, float3 ray, t_hit 
 	tor[i] = tor_push(ray, old_hit.normal, old_hit.pos, old_hit.obj->reflex, \
 						old_hit.obj->refract, old_hit.obj->opacity, color, \
 						old_hit.mem_index, old_hit.obj->type);
-	while (i < 19 && tor[i].activate == 1 && i < depth * 3)
+	while (i < 9 && tor[i].activate == 1 && i < depth * 3)
 	{
-		if (tor[i].opacity != 1)
+		if (tor[i].opacity != 1 && tor[i].coef_tra != 0)
 		{
 			cos1 = dot(tor[i].normale, tor[i].prim);
 			if (tor[i].type != OBJ_PLANE)
@@ -2114,39 +2127,37 @@ static unsigned int	rip_fresnel(const __local t_scene *scene, float3 ray, t_hit 
 			if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 			{
 				if (cos1 < 0)
-				 	new_hit.pos = (new_hit.dist * new_ray) + tor[i].pos + (0.0001f * (2.f * -tor[i].normale));
+					new_hit.pos = (new_hit.dist * new_ray) + tor[i].pos + (0.0001f * (2.f * -tor[i].normale));
 				else
 					new_hit.pos = (new_hit.dist * new_ray) + tor[i].pos;
 				new_hit.normal = get_hit_normal(scene, new_ray, new_hit);
 				new_hit.pos = new_hit.pos + (new_hit.dist / 10000.f * new_hit.normal);
-				// if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-				// 		new_hit.color = sphere_texture(fast_normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)new_hit.obj)->diff_ratio, ((__local t_sphere *)new_hit.obj)->diff_offset);
-				// if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-				//  	new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
-
-				// else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-				// 	new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
-				// else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-				//  	new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
-
-				// else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-				// 	new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
-
-				// else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-				// 	new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
-				// else
-					new_hit.color = new_hit.obj->color;
+				new_hit.color = new_hit.obj->color;
+			
+				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+						new_hit.color = sphere_texture(fast_normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)new_hit.obj)->diff_ratio, ((__local t_sphere *)new_hit.obj)->diff_offset);
+				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+				 	new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
+				
+				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);		
+				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+				 	new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
+				
+				if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
+				
+				if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
 	
 				ncolor = phong(scene, new_hit, new_ray);
-				}
-				else
-				{
-					if (scene->flag & OPTION_SKYBOX)
-						ncolor = skybox(new_ray, scene->texture_skybox, 4096, 2048);
-					else
-						ncolor = get_ambient(scene, BACKCOLOR);
-				}
 				tor[i + 1] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, old_hit.obj->type);
+			}
+			// else
+			// {
+			// 	ncolor = (scene->flag & OPTION_SKYBOX) ? skybox(new_ray, scene->texture_skybox, 4096, 2048) : get_ambient(scene, BACKCOLOR);
+			// 	tor[i + 1] = tor_push(new_ray, 0, 0, 0, 0, 1, ncolor, 0, 0);
+			// }
 		}
 		else if (tor[i].coef_ref != 0)
 		{
@@ -2158,38 +2169,32 @@ static unsigned int	rip_fresnel(const __local t_scene *scene, float3 ray, t_hit 
 				new_hit.pos = (new_hit.dist * new_ray) + tor[i].pos;
 				new_hit.normal = get_hit_normal(scene, new_ray, new_hit);
 				new_hit.pos = new_hit.pos + (new_hit.dist / 10000.f * new_hit.normal);
+				new_hit.color = new_hit.obj->color;
 
-				// if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-				// 	new_hit.color = sphere_texture(fast_normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)new_hit.obj)->diff_ratio, ((__local t_sphere *)new_hit.obj)->diff_offset);
-				// if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-				// 	new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
+				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					new_hit.color = sphere_texture(fast_normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)new_hit.obj)->diff_ratio, ((__local t_sphere *)new_hit.obj)->diff_offset);
+				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+					new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
 
-				// else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-				// 	new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
-				// else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-				// 	new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
+				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
+				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+					new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
 
-				// else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-				// 	new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
+				if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
 
-				// else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-				// 	new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
-
-				// else
-					new_hit.color = new_hit.obj->color;
+				if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+					new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
 
 				ncolor = phong(scene, new_hit, new_ray);
-				if (new_hit.mem_index == tor[i].mem_index)
-					ncolor = 0;
+				tor[i + 1] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, old_hit.obj->type);
 			}
 			else
 			{
-				if (scene->flag & OPTION_SKYBOX)
-					ncolor = skybox(new_ray, scene->texture_skybox, 4096, 2048);
-				else
-					ncolor = get_ambient(scene, BACKCOLOR);
+				ncolor = (scene->flag & OPTION_SKYBOX) ? skybox(new_ray, scene->texture_skybox, 4096, 2048) : get_ambient(scene, BACKCOLOR);
+				tor[i + 1] = tor_push(new_ray, 0, 0, 0, 0, 1, ncolor, 0, 0);
 			}
-			tor[i + 1] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, old_hit.obj->type);
 		}
 		i = i + 1;
 	}
@@ -2239,8 +2244,8 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
-			return (rip_fresnel(scene, ray, hit, depth, color)); // si premier obj a reflexion alors bug
-			// return (fresnel(scene, ray, hit, depth + 1, color)); // cause bug dit du premier objet
+			return (rip_fresnel(scene, ray, hit, depth, color));
+			// return (fresnel(scene, ray, hit, depth + 1, color));
 
 		return (blend_add(color, bounce_color));
 	}
