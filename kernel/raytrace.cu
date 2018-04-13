@@ -465,7 +465,7 @@ typedef struct			s_scene
 	unsigned int		*texture_star;
 }						t_scene;
 
-typedef struct			s_cuda
+typedef struct			s_cuda2
 {
 	unsigned int		*output;
 	char				*mem_objects;
@@ -477,7 +477,7 @@ typedef struct			s_cuda
 	unsigned char 		*texture_1;
 	unsigned char 		*texture_2;
 	unsigned char 		*texture_3;
-}						t_cuda;
+}						t_cuda2;
 
 typedef struct			s_tex
 {
@@ -2068,7 +2068,7 @@ __global__ void test(unsigned int *output, unsigned int width, unsigned int heig
 							mem_lights, mem_size_lights, target, texture_0, texture_1, texture_2, texture_3);
 }
 
-extern "C" void init_cuda(t_cuda *cuda, t_scene *scene, t_gen *gen_objects, t_gen *gen_lights, t_tex *texture)
+extern "C" void init_cuda2(t_cuda2 *cuda, t_scene *scene, t_gen *gen_objects, t_gen *gen_lights, t_tex *texture)
 {
 	cudaMalloc(&cuda->output, scene->win_w * scene->win_h * sizeof(int));
 	cudaMalloc(&cuda->mem_objects, gen_objects->mem_size);
@@ -2087,7 +2087,7 @@ extern "C" void init_cuda(t_cuda *cuda, t_scene *scene, t_gen *gen_objects, t_ge
 
 }
 
-extern "C" void render_cuda(t_cuda *cuda,
+extern "C" void render_cuda(t_cuda2 *cuda,
 							int 			*pixel_data,
 							int				*target,
 							t_gen			*gen_objects,
@@ -2099,29 +2099,27 @@ extern "C" void render_cuda(t_cuda *cuda,
 	dim3					threads_per_block(8, 8);
 	dim3					grid_size(scene_data->win_w / threads_per_block.x, scene_data->win_h / threads_per_block.y);
 
-	// printf("GPU\n");
-	// printf("t_cam %zu\n", sizeof(t_cam));
-	// printf("t_scene %zu\n", sizeof(t_scene));
-	// printf("t_object %zu\n", sizeof(t_object));
-	// printf("t_gen %zu\n", sizeof(t_gen));
-	// printf("t_sphere %zu\n", sizeof(t_sphere));
-	// printf("t_light %zu\n", sizeof(t_light));
-	// printf("t_cylinder %zu\n", sizeof(t_cylinder));
-	// printf("t_sphere %zu\n", sizeof(t_sphere));
-	// printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
-	// printf("t_plane %zu\n", sizeof(t_plane));
-	// printf("t_cone %zu\n", sizeof(t_cone));
-	// printf("t_cone %zu\n", sizeof(t_cone));
-	// printf("t_box %zu\n", sizeof(t_box));
-	// printf("float3 %zu\n", sizeof(float3));
-	// printf("\n");
-
 		/*cudaMalloc(&output, width * height * sizeof(int));
 		cudaMalloc(&mem_objects, gen_objects->mem_size);
 		cudaMalloc(&mem_lights, gen_lights->mem_size);
 		cudaMalloc(&scene, sizeof(t_scene));
 		cudaMalloc(&cameras, sizeof(t_cam) * scene_data->n_cams);
 		*/
+
+		printf("GPU\n");
+			printf("t_cam %zu\n", sizeof(t_cam));
+			printf("t_scene %zu\n", sizeof(t_scene));
+			printf("t_object %zu\n", sizeof(t_object));
+			printf("t_gen %zu\n", sizeof(t_gen));
+			printf("t_sphere %zu\n", sizeof(t_sphere));
+			printf("t_light %zu\n", sizeof(t_light));
+			printf("t_cylinder %zu\n", sizeof(t_cylinder));
+			printf("t_sphere %zu\n", sizeof(t_sphere));
+			printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
+			printf("t_plane %zu\n", sizeof(t_plane));
+			printf("t_cone %zu\n", sizeof(t_cone));
+			printf("t_cone %zu\n", sizeof(t_cone));
+			printf("\n");
 
 	cudaMemcpy(cuda->mem_objects, gen_objects->mem, gen_objects->mem_size, cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->mem_lights, gen_lights->mem, gen_lights->mem_size, cudaMemcpyHostToDevice);
