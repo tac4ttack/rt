@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:16:39 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/08 01:36:28 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/14 00:34:39 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,16 @@ void			cb_cam_manage_del(GtkButton *btn, gpointer data)
 		gtk_widget_set_sensitive(e->ui->cam_nav_next_btn, FALSE);
 		gtk_widget_set_sensitive(e->ui->cam_nav_del_btn, FALSE);
 	}
-	//if (!(cl_replace_buffer(e->cl, sizeof(t_cam) * NCAM, 3)))
-	//	s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
+	/*if (e->cl)
+	{
+		if (!(cl_replace_buffer(e->cl, sizeof(t_cam) * NCAM, 3)))
+			s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
+	}
+	else
+	{*/
+		if (!(e->cuda->update_buffer(e->cuda, sizeof(t_cam) * NCAM, 4)))
+			s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
+	//}
 	if (e->scene->n_cams == 1)
 		e->scene->active_cam = 0;
 	else if (e->scene->active_cam == 0)
@@ -102,8 +110,16 @@ void			cb_cam_manage_add(GtkButton *btn, gpointer data)
 	gtk_widget_set_sensitive(e->ui->cam_nav_next_btn, TRUE);
 	gtk_widget_set_sensitive(e->ui->cam_nav_del_btn, TRUE);
 	e->scene->n_cams++;
-	//if (!(cl_replace_buffer(e->cl, sizeof(t_cam) * NCAM, 3)))
-	//	s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
+	/*if (e->cl)
+	{
+		//if (!(cl_replace_buffer(e->cl, sizeof(t_cam) * NCAM, 3)))
+		//	s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
+	}
+	else
+	{*/
+		if (!(e->cuda->update_buffer(e->cuda, sizeof(t_cam) * NCAM, 4)))
+			s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
+	//}
 	e->scene->active_cam = e->scene->n_cams - 1;
 	ui_cam_set_id(e);
 	ui_cam_update(e);

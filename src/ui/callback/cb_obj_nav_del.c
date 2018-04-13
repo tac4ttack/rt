@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:21 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/08 01:36:59 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/14 00:35:14 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,16 @@ void			cb_obj_nav_del(GtkButton *btn, gpointer data)
 		gtk_widget_set_sensitive(e->ui->obj_nav_next_btn, FALSE);
 		gtk_widget_set_sensitive(e->ui->obj_nav_del_btn, FALSE);
 	}
-	//if (!(cl_replace_buffer(e->cl, e->gen_objects->mem_size, 1)))
-	//	s_error("\x1b[2;31mFailed replacing objects buffer\x1b[0m", e);
+//	if (e->cl)
+//	{
+//		if (!(cl_replace_buffer(e->cl, e->gen_objects->mem_size, 1)))
+//			s_error("\x1b[2;31mFailed replacing objects buffer\x1b[0m", e);
+//	}
+//	else
+//	{
+		if (!(e->cuda->update_buffer(e->cuda, e->gen_objects->mem_size, 1)))
+			s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
+//	}
 	e->target = -1;
 	if (e->gen_objects->length < 2)
 	{
