@@ -3,10 +3,7 @@
 #include <float.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "../includes/help_math.h"
-extern "C" {
-
-}
+#include "ft_maths.hu"
 
 
 #define BACKCOLOR 0x00999999

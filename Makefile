@@ -192,9 +192,10 @@ SRC_NAME =	 			init.c \
 						ui/init/init_cb_obj_cut.c \
 						ui/callback/cb_obj_cut_x.c \
 						ui/callback/cb_obj_cut_y.c \
-						ui/callback/cb_obj_cut_z.c 
+						ui/callback/cb_obj_cut_z.c
 
 SRC_CUDA =				kernel/raytrace.cu
+INC_CUDA = 				kernel/includes/ft_maths.hu
 
 default: gpu
 
@@ -202,9 +203,9 @@ all: libft
 	@echo "$(GREEN)Checking for RT$(EOC)"
 	@make $(NAME)
 
-$(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
+$(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ) $(SRC_CUDA) $(INC_CUDA)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
-	/usr/local/cuda/bin/nvcc -g -o rt $(OBJ) $(SRC_CUDA) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
+	/usr/local/cuda/bin/nvcc -g -o rt $(OBJ) $(SRC_CUDA) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
 
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
