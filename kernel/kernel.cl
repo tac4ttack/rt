@@ -290,28 +290,14 @@ typedef	struct			s_tor
 	float				coef_tra;
 	float				opacity;
 	unsigned int		color;
-	uint				mem_index;
+	int				mem_index;
 	int					id;
 	int					type;
 	float				dist;
 	float				fr;
 	float				ft;
 }						t_tor;
-// typedef	struct			s_tor
-// {
-// 	int					activate;
-// 	float3				pos;
-// 	float3				prim;
-// 	float3				normale;
-// 	float				coef_ref;
-// 	float				coef_tra;
-// 	float				opacity;
-// 	unsigned int		color;
-// 	int					mem_index;
-// 	int					type;
-// 	float				fr;
-// 	float				ft;
-// }						t_tor;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -1687,7 +1673,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir, light_ray.dist);
-		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILONF) || (light_hit.opacity < 1 && scene->depth != 0))
+		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILONF) || (light_hit.opacity <= 1 && scene->depth != 0))
 		{
 			// diffuse part
 			tmp = (dot(hit.normal, light_ray.dir));
@@ -1747,7 +1733,10 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 
 			
 			// opacite de l'ombre
-			res_color = blend_factor(res_color, 1 - (light_hit.opacity / 2));
+			// res_color = blend_factor(res_color, 1 - (light_hit.opacity / 2));
+	
+			// si pas de depth alors opacity = 0, la couleur n'est pas touchée
+			// res_color = blend_factor(res_color, 1 - (light_hit.opacity * light_hit.opacity));
 			
 
 			if (scene->flag & OPTION_CARTOON_FOUR)
@@ -1895,9 +1884,9 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 	t_tor			tor[64];
 	// t_tor			tor[63];
 	int				i = 0;
-	unsigned int	tor_depth = 0;
+	int	tor_depth = 0;
 
-	tor_depth = convert_uint(pow(2.f, convert_float(depth))) - 1;
+	tor_depth = convert_int(pow(2.f, convert_float(depth))) - 1;
 	i = 0;
 	while (i < 64)
 	// while (i < 63)
