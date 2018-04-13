@@ -1,8 +1,8 @@
 #ifndef T_CUDA_H
 # define T_CUDA_H
 
-# include "libft.h"
-# include <stdbool.h>
+#include "libft.h"
+#include <stdbool.h>
 
 typedef struct			s_cuda
 {

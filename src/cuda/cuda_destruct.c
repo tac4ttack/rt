@@ -1,5 +1,6 @@
 #include "t_cuda.h"
-# include <cuda.h>
+#include <cuda.h>
+#include <cuda_runtime.h>
 
 void		*cuda_destruct(t_cuda **ptr_cuda)
 {

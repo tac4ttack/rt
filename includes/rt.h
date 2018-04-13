@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/13 19:52:37 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/13 21:00:28 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -504,21 +504,18 @@ typedef	struct			s_env
 	t_rtx				raw_texture;
 	t_tex				*texture;
 
-	t_cuda2				cuda;
+	t_cuda2				cuda2;
+	t_cuda				*cuda;
 
 	int					current_index_objects;
 }						t_env;
 
 
 
-void					init_cuda2(t_cuda2 *cuda, t_scene *scene, \
-						t_gen *mem_obj, t_gen *mem_lights, t_tex *texture);
+void					init_cuda(t_env *e, t_cuda *cuda);
 
 int						draw(t_env *e);
 void					init_kernel(t_env *e);
-
-void					init_cuda2(t_cuda2 *cuda, t_scene *scene, \
-						t_gen *mem_obj, t_gen *mem_lights, t_tex *texture);
 
 void					render_cuda(t_cuda2 *cuda, int 		*pixel_data,
 							t_gen		*gen_objects,

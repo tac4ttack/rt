@@ -1,5 +1,6 @@
 #include "t_cuda.h"
 #include <cuda.h>
+#include <cuda_runtime.h>
 
 bool		cuda_update_buffer(t_cuda *cuda, size_t size, size_t target)
 {
