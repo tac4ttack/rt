@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 21:01:56 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/13 14:59:05 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	ui_obj_apply(t_env *e, cl_float3 *target)
+static void	ui_obj_apply(t_env *e, t_float3 *target)
 {
 	(KEY_STATE_I ? *target = rotx(*target, 1 * DEG2RAD) : *target);
 	(KEY_STATE_K ? *target = rotx(*target, -1 * DEG2RAD) : *target);
@@ -31,7 +31,7 @@ static void	ui_obj_apply(t_env *e, cl_float3 *target)
 void		ui_obj(t_env *e)
 {
 	t_object	*obj;
-	cl_float3	*target;
+	t_float3	*target;
 
 	if (e->target > -1)
 	{
@@ -49,7 +49,7 @@ void		ui_obj(t_env *e)
 		KEY_STATE_K || KEY_STATE_L || KEY_STATE_U || KEY_STATE_O))
 		{
 			if (obj->type == OBJ_CYLINDER)
-				target = &((t_cylinder *)obj)->u_axis; 
+				target = &((t_cylinder *)obj)->u_axis;
 			else if (obj->type == OBJ_CONE)
 				target = &((t_cone *)obj)->u_axis;
 			else if (obj->type == OBJ_PLANE)

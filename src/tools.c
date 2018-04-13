@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/11 14:14:10 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/13 14:58:31 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	flush(t_env *e)
 
 		if (e->cl)
 		{
-			cl_destruct(&e->cl);
 			gen_destruct(&e->gen_objects);
 			gen_destruct(&e->gen_lights);
 		}

@@ -6,78 +6,11 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/11 13:58:55 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/13 14:58:13 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
-
-void		print_list(t_node *list)
-{
-	if (list->type == OBJ_CONE)
-	{
-		ft_putendl("\nCONE:\n-----");
-		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
-		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
-		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
-		list->id, list->type,\
-		list->dir.x, list->dir.y, list->dir.z,\
-		list->pos.x, list->pos.y, list->pos.z);
-	}
-	else if (list->type == OBJ_CYLINDER)
-	{
-		ft_putendl("\nCYLINDER:\n---------");
-		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
-		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
-		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
-		list->id, list->type,\
-		list->dir.x, list->dir.y, list->dir.z,\
-		list->pos.x, list->pos.y, list->pos.z);
-	}
-	else if (list->type == OBJ_ELLIPSOID)
-	{
-		ft_putendl("\nELLIPSOID:\n----------");
-		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
-		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
-		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
-		list->id, list->type,\
-		list->dir.x, list->dir.y, list->dir.z,\
-		list->pos.x, list->pos.y, list->pos.z);
-	}
-	else if (list->type == OBJ_PLANE)
-	{
-		ft_putendl("\nPLANE:\n------");
-		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
-		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
-		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
-		list->id, list->type,\
-		list->dir.x, list->dir.y, list->dir.z,\
-		list->pos.x, list->pos.y, list->pos.z);
-	}
-	else if (list->type == OBJ_SPHERE)
-	{
-		ft_putendl("\nSPHERE:\n-------");
-		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
-		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
-		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
-		list->id, list->type,\
-		list->dir.x, list->dir.y, list->dir.z,\
-		list->pos.x, list->pos.y, list->pos.z);
-	}
-	else if (list->type == OBJ_TORUS)
-	{
-		ft_putendl("TORUS:\n------");
-		printf("\t\tid = %d\t\t\t|\ttype = %d\n\
-		dir.x = %f\t|\tdir.y = %f\t|\tdir.z = %f\n\
-		pos.x = %f\t|\tpos.y = %f\t|\tpos.z = %f\n\n",\
-		list->id, list->type,\
-		list->dir.x, list->dir.y, list->dir.z,\
-		list->pos.x, list->pos.y, list->pos.z);
-	}
-	
-}
-
 
 void		load_scene_objects(t_env *e)
 {
@@ -86,7 +19,6 @@ void		load_scene_objects(t_env *e)
 	list = XML->node_lst;
 	while (list != NULL)
 	{
-		print_list(list);
 		e->current_index_objects++;
 		if (list->type == OBJ_CONE)
 			xml_push_cone(e, list);
@@ -139,7 +71,7 @@ void		env_init(t_env *e)
 	e->ui->redraw = 1;
 	ft_putendl("\x1b[1;29mRT environnement initialized!\n\x1b[0m");
 }
-
+/*
 void		cl_init(t_env *e)
 {
 	if (!(e->cl = cl_construct("./kernel/kernel.cl", WIDTH, HEIGHT,
@@ -184,7 +116,7 @@ void		cl_init(t_env *e)
 							sizeof(unsigned int) * e->texture[3].width * e->texture[3].height,
 							e->texture[3].pixel_array, 0, NULL, NULL)))
 		s_error("Error: Failed to send text3 arguments to kernel!", e);
-}
+}*/
 
 void		init(GtkApplication *app, gpointer data)
 {
@@ -205,8 +137,9 @@ void		init(GtkApplication *app, gpointer data)
 		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
 	ft_bzero(e->pixel_data, sizeof(int) * WIDTH * HEIGHT);
 	load_scene(e);
-	cl_init(e);
 	ft_putendl("\n\x1b[1;32m/\\ Loading UI... /\\\x1b[0m\n");
-	opencl_set_args(e, e->cl);
-	// opencl_draw(e);
+
+	init_cuda(&e->cuda, e->scene, e->gen_objects, e->gen_lights, e->texture);
+
+	opencl_draw(e);
 }

@@ -15,13 +15,11 @@ LIBFTFLAGS := -lft
 
 LIBMATHFLAGS := -lm
 
-GTK_CFLAGS	=	$(shell pkg-config --cflags gtk+-3.0)
-GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
-
-OPENCL :=				-framework OpenCL
+GTK_CFLAGS		=	$(shell pkg-config --cflags gtk+-3.0)
+GTK_CLIBS		=	$(shell pkg-config --libs gtk+-3.0)
+GTK_CUDALIBS	=	$(shell pkg-config --libs-only-L --libs-only-l gtk+-3.0)
 
 INC_NAMES = 			$(NAME).h \
-						cl.h \
 						ui.h \
 						gen.h
 
@@ -31,12 +29,7 @@ OBJ_NAME =				$(SRC_NAME:.c=.o)
 
 SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 SRC_PATH =				./src
-SRC_NAME =	 			cl/cl_compute.c \
-						cl/cl_construct.c \
-						cl/cl_create_buffer.c \
-						cl/cl_destruct.c \
-						cl/cl_print_error.c \
-						init.c \
+SRC_NAME =	 			init.c \
 						gen/gen_add.c \
 						gen/gen_remove_mem_index.c \
 						gen/gen_remove_index.c \
@@ -201,6 +194,8 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_cut_y.c \
 						ui/callback/cb_obj_cut_z.c 
 
+SRC_CUDA =				kernel/raytrace.cu
+
 default: gpu
 
 all: libft
@@ -209,7 +204,8 @@ all: libft
 
 $(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
-	$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(GTK_CLIBS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
+	/usr/local/cuda/bin/nvcc -g -o rt $(OBJ) $(SRC_CUDA) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
+
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
 	$(CC) $(CFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)

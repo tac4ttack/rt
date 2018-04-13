@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ui_cam.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:02:45 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/07 16:38:58 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/08 01:38:25 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,4 @@ void		ui_cam(t_env *e)
 		free(cam_id);
 	}
 	ui_cam_update(e);
-	opencl_set_args(e, e->cl);
 }
