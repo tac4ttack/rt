@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/13 19:06:05 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/13 19:52:37 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "cl.h"
 # include "ui.h"
 # include "gen.h"
+# include "t_cuda.h"
 
 #include <float.h>
 #include <stdbool.h>
