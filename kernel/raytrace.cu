@@ -36,6 +36,7 @@
 #define OBJ_FLAG_BUMP_MAP			(1 << 4)
 #define OBJ_FLAG_PLANE_LIMIT		(1 << 5)
 #define OBJ_FLAG_PLANE_LIMIT_FIX	(1 << 6)
+#define OBJ_FLAG_CUT				(1 << 7)
 
 # define OBJ_CAM					1
 # define OBJ_LIGHT					2
@@ -45,6 +46,7 @@
 # define OBJ_SPHERE					6
 # define OBJ_ELLIPSOID				7
 # define OBJ_THOR					8
+# define OBJ_KUBE					9
 
 typedef struct			s_gen
 {
@@ -399,12 +401,9 @@ typedef	struct			s_tor
 	float				coef_tra;
 	float				opacity;
 	unsigned int		color;
-	int					mem_index;
-	int					id;
+	float				ratio;
 	int					type;
-	float				dist;
-	float				fr;
-	float				ft;
+
 }						t_tor;
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1202,7 +1201,6 @@ __host__ __device__ float3	get_cylinder_abc(const float radius, const float3 dir
 {
 	float3		abc = make_float3(0.f);
 
-	// SEMBLE OK
 	abc.x = dot(ray, ray) - (dot(ray, dir) * dot(ray, dir));
 	abc.y = 2 * (dot(ray, origin) - (dot(ray, dir) * dot(origin, dir)));
 	abc.z = dot(origin, origin) - (dot(origin, dir) * dot(origin, dir)) - (radius * radius);
@@ -1584,19 +1582,10 @@ __host__ __device__ unsigned int			phong(const  t_scene *scene, const t_hit hit,
 				col_b += (((l_b * brightness) * obj_b) * tmp * diffuse.z) / 255.0;
 
 				(col_r > 255 ? col_r = 255 : 0);
-				// commented lines are failed tonemaping test
-			//	col_r = (col_r > 255 ? col_r / (col_r + 1) : col_r);
 				(col_g > 255 ? col_g = 255 : 0);
-			//	col_g = (col_g > 255 ? col_g / (col_g + 1) : col_g);
 				(col_b > 255 ? col_b = 255 : 0);
-			//	col_b = (col_b > 255 ? col_b / (col_b + 1) : col_b);
-
-				if (scene->flag & OPTION_CARTOON_FOUR)
-					res_color = cartoonize_four(col_r, col_g, col_b);
-				else if (scene->flag & OPTION_CARTOON_TWO)
-				 	res_color = cartoonize_two(col_r, col_g, col_b);
-				else
-					res_color = ((col_r << 16) + (col_g << 8) + col_b);
+				
+				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 
 			// specular part
@@ -1617,15 +1606,38 @@ __host__ __device__ unsigned int			phong(const  t_scene *scene, const t_hit hit,
 				col_b += (light_color & 0x0000FF) * pow_of_spec * speculos.z;
 
 				(col_r > 255 ? col_r = 255 : 0);
-			//	col_r = (col_r > 255 ? col_r / (col_r + 1) : col_r);
 				(col_g > 255 ? col_g = 255 : 0);
-			//	col_g = (col_g > 255 ? col_g / (col_g + 1) : col_g);
 				(col_b > 255 ? col_b = 255 : 0);
-			//	col_b = (col_b > 255 ? col_b / (col_b + 1) : col_b);
 
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
+
+
+			// opacite de l'ombre à debug!!!!!
 			res_color = blend_factor(res_color, ((light_hit.opacity - 1) * -1));
+			// res_color = blend_factor(res_color, 1 - (light_hit.opacity / 2));
+	
+			// si pas de depth alors opacity = 0, la couleur n'est pas touchée
+			// res_color = blend_factor(res_color, 1 - (light_hit.opacity * light_hit.opacity));
+			// if (light_hit.opacity != 0)
+			// {
+			// 	light_hit.opacity = 1 - light_hit.opacity;
+			// 	if (light_hit.opacity > scene->ambient.x)
+			// 		col_r = (0.01 + col_r * light_hit.opacity > 255 ? 255 : 0.01 + col_r * light_hit.opacity);
+			// 	else
+			// 		col_r = (0.01 + col_r * scene->ambient.x > 255 ? 255 : 0.01 + col_r * scene->ambient.x);
+			// 	if (light_hit.opacity > scene->ambient.y)
+			// 		col_g = (0.01 + col_g * light_hit.opacity > 255 ? 255 : 0.01 + col_g * light_hit.opacity);
+			// 	else
+			// 		col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
+			// 	if (light_hit.opacity > scene->ambient.z)
+			// 		col_b = (0.01 + col_b * light_hit.opacity > 255 ? 255 : 0.01 + col_b * light_hit.opacity);					
+			// 	else
+			// 		col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
+			// 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
+			// }
+
+
 			if (scene->flag & OPTION_CARTOON_FOUR)
 			 	res_color = cartoonize_four(col_r, col_g, col_b);
 			else if (scene->flag & OPTION_CARTOON_TWO)
@@ -1687,10 +1699,8 @@ __host__ __device__ float3		refract_ray(const  t_scene *scene, const float3 ray,
 __host__ __device__ float3		bounce_ray(const  t_scene *scene, const float3 ray, t_tor tor)
 {
 	float3			reflex;
-	float			reflex_coef;
 
 	reflex = make_float3(0.f);
-	reflex_coef = 0;
 	// PREMIÈRE LOI DE SNELL-DESCARTES ///////////////////////////////////////////////////////////
 	reflex = normalize(ray - (2 * (float)dot(tor.normale, ray) * tor.normale));
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -1713,35 +1723,24 @@ __host__ __device__ unsigned int	tor_final_color(t_tor *tor)
 	int				i = 31;
 	unsigned int	color = 0;
 
-	while (i > 0 && tor[i].activate == 0)
-		i = i - 1;
-	if (i != 0)
-	{
-		if (i % 2 == 0)
-			i = (i / 2) - 1;
-		else
-			i = (i - 1) / 2;
-	}
 	while (i > 0)
 	{
-		if (tor[i].activate == 0 && (tor[i * 2 + 1].activate == 0 && tor[(i + 1) * 2].activate == 0))
+		if (tor[i].activate == 0 || (tor[(2 * i) + 2].activate == 0 && tor[(2 * i) + 1].activate == 0))
 			;
 		else
 		{
-			color = blend_add(blend_factor(tor[(i + 1) * 2].color, tor[(i + 1) * 2].fr), blend_factor(tor[i * 2 + 1].color, tor[i * 2 + 1].ft));
+			color = blend_add(blend_factor(tor[(2 * i) + 2].color, tor[(2 * i) + 2].ratio), blend_factor(tor[(2 * i) + 1].color, tor[(2 * i) + 1].ratio));
 			if (tor[i].coef_tra != 0)
 				tor[i].color = blend_add(blend_factor(tor[i].color, tor[i].opacity), blend_factor(color, 1 - tor[i].opacity));
 			else if (tor[i].coef_ref != 0)
 				tor[i].color = blend_add(blend_factor(tor[i].color, 1 - tor[i].coef_ref), blend_factor(color, tor[i].coef_ref));
 			// else
-			// tor[i].color = blend_add(color, tor[i].color);
+			// 	tor[i].color = blend_add(color, tor[i].color);
 		}
 		i = i - 1;
-		while (i > 0 && tor[i].activate == 0)
-			i = i - 1;
 	}
-	color = blend_add(tor[(i + 1) * 2].color, tor[i * 2 + 1].color);
-	if (tor[0].coef_tra != 0)
+	color = blend_add(blend_factor(tor[(2 * i) + 2].color, tor[(2 * i) + 2].ratio), blend_factor(tor[(2 * i) + 1].color, tor[(2 * i) + 1].ratio));
+	if (tor[i].coef_tra != 0)
 		color = blend_add(blend_factor(tor[i].color, tor[i].opacity), blend_factor(color, 1 - tor[i].opacity));
 	else
 		color = blend_add(blend_factor(tor[i].color, 1 - tor[i].coef_ref), blend_factor(color, tor[i].coef_ref));
@@ -1749,7 +1748,7 @@ __host__ __device__ unsigned int	tor_final_color(t_tor *tor)
 }
 
 // OCL TO CUDA -> need test
-__host__ __device__ t_tor		tor_push(float3 ray, float3 normale, float3 pos, float coef_ref, float coef_tra, float opacity, unsigned int color, uint mem_index, int id, int type, float fr, float ft)
+__host__ __device__ t_tor		tor_push(float3 ray, float3 normale, float3 pos, float coef_ref, float coef_tra, float opacity, unsigned int color, int type, float ratio)
 {
 	t_tor			tor;
 
@@ -1760,12 +1759,8 @@ __host__ __device__ t_tor		tor_push(float3 ray, float3 normale, float3 pos, floa
 	tor.coef_tra = coef_tra;
 	tor.opacity = opacity;
 	tor.color = color;
-	tor.mem_index = mem_index;
 	tor.activate = 1;
-	tor.id = id;
 	tor.type = type;
-	tor.fr = fr;
-	tor.ft = ft;
 	return (tor);
 }
 
