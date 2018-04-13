@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/13 19:30:57 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/13 19:51:41 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,7 @@ int				opencl_draw(t_env *e)
 					e->fps.u_time,
 					e->scene,
 					e->cameras);
-	if (e->scene->flag & OPTION_RUN)
-		ft_putendl("run is on");
-	else
-		ft_putendl("run is off");
+
 	// printf("CPU\n");
 	// printf("t_cam %zu\n", sizeof(t_cam));
 	// printf("t_scene %zu\n", sizeof(t_scene));
