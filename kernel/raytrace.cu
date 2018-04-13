@@ -597,6 +597,7 @@ __host__ __device__ float3	vector_get_inverse(const float3 *me, const float3 *ro
 	return (n);
 }
 
+// OCL TO CUDA -> OK
 __host__ __device__ t_hit	hit_init(void)
 {
 	t_hit		hit;
@@ -614,9 +615,10 @@ __host__ __device__ t_hit	hit_init(void)
 	return (hit);
 }
 
+// OCL TO CUDA -> need tests
 __host__ __device__ float3	rotat_zyx(const float3 vect, const float pitch, const float yaw, const float roll)
 {
-	float3		res;
+	float3		res = make_float3(0.0f);
 	float		rad_pitch = radians(pitch);
 	float		rad_yaw = radians(yaw);
 	float		rad_roll = radians(roll);
@@ -627,6 +629,7 @@ __host__ __device__ float3	rotat_zyx(const float3 vect, const float pitch, const
 	return (res);
 }
 
+// OCL TO CUDA -> OK
 __host__ __device__ unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
 {
 	unsigned int r, g, b;
@@ -644,6 +647,7 @@ __host__ __device__ unsigned int	blend_multiply(const unsigned int c1, const uns
 	return ((r << 16) + (g << 8) + b);
 }
 
+// OCL TO CUDA -> OK
 __host__ __device__ unsigned int	blend_med(const unsigned int c1, const unsigned int c2)
 {
 	unsigned int r, g, b;
@@ -660,6 +664,7 @@ __host__ __device__ unsigned int	blend_med(const unsigned int c1, const unsigned
 	return ((r << 16) + (g << 8) + b);
 }
 
+// OCL TO CUDA -> OK
 __host__ __device__ unsigned int	blend_add(const unsigned int c1, const unsigned int c2)
 {
 	unsigned int r, g, b;
@@ -676,6 +681,7 @@ __host__ __device__ unsigned int	blend_add(const unsigned int c1, const unsigned
 	return ((r << 16) + (g << 8) + b);
 }
 
+// OCL TO CUDA -> OK
 __host__ __device__ unsigned int	blend_factor(const unsigned int c1, const float factor)
 {
 	unsigned int r, g, b;
@@ -689,6 +695,7 @@ __host__ __device__ unsigned int	blend_factor(const unsigned int c1, const float
 	return ((r << 16) + (g << 8) + b);
 }
 
+// OCL TO CUDA -> OK
 __host__ __device__ unsigned int	get_ambient(const t_scene *scene, const unsigned int obj_color)
 {
 	unsigned int r, g, b;
@@ -702,6 +709,7 @@ __host__ __device__ unsigned int	get_ambient(const t_scene *scene, const unsigne
 	return ((r << 16) + (g << 8) + b);
 }
 
+// OCL TO CUDA -> OK
 __host__ __device__ unsigned int	sepiarize(const unsigned int color)
 {
 	uint3	base, cooking_pot = make_uint3(0, 0, 0);
@@ -717,6 +725,7 @@ __host__ __device__ unsigned int	sepiarize(const unsigned int color)
 	return (((uint)cooking_pot.x << 16) + ((uint)cooking_pot.y << 8) + (uint)cooking_pot.z);
 }
 
+// OCL TO CUDA -> OK
 __host__ __device__ unsigned int	invert(const unsigned int color)
 {
 	uint3	base = make_uint3(0, 0, 0);
@@ -729,6 +738,7 @@ __host__ __device__ unsigned int	invert(const unsigned int color)
 	return (((uint)base.x << 16) + ((uint)base.y << 8) + (uint)base.z);
 }
 
+// OCL TO CUDA -> OK
 __host__ __device__ unsigned int	desaturate(const unsigned int color)
 {
 	uint3	rgb = make_uint3(0, 0, 0);
@@ -739,7 +749,7 @@ __host__ __device__ unsigned int	desaturate(const unsigned int color)
 	return (((uint)average << 16) + ((uint)average << 8) + (uint)average);
 }
 
-// CUDA TO OCL -> OK
+// OCL TO CUDA -> OK
 __host__ __device__ unsigned int cartoonize_four(unsigned int col_r, unsigned int col_g, unsigned int col_b)
 {
 		if (col_r > 0 && col_r <= 50)
@@ -777,7 +787,8 @@ __host__ __device__ unsigned int cartoonize_four(unsigned int col_r, unsigned in
 
 	return (((col_r << 16) + (col_g << 8) + col_b));
 }
-// CUDA TO OCL -> OK
+
+// OCL TO CUDA -> OK
 __host__ __device__ unsigned int cartoonize_two(unsigned int col_r, unsigned int col_g, unsigned int col_b)
 {
 		if (col_r > 0 && col_r <= 128)
@@ -803,7 +814,8 @@ __host__ __device__ unsigned int cartoonize_two(unsigned int col_r, unsigned int
 
 	return (((col_r << 16) + (col_g << 8) + col_b));
 }
-// CUDA TO OCL -> OK
+
+// OCL TO CUDA -> OK
 __host__ __device__  bool		solve_quadratic(const float a, const float b, const float c, float *inter0, float *inter1)
 {
 	float 		discr;
