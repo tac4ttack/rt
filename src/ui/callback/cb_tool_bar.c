@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:50 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:19:25 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/13 17:43:17 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,5 @@ void	cb_render_btn(GtkButton *btn, gpointer data)
 
 	(void)btn;
 	e = data;
-	opencl_draw(e);
+	draw(e);
 }

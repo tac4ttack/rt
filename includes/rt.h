@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/13 16:45:07 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/13 17:44:49 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,14 @@ typedef struct			s_float3
 	float				w;
 }						t_float3;
 
+# ifdef DCUDA
 #  define FT_FLOAT3	t_float3
+#  define CUDA		1
+# else
+#  define FT_FLOAT3	cl_float3
+#  define CUDA		0
+# endif
+
 
 typedef struct			s_object
 {
@@ -502,6 +509,13 @@ typedef	struct			s_env
 }						t_env;
 
 
+
+void					init_cuda(t_cuda *cuda, t_scene *scene, \
+						t_gen *mem_obj, t_gen *mem_lights, t_tex *texture);
+
+int						draw(t_env *e);
+void					init_kernel(t_env *e);
+
 void					init_cuda(t_cuda *cuda, t_scene *scene, \
 						t_gen *mem_obj, t_gen *mem_lights, t_tex *texture);
 
@@ -519,8 +533,6 @@ FT_FLOAT3				rotz(FT_FLOAT3 dir, float roll);
 FT_FLOAT3				roty(FT_FLOAT3 dir, float yaw);
 FT_FLOAT3				rotx(FT_FLOAT3 dir, float pitch);
 FT_FLOAT3				rotcam(FT_FLOAT3 vect, float rad_pitch, float rad_yaw);
-
-int						opencl_draw(t_env *e);
 
 void					init(GtkApplication *app, gpointer data);
 void					init_gtk(GtkApplication *app, gpointer data);

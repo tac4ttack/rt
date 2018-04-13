@@ -30,6 +30,8 @@ OBJ_NAME =				$(SRC_NAME:.c=.o)
 SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 SRC_PATH =				./src
 SRC_NAME =	 			init.c \
+	 					init_cuda.c \
+	 					init_opencl.c \
 						gen/gen_add.c \
 						gen/gen_remove_mem_index.c \
 						gen/gen_remove_index.c \
@@ -39,7 +41,8 @@ SRC_NAME =	 			init.c \
 						gen/gen_construct.c \
 						gen/gen_destruct.c \
 						main.c \
-						opencl_compute.c \
+						draw_opencl.c \
+						draw_cuda.c \
 						rotations.c \
 						tools.c \
 						ui/add/ui_add_cone.c \
@@ -205,11 +208,11 @@ all: libft
 
 $(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ) $(SRC_CUDA) $(INC_CUDA)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
-	/usr/local/cuda/bin/nvcc -g -o rt -D CUDA $(OBJ) $(SRC_CUDA) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
+	/usr/local/cuda/bin/nvcc -g -o rt -D DCUDA $(OBJ) $(SRC_CUDA) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
 
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+	$(CC) $(CFLAGS) -c $< -o $@ -D DCUDA -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_PATH):
 	@echo "$(GREEN)Creating ./obj path and making binaries from source files$(EOC)"
