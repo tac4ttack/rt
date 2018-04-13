@@ -702,6 +702,44 @@ __host__ __device__ unsigned int	get_ambient(const t_scene *scene, const unsigne
 	return ((r << 16) + (g << 8) + b);
 }
 
+__host__ __device__ unsigned int	sepiarize(const unsigned int color)
+{
+	uint3	base, cooking_pot = make_uint3(0, 0, 0);
+	base.x = (color & 0x00FF0000) >> 16;
+	base.y = (color & 0x0000FF00) >> 8;
+	base.z = (color & 0x000000FF);
+	cooking_pot.x = (base.x * 0.393) + (base.y * 0.769) + (base.z * 0.189);
+	cooking_pot.y = (base.x * 0.349) + (base.y * 0.686) + (base.z * 0.168);
+	cooking_pot.z = (base.x * 0.272) + (base.y * 0.534) + (base.z * 0.131);
+	(cooking_pot.x > 255 ? cooking_pot.x = 255 : 0);
+	(cooking_pot.y > 255 ? cooking_pot.y = 255 : 0);
+	(cooking_pot.z > 255 ? cooking_pot.z = 255 : 0);
+	return (((uint)cooking_pot.x << 16) + ((uint)cooking_pot.y << 8) + (uint)cooking_pot.z);
+}
+
+__host__ __device__ unsigned int	invert(const unsigned int color)
+{
+	uint3	base = make_uint3(0, 0, 0);
+	base.x = (color & 0x00FF0000) >> 16;
+	base.y = (color & 0x0000FF00) >> 8;
+	base.z = (color & 0x000000FF);
+	base.x = 255 - base.x;
+	base.y = 255 - base.y;
+	base.z = 255 - base.z;
+	return (((uint)base.x << 16) + ((uint)base.y << 8) + (uint)base.z);
+}
+
+__host__ __device__ unsigned int	desaturate(const unsigned int color)
+{
+	uint3	rgb = make_uint3(0, 0, 0);
+	rgb.x = (color & 0x00FF0000) >> 16;
+	rgb.y = (color & 0x0000FF00) >> 8;
+	rgb.z = (color & 0x000000FF);
+	float 	average = (rgb.x + rgb.y + rgb.z) / 3;
+	return (((uint)average << 16) + ((uint)average << 8) + (uint)average);
+}
+
+// CUDA TO OCL -> OK
 __host__ __device__ unsigned int cartoonize_four(unsigned int col_r, unsigned int col_g, unsigned int col_b)
 {
 		if (col_r > 0 && col_r <= 50)
@@ -739,7 +777,7 @@ __host__ __device__ unsigned int cartoonize_four(unsigned int col_r, unsigned in
 
 	return (((col_r << 16) + (col_g << 8) + col_b));
 }
-
+// CUDA TO OCL -> OK
 __host__ __device__ unsigned int cartoonize_two(unsigned int col_r, unsigned int col_g, unsigned int col_b)
 {
 		if (col_r > 0 && col_r <= 128)
@@ -765,7 +803,7 @@ __host__ __device__ unsigned int cartoonize_two(unsigned int col_r, unsigned int
 
 	return (((col_r << 16) + (col_g << 8) + col_b));
 }
-
+// CUDA TO OCL -> OK
 __host__ __device__  bool		solve_quadratic(const float a, const float b, const float c, float *inter0, float *inter1)
 {
 	float 		discr;
@@ -1958,12 +1996,12 @@ __host__ __device__ unsigned int	ray_trace(	int				index,
 	prim_ray = get_ray_cam(scene, x, y, scene->win_w, scene->win_h);
 	final_color = get_pixel_color(scene, prim_ray, target, (scene->flag & OPTION_RUN && x == scene->mou_x && y == scene->mou_y), index);
 
-/*	if (scene->flag & OPTION_SEPIA)
+	if (scene->flag & OPTION_SEPIA)
 		final_color = sepiarize(final_color);
 	if (scene->flag & OPTION_BW)
 		final_color = desaturate(final_color);
 	if (scene->flag & OPTION_INVERT)
-		final_color = invert(final_color);*/
+		final_color = invert(final_color);
 
 
 	// ALPHA INSERT and RGB SWAP

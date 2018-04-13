@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/13 14:58:31 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/13 17:16:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int		gtk_quit(GtkApplication *app, gpointer data)
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
 	flush(e);
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
-	ft_bzero(e, sizeof(t_env ));
 	exit(EXIT_SUCCESS);
 	return (0);
 }
