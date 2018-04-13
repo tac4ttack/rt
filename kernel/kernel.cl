@@ -95,10 +95,10 @@ typedef struct			s_object
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	int					diff_map_id;
-	float2				diff_offset;
-	float2				diff_ratio;
+	float3				diff_offset;
+	float3				diff_ratio;
 	float3				cut_min;
 	float3				cut_max;
 }						t_object;
@@ -121,10 +121,10 @@ typedef struct			s_cone
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	int					diff_map_id;
-	float2				diff_offset;
-	float2				diff_ratio;
+	float3				diff_offset;
+	float3				diff_ratio;
 	float3				cut_min;
 	float3				cut_max;
 
@@ -150,10 +150,10 @@ typedef struct			s_cylinder
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	int					diff_map_id;
-	float2				diff_offset;
-	float2				diff_ratio;
+	float3				diff_offset;
+	float3				diff_ratio;
 	float3				cut_min;
 	float3				cut_max;
 
@@ -179,10 +179,10 @@ typedef struct			s_plane
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	int					diff_map_id;
-	float2				diff_offset;
-	float2				diff_ratio;
+	float3				diff_offset;
+	float3				diff_ratio;
 	float3				cut_min;
 	float3				cut_max;
 
@@ -208,10 +208,10 @@ typedef struct			s_sphere
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	int					diff_map_id;
-	float2				diff_offset;
-	float2				diff_ratio;
+	float3				diff_offset;
+	float3				diff_ratio;
 	float3				cut_min;
 	float3				cut_max;
 
@@ -236,10 +236,10 @@ typedef struct			s_ellipsoid
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	int					diff_map_id;
-	float2				diff_offset;
-	float2				diff_ratio;
+	float3				diff_offset;
+	float3				diff_ratio;
 	float3				cut_min;
 	float3				cut_max;
 
@@ -265,10 +265,10 @@ typedef struct			s_thor
 	float3				limit_dir;
 	float3				waves_p1;
 	float3				waves_p2;
-	float2				check_size;
+	float3				check_size;
 	int					diff_map_id;
-	float2				diff_offset;
-	float2				diff_ratio;
+	float3				diff_offset;
+	float3				diff_ratio;
 	float3				cut_min;
 	float3				cut_max;
 
@@ -329,16 +329,6 @@ typedef struct			s_ret
 
 typedef struct			s_scene
 {
-	t_cam				__local *cameras;
-//	void				*dummy_pedro;
-	void				__local *mem_lights;  //repassé en void à cause de l'erreur compilation, sinon pour oclgrind foutre char
-//	void				*dummy_gomez;
-	void				__local *mem_obj; //repassé en void à cause de l'erreur compilation, sinon pour oclgrind foutre char
-//	void				*dummy_ramon;
-	unsigned int		__global *texture_earth;
-	unsigned int		__global *texture_moon;
-	unsigned int		__global *texture_skybox;
-	unsigned int		__global *texture_star;
 	unsigned int		n_cams;
 	unsigned int		active_cam;
 	unsigned int		win_w;
@@ -352,6 +342,17 @@ typedef struct			s_scene
 	unsigned int		over_sampling;
 	unsigned int		mem_size_obj;
 	unsigned int		mem_size_lights;
+	float3				check_p1;
+	float3				check_p2;
+	float3				waves_p1;
+	float3				waves_p2;
+	t_cam				__local *cameras;
+	void				__local *mem_lights;  //repassé en void à cause de l'erreur compilation, sinon pour oclgrind foutre char
+	void				__local *mem_obj; //repassé en void à cause de l'erreur compilation, sinon pour oclgrind foutre char
+	unsigned int		__global *texture_earth;
+	unsigned int		__global *texture_moon;
+	unsigned int		__global *texture_skybox;
+	unsigned int		__global *texture_star;
 }						t_scene;
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -889,7 +890,7 @@ static t_ret	inter_ellipsoid(const __local t_ellipsoid *ellipsoid, float3 ray, f
 /*
 ** PLANES FUNCTIONS ////////////////////////////////////////////////////////////
 */
-static unsigned int		plane_checkerboard(const float3 normale, const float3 pos, const unsigned int color, const float2 check_size)
+static unsigned int		plane_checkerboard(const float3 normale, const float3 pos, const unsigned int color, const float3 check_size)
 {
 	float3			u_axis = 0;
 	float3			v_axis = 0;
@@ -913,7 +914,7 @@ static unsigned int		plane_checkerboard(const float3 normale, const float3 pos, 
 	return (0);
 }
 
-static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, float2 ratio, float2 offset, unsigned int __global *texture, int width, int height)
+static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, float3 ratio, float3 offset, unsigned int __global *texture, int width, int height)
 {
 	float3			v_axis = 0;
 	int2			uv = 0;
@@ -1283,7 +1284,7 @@ static float3 get_thor_normal(const __local t_thor *thor, const float3 hitpos)
 /*
 ** SPHERES FUNCTIONS ///////////////////////////////////////////////////////////
 */
-static t_ret			sphere_cut(const __local t_sphere *sphere, float2 tmp, const float3 ray, const float3 origin)
+static t_ret			sphere_cut(const __local t_sphere *sphere, float3 tmp, const float3 ray, const float3 origin)
 {
 	t_ret		ret;
 	float 		pt_y;
@@ -1316,7 +1317,7 @@ static t_ret			sphere_cut(const __local t_sphere *sphere, float2 tmp, const floa
 	return (ret);
 }
 
-static unsigned int		sphere_checkerboard(const float3 dir, const unsigned int color, const float2 check_size)
+static unsigned int		sphere_checkerboard(const float3 dir, const unsigned int color, const float3 check_size)
 {
 	int2	uv = 0;
 
@@ -1334,7 +1335,7 @@ static unsigned int		sphere_checkerboard(const float3 dir, const unsigned int co
 	return (0);
 }
 
-static unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, int t_width, int t_height, float2 ratio, float2 offset)
+static unsigned int		sphere_texture(float3 pos, unsigned int __global *texture, int t_width, int t_height, float3 ratio, float3 offset)
 {
 	unsigned int	color = 0;
 	int2			uv = 0;
@@ -1409,7 +1410,7 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 // 	float3		pos = 0;
 
 // 	float       d = 0;
-// 	float2      tmp = 0;
+// 	float3      tmp = 0;
 
 // 	pos = origin - sphere->pos;
 // 	abc = get_sphere_abc(sphere->radius, ray, pos);
@@ -1446,7 +1447,7 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 /*
 ** CONES FUNCTIONS /////////////////////////////////////////////////////////////
 */
-static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigned int __global *texture, int t_width, int t_height, float2 ratio, float2 offset)
+static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigned int __global *texture, int t_width, int t_height, float3 ratio, float3 offset)
 {
 	unsigned int	color = 0;
 	float3			v_axis = 0;
@@ -2113,6 +2114,22 @@ __kernel void		ray_trace(	__global	char		*output,
 	id = get_global_id(0);
 	pix.x = id % scene->win_w;
 	pix.y = id / scene->win_w;
+
+	if (pix.y + pix.x == 0)
+	{
+		printf("GPU\n");
+		printf("t_cam %i\n", sizeof(t_cam));
+		printf("t_scene %i\n", sizeof(t_scene));
+		printf("t_object %i\n", sizeof(t_object));
+		printf("t_sphere %i\n", sizeof(t_sphere));
+		printf("t_light %i\n", sizeof(t_light));
+		printf("t_cylinder %i\n", sizeof(t_cylinder));
+		printf("t_sphere %i\n", sizeof(t_sphere));
+		printf("t_ellipsoid %i\n", sizeof(t_ellipsoid));
+		printf("t_plane %i\n", sizeof(t_plane));
+		printf("t_cone %i\n", sizeof(t_cone));
+		printf("\n");
+	}
 
 	//DEBUG
 	if (id >= (scene->win_w * scene->win_h))

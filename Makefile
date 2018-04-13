@@ -8,6 +8,8 @@ RM := 					rm -rf
 INC = $(addprefix $(INC_PATH)/,$(INC_NAMES))
 INC_PATH = ./includes
 
+OPENCL =	-framework OpenCL
+
 LIBFT := $(LIBFT_PATH)/libft.a
 LIBFT_PATH := ./libft
 LIBFT_INC_PATH := ./libft
@@ -45,6 +47,11 @@ SRC_NAME =	 			init.c \
 						draw_cuda.c \
 						rotations.c \
 						tools.c \
+						cl/cl_compute.c \
+						cl/cl_construct.c \
+						cl/cl_create_buffer.c \
+						cl/cl_print_error.c \
+						cl/cl_destruct.c \
 						ui/add/ui_add_cone.c \
 						ui/add/ui_add_cylinder.c \
 						ui/add/ui_add_ellipsoid.c \
@@ -210,9 +217,12 @@ $(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ) $(SRC_CUDA) $(INC_CUDA)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
 	/usr/local/cuda/bin/nvcc -g -o rt -D DCUDA $(OBJ) $(SRC_CUDA) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
 
+opencl: libft $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
+	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
+	$(CC) -o $(NAME) $(OBJ) -D DCL -L $(LIBFT_PATH) $(LIBFTFLAGS) $(GTK_CLIBS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
-	$(CC) $(CFLAGS) -c $< -o $@ -D DCUDA -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+	$(CC) $(CFLAGS) -c $< -o $@ -D DCL -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_PATH):
 	@echo "$(GREEN)Creating ./obj path and making binaries from source files$(EOC)"
