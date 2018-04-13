@@ -472,7 +472,8 @@ typedef struct			s_hit
 	int					mem_index;
 	float				opacity;
 	unsigned int		color;
-	int					wall; // WIP
+	int					wall; // WIP decoupe Noe
+	int					lock;
 }						t_hit;
 
 typedef struct			s_ret
@@ -498,14 +499,6 @@ typedef struct			s_scene
 	unsigned int		over_sampling;
 	unsigned int		mem_size_obj;
 	unsigned int		mem_size_lights;
-	float3				check_p1;
-	float				_align1;
-	float3				check_p2;
-	float				_align2;
-	float3				waves_p1;
-	float				_align3;
-	float3				waves_p2;
-	float				_align4;
 	t_cam				*cameras;
 //	void				*dummy_pedro;
 	void				*mem_lights;  //repassé en void à cause de l'erreur compilation, sinon pour oclgrind foutre char
@@ -525,6 +518,7 @@ typedef struct			s_cuda
 	char				*mem_lights;
 	t_cam				*cameras;
 	t_scene				*scene;
+	int					*target;
 	unsigned char 		*texture_0;
 	unsigned char 		*texture_1;
 	unsigned char 		*texture_2;
@@ -604,9 +598,8 @@ __host__ __device__ t_hit	hit_init(void)
 
 	hit.dist = 0.f;
 	hit.normal = make_float3(0.0f);
-
-	hit.obj = NULL; // dangling dangerouss!
-
+	hit.obj = 0;
+	hit.lock = 0;
 	hit.wall = 0;
 	hit.color = 0;
 	hit.pos = make_float3(0.0f);
@@ -1395,6 +1388,7 @@ __host__ __device__ t_hit			ray_hit(const  t_scene *scene, const float3 origin, 
 			hit.normal = ret.normal;
 			hit.wall = ret.wall;
 			hit.obj = obj;
+			hit.lock = 1;
 			hit.mem_index = mem_index_obj;
 		}
 		mem_index_obj += obj->size;
@@ -1902,7 +1896,7 @@ __host__ __device__ unsigned int	get_pixel_color(const  t_scene *scene, float3 r
 	color = 0;
 	bounce_color = 0;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
-	if ((isHim == 1) && (hit.obj != NULL))
+	if ((isHim == 1) && (hit.lock == 1))
 		*target = hit.mem_index;
 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
@@ -2030,7 +2024,7 @@ __global__ void test(unsigned int *output, unsigned int width, unsigned int heig
 							char *mem_objects, int mem_size_objects,
 							float u_time,
 							t_scene *scene_data, t_cam *cameras_data,
-							char *mem_lights, int mem_size_lights,
+							char *mem_lights, int mem_size_lights, int *target,
 							unsigned int *texture_0,
 							unsigned int *texture_1,
 							unsigned int *texture_2,
@@ -2042,7 +2036,7 @@ __global__ void test(unsigned int *output, unsigned int width, unsigned int heig
 	output[index] = ray_trace(index, mem_objects, mem_size_objects,
 								u_time,
 							scene_data, cameras_data,
-							mem_lights, mem_size_lights, 0, texture_0, texture_1, texture_2, texture_3);
+							mem_lights, mem_size_lights, target, texture_0, texture_1, texture_2, texture_3);
 }
 
 extern "C" void init_cuda(t_cuda *cuda, t_scene *scene, t_gen *gen_objects, t_gen *gen_lights, t_tex *texture)
@@ -2052,6 +2046,7 @@ extern "C" void init_cuda(t_cuda *cuda, t_scene *scene, t_gen *gen_objects, t_ge
 	cudaMalloc(&cuda->mem_lights, gen_lights->mem_size);
 	cudaMalloc(&cuda->scene, sizeof(t_scene));
 	cudaMalloc(&cuda->cameras, sizeof(t_cam) * scene->n_cams);
+	cudaMalloc(&cuda->target, sizeof(int));
 	cudaMalloc(&cuda->texture_0, sizeof(unsigned int) * texture[0].width * texture[0].height);
 	cudaMalloc(&cuda->texture_1, sizeof(unsigned int) * texture[1].width * texture[1].height);
 	cudaMalloc(&cuda->texture_2, sizeof(unsigned int) * texture[2].width * texture[2].height);
@@ -2074,22 +2069,22 @@ extern "C" void render_cuda(t_cuda *cuda,
 	dim3					threads_per_block(8, 8);
 	dim3					grid_size(scene_data->win_w / threads_per_block.x, scene_data->win_h / threads_per_block.y);
 
-	printf("GPU\n");
-	printf("t_cam %zu\n", sizeof(t_cam));
-	printf("t_scene %zu\n", sizeof(t_scene));
-	printf("t_object %zu\n", sizeof(t_object));
-	printf("t_gen %zu\n", sizeof(t_gen));
-	printf("t_sphere %zu\n", sizeof(t_sphere));
-	printf("t_light %zu\n", sizeof(t_light));
-	printf("t_cylinder %zu\n", sizeof(t_cylinder));
-	printf("t_sphere %zu\n", sizeof(t_sphere));
-	printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
-	printf("t_plane %zu\n", sizeof(t_plane));
-	printf("t_cone %zu\n", sizeof(t_cone));
-	printf("t_cone %zu\n", sizeof(t_cone));
-	printf("t_box %zu\n", sizeof(t_box));
-	printf("float3 %zu\n", sizeof(float3));
-	printf("\n");
+	// printf("GPU\n");
+	// printf("t_cam %zu\n", sizeof(t_cam));
+	// printf("t_scene %zu\n", sizeof(t_scene));
+	// printf("t_object %zu\n", sizeof(t_object));
+	// printf("t_gen %zu\n", sizeof(t_gen));
+	// printf("t_sphere %zu\n", sizeof(t_sphere));
+	// printf("t_light %zu\n", sizeof(t_light));
+	// printf("t_cylinder %zu\n", sizeof(t_cylinder));
+	// printf("t_sphere %zu\n", sizeof(t_sphere));
+	// printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
+	// printf("t_plane %zu\n", sizeof(t_plane));
+	// printf("t_cone %zu\n", sizeof(t_cone));
+	// printf("t_cone %zu\n", sizeof(t_cone));
+	// printf("t_box %zu\n", sizeof(t_box));
+	// printf("float3 %zu\n", sizeof(float3));
+	// printf("\n");
 
 		/*cudaMalloc(&output, width * height * sizeof(int));
 		cudaMalloc(&mem_objects, gen_objects->mem_size);
@@ -2118,7 +2113,7 @@ extern "C" void render_cuda(t_cuda *cuda,
 												cuda->mem_objects, gen_objects->mem_size,
 												u_time,
 												cuda->scene, cuda->cameras,
-												cuda->mem_lights, gen_lights->mem_size,
+												cuda->mem_lights, gen_lights->mem_size, cuda->target,
 												(unsigned int *)cuda->texture_0,
 												(unsigned int *)cuda->texture_1,
 												(unsigned int *)cuda->texture_2,

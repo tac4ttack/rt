@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/13 16:45:07 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/13 18:27:25 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -445,10 +445,6 @@ typedef struct			s_scene
 	unsigned int		over_sampling;
 	unsigned int		mem_size_obj;
 	unsigned int		mem_size_lights;
-	FT_FLOAT3			check_p1;
-	FT_FLOAT3			check_p2;
-	FT_FLOAT3			waves_p1;
-	FT_FLOAT3			waves_p2;
 	t_cam				*cameras;
 	void				*mem_lights;
 	void				*mem_obj;
@@ -465,6 +461,7 @@ typedef struct			s_cuda
 	char				*mem_lights;
 	t_cam				*cameras;
 	t_scene				*scene;
+	int					*target;
 	unsigned char 		*texture_0;
 	unsigned char 		*texture_1;
 	unsigned char 		*texture_2;
