@@ -43,9 +43,6 @@ SRC_NAME =	 			init.c \
 						main.c \
 						rotations.c \
 						tools.c \
-						cuda/cuda_construct.c \
-						cuda/cuda_destruct.c \
-						cuda/cuda_create_buffer.c \
 						ui/add/ui_add_cone.c \
 						ui/add/ui_add_cylinder.c \
 						ui/add/ui_add_ellipsoid.c \
@@ -207,18 +204,24 @@ SRC_CL_NAME = 	cl/cl_compute.c \
 			draw_opencl.c \
 			init_opencl.c
 
-OBJ_CL =			$(addprefix $(OBJ_PATH)/,$(OBJ_CL_NAME))
+OBJ_CL =			$(addprefix $(OBJ_CL_PATH)/,$(OBJ_CL_NAME))
+OBJ_CL_PATH =		./objcl
 OBJ_CL_NAME =		$(SRC_CL_NAME:.c=.o)
 
 SRC_CUDA = $(addprefix $(SRC_PATH)/,$(SRC_CUDA_NAME))
-SRC_CUDA_NAME = 	draw_cuda.c \
+SRC_CUDA_NAME =		cuda/cuda_construct.c \
+					cuda/cuda_destruct.c \
+					cuda/cuda_create_buffer.c \
+					cuda/cuda_update_buffer.c \
+					draw_cuda.c \
 					init_cuda.c
 
-OBJ_CUDA =			$(addprefix $(OBJ_PATH)/,$(OBJ_CUDA_NAME))
+OBJ_CUDA =			$(addprefix $(OBJ_CUDA_PATH)/,$(OBJ_CUDA_NAME))
+OBJ_CUDA_PATH =		./objcuda
 OBJ_CUDA_NAME =		$(SRC_CUDA_NAME:.c=.o)
 
-SRC_CUDA_CU =				kernel/raytrace.cu
-INC_CUDA_CU = 				kernel/includes/ft_maths.hu
+SRC_CUDA_CU =		kernel/raytrace.cu
+INC_CUDA_CU = 		kernel/includes/ft_maths.hu
 
 default: gpu
 
@@ -232,10 +235,16 @@ $(NAME): $(SRC) $(SRC_CUDA) $(INC) $(OBJ_PATH) $(OBJ) $(OBJ_CUDA) $(SRC_CUDA_CU)
 
 opencl: libft $(SRC) $(SRC_CL) $(INC) $(OBJ_PATH) $(OBJ) $(OBJ_CL)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
-	$(CC) -o $(NAME) $(OBJ) $(OBJ_CL)  -D DCL -L $(LIBFT_PATH) $(LIBFTFLAGS) $(GTK_CLIBS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(OBJ_CL)  -D DCL -L $(LIBFT_PATH) $(LIBFTFLAGS) $(GTK_CLIBS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
 	$(CC) $(CFLAGS) -c $< -o $@ -D DCUDA -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+
+$(OBJ_CL_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
+	$(CC) $(CFLAGS) -c $< -o $@ -D DCL -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+
+$(OBJ_CUDA_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
+	/usr/local/cuda/bin/nvcc -c $< -o $@ -D DCL -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_PATH):
 	@echo "$(GREEN)Creating ./obj path and making binaries from source files$(EOC)"
@@ -252,6 +261,10 @@ $(OBJ_PATH):
 	@mkdir $(OBJ_PATH)/ui/init
 	@mkdir $(OBJ_PATH)/event
 	@mkdir $(OBJ_PATH)/cuda
+	@mkdir $(OBJ_CUDA_PATH)
+	@mkdir $(OBJ_CUDA_PATH)/cuda
+	@mkdir $(OBJ_CL_PATH)
+	@mkdir $(OBJ_CL_PATH)/cl
 
 CPU:
 	@echo "$(GREEN)Checking for CPU ONLY RT$(EOC)"
@@ -318,7 +331,7 @@ debugasanlibft:
 clean:
 	@echo "$(GREEN)Cleaning...$(EOC)"
 	@echo "$(GREEN)Deleting .obj files$(EOC)"
-	@rm -rf $(OBJ_PATH)
+	@rm -rf $(OBJ_PATH) $(OBJ_CL_PATH) $(OBJ_CUDA_PATH)
 
 fclean: fcleanlibft clean
 	@echo "$(GREEN)Full cleaning...$(EOC)"

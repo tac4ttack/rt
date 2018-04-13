@@ -1,7 +1,5 @@
 #include "rt.h"
 
-#	ifdef DCL
-
 void		init_kernel(t_env *e)
 {
 	if (!(e->cl = cl_construct("./kernel/kernel.cl", WIDTH, HEIGHT,
@@ -47,5 +45,3 @@ void		init_kernel(t_env *e)
 							e->texture[3].pixel_array, 0, NULL, NULL)))
 		s_error("Error: Failed to send text3 arguments to kernel!", e);
 }
-
-#endif

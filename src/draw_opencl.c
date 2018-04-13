@@ -6,13 +6,11 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 17:32:43 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/13 23:15:08 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/13 23:39:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
-#	ifdef DCL
 
 static void		cl_write_buffer(t_env *e, t_cl *cl)
 {
@@ -78,4 +76,3 @@ int				draw(t_env *e)
 	}
 	return (0);
 }
-#	endif

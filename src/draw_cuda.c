@@ -1,4 +1,6 @@
 #include "rt.h"
+#include <cuda.h>
+#include <cuda_runtime.h>
 
 int				draw(t_env *e)
 {
@@ -16,7 +18,7 @@ int				draw(t_env *e)
 		printf("t_cone %zu\n", sizeof(t_cone));
 		printf("t_cone %zu\n", sizeof(t_cone));
 		printf("\n");
-	render_cuda(&e->cuda, e->pixel_data,
+	render_cuda(e->cuda, e->pixel_data, &e->target,
 					e->gen_objects,
 					e->gen_lights,
 					e->fps.u_time,

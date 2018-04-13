@@ -479,6 +479,14 @@ typedef struct			s_cuda2
 	unsigned char 		*texture_3;
 }						t_cuda2;
 
+typedef struct			s_cuda
+{
+	size_t				nb_mem;
+	void				**mem;
+	bool				(*add_buffer)(struct s_cuda *, size_t);
+	bool				(*update_buffer)(struct s_cuda *, size_t);
+}						t_cuda;
+
 typedef struct			s_tex
 {
 	unsigned int		*pixel_array;
@@ -1936,19 +1944,20 @@ __host__ __device__ unsigned int	get_pixel_color(const  t_scene *scene, float3 r
 		hit.normal = get_hit_normal(scene, ray, hit);
 		//hit.pos = hit.pos + (0.001f * hit.normal);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
-
+/*
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = sphere_texture(normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, (( t_sphere *)hit.obj)->diff_ratio, (( t_sphere *)hit.obj)->diff_offset);
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = sphere_checkerboard(normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
-/*
+
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = plane_texture(hit.normal, hit.pos, (( t_plane *)hit.obj)->u_axis, (( t_plane *)hit.obj)->diff_ratio, (( t_plane *)hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = plane_checkerboard(hit.normal, hit.pos, hit.obj->color, hit.obj->check_size);
-*/
+
 		if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = cylinder_texture(hit.pos - hit.obj->pos, ( t_cylinder *)hit.obj, scene->texture_earth, 4915, 2457);
+			*/
 /*
 		if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 			hit.color = cone_texture(hit.pos - hit.obj->pos, hit.obj->dir, (( t_cone *)hit.obj)->u_axis, scene->texture_star, 1500, 1500, (( t_cone *)hit.obj)->diff_ratio, (( t_cone *)hit.obj)->diff_offset);
@@ -2049,45 +2058,26 @@ __host__ __device__ unsigned int	ray_trace(	int				index,
 	return (final_color);
 }
 
-__global__ void test(unsigned int *output, unsigned int width, unsigned int height,
-							char *mem_objects, int mem_size_objects,
-							float u_time,
-							t_scene *scene_data, t_cam *cameras_data,
-							char *mem_lights, int mem_size_lights, int *target,
-							unsigned int *texture_0,
-							unsigned int *texture_1,
-							unsigned int *texture_2,
-							unsigned int *texture_3)
+__global__ void test(unsigned int *output,
+						char *mem_objects, int mem_size_objects,
+						float u_time,
+						t_scene *scene_data, t_cam *cameras_data,
+						char *mem_lights, int mem_size_lights, int *target,
+						unsigned int *texture_0,
+						unsigned int *texture_1,
+						unsigned int *texture_2,
+						unsigned int *texture_3)
 {
 	int col = blockIdx.x * blockDim.x + threadIdx.x;
 	int row = blockIdx.y * blockDim.y + threadIdx.y;
-	int index = row * width + col;
+	int index = row * scene_data->win_w + col;
 	output[index] = ray_trace(index, mem_objects, mem_size_objects,
 								u_time,
 							scene_data, cameras_data,
 							mem_lights, mem_size_lights, target, texture_0, texture_1, texture_2, texture_3);
 }
 
-extern "C" void init_cuda2(t_cuda2 *cuda, t_scene *scene, t_gen *gen_objects, t_gen *gen_lights, t_tex *texture)
-{
-	cudaMalloc(&cuda->output, scene->win_w * scene->win_h * sizeof(int));
-	cudaMalloc(&cuda->mem_objects, gen_objects->mem_size);
-	cudaMalloc(&cuda->mem_lights, gen_lights->mem_size);
-	cudaMalloc(&cuda->scene, sizeof(t_scene));
-	cudaMalloc(&cuda->cameras, sizeof(t_cam) * scene->n_cams);
-	cudaMalloc(&cuda->target, sizeof(int));
-	cudaMalloc(&cuda->texture_0, sizeof(unsigned int) * texture[0].width * texture[0].height);
-	cudaMalloc(&cuda->texture_1, sizeof(unsigned int) * texture[1].width * texture[1].height);
-	cudaMalloc(&cuda->texture_2, sizeof(unsigned int) * texture[2].width * texture[2].height);
-	//cudaMalloc(&cuda->texture_3, sizeof(unsigned int) * texture[3].width * texture[3].height);
-	cudaMemcpy(cuda->texture_0, texture[0].pixel_array, sizeof(unsigned int) * texture[0].width * texture[0].height, cudaMemcpyHostToDevice);
-	cudaMemcpy(cuda->texture_1, texture[1].pixel_array, sizeof(unsigned int) * texture[1].width * texture[1].height, cudaMemcpyHostToDevice);
-	cudaMemcpy(cuda->texture_2, texture[2].pixel_array, sizeof(unsigned int) * texture[2].width * texture[2].height, cudaMemcpyHostToDevice);
-	//cudaMemcpy(cuda->texture_3, texture[3].pixel_array, sizeof(unsigned int) * texture[3].width * texture[3].height, cudaMemcpyHostToDevice);
-
-}
-
-extern "C" void render_cuda(t_cuda2 *cuda,
+extern "C" void render_cuda(t_cuda *cuda,
 							int 			*pixel_data,
 							int				*target,
 							t_gen			*gen_objects,
@@ -2121,31 +2111,20 @@ extern "C" void render_cuda(t_cuda2 *cuda,
 			printf("t_cone %zu\n", sizeof(t_cone));
 			printf("\n");
 
-	cudaMemcpy(cuda->mem_objects, gen_objects->mem, gen_objects->mem_size, cudaMemcpyHostToDevice);
-	cudaMemcpy(cuda->mem_lights, gen_lights->mem, gen_lights->mem_size, cudaMemcpyHostToDevice);
-	cudaMemcpy(cuda->scene, scene_data, sizeof(t_scene), cudaMemcpyHostToDevice);
-	cudaMemcpy(cuda->cameras, cameras_data, sizeof(t_cam), cudaMemcpyHostToDevice);
+	cudaMemcpy(cuda->mem[1], gen_objects->mem, gen_objects->mem_size, cudaMemcpyHostToDevice);
+	cudaMemcpy(cuda->mem[2], gen_lights->mem, gen_lights->mem_size, cudaMemcpyHostToDevice);
+	cudaMemcpy(cuda->mem[3], scene_data, sizeof(t_scene), cudaMemcpyHostToDevice);
+	cudaMemcpy(cuda->mem[4], cameras_data, sizeof(t_cam), cudaMemcpyHostToDevice);
 
-/*
-	if (!(e->cl->add_buffer(e->cl, )))
-	 	s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[1].width * e->texture[1].height)))
-	 	s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[2].width * e->texture[2].height)))
-	 	s_error("\x1b[2;31mError creation cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, sizeof(unsigned int) * e->texture[3].width * e->texture[3].height)))
-		s_error("\x1b[2;31mError creation cl_mem failed bite\x1b[0m", e);
-*/
-
-	test <<< grid_size, threads_per_block >>> (cuda->output, scene_data->win_w, scene_data->win_h,
-												cuda->mem_objects, gen_objects->mem_size,
+	test <<< grid_size, threads_per_block >>> ((unsigned int *)cuda->mem[0],
+												(char *)cuda->mem[1], gen_objects->mem_size,
 												u_time,
-												cuda->scene, cuda->cameras,
-												cuda->mem_lights, gen_lights->mem_size, cuda->target,
-												(unsigned int *)cuda->texture_0,
-												(unsigned int *)cuda->texture_1,
-												(unsigned int *)cuda->texture_2,
-												(unsigned int *)cuda->texture_3);
+												(t_scene *)cuda->mem[3], (t_cam *)cuda->mem[4],
+												(char *)cuda->mem[2], gen_lights->mem_size, (int *)cuda->mem[5],
+												NULL,
+												NULL,
+												NULL,
+												NULL);
 	cudaDeviceSynchronize();
 
 	// check for errors
@@ -2156,7 +2135,7 @@ extern "C" void render_cuda(t_cuda2 *cuda,
 	}
 
 	//lecture framebuffer
-	error = cudaMemcpy(pixel_data, cuda->output, scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost);
+	error = cudaMemcpy(pixel_data, cuda->mem[0], scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost);
 	if (error != cudaSuccess)
 	{
 	  fprintf(stderr, "CUDA2 ERROR: %s \n", cudaGetErrorString(error));
@@ -2165,29 +2144,14 @@ extern "C" void render_cuda(t_cuda2 *cuda,
 	//lecture target
 	if (scene_data->flag & OPTION_RUN)
 	{
-		error = cudaMemcpy(target, cuda->target, sizeof(int), cudaMemcpyDeviceToHost);
+		error = cudaMemcpy(target, cuda->mem[5], sizeof(int), cudaMemcpyDeviceToHost);
 		scene_data->flag ^= OPTION_RUN;
 	}
 	if (error != cudaSuccess)
 	{
 	  fprintf(stderr, "CUDA3 ERROR: %s \n", cudaGetErrorString(error));
 	}
-	
-	// cudaError_t cudaMemcpy 	( 	void *  	dst,
-	// 	const void *  	src,
-	// 	size_t  	count,
-	// 	enum cudaMemcpyKind  	kind	 
-	// ) 	
-	// if (scene_data->flag & OPTION_RUN)
-	// {
-	// 	error = clEnqueueReadBuffer(cl->queue, cl->mem[5], CL_TRUE, 0,
-	// 		sizeof(int),
-	// 		&e->target, 0, NULL, NULL);
-	// 	e->scene->flag ^= OPTION_RUN;
-	// }
-
-
-
+	cudaMemcpy(pixel_data, cuda->mem[0], scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost);
 	/*if (output != NULL)
 		cudaFree(output);
 	if (mem_objects != NULL)
