@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/13 16:42:39 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/13 16:45:07 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,9 +155,9 @@ typedef struct			s_cam
 typedef struct			s_light
 {
 	int					size;
+	int					type;
 	FT_FLOAT3			pos;
 	FT_FLOAT3			dir;
-	int					type;
 	int					shrink;
 	float				brightness;
 	int					color;
