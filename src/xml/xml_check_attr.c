@@ -6,13 +6,13 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/25 16:28:15 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/08 05:42:19 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/13 16:32:40 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-int			xml_check_float(t_float3 *clf, float f, int mod)
+int			xml_check_float(FT_FLOAT3 *clf, float f, int mod)
 {
 	if (mod == 0)
 	{

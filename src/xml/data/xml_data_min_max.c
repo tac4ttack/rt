@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 12:32:27 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/08 05:46:34 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/13 16:32:47 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	xml_data_min_max(t_env *e, char **attributes, int *i, t_float3 *f)
+void	xml_data_min_max(t_env *e, char **attributes, int *i, FT_FLOAT3 *f)
 {
 	if (f && attributes && e)
 	{

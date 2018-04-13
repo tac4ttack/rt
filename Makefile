@@ -205,7 +205,7 @@ all: libft
 
 $(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ) $(SRC_CUDA) $(INC_CUDA)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
-	/usr/local/cuda/bin/nvcc -g -o rt $(OBJ) $(SRC_CUDA) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
+	/usr/local/cuda/bin/nvcc -g -o rt -D CUDA $(OBJ) $(SRC_CUDA) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
 
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)

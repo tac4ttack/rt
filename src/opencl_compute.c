@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opencl_compute.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/13 14:58:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/13 16:33:59 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,17 @@ int				opencl_draw(t_env *e)
 }
 */
 
+typedef struct			s_test
+{
+	unsigned int		id;
+	t_float3				pos;
+	t_float3				dir;
+	float				fov;
+	float				pitch;
+	float				yaw;
+	float				roll;
+}						t_test;
+
 int				opencl_draw(t_env *e)
 {
 	(void)e;
@@ -92,7 +103,7 @@ int				opencl_draw(t_env *e)
 					e->fps.u_time,
 					e->scene,
 					e->cameras);
-	/*printf("CPU\n");
+	printf("CPU\n");
 	printf("t_cam %zu\n", sizeof(t_cam));
 	printf("t_scene %zu\n", sizeof(t_scene));
 	printf("t_object %zu\n", sizeof(t_object));
@@ -106,7 +117,10 @@ int				opencl_draw(t_env *e)
 	printf("t_cone %zu\n", sizeof(t_cone));
 	printf("t_cone %zu\n", sizeof(t_cone));
 	printf("t_box %zu\n", sizeof(t_box));
-	printf("\n");*/
+	printf("FT_FLOAT3 %zu\n", sizeof(FT_FLOAT3));
+	printf("t_float3 %zu\n", sizeof(t_float3));
+	printf("t_test %zu\n", sizeof(t_test));
+	printf("\n");
 
 //	for (int i = (e->scene->win_w * e->scene->win_h) - 10; i < (int)(e->scene->win_w * e->scene->win_h); i++) {
 /*	for (int i = 0; i < 10; i++) {

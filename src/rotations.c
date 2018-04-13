@@ -6,15 +6,15 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:24:52 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/08 05:44:23 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/13 16:32:24 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-t_float3			rotx(t_float3 dir, const float pitch)
+FT_FLOAT3			rotx(FT_FLOAT3 dir, const float pitch)
 {
-	t_float3		newdir;
+	FT_FLOAT3		newdir;
 
 	if (dir.x == 0 && dir.y == 0 && dir.z == 0)
 	{
@@ -29,9 +29,9 @@ t_float3			rotx(t_float3 dir, const float pitch)
 	return (normalize_vect(newdir));
 }
 
-t_float3			roty(t_float3 dir, const float yaw)
+FT_FLOAT3			roty(FT_FLOAT3 dir, const float yaw)
 {
-	t_float3		newdir;
+	FT_FLOAT3		newdir;
 
 	if (dir.x == 0 && dir.y == 0 && dir.z == 0)
 	{
@@ -46,9 +46,9 @@ t_float3			roty(t_float3 dir, const float yaw)
 	return (normalize_vect(newdir));
 }
 
-t_float3			rotz(t_float3 dir, const float roll)
+FT_FLOAT3			rotz(FT_FLOAT3 dir, const float roll)
 {
-	t_float3		newdir;
+	FT_FLOAT3		newdir;
 
 	if (dir.x == 0 && dir.y == 0 && dir.z == 0)
 	{
@@ -63,9 +63,9 @@ t_float3			rotz(t_float3 dir, const float roll)
 	return (normalize_vect(newdir));
 }
 
-t_float3			rotcam(t_float3 vect, float rad_pitch, float rad_yaw)
+FT_FLOAT3			rotcam(FT_FLOAT3 vect, float rad_pitch, float rad_yaw)
 {
-	t_float3		res;
+	FT_FLOAT3		res;
 	float			rad_roll;
 
 	rad_roll = 0;

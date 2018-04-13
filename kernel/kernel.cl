@@ -1099,7 +1099,7 @@ static double	ft_ret(double *tab)
 {
 	double		ret = -1.0;
 	int			i = 0;
-	
+
 	while(i < 4)
 	{
 		if(tab[i] > EPSILON && ret == -1)
@@ -1127,7 +1127,7 @@ static double3	ft_solve_3(double a, double b, double c, double d)
 	double		Qcubed = 0;
 
 	a1 = c / d;
-	a2 = b / d;	
+	a2 = b / d;
 	a3 = a / d;
 
 	Q = (a1 * a1 - 3.0f * a2) / 9.0f;
@@ -1387,7 +1387,7 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 	ret.normal = 0;
 	pos = origin - sphere->pos;
 	abc = get_sphere_abc(sphere->radius, ray, pos);
-	
+
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
 	if (sphere->flags & OBJ_FLAG_PLANE_LIMIT)
@@ -1407,7 +1407,7 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 // 	float		res1 = 0;
 // 	float		res2 = 0;
 // 	float3		pos = 0;
-	
+
 // 	float       d = 0;
 // 	float2      tmp = 0;
 
@@ -1415,7 +1415,7 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 // 	abc = get_sphere_abc(sphere->radius, ray, pos);
 // 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 // 	// if (d < 0)
-		
+
 // 	if (d == 0)
 // 	{
 // 		tmp.x =  ((-abc[1]) / (2 * abc[0]));
@@ -1436,7 +1436,7 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 // 			tmp.y = (res1);
 // 		}
 // 	}
-	
+
 // 	return (sphere_cut(sphere, tmp, ray, origin));
 // }
 ////////////////////////////////////////////////////////////////////////////////
@@ -1701,7 +1701,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				(col_r > 255 ? col_r = 255 : 0);
 				(col_g > 255 ? col_g = 255 : 0);
 				(col_b > 255 ? col_b = 255 : 0);
-			
+
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 
@@ -1729,10 +1729,10 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 
-			
+
 			// opacite de l'ombre
 			// res_color = blend_factor(res_color, 1 - (light_hit.opacity / 2));
-	
+
 			// si pas de depth alors opacity = 0, la couleur n'est pas touchée
 			// res_color = blend_factor(res_color, 1 - (light_hit.opacity * light_hit.opacity));
 			// if (light_hit.opacity != 0)
@@ -1747,12 +1747,12 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 			// 	else
 			// 		col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
 			// 	if (light_hit.opacity > scene->ambient.z)
-			// 		col_b = (0.01 + col_b * light_hit.opacity > 255 ? 255 : 0.01 + col_b * light_hit.opacity);					
+			// 		col_b = (0.01 + col_b * light_hit.opacity > 255 ? 255 : 0.01 + col_b * light_hit.opacity);
 			// 	else
 			// 		col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
 			// 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			// }
-			
+
 
 			if (scene->flag & OPTION_CARTOON_FOUR)
 			 	res_color = cartoonize_four(col_r, col_g, col_b);
@@ -1833,7 +1833,7 @@ static float		reflect_ratio(float n1, float n2, float cos1, float sint)
 	float			fr1 = 0;
 	float			fr2 = 0;
 	float			cos2 = 0;
-	
+
 	cos2 = sqrt(1 - sint * sint);
 	if (cos1 >= 0)
 	{
@@ -1922,23 +1922,23 @@ static unsigned int	rip_fresnel(const __local t_scene *scene, float3 ray, t_hit 
 				new_hit.normal = get_hit_normal(scene, new_ray, new_hit);
 				new_hit.pos = new_hit.pos + (new_hit.dist / 10000.f * new_hit.normal);
 				new_hit.color = new_hit.obj->color;
-			
+
 				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 						new_hit.color = sphere_texture(fast_normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((__local t_sphere *)new_hit.obj)->diff_ratio, ((__local t_sphere *)new_hit.obj)->diff_offset);
 				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
 				 	new_hit.color = sphere_checkerboard(fast_normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
-				
+
 				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);		
+					new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((__local t_plane *)new_hit.obj)->u_axis, ((__local t_plane *)new_hit.obj)->diff_ratio, ((__local t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
 				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
 				 	new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
-				
+
 				if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 					new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (__local t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
-				
+
 				if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 					new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((__local t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((__local t_cone *)new_hit.obj)->diff_ratio, ((__local t_cone *)new_hit.obj)->diff_offset);
-	
+
 				ncolor = phong(scene, new_hit, new_ray);
 				tor[i + 1] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, old_hit.obj->type);
 			}
@@ -2001,7 +2001,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	hit = hit_init();
 	hit.dist = MAX_DIST;
 	depth = scene->depth;
-	
+
 	// DEBUG
 	if (depth < 0)
 		printf("!WARNING!\nget_pixel_color | depth < 0 !!!!\n");
@@ -2039,7 +2039,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 
 		return (blend_add(color, bounce_color));
 	}
-	
+
 	if (scene->flag & OPTION_SKYBOX)
 	{
 		color = skybox(ray, scene->texture_skybox, 4096, 2048);

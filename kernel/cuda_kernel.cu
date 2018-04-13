@@ -1,10 +1,9 @@
 #include <cuda.h>
 #include <stdio.h>
-#include <float.h>
+//#include <float.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "ft_maths.hu"
-
+#include "./includes/help_math.h"
 
 #define BACKCOLOR 0x00999999
 
@@ -64,14 +63,19 @@ typedef struct			s_gen
 ** CAM AND LIGHT STRUCTS ///////////////////////////////////////////////////////
 */
 
-
+typedef struct			s_float3
+{
+	float				x;
+	float				y;
+	float				z;
+}						t_float3;
 typedef struct			s_cam
 {
 	unsigned int		id;
 	float3				pos;
 	float				_align0;
 	float3				dir;
-	float				_align1;
+	float				_align2;
 	float				fov;
 	float				pitch;
 	float				yaw;
@@ -85,12 +89,16 @@ typedef struct			s_light
 	float3				pos;
 	float				_align0;
 	float3				dir;
-	float				_align1;
+	float				_align2;
 	int					shrink;
 	float				brightness;
 	int					color;
 }						t_light;
+////////////////////////////////////////////////////////////////////////////////
 
+/*
+** OBJECTS STRUCTURES //////////////////////////////////////////////////////////
+*/
 typedef struct			s_object
 {
 	int					size;
@@ -124,10 +132,12 @@ typedef struct			s_object
 	float				_align9;
 	float3				diff_ratio;
 	float				_align10;
-	float3				cut_min;
+	float3				test_var1;
 	float				_align11;
-	float3				cut_max;
+	float3				test_var2;
 	float				_align12;
+	float3				test_var3;
+	float				_align13;
 }						t_object;
 
 typedef struct			s_box
@@ -163,15 +173,17 @@ typedef struct			s_box
 	float				_align9;
 	float3				diff_ratio;
 	float				_align10;
-	float3				cut_min;
+	float3				test_var1;
 	float				_align11;
-	float3				cut_max;
+	float3				test_var2;
 	float				_align12;
+	float3				test_var3;
+	float				_align13;
 
 	float3				min;
-	float				_align13;
-	float3				max;
 	float				_align14;
+	float3				max;
+	float				_align15;
 }						t_box;
 
 typedef struct			s_cone
@@ -207,14 +219,16 @@ typedef struct			s_cone
 	float				_align9;
 	float3				diff_ratio;
 	float				_align10;
-	float3				cut_min;
+	float3				test_var1;
 	float				_align11;
-	float3				cut_max;
+	float3				test_var2;
 	float				_align12;
+	float3				test_var3;
+	float				_align13;
 
 	float				angle;
 	float3				u_axis;
-	float				_align13;
+	float				_align14;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -250,16 +264,19 @@ typedef struct			s_cylinder
 	float				_align9;
 	float3				diff_ratio;
 	float				_align10;
-	float3				cut_min;
+	float3				test_var1;
 	float				_align11;
-	float3				cut_max;
+	float3				test_var2;
 	float				_align12;
-
-	float3				base_dir;
+	float3				test_var3;
 	float				_align13;
+
+	float				height;
+	float3				base_dir;
+	float				_align14;
 	float				radius;
 	float3				u_axis;
-	float				_align14;
+	float				_align15;
 }						t_cylinder;
 
 typedef struct			s_plane
@@ -295,14 +312,16 @@ typedef struct			s_plane
 	float				_align9;
 	float3				diff_ratio;
 	float				_align10;
-	float3				cut_min;
+	float3				test_var1;
 	float				_align11;
-	float3				cut_max;
+	float3				test_var2;
 	float				_align12;
+	float3				test_var3;
+	float				_align13;
 
 	float				radius;
 	float3				u_axis;
-	float				_align13;
+	float				_align14;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -338,10 +357,12 @@ typedef struct			s_sphere
 	float				_align9;
 	float3				diff_ratio;
 	float				_align10;
-	float3				cut_min;
+	float3				test_var1;
 	float				_align11;
-	float3				cut_max;
+	float3				test_var2;
 	float				_align12;
+	float3				test_var3;
+	float				_align13;
 
 	float				radius;
 }						t_sphere;
@@ -379,14 +400,16 @@ typedef struct			s_ellipsoid
 	float				_align9;
 	float3				diff_ratio;
 	float				_align10;
-	float3				cut_min;
+	float3				test_var1;
 	float				_align11;
-	float3				cut_max;
+	float3				test_var2;
 	float				_align12;
+	float3				test_var3;
+	float				_align13;
 
 	float				radius;
 	float3				axis_size;
-	float				_align13;
+	float				_align14;
 }						t_ellipsoid;
 
 typedef struct			s_thor
@@ -422,10 +445,12 @@ typedef struct			s_thor
 	float				_align9;
 	float3				diff_ratio;
 	float				_align10;
-	float3				cut_min;
+	float3				test_var1;
 	float				_align11;
-	float3				cut_max;
+	float3				test_var2;
 	float				_align12;
+	float3				test_var3;
+	float				_align13;
 
 	double				lil_radius;
 	double				big_radius;
@@ -499,13 +524,13 @@ typedef struct			s_scene
 	unsigned int		mem_size_obj;
 	unsigned int		mem_size_lights;
 	float3				check_p1;
-	float				_align1;
-	float3				check_p2;
 	float				_align2;
-	float3				waves_p1;
+	float3				check_p2;
 	float				_align3;
-	float3				waves_p2;
+	float3				waves_p1;
 	float				_align4;
+	float3				waves_p2;
+	float				_align5;
 	t_cam				*cameras;
 //	void				*dummy_pedro;
 	void				*mem_lights;  //repassé en void à cause de l'erreur compilation, sinon pour oclgrind foutre char
@@ -2038,8 +2063,8 @@ extern "C" void render_cuda(t_cuda *cuda,
 	printf("t_cone %zu\n", sizeof(t_cone));
 	printf("t_cone %zu\n", sizeof(t_cone));
 	printf("t_box %zu\n", sizeof(t_box));
-	printf("float3 %zu\n", sizeof(float3));
 	printf("\n");
+	//printf("\n{[(%.2f)]}\n\n", cameras_data[0].fov);
 
 		/*cudaMalloc(&output, width * height * sizeof(int));
 		cudaMalloc(&mem_objects, gen_objects->mem_size);

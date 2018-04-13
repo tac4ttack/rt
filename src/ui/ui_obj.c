@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/13 14:59:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/13 16:32:52 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	ui_obj_apply(t_env *e, t_float3 *target)
+static void	ui_obj_apply(t_env *e, FT_FLOAT3 *target)
 {
 	(KEY_STATE_I ? *target = rotx(*target, 1 * DEG2RAD) : *target);
 	(KEY_STATE_K ? *target = rotx(*target, -1 * DEG2RAD) : *target);
@@ -31,7 +31,7 @@ static void	ui_obj_apply(t_env *e, t_float3 *target)
 void		ui_obj(t_env *e)
 {
 	t_object	*obj;
-	t_float3	*target;
+	FT_FLOAT3	*target;
 
 	if (e->target > -1)
 	{

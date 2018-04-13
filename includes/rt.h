@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/13 15:37:55 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/13 16:42:39 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,15 @@
 
 # define NB_TEXTURE			4
 
-
 typedef struct			s_float3
 {
 	float				x;
 	float				y;
 	float				z;
+	float				w;
 }						t_float3;
+
+#  define FT_FLOAT3	t_float3
 
 typedef struct			s_object
 {
@@ -108,24 +110,24 @@ typedef struct			s_object
 	int					type;
 	int					flags;
 	int					id;
-	t_float3			pos;
-	t_float3			dir;
-	t_float3			diff;
-	t_float3			spec;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			dir;
+	FT_FLOAT3			diff;
+	FT_FLOAT3			spec;
 	int					color;
 	float				reflex;
 	float				refract;
 	float				opacity;
-	t_float3			limit_pos;
-	t_float3			limit_dir;
-	t_float3			waves_p1;
-	t_float3			waves_p2;
-	t_float3			check_size;
+	FT_FLOAT3			limit_pos;
+	FT_FLOAT3			limit_dir;
+	FT_FLOAT3			waves_p1;
+	FT_FLOAT3			waves_p2;
+	FT_FLOAT3			check_size;
 	int					diff_map_id;
-	t_float3			diff_offset;
-	t_float3			diff_ratio;
-	t_float3			cut_min;
-	t_float3			cut_max;
+	FT_FLOAT3			diff_offset;
+	FT_FLOAT3			diff_ratio;
+	FT_FLOAT3			cut_min;
+	FT_FLOAT3			cut_max;
 }						t_object;
 
 typedef struct			s_fps
@@ -142,8 +144,8 @@ typedef struct			s_fps
 typedef struct			s_cam
 {
 	unsigned int		id;
-	t_float3			pos;
-	t_float3			dir;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			dir;
 	float				fov;
 	float				pitch;
 	float				yaw;
@@ -153,9 +155,9 @@ typedef struct			s_cam
 typedef struct			s_light
 {
 	int					size;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			dir;
 	int					type;
-	t_float3			pos;
-	t_float3			dir;
 	int					shrink;
 	float				brightness;
 	int					color;
@@ -167,27 +169,27 @@ typedef struct			s_box
 	int					type;
 	int					flags;
 	int					id;
-	t_float3			pos;
-	t_float3			dir;
-	t_float3			diff;
-	t_float3			spec;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			dir;
+	FT_FLOAT3			diff;
+	FT_FLOAT3			spec;
 	int					color;
 	float				reflex;
 	float				refract;
 	float				opacity;
-	t_float3			limit_pos;
-	t_float3			limit_dir;
-	t_float3			waves_p1;
-	t_float3			waves_p2;
-	t_float3			check_size;
+	FT_FLOAT3			limit_pos;
+	FT_FLOAT3			limit_dir;
+	FT_FLOAT3			waves_p1;
+	FT_FLOAT3			waves_p2;
+	FT_FLOAT3			check_size;
 	int					diff_map_id;
-	t_float3			diff_offset;
-	t_float3			diff_ratio;
-	t_float3			cut_min;
-	t_float3			cut_max;
+	FT_FLOAT3			diff_offset;
+	FT_FLOAT3			diff_ratio;
+	FT_FLOAT3			cut_min;
+	FT_FLOAT3			cut_max;
 
-	t_float3			min;
-	t_float3			max;
+	FT_FLOAT3			min;
+	FT_FLOAT3			max;
 }						t_box;
 
 typedef struct			s_cone
@@ -196,27 +198,27 @@ typedef struct			s_cone
 	int					type;
 	int					flags;
 	int					id;
-	t_float3			pos;
-	t_float3			dir;
-	t_float3			diff;
-	t_float3			spec;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			dir;
+	FT_FLOAT3			diff;
+	FT_FLOAT3			spec;
 	int					color;
 	float				reflex;
 	float				refract;
 	float				opacity;
-	t_float3			limit_pos;
-	t_float3			limit_dir;
-	t_float3			waves_p1;
-	t_float3			waves_p2;
-	t_float3			check_size;
+	FT_FLOAT3			limit_pos;
+	FT_FLOAT3			limit_dir;
+	FT_FLOAT3			waves_p1;
+	FT_FLOAT3			waves_p2;
+	FT_FLOAT3			check_size;
 	int					diff_map_id;
-	t_float3			diff_offset;
-	t_float3			diff_ratio;
-	t_float3			cut_min;
-	t_float3			cut_max;
+	FT_FLOAT3			diff_offset;
+	FT_FLOAT3			diff_ratio;
+	FT_FLOAT3			cut_min;
+	FT_FLOAT3			cut_max;
 
 	float				angle;
-	t_float3			u_axis;
+	FT_FLOAT3			u_axis;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -225,29 +227,29 @@ typedef struct			s_cylinder
 	int					type;
 	int					flags;
 	int					id;
-	t_float3			pos;
-	t_float3			dir;
-	t_float3			diff;
-	t_float3			spec;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			dir;
+	FT_FLOAT3			diff;
+	FT_FLOAT3			spec;
 	int					color;
 	float				reflex;
 	float				refract;
 	float				opacity;
-	t_float3			limit_pos;
-	t_float3			limit_dir;
-	t_float3			waves_p1;
-	t_float3			waves_p2;
-	t_float3			check_size;
+	FT_FLOAT3			limit_pos;
+	FT_FLOAT3			limit_dir;
+	FT_FLOAT3			waves_p1;
+	FT_FLOAT3			waves_p2;
+	FT_FLOAT3			check_size;
 	int					diff_map_id;
-	t_float3			diff_offset;
-	t_float3			diff_ratio;
-	t_float3			cut_min;
-	t_float3			cut_max;
+	FT_FLOAT3			diff_offset;
+	FT_FLOAT3			diff_ratio;
+	FT_FLOAT3			cut_min;
+	FT_FLOAT3			cut_max;
 
 	// float				height;
-	t_float3			base_dir;
+	FT_FLOAT3			base_dir;
 	float				radius;
-	t_float3			u_axis;
+	FT_FLOAT3			u_axis;
 }						t_cylinder;
 
 typedef struct			s_plane
@@ -256,27 +258,27 @@ typedef struct			s_plane
 	int					type;
 	int					flags;
 	int					id;
-	t_float3			pos;
-	t_float3			normal;
-	t_float3			diff;
-	t_float3			spec;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			normal;
+	FT_FLOAT3			diff;
+	FT_FLOAT3			spec;
 	int					color;
 	float				reflex;
 	float				refract;
 	float				opacity;
-	t_float3			limit_pos;
-	t_float3			limit_dir;
-	t_float3			waves_p1;
-	t_float3			waves_p2;
-	t_float3			check_size;
+	FT_FLOAT3			limit_pos;
+	FT_FLOAT3			limit_dir;
+	FT_FLOAT3			waves_p1;
+	FT_FLOAT3			waves_p2;
+	FT_FLOAT3			check_size;
 	int					diff_map_id;
-	t_float3			diff_offset;
-	t_float3			diff_ratio;
-	t_float3			cut_min;
-	t_float3			cut_max;
+	FT_FLOAT3			diff_offset;
+	FT_FLOAT3			diff_ratio;
+	FT_FLOAT3			cut_min;
+	FT_FLOAT3			cut_max;
 
 	float				radius;
-	t_float3			u_axis;
+	FT_FLOAT3			u_axis;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -285,24 +287,24 @@ typedef struct			s_sphere
 	int					type;
 	int					flags;
 	int					id;
-	t_float3			pos;
-	t_float3			dir;
-	t_float3			diff;
-	t_float3			spec;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			dir;
+	FT_FLOAT3			diff;
+	FT_FLOAT3			spec;
 	int					color;
 	float				reflex;
 	float				refract;
 	float				opacity;
-	t_float3			limit_pos;
-	t_float3			limit_dir;
-	t_float3			waves_p1;
-	t_float3			waves_p2;
-	t_float3			check_size;
+	FT_FLOAT3			limit_pos;
+	FT_FLOAT3			limit_dir;
+	FT_FLOAT3			waves_p1;
+	FT_FLOAT3			waves_p2;
+	FT_FLOAT3			check_size;
 	int					diff_map_id;
-	t_float3			diff_offset;
-	t_float3			diff_ratio;
-	t_float3			cut_min;
-	t_float3			cut_max;
+	FT_FLOAT3			diff_offset;
+	FT_FLOAT3			diff_ratio;
+	FT_FLOAT3			cut_min;
+	FT_FLOAT3			cut_max;
 
 	float				radius;
 }						t_sphere;
@@ -313,24 +315,24 @@ typedef struct			s_torus
 	int					type;
 	int					flags;
 	int					id;
-	t_float3			pos;
-	t_float3			dir;
-	t_float3			diff;
-	t_float3			spec;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			dir;
+	FT_FLOAT3			diff;
+	FT_FLOAT3			spec;
 	int					color;
 	float				reflex;
 	float				refract;
 	float				opacity;
-	t_float3			limit_pos;
-	t_float3			limit_dir;
-	t_float3			waves_p1;
-	t_float3			waves_p2;
-	t_float3			check_size;
+	FT_FLOAT3			limit_pos;
+	FT_FLOAT3			limit_dir;
+	FT_FLOAT3			waves_p1;
+	FT_FLOAT3			waves_p2;
+	FT_FLOAT3			check_size;
 	int					diff_map_id;
-	t_float3			diff_offset;
-	t_float3			diff_ratio;
-	t_float3			cut_min;
-	t_float3			cut_max;
+	FT_FLOAT3			diff_offset;
+	FT_FLOAT3			diff_ratio;
+	FT_FLOAT3			cut_min;
+	FT_FLOAT3			cut_max;
 
 	double				lil_radius;
 	double				big_radius;
@@ -342,27 +344,27 @@ typedef struct			s_ellipsoid
 	int					type;
 	int					flags;
 	int					id;
-	t_float3			pos;
-	t_float3			dir;
-	t_float3			diff;
-	t_float3			spec;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			dir;
+	FT_FLOAT3			diff;
+	FT_FLOAT3			spec;
 	int					color;
 	float				reflex;
 	float				refract;
 	float				opacity;
-	t_float3			limit_pos;
-	t_float3			limit_dir;
-	t_float3			waves_p1;
-	t_float3			waves_p2;
-	t_float3			check_size;
+	FT_FLOAT3			limit_pos;
+	FT_FLOAT3			limit_dir;
+	FT_FLOAT3			waves_p1;
+	FT_FLOAT3			waves_p2;
+	FT_FLOAT3			check_size;
 	int					diff_map_id;
-	t_float3			diff_offset;
-	t_float3			diff_ratio;
-	t_float3			cut_min;
-	t_float3			cut_max;
+	FT_FLOAT3			diff_offset;
+	FT_FLOAT3			diff_ratio;
+	FT_FLOAT3			cut_min;
+	FT_FLOAT3			cut_max;
 
 	float				radius;
-	t_float3			axis_size;
+	FT_FLOAT3			axis_size;
 }						t_ellipsoid;
 
 typedef struct			s_node
@@ -370,12 +372,12 @@ typedef struct			s_node
 	int					id;
 	int					type;
 	float				fov;
-	t_float3			dir;
-	t_float3			pos;
-	t_float3			normale;
-	t_float3			axis_size;
-	t_float3			min;
-	t_float3			max;
+	FT_FLOAT3			dir;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			normale;
+	FT_FLOAT3			axis_size;
+	FT_FLOAT3			min;
+	FT_FLOAT3			max;
 	float				radius;
 	float				radius2;
 	float				angle;
@@ -384,13 +386,13 @@ typedef struct			s_node
 	int					shrink;
 	float				brightness;
 	// float				height;
-	t_float3			diff;
-	t_float3			spec;
+	FT_FLOAT3			diff;
+	FT_FLOAT3			spec;
 	float				reflex;
 	float				refract;
 	float				opacity;
-	t_float3			limit_dir;
-	t_float3			limit_pos;
+	FT_FLOAT3			limit_dir;
+	FT_FLOAT3			limit_pos;
 	int					flags;
 	struct s_node		*next;
 }						t_node;
@@ -434,7 +436,7 @@ typedef struct			s_scene
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
-	t_float3			ambient;
+	FT_FLOAT3			ambient;
 	unsigned int		mou_x;
 	unsigned int		mou_y;
 	unsigned int		depth;
@@ -443,10 +445,10 @@ typedef struct			s_scene
 	unsigned int		over_sampling;
 	unsigned int		mem_size_obj;
 	unsigned int		mem_size_lights;
-	t_float3			check_p1;
-	t_float3			check_p2;
-	t_float3			waves_p1;
-	t_float3			waves_p2;
+	FT_FLOAT3			check_p1;
+	FT_FLOAT3			check_p2;
+	FT_FLOAT3			waves_p1;
+	FT_FLOAT3			waves_p2;
 	t_cam				*cameras;
 	void				*mem_lights;
 	void				*mem_obj;
@@ -510,13 +512,13 @@ void					render_cuda(t_cuda *cuda, int 		*pixel_data,
 							t_scene			*scene_data,
 							t_cam			*cameras_data);
 
-t_float3				add_cl_float(t_float3 v1, t_float3 v2);
-t_float3				sub_cl_float(t_float3 v1, t_float3 v2);
-t_float3				cross_vect(t_float3 v1);
-t_float3				rotz(t_float3 dir, float roll);
-t_float3				roty(t_float3 dir, float yaw);
-t_float3				rotx(t_float3 dir, float pitch);
-t_float3				rotcam(t_float3 vect, float rad_pitch, float rad_yaw);
+FT_FLOAT3				add_cl_float(FT_FLOAT3 v1, FT_FLOAT3 v2);
+FT_FLOAT3				sub_cl_float(FT_FLOAT3 v1, FT_FLOAT3 v2);
+FT_FLOAT3				cross_vect(FT_FLOAT3 v1);
+FT_FLOAT3				rotz(FT_FLOAT3 dir, float roll);
+FT_FLOAT3				roty(FT_FLOAT3 dir, float yaw);
+FT_FLOAT3				rotx(FT_FLOAT3 dir, float pitch);
+FT_FLOAT3				rotcam(FT_FLOAT3 vect, float rad_pitch, float rad_yaw);
 
 int						opencl_draw(t_env *e);
 
@@ -545,7 +547,7 @@ void					init_gtk_texture(t_env *e);
 void					init_gtk_toolbar(t_env *e);
 void					init_gtk_win(t_env *e);
 
-t_float3				normalize_vect(t_float3 v);
+FT_FLOAT3				normalize_vect(FT_FLOAT3 v);
 
 void					opencl_set_args(t_env *e, t_cl *cl);
 
@@ -587,7 +589,7 @@ void					update_fps(t_fps *fps);
 void					xml_allocate_cam(t_env *e);
 int						xml_check_attr(t_env *e, char **att);
 int						xml_check_char(char c);
-int						xml_check_float(t_float3 *clf, float f, int mod);
+int						xml_check_float(FT_FLOAT3 *clf, float f, int mod);
 char					*xml_check_line(t_env *e, char *buf);
 int						xml_check_node_format(char **node, int mod);
 void					xml_data_angle(t_env *e, char **attributes, \
@@ -636,7 +638,7 @@ void					xml_data_speculos(t_env *e, char **attributes, \
 void					xml_data_type(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_min_max(t_env *e, char **attributes, \
-										int *i, t_float3 *f);
+										int *i, FT_FLOAT3 *f);
 void					xml_init(t_env *e);
 void					xml_get_file(t_env *e);
 void					xml_list_add_first(t_node **begin, t_node *node);
@@ -672,7 +674,7 @@ void					xml_write_int(const char *name, const float data, \
 void					xml_write_float(const char *name, const float data, \
 										const int fd);
 void					xml_write_float3(const char *name, \
-										const t_float3 data, const int fd);
+										const FT_FLOAT3 data, const int fd);
 
 void					xml_write_cameras(t_env *e, const int fd, \
 										t_cam *cameras);

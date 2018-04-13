@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 20:30:36 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/08 05:42:38 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/13 16:32:35 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	xml_write_float3(const char *name, const t_float3 data, const int fd)
+void	xml_write_float3(const char *name, const FT_FLOAT3 data, const int fd)
 {
 	ft_putstr_fd(name, fd);
 	ft_putstr_fd("=\"", fd);
