@@ -2115,22 +2115,6 @@ __kernel void		ray_trace(	__global	char		*output,
 	pix.x = id % scene->win_w;
 	pix.y = id / scene->win_w;
 
-	if (pix.y + pix.x == 0)
-	{
-		printf("GPU\n");
-		printf("t_cam %i\n", sizeof(t_cam));
-		printf("t_scene %i\n", sizeof(t_scene));
-		printf("t_object %i\n", sizeof(t_object));
-		printf("t_sphere %i\n", sizeof(t_sphere));
-		printf("t_light %i\n", sizeof(t_light));
-		printf("t_cylinder %i\n", sizeof(t_cylinder));
-		printf("t_sphere %i\n", sizeof(t_sphere));
-		printf("t_ellipsoid %i\n", sizeof(t_ellipsoid));
-		printf("t_plane %i\n", sizeof(t_plane));
-		printf("t_cone %i\n", sizeof(t_cone));
-		printf("\n");
-	}
-
 	//DEBUG
 	if (id >= (scene->win_w * scene->win_h))
 	{
