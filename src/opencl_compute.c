@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opencl_compute.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/13 16:33:59 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/13 19:30:57 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,30 +97,35 @@ int				opencl_draw(t_env *e)
 	(void)e;
 	bzero(e->pixel_data, (e->scene->win_w * e->scene->win_h) *4);
 	//printf("CPU %x\n", ((t_sphere *)e->gen_objects->mem)->color);
-	render_cuda(&e->cuda, e->pixel_data,
+	
+	render_cuda(&e->cuda, e->pixel_data, &e->target,
 					e->gen_objects,
 					e->gen_lights,
 					e->fps.u_time,
 					e->scene,
 					e->cameras);
-	printf("CPU\n");
-	printf("t_cam %zu\n", sizeof(t_cam));
-	printf("t_scene %zu\n", sizeof(t_scene));
-	printf("t_object %zu\n", sizeof(t_object));
-	printf("t_gen %zu\n", sizeof(t_gen));
-	printf("t_sphere %zu\n", sizeof(t_sphere));
-	printf("t_light %zu\n", sizeof(t_light));
-	printf("t_cylinder %zu\n", sizeof(t_cylinder));
-	printf("t_sphere %zu\n", sizeof(t_sphere));
-	printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
-	printf("t_plane %zu\n", sizeof(t_plane));
-	printf("t_cone %zu\n", sizeof(t_cone));
-	printf("t_cone %zu\n", sizeof(t_cone));
-	printf("t_box %zu\n", sizeof(t_box));
-	printf("FT_FLOAT3 %zu\n", sizeof(FT_FLOAT3));
-	printf("t_float3 %zu\n", sizeof(t_float3));
-	printf("t_test %zu\n", sizeof(t_test));
-	printf("\n");
+	if (e->scene->flag & OPTION_RUN)
+		ft_putendl("run is on");
+	else
+		ft_putendl("run is off");
+	// printf("CPU\n");
+	// printf("t_cam %zu\n", sizeof(t_cam));
+	// printf("t_scene %zu\n", sizeof(t_scene));
+	// printf("t_object %zu\n", sizeof(t_object));
+	// printf("t_gen %zu\n", sizeof(t_gen));
+	// printf("t_sphere %zu\n", sizeof(t_sphere));
+	// printf("t_light %zu\n", sizeof(t_light));
+	// printf("t_cylinder %zu\n", sizeof(t_cylinder));
+	// printf("t_sphere %zu\n", sizeof(t_sphere));
+	// printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
+	// printf("t_plane %zu\n", sizeof(t_plane));
+	// printf("t_cone %zu\n", sizeof(t_cone));
+	// printf("t_cone %zu\n", sizeof(t_cone));
+	// printf("t_box %zu\n", sizeof(t_box));
+	// printf("FT_FLOAT3 %zu\n", sizeof(FT_FLOAT3));
+	// printf("t_float3 %zu\n", sizeof(t_float3));
+	// printf("t_test %zu\n", sizeof(t_test));
+	// printf("\n");
 
 //	for (int i = (e->scene->win_w * e->scene->win_h) - 10; i < (int)(e->scene->win_w * e->scene->win_h); i++) {
 /*	for (int i = 0; i < 10; i++) {
@@ -129,3 +134,12 @@ int				opencl_draw(t_env *e)
 	}*/
  	return (0);
 }
+
+
+// if (e->scene->flag & OPTION_RUN)
+// 	{
+// 		cl->err = clEnqueueReadBuffer(cl->queue, cl->mem[5], CL_TRUE, 0,
+// 			sizeof(int),
+// 			&e->target, 0, NULL, NULL);
+// 		e->scene->flag ^= OPTION_RUN;
+// 	}

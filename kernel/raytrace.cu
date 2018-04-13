@@ -45,8 +45,6 @@
 # define OBJ_SPHERE					6
 # define OBJ_ELLIPSOID				7
 # define OBJ_THOR					8
-# define OBJ_BOX					9
-
 
 typedef struct			s_gen
 {
@@ -129,50 +127,6 @@ typedef struct			s_object
 	float3				cut_max;
 	float				_align12;
 }						t_object;
-
-typedef struct			s_box
-{
-	int					size;
-	int					type;
-	int					flags;
-	int					id;
-	float3				pos;
-	float				_align0;
-	float3				dir;
-	float				_align1;
-	float3				diff;
-	float				_align2;
-	float3				spec;
-	float				_align3;
-	int					color;
-	float				reflex;
-	float				refract;
-	float				opacity;
-	float3				limit_pos;
-	float				_align4;
-	float3				limit_dir;
-	float				_align5;
-	float3				waves_p1;
-	float				_align6;
-	float3				waves_p2;
-	float				_align7;
-	float3				check_size;
-	float				_align8;
-	int					diff_map_id;
-	float3				diff_offset;
-	float				_align9;
-	float3				diff_ratio;
-	float				_align10;
-	float3				cut_min;
-	float				_align11;
-	float3				cut_max;
-	float				_align12;
-
-	float3				min;
-	float				_align13;
-	float3				max;
-	float				_align14;
-}						t_box;
 
 typedef struct			s_cone
 {
@@ -532,60 +486,62 @@ typedef struct			s_tex
 	int					height;
 }						t_tex;
 
-
+// OCL TO CUDA -> OK
 inline __host__ __device__ float radians(double degree) {
     return (degree * M_PI / 180.0f);
 }
 
+// OCL TO CUDA -> need tests
 __host__ __device__ float3	vector_get_rotate(const float3 *me, const float3 *rot)
 {
-	float3		n;
-	float		tmp;
+	float3		n = make_float3(0.0f);
+	float		tmp = 0.0f;
 
 	n = *me;
 	if (rot->x)
 	{
-		tmp = n.y * cos(rot->x) - n.z * sin(rot->x);
-		n.z = n.y * sin(rot->x) + n.z * cos(rot->x);
+		tmp = n.y * cosf(rot->x) - n.z * sinf(rot->x);
+		n.z = n.y * sinf(rot->x) + n.z * cosf(rot->x);
 		n.y = tmp;
 	}
 	if (rot->y)
 	{
-		tmp = n.x * cos(rot->y) + n.z * sin(rot->y);
-		n.z = n.x * -sin(rot->y) + n.z * cos(rot->y);
+		tmp = n.x * cosf(rot->y) + n.z * sinf(rot->y);
+		n.z = n.x * -sinf(rot->y) + n.z * cosf(rot->y);
 		n.x = tmp;
 	}
 	if (rot->z)
 	{
-		tmp = n.x * cos(rot->z) - n.y * sin(rot->z);
-		n.y = n.x * sin(rot->z) + n.y * cos(rot->z);
+		tmp = n.x * cosf(rot->z) - n.y * sinf(rot->z);
+		n.y = n.x * sinf(rot->z) + n.y * cosf(rot->z);
 		n.x = tmp;
 	}
 	return (n);
 }
 
+// OCL TO CUDA -> need tests
 __host__ __device__ float3	vector_get_inverse(const float3 *me, const float3 *rot)
 {
-	float3		n;
-	float		tmp;
+	float3		n = make_float3(0.0f);
+	float		tmp = 0.0f;
 
 	n = *me;
 	if (rot->z)
 	{
-		tmp = n.x * cos(rot->z) - n.y * -sin(rot->z);
-		n.y = n.x * -sin(rot->z) + n.y * cos(rot->z);
+		tmp = n.x * cosf(rot->z) - n.y * -sinf(rot->z);
+		n.y = n.x * -sinf(rot->z) + n.y * cosf(rot->z);
 		n.x = tmp;
 	}
 	if (rot->y)
 	{
-		tmp = n.x * cos(rot->y) + n.z * -sin(rot->y);
-		n.z = n.x * sin(rot->y) + n.z * cos(rot->y);
+		tmp = n.x * cosf(rot->y) + n.z * -sinf(rot->y);
+		n.z = n.x * sinf(rot->y) + n.z * cosf(rot->y);
 		n.x = tmp;
 	}
 	if (rot->x)
 	{
-		tmp = n.y * cos(rot->x) - n.z * -sin(rot->x);
-		n.z = n.y * -sin(rot->x) + n.z * cos(rot->x);
+		tmp = n.y * cosf(rot->x) - n.z * -sinf(rot->x);
+		n.z = n.y * -sinf(rot->x) + n.z * cosf(rot->x);
 		n.y = tmp;
 	}
 	return (n);
@@ -1546,9 +1502,12 @@ __host__ __device__ unsigned int			phong(const  t_scene *scene, const t_hit hit,
 				l_g = (hue_light & 0x00FF00) >> 8;
 				l_b = (hue_light & 0x0000FF);
 
-				col_r += ((l_r * brightness) + obj_r) * tmp * diffuse.x;
-				col_g += ((l_g * brightness) + obj_g) * tmp * diffuse.y;
-				col_b += ((l_b * brightness) + obj_b) * tmp * diffuse.z;
+				// col_r += ((l_r * brightness) + obj_r) * tmp * diffuse.x;
+				// col_g += ((l_g * brightness) + obj_g) * tmp * diffuse.y;
+				// col_b += ((l_b * brightness) + obj_b) * tmp * diffuse.z;
+				col_r += (((l_r * brightness) * obj_r) * tmp * diffuse.x) / 255.0;
+				col_g += (((l_g * brightness) * obj_g) * tmp * diffuse.y) / 255.0;
+				col_b += (((l_b * brightness) * obj_b) * tmp * diffuse.z) / 255.0;
 
 				(col_r > 255 ? col_r = 255 : 0);
 				// commented lines are failed tonemaping test
@@ -2060,6 +2019,7 @@ extern "C" void init_cuda(t_cuda *cuda, t_scene *scene, t_gen *gen_objects, t_ge
 
 extern "C" void render_cuda(t_cuda *cuda,
 							int 			*pixel_data,
+							int				*target,
 							t_gen			*gen_objects,
 							t_gen			*gen_lights,
 							float			u_time,
@@ -2122,10 +2082,44 @@ extern "C" void render_cuda(t_cuda *cuda,
 
 	// check for errors
 	cudaError_t error = cudaGetLastError();
-	if (error != cudaSuccess) {
-	  fprintf(stderr, "ERROR: %s \n", cudaGetErrorString(error));
+	if (error != cudaSuccess)
+	{
+	  fprintf(stderr, "CUDA1 ERROR: %s \n", cudaGetErrorString(error));
 	}
-	cudaMemcpy(pixel_data, cuda->output, scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost);
+
+	//lecture framebuffer
+	error = cudaMemcpy(pixel_data, cuda->output, scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost);
+	if (error != cudaSuccess)
+	{
+	  fprintf(stderr, "CUDA2 ERROR: %s \n", cudaGetErrorString(error));
+	}
+	
+	//lecture target
+	if (scene_data->flag & OPTION_RUN)
+	{
+		error = cudaMemcpy(target, cuda->target, sizeof(int), cudaMemcpyDeviceToHost);
+		scene_data->flag ^= OPTION_RUN;
+	}
+	if (error != cudaSuccess)
+	{
+	  fprintf(stderr, "CUDA3 ERROR: %s \n", cudaGetErrorString(error));
+	}
+	
+	// cudaError_t cudaMemcpy 	( 	void *  	dst,
+	// 	const void *  	src,
+	// 	size_t  	count,
+	// 	enum cudaMemcpyKind  	kind	 
+	// ) 	
+	// if (scene_data->flag & OPTION_RUN)
+	// {
+	// 	error = clEnqueueReadBuffer(cl->queue, cl->mem[5], CL_TRUE, 0,
+	// 		sizeof(int),
+	// 		&e->target, 0, NULL, NULL);
+	// 	e->scene->flag ^= OPTION_RUN;
+	// }
+
+
+
 	/*if (output != NULL)
 		cudaFree(output);
 	if (mem_objects != NULL)

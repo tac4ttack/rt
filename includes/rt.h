@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/13 18:27:25 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/13 18:45:39 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,35 +162,6 @@ typedef struct			s_light
 	float				brightness;
 	int					color;
 }						t_light;
-
-typedef struct			s_box
-{
-	int					size;
-	int					type;
-	int					flags;
-	int					id;
-	FT_FLOAT3			pos;
-	FT_FLOAT3			dir;
-	FT_FLOAT3			diff;
-	FT_FLOAT3			spec;
-	int					color;
-	float				reflex;
-	float				refract;
-	float				opacity;
-	FT_FLOAT3			limit_pos;
-	FT_FLOAT3			limit_dir;
-	FT_FLOAT3			waves_p1;
-	FT_FLOAT3			waves_p2;
-	FT_FLOAT3			check_size;
-	int					diff_map_id;
-	FT_FLOAT3			diff_offset;
-	FT_FLOAT3			diff_ratio;
-	FT_FLOAT3			cut_min;
-	FT_FLOAT3			cut_max;
-
-	FT_FLOAT3			min;
-	FT_FLOAT3			max;
-}						t_box;
 
 typedef struct			s_cone
 {
@@ -502,7 +473,7 @@ typedef	struct			s_env
 void					init_cuda(t_cuda *cuda, t_scene *scene, \
 						t_gen *mem_obj, t_gen *mem_lights, t_tex *texture);
 
-void					render_cuda(t_cuda *cuda, int 		*pixel_data,
+void					render_cuda(t_cuda *cuda, int 		*pixel_data, int *target,
 							t_gen		*gen_objects,
 							t_gen		*gen_lights,
 							float		u_time,

@@ -30,6 +30,21 @@
 			flags="000000"
 			/>
 
+<torus	 	pos="5, 5, 0"
+				dir="0, 0, 0"
+				lil_radius="1"
+				big_radius="10"
+				color="0, 0, 0, 255"
+				diff="0.42, 0.42, 0.42"
+				spec="0.42, 0.42, 0.42"
+				reflex="0.42"
+				refract="0"
+				opacity="0"
+				p_limit_pos="0, 0, 0"
+				p_limit_dir="0, 0, 1"
+				flags="000000"
+			/>
+
 <plane		pos="0, -20, 0"
 			normale="0, 1, 0"
 			color="0, 80, 0, 144"
