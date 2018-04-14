@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:16:29 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 18:05:53 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 15:52:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void		cb_save_btn(GtkButton *btn, gpointer data)
 	(void)btn;
 	filename = NULL;
 	e = data;
-	e->ui->save_window = gtk_file_chooser_dialog_new("Export render to PNG", \
+	e->ui->save_window = gtk_file_chooser_dialog_new("Export scene to XML", \
 								GTK_WINDOW(e->ui->main_window), \
 								GTK_FILE_CHOOSER_ACTION_SAVE, \
 								"Cancel", GTK_RESPONSE_CLOSE, \

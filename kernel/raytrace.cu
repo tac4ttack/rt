@@ -493,6 +493,27 @@ typedef struct			s_tex
 	int					height;
 }						t_tex;
 
+
+// OCL TO CUDA -> need tests
+__host__ __device__ unsigned int	skybox(const float3 dir, unsigned int *texture, int t_width, int t_height)
+{
+	unsigned int	color = 0;
+	int2			uv = make_int2(0);
+
+	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * M_PI))) * t_width);
+	uv.y = (int)floor((0.5 - (asin(dir.y) / M_PI)) * t_height);
+	if (uv.x < 0)
+		uv.x = -uv.x;
+	if (uv.y < 0)
+		uv.y = -uv.y;
+	if (uv.x >= t_width)
+		uv.x %= (t_width - 1);
+	if (uv.y >= t_height)
+		uv.y %= (t_height - 1);
+	color = texture[uv.x + uv.y * t_width];
+	return (color);
+}
+
 // OCL TO CUDA -> OK
 inline __host__ __device__ float radians(double degree) {
     return (degree * M_PI / 180.f);
@@ -584,6 +605,58 @@ __host__ __device__ float3	rotat_zyx(const float3 vect, const float pitch, const
 	res.z = vect.x * -sinf(rad_yaw) + vect.y * cosf(rad_yaw) * sinf(rad_pitch) + vect.z * cosf(rad_yaw) * cosf(rad_pitch);
 	return (res);
 }
+
+// OCL TO CUDA -> need tests
+__host__ __device__ float3	rotat_xyz(const float3 vect, const float pitch, const float yaw, const float roll)
+{
+	float3		res = make_float3(0.f);
+	float		rad_pitch = radians(pitch);
+	float		rad_yaw = radians(yaw);
+	float		rad_roll = radians(roll);
+
+	res.x = vect.x * cos(rad_yaw) * cos(rad_roll) + vect.y * cos(rad_yaw) * -sin(rad_roll) + vect.z * sin(rad_yaw);
+	res.y = vect.x * (-sin(rad_pitch) * -sin(rad_yaw) * cos(rad_roll) + cos(rad_pitch) * sin(rad_roll)) + vect.y * (-sin(rad_pitch) * -sin(rad_yaw) * -sin(rad_roll) + cos(rad_pitch) * cos(rad_roll)) + vect.z * cos(rad_yaw) * -sin(rad_pitch);
+	res.z = vect.x * (cos(rad_pitch) * -sin(rad_yaw) * cos(rad_roll) + sin(rad_pitch) * sin(rad_roll)) + vect.y * (cos(rad_pitch) * -sin(rad_yaw) * -sin(rad_roll) + sin(rad_pitch) * cos(rad_roll)) + vect.z * cos(rad_yaw) * cos(rad_pitch);
+	return (res);
+}
+
+// OCL TO CUDA -> need tests
+__host__ __device__ float3	rotat_x(const float3 vect, const float angle)
+{
+	float3 		res = make_float3(0.f);
+	float		teta = radians(angle);
+
+	res.x = (vect.x * 1.f) + (vect.y * 0.f) + (vect.z * 0.f);
+	res.y = (vect.x * 0.f) + (vect.y * cos(teta)) + (vect.z * -sin(teta));
+	res.z = (vect.x * 0.f) + (vect.y * sin(teta)) + (vect.z * cos(teta));
+	return (res);
+}
+
+// OCL TO CUDA -> need tests
+__host__ __device__ float3	rotat_y(const float3 vect, const float angle)
+{
+	float3 		res = make_float3(0.f);
+	float		teta = radians(angle);
+
+	res.x = (vect.x * cos(teta)) + (vect.y * 0.f) + (vect.z * sin(teta));
+	res.y = (vect.x * 0.f) + (vect.y * 1) + (vect.z * 0.f);
+	res.z = (vect.x * -sin(teta)) + (vect.y * 0.f) + (vect.z * cos(teta));
+	return (res);
+}
+
+// OCL TO CUDA -> need tests
+__host__ __device__ float3	rotat_z(const float3 vect, const float angle)
+{
+	float3 		res = make_float3(0.f);
+	float		teta = radians(angle);
+
+	res.x = (vect.x * cos(teta)) + (vect.y * -sin(teta)) + (vect.z * 0.f);
+	res.y = (vect.x * sin(teta)) + (vect.y * cos(teta)) + (vect.z * 0.f);
+	res.z = (vect.x * 0.f) + (vect.y * 0.f) + (vect.z * 1.f);
+	return (res);
+}
+
+
 
 // OCL TO CUDA -> need tests (is unused in kernel)
 __host__ __device__ unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
@@ -769,6 +842,150 @@ __host__ __device__ unsigned int cartoonize_two(unsigned int col_r, unsigned int
 			col_b = 255;
 
 	return (((col_r << 16) + (col_g << 8) + col_b));
+}
+
+// OCL TO CUDA -> need tests
+__host__ __device__ float	inter_plan_private(const t_plane *plane, const float3 ray, const float3 origin)
+{
+	float		t = 0.f;
+
+	t = dot(fast_normalize(ray), plane->normal);
+	if (fabs(t) < EPSILONF|| (plane->radius && t > plane->radius))
+		return (0.f);
+	t = (dot(plane->pos - origin, plane->normal)) / t;
+	if (t < EPSILONF)
+		return (0.f);
+	return (t);
+}
+
+// OCL TO CUDA -> need tests
+__host__ __device__ t_ret	object_limited(t_object *object,
+							const float res1, const float res2,
+							const float3 ray, const float3 origin)
+{
+	t_ret		ret;
+	t_plane		t;
+	float		dist_plan = 0.f;
+
+	ret.dist = 0.f;
+	ret.wall = 0.f;
+	ret.normal = make_float3(0.f);
+	t.pos = object->limit_pos;
+	t.normal = object->limit_dir;
+	t.radius = 0.f;
+	dist_plan = inter_plan_private(&t, ray, origin);
+
+	// IN OBJECT
+	if (res1 < EPSILONF)
+	{
+		if (dot(t.normal, ray) > EPSILONF)
+		{
+			if (!dist_plan && res2 > EPSILONF)
+				ret.dist = res2;
+			else if (res2 < dist_plan)
+				return (ret);
+			else
+			{
+				ret.dist = dist_plan;
+				ret.normal = -t.normal;
+				ret.wall = 1;
+			}
+		}
+		else
+		{
+			if (dist_plan > res2)
+				ret.dist = res2;
+			else if (dist_plan < MAX_DIST)
+			{
+				ret.dist = dist_plan;
+				ret.normal = -t.normal;
+				ret.wall = 1;
+			}
+		}
+		return (ret);
+	}
+
+	if (dot(t.normal, ray) > EPSILONF)
+	{
+		if (res2 < dist_plan || dist_plan > MAX_DIST)
+			return (ret);
+		else if (res1 > dist_plan)
+			ret.dist = res1;
+		else if (dist_plan < MAX_DIST)
+		{
+			ret.dist = dist_plan;
+			ret.normal = -t.normal;
+			ret.wall = 1;
+		}
+	}
+	else
+	{
+		if (dist_plan < res1)
+			return (ret);
+		ret.dist = res1;
+	}
+	return (ret);
+}
+
+// OCL TO CUDA -> need tests
+__host__ __device__ unsigned int	plane_checkerboard(const float3 normale, const float3 pos, const unsigned int color, const float2 check_size)
+{
+	float3			u_axis = make_float3(0.f);
+	float3			v_axis = make_float3(0.f);
+	int2			uv = make_int2(0);
+
+	u_axis.x = normale.y;
+	u_axis.y = normale.z;
+	u_axis.z = -normale.x;
+	v_axis = cross(u_axis, normale);
+	uv.x = convert_int(floor(dot(pos, u_axis) / check_size.x));
+	uv.y = convert_int(floor(dot(pos, v_axis) / check_size.y));
+	if (uv.x % 2 == 0)
+	{
+		if (uv.y % 2 == 0)
+			return (0);
+		else
+			return (color);
+	}
+	else if (uv.y % 2 == 0)
+		return (color);
+	return (0);
+}
+
+
+// OCL TO CUDA -> need tests
+__host__ __device__ unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, float2 ratio, float2 offset, unsigned int *texture, int width, int height)
+{
+	float3			v_axis = make_float3(0.f);
+	int2			uv = ;
+
+	v_axis = cross(u_axis, normale);
+	uv.x = convert_int(floor(dot(pos, u_axis) * ratio.x + offset.x));
+	uv.y = convert_int(floor(dot(pos, v_axis) * ratio.y + offset.y));
+	// if (uv.x < 0)
+	// {
+	// 	uv.x %= width;
+	// 	uv.x = (uv.x - width) * -1;
+	// }
+	// uv.x %= width;
+	// if (uv.y < 0)
+	// 	uv.y %= height;
+	// else
+	// {
+	// 	uv.y %= height;
+	// 	uv.y = (uv.y - height) * -1;
+	// }
+	uv.x %= width - 1;
+	uv.y %= height - 1;
+	if (uv.x < 0)
+		uv.x = (uv.x + width - 1);
+	if (uv.y < 0)
+		uv.y = (uv.y + height - 1);
+	// else
+	// 	uv.y = -uv.y;
+	//if (uv.x < 0 || uv.y < 0)
+	//printf("agrougrou");
+	return (texture[uv.y + uv.x * width]);
 }
 
 // OCL TO CUDA -> OK

@@ -378,6 +378,8 @@
 			// }
 //
 
+
+// DONE
 static unsigned int		skybox(const float3 dir, unsigned int __global *texture, int t_width, int t_height)
 {
 	unsigned int	color = 0;
@@ -598,6 +600,8 @@ static unsigned int		skybox(const float3 dir, unsigned int __global *texture, in
 		// }
 //
 
+
+//DONE
 static float3	rotat_xyz(const float3 vect, const float pitch, const float yaw, const float roll)
 {
 	float3		res = 0;
@@ -611,6 +615,7 @@ static float3	rotat_xyz(const float3 vect, const float pitch, const float yaw, c
 	return (res);
 }
 
+//DONE
 static float3	rotat_x(const float3 vect, const float angle)
 {
 	float3 		res = 0;
@@ -622,6 +627,7 @@ static float3	rotat_x(const float3 vect, const float angle)
 	return (res);
 }
 
+//DONE
 static float3	rotat_y(const float3 vect, const float angle)
 {
 	float3 		res = 0;
@@ -633,6 +639,7 @@ static float3	rotat_y(const float3 vect, const float angle)
 	return (res);
 }
 
+//DONE
 static float3	rotat_z(const float3 vect, const float angle)
 {
 	float3 		res = 0;
@@ -644,6 +651,8 @@ static float3	rotat_z(const float3 vect, const float angle)
 	return (res);
 }
 
+
+//DONE
 static float	inter_plan_private(const t_plane *plane, const float3 ray, const float3 origin)
 {
 	float		t = 0;
@@ -657,6 +666,7 @@ static float	inter_plan_private(const t_plane *plane, const float3 ray, const fl
 	return (t);
 }
 
+//DONE
 static t_ret	object_limited(t_object __local *object,
 							const float res1, const float res2,
 							const float3 ray, const float3 origin)
@@ -887,6 +897,7 @@ static t_ret	object_limited(t_object __local *object,
 /*
 ** PLANES FUNCTIONS ////////////////////////////////////////////////////////////
 */
+// DONE
 static unsigned int		plane_checkerboard(const float3 normale, const float3 pos, const unsigned int color, const float2 check_size)
 {
 	float3			u_axis = 0;
