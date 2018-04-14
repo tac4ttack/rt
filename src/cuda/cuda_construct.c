@@ -1,7 +1,19 @@
-#include "t_cuda.h"
-# include <cuda.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cuda_construct.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/14 15:26:34 by ntoniolo          #+#    #+#             */
+/*   Updated: 2018/04/14 15:27:31 by ntoniolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-t_cuda		*cuda_construct()
+#include "t_cuda.h"
+#include <cuda.h>
+
+t_cuda		*cuda_construct(void)
 {
 	t_cuda *cuda;
 
