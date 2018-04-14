@@ -167,12 +167,18 @@ SRC_NAME =	 			init.c \
 						xml/object/xml_kube.c \
 						xml/object/xml_cones.c \
 						xml/object/xml_cylinders.c \
-						xml/object/xml_push_cylinder.c \
 						xml/object/xml_ellipsoid.c \
 						xml/object/xml_lights.c \
 						xml/object/xml_planes.c \
 						xml/object/xml_spheres.c \
 						xml/object/xml_torus.c \
+						xml/object/xml_push_ellipsoid.c \
+						xml/object/xml_push_plane.c \
+						xml/object/xml_push_sphere.c \
+						xml/object/xml_push_cone.c \
+						xml/object/xml_push_kube.c \
+						xml/object/xml_push_torus.c \
+						xml/object/xml_push_cylinder.c \
 						xml/save/xml_save_camera.c \
 						xml/save/xml_save_cone.c \
 						xml/save/xml_save_cylinder.c \

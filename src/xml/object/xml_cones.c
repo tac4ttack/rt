@@ -6,30 +6,14 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 18:38:57 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 18:34:09 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	xml_cone_data_n(t_env *e, char **att, t_node *cone_node, int *i)
+static void	xml_cone_data_m(t_env *e, char **att, t_node *cone_node, int *i)
 {
-	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
-		s_error("\x1b[1;31mCone error, COLOR expected in #4\x1b[0m", e);
-	else
-		xml_data_color(e, att, i, cone_node);
-	if (ft_strncmp(att[*i], "diff=\"", 6) != 0)
-		s_error("\x1b[1;31mCone error, DIFFUSE expected in #5\x1b[0m", e);
-	else
-		xml_data_diffiouse(e, att, i, cone_node);
-	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
-		s_error("\x1b[1;31mCone error, SPECULAR expected in #6\x1b[0m", e);
-	else
-		xml_data_speculos(e, att, i, cone_node);
-	if (ft_strncmp(att[*i], "reflex=\"", 8) != 0)
-		s_error("\x1b[1;31mCone error, REFLEX expected in #7\x1b[0m", e);
-	else
-		xml_data_reflex(e, att, i, cone_node);
 	if (ft_strncmp(att[*i], "refract=\"", 9) != 0)
 		s_error("\x1b[2;31mCone error, REFRACT expected in #8\x1b[0m", e);
 	else
@@ -50,6 +34,27 @@ static void	xml_cone_data_n(t_env *e, char **att, t_node *cone_node, int *i)
 		s_error("\x1b[1;31mCone error, FLAG expected in #12\x1b[0m", e);
 	else
 		xml_data_flag(e, att, i, cone_node);
+}
+
+static void	xml_cone_data_n(t_env *e, char **att, t_node *cone_node, int *i)
+{
+	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
+		s_error("\x1b[1;31mCone error, COLOR expected in #4\x1b[0m", e);
+	else
+		xml_data_color(e, att, i, cone_node);
+	if (ft_strncmp(att[*i], "diff=\"", 6) != 0)
+		s_error("\x1b[1;31mCone error, DIFFUSE expected in #5\x1b[0m", e);
+	else
+		xml_data_diffiouse(e, att, i, cone_node);
+	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
+		s_error("\x1b[1;31mCone error, SPECULAR expected in #6\x1b[0m", e);
+	else
+		xml_data_speculos(e, att, i, cone_node);
+	if (ft_strncmp(att[*i], "reflex=\"", 8) != 0)
+		s_error("\x1b[1;31mCone error, REFLEX expected in #7\x1b[0m", e);
+	else
+		xml_data_reflex(e, att, i, cone_node);
+	xml_cone_data_m(e, att, cone_node, i);
 }
 
 static void	xml_cone_data(t_env *e, char **att, t_node *cone_node, int *i)
@@ -96,52 +101,4 @@ void		xml_node_cone(t_env *e, char *node)
 	else
 		xml_list_add_first(&XML->node_lst, cone_node);
 	xml_node_clean(tmp);
-}
-
-static void	xml_push_cone_effects(t_cone *cone)
-{
-	cone->waves_p1.x = 0.8;
-	cone->waves_p1.y = 0.8;
-	cone->waves_p1.z = 0.8;
-	cone->waves_p2.x = 5;
-	cone->waves_p2.y = 5;
-	cone->waves_p2.z = 5;
-	cone->check_size.x = 1;
-	cone->check_size.y = 1;
-	cone->diff_map_id = -1;
-	cone->diff_offset.x = 0;
-	cone->diff_offset.y = 0;
-	cone->diff_ratio.x = 1;
-	cone->diff_ratio.y = 1;
-	cone->cut_min.x = 0;
-	cone->cut_min.y = 0;
-	cone->cut_min.z = 0;
-	cone->cut_max.x = 0;
-	cone->cut_max.y = 0;
-	cone->cut_max.z = 0;
-	cone->u_axis = cross_vect(cone->dir);
-}
-
-void		xml_push_cone(t_env *e, t_node *list)
-{
-	t_cone cone;
-
-	cone.size = sizeof(t_cone);
-	cone.id = e->current_index_objects;
-	cone.type = OBJ_CONE;
-	cone.flags = list->flags;
-	cone.pos = list->pos;
-
-	cone.angle = list->angle;
-	cone.color = list->color;
-	cone.diff = list->diff;
-	cone.spec = list->spec;
-	cone.reflex = list->reflex;
-	cone.refract = list->refract;
-	cone.opacity = list->opacity;
-	cone.limit_pos = list->limit_pos;
-	cone.limit_dir = list->limit_dir;
-	cone.dir = normalize_vect(list->dir);
-	xml_push_cone_effects(&cone);
-	e->gen_objects->add(e->gen_objects, (void*)&cone);
 }
