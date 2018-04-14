@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/13 17:43:56 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/14 17:30:32 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void		load_scene_objects(t_env *e)
 			xml_push_ellipsoid(e, list);
 		if (list->type == OBJ_TORUS)
 			xml_push_torus(e, list);
+		if (list->type == OBJ_KUBE)
+			xml_push_kube(e, list);
 		list = list->next;
 	}
 	xml_list_clean(e, &XML->node_lst);

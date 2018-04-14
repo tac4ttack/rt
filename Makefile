@@ -164,6 +164,7 @@ SRC_NAME =	 			init.c \
 						xml/data/xml_data_specular.c \
 						xml/data/xml_data_type.c \
 						xml/object/xml_cameras.c \
+						xml/object/xml_kube.c \
 						xml/object/xml_cones.c \
 						xml/object/xml_cylinders.c \
 						xml/object/xml_ellipsoid.c \
@@ -176,6 +177,7 @@ SRC_NAME =	 			init.c \
 						xml/save/xml_save_cylinder.c \
 						xml/save/xml_save_data.c \
 						xml/save/xml_save_ellipsoid.c \
+						xml/save/xml_save_kube.c \
 						xml/save/xml_save_light.c \
 						xml/save/xml_save_plane.c \
 						xml/save/xml_save_scene.c \

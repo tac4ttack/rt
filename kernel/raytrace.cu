@@ -6,6 +6,18 @@
 #include "ft_maths.hu"
 
 
+static void HandleError( cudaError_t err, const char *file,	int line )
+{
+	if (err != cudaSuccess)
+	{
+		printf( "%s in %s at line %d\n", cudaGetErrorString( err ),	file, line );
+		exit( EXIT_FAILURE );
+	}
+}
+
+#define HANDLE_ERROR( err ) (HandleError( err, __FILE__, __LINE__ ))
+
+
 #define BACKCOLOR 0x00999999
 
 #define EPSILON 0.00000000000000000000005
@@ -387,6 +399,48 @@ typedef struct			s_thor
 	double				lil_radius;
 	double				big_radius;
 }						t_thor;
+
+typedef struct			s_kube
+{
+	int					size;
+	int					type;
+	int					flags;
+	int					id;
+	float3				pos;
+	float				_align0;
+	float3				dir;
+	float				_align1;
+	float3				diff;
+	float				_align2;
+	float3				spec;
+	float				_align3;
+	int					color;
+	float				reflex;
+	float				refract;
+	float				opacity;
+	float3				limit_pos;
+	float				_align4;
+	float3				limit_dir;
+	float				_align5;
+	float3				waves_p1;
+	float				_align6;
+	float3				waves_p2;
+	float				_align7;
+	float3				check_size;
+	float				_align8;
+	int					diff_map_id;
+	float3				diff_offset;
+	float				_align9;
+	float3				diff_ratio;
+	float				_align10;
+	float3				cut_min;
+	float				_align11;
+	float3				cut_max;
+	float				_align12;
+
+	double				option;
+}						t_kube;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -464,20 +518,6 @@ typedef struct			s_scene
 	unsigned int		*texture_earth_cloud;
 	unsigned int		*texture_star;
 }						t_scene;
-
-typedef struct			s_cuda2
-{
-	unsigned int		*output;
-	char				*mem_objects;
-	char				*mem_lights;
-	t_cam				*cameras;
-	t_scene				*scene;
-	int					*target;
-	unsigned char 		*texture_0;
-	unsigned char 		*texture_1;
-	unsigned char 		*texture_2;
-	unsigned char 		*texture_3;
-}						t_cuda2;
 
 typedef struct			s_cuda
 {
@@ -1054,7 +1094,7 @@ __host__ __device__ double3	thor_get_rotate(const double3 *that, const float3 *r
 	return (n);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __host__ __device__ double	ft_ret(double *tab)
 {
 	double		ret = -1.0f;
@@ -1073,7 +1113,7 @@ __host__ __device__ double	ft_ret(double *tab)
 	return (ret);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __host__ __device__ double3	ft_solve_3(double a, double b, double c, double d)
 {
 	double		a1 = 0.f;
@@ -1120,7 +1160,7 @@ __host__ __device__ double3	ft_solve_3(double a, double b, double c, double d)
 	return (Result);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __host__ __device__ double	ft_solve_4(double t[5])
 {
 	double		Result[4] = {0.f};
@@ -1241,8 +1281,7 @@ __host__ __device__ float3 get_thor_normal(const t_thor *thor, const float3 hitp
 	return (res);
 }
 
-// OCL TO CUDA -> need tests in use 
-__host__ __device__ t_ret		inter_kube(const t_thor *thor, const float3 ray, const float3 origin)
+__host__ __device__ t_ret		inter_kube(const t_kube *kube, const float3 ray, const float3 origin)
 {
 	t_ret		ret;
 	ret.dist = 0;
@@ -1253,35 +1292,37 @@ __host__ __device__ t_ret		inter_kube(const t_thor *thor, const float3 ray, cons
 	d_ray.x = (double)ray.x;
 	d_ray.y = (double)ray.y;
 	d_ray.z = (double)ray.z;
-	d_ray = thor_get_rotate(&d_ray, &thor->dir);
+	d_ray = thor_get_rotate(&d_ray, &kube->dir);
 
 	double3		d_dir;
-	d_dir.x = (double)origin.x - (double)thor->pos.x;
-	d_dir.y = (double)origin.y - (double)thor->pos.y;
-	d_dir.z = (double)origin.z - (double)thor->pos.z;
-	d_dir = thor_get_rotate(&d_dir, &thor->dir);
+	d_dir.x = (double)origin.x - (double)kube->pos.x;
+	d_dir.y = (double)origin.y - (double)kube->pos.y;
+	d_dir.z = (double)origin.z - (double)kube->pos.z;
+	d_dir = thor_get_rotate(&d_dir, &kube->dir);
 
 	double		c[5];
 	c[4] = (pow(d_ray.x, 4.0f) + pow(d_ray.y, 4.0f) + pow(d_ray.z, 4.0f));
 	c[3] = 4.0f * ((pow(d_ray.x, 3.0f) * d_dir.x) + (pow(d_ray.y, 3.0f) * d_dir.y)+ (pow(d_ray.z, 3.0f) * d_dir.z));
 	c[2] = 6.0f * ((pow(d_ray.x, 2.0f) * pow(d_dir.x, 2.0f) + pow(d_ray.y, 2.0f) * pow(d_dir.y, 2.0f) + pow(d_ray.z, 2.0f) * pow(d_dir.z, 2.0f))) - 5.0 * (pow(d_ray.x, 2.0f) + pow(d_ray.y, 2.0f) + pow(d_ray.z, 2.0f));
 	c[1] = 4.0f * (pow(d_dir.x, 3.0f) * d_ray.x + pow(d_dir.y, 3.0f) * d_ray.y + pow(d_dir.z, 3.0f) * d_ray.z) - 10.0 * (d_dir.x * d_ray.x + d_dir.y * d_ray.y + d_dir.z * d_ray.z);
-	c[0] = (pow(d_dir.x, 4.0f) + pow(d_dir.y, 4.0f) + pow(d_dir.z, 4.0f)) - 5.0f * (d_dir.x * d_dir.x + d_dir.y * d_dir.y +d_dir.z * d_dir.z) + 11.8;
+	c[0] = (pow(d_dir.x, 4.0f) + pow(d_dir.y, 4.0f) + pow(d_dir.z, 4.0f)) - 5.0 * (d_dir.x * d_dir.x + d_dir.y * d_dir.y +d_dir.z * d_dir.z) + kube->option;
 
 	ret.dist = ft_solve_4(c);
 	return (ret);
 }
 
-// OCL TO CUDA -> need tests in use 
 // KUBE
-__host__ __device__ float3 get_kube_normal(const t_thor *thor, const float3 hitpos)
+__host__ __device__ float3 get_kube_normal(const t_kube *kube, const float3 hitpos)
 {
-	float3 res = make_float3(0.f);
-  
-   res.x = 4.0f * powf(hitpos.x, 3.0f) - 10.0f * hitpos.x;
-   res.y = 4.0f * powf(hitpos.y, 3.0f) - 10.0f * hitpos.y;	
-   res.z = 4.0f * powf(hitpos.z, 3.0f) - 10.0f * hitpos.z;
+	float3 pos = hitpos - kube->pos;
+	pos = vector_get_rotate(&pos, &kube->dir);
+	float3  res = make_float3(0.f);
 
+     res.x = 4.0f * powf(pos.x, 3.0f) - 10.0 * pos.x;
+     res.y = 4.0f * powf(pos.y, 3.0f) - 10.0 * pos.y;
+     res.z = 4.0f * powf(pos.z, 3.0f) - 10.0 * pos.z;
+
+	 res = vector_get_inverse(&res, &kube->dir);
 	 return (res);
 }
 
@@ -1321,17 +1362,18 @@ __host__ __device__ t_ret	sphere_cut(t_sphere *sphere, const float3 ray, const f
 	t_ret		ret;
 	float3		pt_i1 = make_float3(0.f);
 	float3		pt_i2 = make_float3(0.f);
-
-	ret.dist = 0.f;
+	float3		bord1 = make_float3(0.f);
+	float3		bord2 = make_float3(0.f);
+	ret.dist = 0;
 	ret.wall = 0;
 	ret.normal = make_float3(0.f);
 
-	sphere->cut_max.x = sphere->radius - 0.1f;  	//
-	sphere->cut_min.x = -sphere->radius + 0.1f;	 	//	
-	sphere->cut_max.y = sphere->radius - 0.1f;		//	Valeurs arbitraires pour test
-	sphere->cut_min.y = -sphere->radius + 0.1f;		// a definir dans l'interface
-	sphere->cut_max.z = sphere->radius - 0.1f;		//
-	sphere->cut_min.z = -sphere->radius + 0.1f;		//
+	bord1.x = sphere->pos.x + sphere->radius;    
+	bord2.x = sphere->pos.x - sphere->radius;	  	
+	bord1.y = sphere->pos.y + sphere->radius;		
+	bord2.y = sphere->pos.y - sphere->radius;		
+	bord1.z = sphere->pos.z + sphere->radius;		
+	bord2.z = sphere->pos.z - sphere->radius;	
 
 	pt_i1.x = origin.x + ray.x * res1;
 	pt_i1.y = origin.y + ray.y * res1;
@@ -1341,10 +1383,14 @@ __host__ __device__ t_ret	sphere_cut(t_sphere *sphere, const float3 ray, const f
 	pt_i2.y = origin.y + ray.y * res2;
 	pt_i2.z = origin.z + ray.z * res2;
 	
-	if (pt_i1.x <= 	sphere->cut_max.x && pt_i1.y <= sphere->cut_max.y && pt_i1.z <= sphere->cut_max.z && pt_i1.x >= sphere->cut_min.x && pt_i1.y >= sphere->cut_min.y && pt_i1.z >= sphere->cut_min.z)
+	if (pt_i1.x <= 	bord1.x - sphere->cut_max.x && pt_i1.y <= bord1.y - sphere->cut_max.y && pt_i1.z <= bord1.z - sphere->cut_max.z && pt_i1.x >= bord2.x + sphere->cut_min.x && pt_i1.y >= bord2.y + sphere->cut_min.y && pt_i1.z >= bord2.z + sphere->cut_min.z)
+	{
 		ret.dist = res1;
-	else if (pt_i2.x <= sphere->cut_max.x && pt_i2.y <= sphere->cut_max.y && pt_i2.z <= sphere->cut_max.z && pt_i2.x >= sphere->cut_min.x && pt_i2.y >= sphere->cut_min.y && pt_i2.z >= sphere->cut_min.z) 
+	}
+	else if (pt_i2.x <= bord1.x - sphere->cut_max.x && pt_i2.y <= bord1.y - sphere->cut_max.y && pt_i2.z <= bord1.z - sphere->cut_max.z && pt_i2.x >= bord2.x + sphere->cut_min.x && pt_i2.y >= bord2.y + sphere->cut_min.y && pt_i2.z >= bord2.z + sphere->cut_min.z) 
+	{
 		ret.dist = res2;
+	}
 	return (ret);
 }
 
@@ -1377,6 +1423,32 @@ __host__ __device__ float3	get_sphere_abc(const float radius, const float3 ray, 
 	abc.z = dot(origin, origin) - (radius * radius);
 	return (abc);
 }
+
+__host__ __device__ t_ret	mini_inter_sphere(t_sphere *sphere, const float3 ray, const float3 origin)
+{
+	float3		abc = make_float3(0.f);
+	float		res1 = 0.f;
+	float		res2 = 0.f;
+	float3		pos = make_float3(0.f);
+	t_ret		ret;
+
+	ret.dist = 0.f;
+	ret.wall = 0;
+	ret.normal = make_float3(0.f);
+	pos = origin - sphere->pos;
+	abc = get_sphere_abc(sphere->radius, ray, pos);
+	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
+		return (ret);
+	else
+	{
+		if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+			ret.dist = res1;
+		else
+			ret.dist = res2;
+	}
+	return (ret);
+}
+
 
 // OCL TO CUDA -> decoupe noe a test
 __host__ __device__ t_ret	inter_sphere(t_sphere *sphere, const float3 ray, const float3 origin)
@@ -1658,18 +1730,19 @@ __host__ __device__ t_hit		ray_hit(const t_scene *scene, const float3 origin, co
 	{
 		obj = (t_object *)((char *)scene->mem_obj + mem_index_obj);
 		if (obj->type == OBJ_SPHERE)
-		 	ret = inter_sphere(( struct s_sphere *)obj, ray, origin);
+		 	ret = inter_sphere((struct s_sphere *)obj, ray, origin);
 		else if (obj->type == OBJ_CYLINDER)
-		 	ret = inter_cylinder(( struct s_cylinder *)obj, ray, origin);
+		 	ret = inter_cylinder((struct s_cylinder *)obj, ray, origin);
 		else if (obj->type == OBJ_PLANE)
-		 	ret = inter_plan(( struct s_plane *)obj, ray, origin);
+		 	ret = inter_plan((struct s_plane *)obj, ray, origin);
 		else if (obj->type == OBJ_CONE)
-		 	ret = inter_cone(( struct s_cone *)obj, ray, origin);
+		 	ret = inter_cone((struct s_cone *)obj, ray, origin);
 		else if (obj->type == OBJ_ELLIPSOID)
-		  	ret = inter_ellipsoid(( struct s_ellipsoid *)obj, ray, origin);
+		   	ret = inter_ellipsoid((struct s_ellipsoid *)obj, ray, origin);
 		else if (obj->type == OBJ_THOR)
-			ret = inter_kube(( struct s_thor *)obj, ray, origin);
-			// ret = inter_thor(( struct s_thor *)obj, ray, origin);
+			ret = inter_thor((struct s_thor *)obj, ray, origin);
+		else if (obj->type == OBJ_KUBE)
+			ret = inter_kube((struct s_kube *)obj, ray, origin);
 		if (lightdist > 0 && ret.dist < lightdist && ret.dist > EPSILON)
 			hit.opacity += obj->opacity;
 		if ((ret.dist < hit.dist || hit.dist == 0) && ret.dist > EPSILON)
@@ -1699,7 +1772,18 @@ __host__ __device__ float3		get_hit_normal(const t_scene *scene, float3 ray, t_h
 	else
 	{
 		if (hit.obj->type == OBJ_SPHERE)
-		 	res = hit.pos - hit.obj->pos;
+		{ 
+			if (hit.obj->flags & OBJ_FLAG_CUT)
+			{
+				t_ret tmp  = mini_inter_sphere((t_sphere*)hit.obj, ray, ACTIVECAM.pos);
+				if (tmp.dist < hit.dist)
+					res = hit.obj->pos - hit.pos;
+				else
+					res = hit.pos - hit.obj->pos;
+			}
+			else
+				res = hit.pos - hit.obj->pos;
+		}
 		else if (hit.obj->type == OBJ_CYLINDER)
 			res = get_cylinder_normal((t_cylinder *)hit.obj, hit);
 		else if (hit.obj->type == OBJ_CONE)
@@ -1707,8 +1791,9 @@ __host__ __device__ float3		get_hit_normal(const t_scene *scene, float3 ray, t_h
 		else if (hit.obj->type == OBJ_ELLIPSOID)
 			res = get_ellipsoid_normal(( t_ellipsoid *)hit.obj, &hit);
 		else if (hit.obj->type == OBJ_THOR)
-			res = get_kube_normal((t_thor *)hit.obj, hit.pos);
-			// res = get_thor_normal((t_thor *)hit.obj, hit.pos);
+			res = get_thor_normal((t_thor *)hit.obj, hit.pos);
+		else if (hit.obj->type == OBJ_KUBE)
+			res = get_kube_normal((t_kube *)hit.obj, hit.pos);
 		else if (hit.obj->type == OBJ_PLANE)
 		{
 			if (dot(hit.obj->dir, ray * -1) < 0)
@@ -1722,14 +1807,14 @@ __host__ __device__ float3		get_hit_normal(const t_scene *scene, float3 ray, t_h
 	{
 		if (object->type == OBJ_PLANE)
 			save.y = res.y + object->waves_p1.x * sinf((hit.pos.x + scene->u_time));
-		
+
 		// no sinwave with torus
 		// else if (object->type == OBJ_THOR)
 		// {
 			// printf("toto\n");
 		// 	save.y = res.y + object->waves_p1.x * sinf((hit.pos.x + scene->u_time));
 		// }
-		
+
 		else
 		{
 			save.x = res.x + object->waves_p1.x * sinf(res.y * object->waves_p2.x + scene->u_time);
@@ -2023,6 +2108,7 @@ __host__ __device__ t_tor		tor_push(float3 ray, float3 normale, float3 pos, floa
 	tor.opacity = opacity;
 	tor.color = color;
 	tor.activate = 1;
+	tor.ratio = ratio;
 	tor.type = type;
 	return (tor);
 }
@@ -2058,9 +2144,18 @@ __host__ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit
 		i++;
 	}
 	i = 0;
-	tor[i] = tor_push(ray, old_hit.normal, old_hit.pos, old_hit.obj->reflex, \
-						old_hit.obj->refract, old_hit.obj->opacity, color, \
-						old_hit.obj->type, 0);
+	
+	// ERROR | an illegal memory access was encountered
+	tor[i] = tor_push(	ray, 
+						old_hit.normal, 
+						old_hit.pos, 
+						old_hit.obj->reflex,
+						old_hit.obj->refract, 
+						old_hit.obj->opacity, 
+						color,
+						old_hit.obj->type, 
+						0);
+
 	while (i < 31 && i < tor_depth)
 	{
 		if (tor[i].coef_tra != 0)
@@ -2494,7 +2589,6 @@ __host__ __device__ unsigned int	ray_trace(	int				index,
 	unsigned int	final_color_o[32] = {0};
 	uint3			rgb = make_uint3(0);
 	float3			prim_ray = make_float3(0.f);
-//	unsigned int	final_color_o[32];
 	int				x = 0;
 	int				y = 0;
 
@@ -2562,7 +2656,7 @@ __host__ __device__ unsigned int	ray_trace(	int				index,
 	return (final_color);
 }
 
-__global__ void test(unsigned int *output,
+__global__ void rt_launcher(unsigned int *output,
 						char *mem_objects, int mem_size_objects,
 						float u_time,
 						t_scene *scene_data, t_cam *cameras_data,
@@ -2600,27 +2694,27 @@ extern "C" void render_cuda(t_cuda *cuda,
 		cudaMalloc(&cameras, sizeof(t_cam) * scene_data->n_cams);
 		*/
 
-		printf("GPU\n");
-			printf("t_cam %zu\n", sizeof(t_cam));
-			printf("t_scene %zu\n", sizeof(t_scene));
-			printf("t_object %zu\n", sizeof(t_object));
-			printf("t_gen %zu\n", sizeof(t_gen));
-			printf("t_sphere %zu\n", sizeof(t_sphere));
-			printf("t_light %zu\n", sizeof(t_light));
-			printf("t_cylinder %zu\n", sizeof(t_cylinder));
-			printf("t_sphere %zu\n", sizeof(t_sphere));
-			printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
-			printf("t_plane %zu\n", sizeof(t_plane));
-			printf("t_cone %zu\n", sizeof(t_cone));
-			printf("t_cone %zu\n", sizeof(t_cone));
-			printf("\n");
+		// printf("GPU\n");
+		// 	printf("t_cam %zu\n", sizeof(t_cam));
+		// 	printf("t_scene %zu\n", sizeof(t_scene));
+		// 	printf("t_object %zu\n", sizeof(t_object));
+		// 	printf("t_gen %zu\n", sizeof(t_gen));
+		// 	printf("t_sphere %zu\n", sizeof(t_sphere));
+		// 	printf("t_light %zu\n", sizeof(t_light));
+		// 	printf("t_cylinder %zu\n", sizeof(t_cylinder));
+		// 	printf("t_sphere %zu\n", sizeof(t_sphere));
+		// 	printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
+		// 	printf("t_plane %zu\n", sizeof(t_plane));
+		// 	printf("t_cone %zu\n", sizeof(t_cone));
+		// 	printf("t_cone %zu\n", sizeof(t_cone));
+		// 	printf("\n");
 
 	cudaMemcpy(cuda->mem[1], gen_objects->mem, gen_objects->mem_size, cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->mem[2], gen_lights->mem, gen_lights->mem_size, cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->mem[3], scene_data, sizeof(t_scene), cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->mem[4], cameras_data, sizeof(t_cam), cudaMemcpyHostToDevice);
 
-	test <<< grid_size, threads_per_block >>> ((unsigned int *)cuda->mem[0],
+	rt_launcher <<< grid_size, threads_per_block >>> ((unsigned int *)cuda->mem[0],
 												(char *)cuda->mem[1], gen_objects->mem_size,
 												u_time,
 												(t_scene *)cuda->mem[3], (t_cam *)cuda->mem[4],
@@ -2633,33 +2727,29 @@ extern "C" void render_cuda(t_cuda *cuda,
 
 	// check for errors
 	cudaError_t error = cudaGetLastError();
+	// HANDLE_ERROR(error);
 	if (error != cudaSuccess)
 	{
 	 fprintf(stderr, "CUDA1 ERROR: %s \n", cudaGetErrorString(error));
 	}
 
 	//lecture framebuffer
-	error = cudaMemcpy(pixel_data, cuda->mem[0], scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost);
-	if (error != cudaSuccess)
-	{
-	 fprintf(stderr, "CUDA2 ERROR: %s \n", cudaGetErrorString(error));
-	}
-	
+	HANDLE_ERROR(cudaMemcpy(pixel_data, cuda->mem[0], scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost));
+	// error = cudaMemcpy(pixel_data, cuda->mem[0], scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost);
+	// if (error != cudaSuccess)
+	// {
+	//  fprintf(stderr, "CUDA2 ERROR: %s \n", cudaGetErrorString(error));
+	// }
+
 	//lecture target
 	if (scene_data->flag & OPTION_RUN)
 	{
-		error = cudaMemcpy(target, cuda->mem[5], sizeof(int), cudaMemcpyDeviceToHost);
+		HANDLE_ERROR(cudaMemcpy(target, cuda->mem[5], sizeof(int), cudaMemcpyDeviceToHost));
+		// error = cudaMemcpy(target, cuda->mem[5], sizeof(int), cudaMemcpyDeviceToHost);
 		scene_data->flag ^= OPTION_RUN;
 	}
-	if (error != cudaSuccess)
-	{
-	 fprintf(stderr, "CUDA3 ERROR: %s \n", cudaGetErrorString(error));
-	}
-	cudaMemcpy(pixel_data, cuda->mem[0], scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost);
-	/*if (output != NULL)
-		cudaFree(output);
-	if (mem_objects != NULL)
-		cudaFree(mem_objects);
-	if (mem_lights != NULL)
-		cudaFree(mem_lights);*/
+	// if (error != cudaSuccess)
+	// {
+	//  fprintf(stderr, "CUDA3 ERROR: %s \n", cudaGetErrorString(error));
+	// }
 }

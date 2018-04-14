@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cuda_destruct.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/14 15:27:01 by ntoniolo          #+#    #+#             */
+/*   Updated: 2018/04/14 15:29:41 by ntoniolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "t_cuda.h"
 #include <cuda.h>
 #include <cuda_runtime.h>
@@ -13,8 +25,9 @@ void		*cuda_destruct(t_cuda **ptr_cuda)
 	{
 		if (cuda->mem[cuda->nb_mem - 1])
 		{
-			if ((cuda->err = cudaFree(cuda->mem[cuda->nb_mem - 1])) != cudaSuccess)
-				return (cuda_error(cuda->err));
+			if ((cuda->err = cudaFree(cuda->mem[cuda->nb_mem - 1]))
+														!= cudaSuccess)
+				return (cuda_ptr_error(cuda->err));
 		}
 		cuda->nb_mem--;
 	}
