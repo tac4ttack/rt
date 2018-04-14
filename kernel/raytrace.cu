@@ -809,7 +809,7 @@ __host__ __device__  bool		solve_quadratic(const float a, const float b, const f
 	return (true);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __host__ __device__ double3	thor_get_rotate(const double3 *that, const  float3 *rot)
 {
 	double3		n = make_double3(0.f);
@@ -837,7 +837,7 @@ __host__ __device__ double3	thor_get_rotate(const double3 *that, const  float3 *
 	return (n);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __host__ __device__ double	ft_ret(double *tab)
 {
 	double		ret = -1.0f;
@@ -856,7 +856,7 @@ __host__ __device__ double	ft_ret(double *tab)
 	return (ret);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __host__ __device__ double3	ft_solve_3(double a, double b, double c, double d)
 {
 	double		a1 = 0.f;
@@ -903,7 +903,7 @@ __host__ __device__ double3	ft_solve_3(double a, double b, double c, double d)
 	return (Result);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __host__ __device__ double	ft_solve_4(double t[5])
 {
 	double		Result[4] = {0.f};
@@ -955,7 +955,7 @@ __host__ __device__ double	ft_solve_4(double t[5])
 }
 
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __host__ __device__ t_ret		inter_thor(const  t_thor *thor, const float3 ray, const float3 origin)
 {
 	t_ret			ret;
@@ -1002,7 +1002,7 @@ __host__ __device__ t_ret		inter_thor(const  t_thor *thor, const float3 ray, con
 	return (ret);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __host__ __device__ float3 get_thor_normal(const  t_thor *thor, const float3 hitpos)
 {
 	float3	res = make_float3(0.f);
@@ -1024,7 +1024,7 @@ __host__ __device__ float3 get_thor_normal(const  t_thor *thor, const float3 hit
 	return (res);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __host__ __device__ t_ret		inter_kube(const t_thor *thor, const float3 ray, const float3 origin)
 {
 	t_ret		ret;
@@ -1049,22 +1049,25 @@ __host__ __device__ t_ret		inter_kube(const t_thor *thor, const float3 ray, cons
 	c[3] = 4.0f * ((pow(d_ray.x, 3.0f) * d_dir.x) + (pow(d_ray.y, 3.0f) * d_dir.y)+ (pow(d_ray.z, 3.0f) * d_dir.z));
 	c[2] = 6.0f * ((pow(d_ray.x, 2.0f) * pow(d_dir.x, 2.0f) + pow(d_ray.y, 2.0f) * pow(d_dir.y, 2.0f) + pow(d_ray.z, 2.0f) * pow(d_dir.z, 2.0f))) - 5.0 * (pow(d_ray.x, 2.0f) + pow(d_ray.y, 2.0f) + pow(d_ray.z, 2.0f));
 	c[1] = 4.0f * (pow(d_dir.x, 3.0f) * d_ray.x + pow(d_dir.y, 3.0f) * d_ray.y + pow(d_dir.z, 3.0f) * d_ray.z) - 10.0 * (d_dir.x * d_ray.x + d_dir.y * d_ray.y + d_dir.z * d_ray.z);
-	c[0] = (pow(d_dir.x, 4.0f) + pow(d_dir.y, 4.0f) + pow(d_dir.z, 4.0f)) - 5.0f * (d_dir.x * d_dir.x + d_dir.y * d_dir.y +d_dir.z * d_dir.z) + 11.8;
+	c[0] = (pow(d_dir.x, 4.0f) + pow(d_dir.y, 4.0f) + pow(d_dir.z, 4.0f)) - 5.0 * (d_dir.x * d_dir.x + d_dir.y * d_dir.y +d_dir.z * d_dir.z) + thor->big_radius;
 
 	ret.dist = ft_solve_4(c);
 	return (ret);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 // KUBE
 __host__ __device__ float3 get_kube_normal(const t_thor *thor, const float3 hitpos)
 {
+	float3 pos = hitpos - thor->pos;
+	pos = vector_get_rotate(&pos, &thor->dir);
 	float3  res = make_float3(0.f);
-   
-     res.x = 4.0f * powf(hitpos.x, 3.0f) - 10.0f * hitpos.x;
-     res.y = 4.0f * powf(hitpos.y, 3.0f) - 10.0f * hitpos.y;	
-     res.z = 4.0f * powf(hitpos.z, 3.0f) - 10.0f * hitpos.z;
 
+     res.x = 4.0f * powf(pos.x, 3.0f) - 10.0 * pos.x;
+     res.y = 4.0f * powf(pos.y, 3.0f) - 10.0 * pos.y;
+     res.z = 4.0f * powf(pos.z, 3.0f) - 10.0 * pos.z;
+
+	 res = vector_get_inverse(&res, &thor->dir);
 	 return (res);
 }
 
@@ -1461,14 +1464,14 @@ __host__ __device__ float3		get_hit_normal(const  t_scene *scene, float3 ray, t_
 	{
 		if (object->type == OBJ_PLANE)
 			save.y = res.y + object->waves_p1.x * sinf((hit.pos.x + scene->u_time));
-		
+
 		// no sinwave with torus
 		// else if (object->type == OBJ_THOR)
 		// {
 			// printf("toto\n");
 		// 	save.y = res.y + object->waves_p1.x * sinf((hit.pos.x + scene->u_time));
 		// }
-		
+
 		else
 		{
 			save.x = res.x + object->waves_p1.x * sinf(res.y * object->waves_p2.x + scene->u_time);
@@ -2140,7 +2143,7 @@ extern "C" void render_cuda(t_cuda *cuda,
 	{
 	  fprintf(stderr, "CUDA2 ERROR: %s \n", cudaGetErrorString(error));
 	}
-	
+
 	//lecture target
 	if (scene_data->flag & OPTION_RUN)
 	{
