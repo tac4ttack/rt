@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/11 12:54:28 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 17:15:20 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 ** 7 = ellipsoid
 ** 8 = paraboloid
 ** 9 = torus
+** 10 = kube
 */
 
 int					xml_check_node_format(char **node, int mod)
@@ -37,7 +38,7 @@ int					xml_check_node_format(char **node, int mod)
 		i.y = (mod == 1 ? 9 : i.y);
 		i.y = (mod == 4 ? 15 : i.y);
 		i.y = (mod == 7 ? 31 + 1 : i.y);
-		if (mod == 2 || mod == 3 || mod == 5 || mod == 6)
+		if (mod == 2 || mod == 3 || mod == 5 || mod == 6 || mod == 10)
 			i.y = 28 + 1;
 		if (mod == 8 || mod == 9)
 			i.y = 29 + 1;
@@ -96,6 +97,8 @@ static void			xml_process_node_obj(t_env *e, char *node)
 		xml_node_ellipsoid(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "torus") == 0)
 		xml_node_torus(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "kube") == 0)
+		xml_node_kube(e, node);
 	else
 		s_error("\x1b[1;31mError wrong node type\x1b[0m", e);
 }

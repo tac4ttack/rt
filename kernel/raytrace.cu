@@ -45,6 +45,7 @@
 # define OBJ_SPHERE					6
 # define OBJ_ELLIPSOID				7
 # define OBJ_THOR					8
+# define OBJ_KUBE					9
 
 typedef struct			s_gen
 {
@@ -384,6 +385,48 @@ typedef struct			s_thor
 	double				lil_radius;
 	double				big_radius;
 }						t_thor;
+
+typedef struct			s_kube
+{
+	int					size;
+	int					type;
+	int					flags;
+	int					id;
+	float3				pos;
+	float				_align0;
+	float3				dir;
+	float				_align1;
+	float3				diff;
+	float				_align2;
+	float3				spec;
+	float				_align3;
+	int					color;
+	float				reflex;
+	float				refract;
+	float				opacity;
+	float3				limit_pos;
+	float				_align4;
+	float3				limit_dir;
+	float				_align5;
+	float3				waves_p1;
+	float				_align6;
+	float3				waves_p2;
+	float				_align7;
+	float3				check_size;
+	float				_align8;
+	int					diff_map_id;
+	float3				diff_offset;
+	float				_align9;
+	float3				diff_ratio;
+	float				_align10;
+	float3				cut_min;
+	float				_align11;
+	float3				cut_max;
+	float				_align12;
+
+	double				option;
+}						t_kube;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -1024,8 +1067,7 @@ __host__ __device__ float3 get_thor_normal(const  t_thor *thor, const float3 hit
 	return (res);
 }
 
-// OCL TO CUDA -> need tests in use
-__host__ __device__ t_ret		inter_kube(const t_thor *thor, const float3 ray, const float3 origin)
+__host__ __device__ t_ret		inter_kube(const t_kube *kube, const float3 ray, const float3 origin)
 {
 	t_ret		ret;
 	ret.dist = 0;
@@ -1036,38 +1078,37 @@ __host__ __device__ t_ret		inter_kube(const t_thor *thor, const float3 ray, cons
 	d_ray.x = (double)ray.x;
 	d_ray.y = (double)ray.y;
 	d_ray.z = (double)ray.z;
-	d_ray = thor_get_rotate(&d_ray, &thor->dir);
+	d_ray = thor_get_rotate(&d_ray, &kube->dir);
 
 	double3		d_dir;
-	d_dir.x = (double)origin.x - (double)thor->pos.x;
-	d_dir.y = (double)origin.y - (double)thor->pos.y;
-	d_dir.z = (double)origin.z - (double)thor->pos.z;
-	d_dir = thor_get_rotate(&d_dir, &thor->dir);
+	d_dir.x = (double)origin.x - (double)kube->pos.x;
+	d_dir.y = (double)origin.y - (double)kube->pos.y;
+	d_dir.z = (double)origin.z - (double)kube->pos.z;
+	d_dir = thor_get_rotate(&d_dir, &kube->dir);
 
 	double		c[5];
 	c[4] = (pow(d_ray.x, 4.0f) + pow(d_ray.y, 4.0f) + pow(d_ray.z, 4.0f));
 	c[3] = 4.0f * ((pow(d_ray.x, 3.0f) * d_dir.x) + (pow(d_ray.y, 3.0f) * d_dir.y)+ (pow(d_ray.z, 3.0f) * d_dir.z));
 	c[2] = 6.0f * ((pow(d_ray.x, 2.0f) * pow(d_dir.x, 2.0f) + pow(d_ray.y, 2.0f) * pow(d_dir.y, 2.0f) + pow(d_ray.z, 2.0f) * pow(d_dir.z, 2.0f))) - 5.0 * (pow(d_ray.x, 2.0f) + pow(d_ray.y, 2.0f) + pow(d_ray.z, 2.0f));
 	c[1] = 4.0f * (pow(d_dir.x, 3.0f) * d_ray.x + pow(d_dir.y, 3.0f) * d_ray.y + pow(d_dir.z, 3.0f) * d_ray.z) - 10.0 * (d_dir.x * d_ray.x + d_dir.y * d_ray.y + d_dir.z * d_ray.z);
-	c[0] = (pow(d_dir.x, 4.0f) + pow(d_dir.y, 4.0f) + pow(d_dir.z, 4.0f)) - 5.0 * (d_dir.x * d_dir.x + d_dir.y * d_dir.y +d_dir.z * d_dir.z) + thor->big_radius;
+	c[0] = (pow(d_dir.x, 4.0f) + pow(d_dir.y, 4.0f) + pow(d_dir.z, 4.0f)) - 5.0 * (d_dir.x * d_dir.x + d_dir.y * d_dir.y +d_dir.z * d_dir.z) + kube->option;
 
 	ret.dist = ft_solve_4(c);
 	return (ret);
 }
 
-// OCL TO CUDA -> need tests in use
 // KUBE
-__host__ __device__ float3 get_kube_normal(const t_thor *thor, const float3 hitpos)
+__host__ __device__ float3 get_kube_normal(const t_kube *kube, const float3 hitpos)
 {
-	float3 pos = hitpos - thor->pos;
-	pos = vector_get_rotate(&pos, &thor->dir);
+	float3 pos = hitpos - kube->pos;
+	pos = vector_get_rotate(&pos, &kube->dir);
 	float3  res = make_float3(0.f);
 
      res.x = 4.0f * powf(pos.x, 3.0f) - 10.0 * pos.x;
      res.y = 4.0f * powf(pos.y, 3.0f) - 10.0 * pos.y;
      res.z = 4.0f * powf(pos.z, 3.0f) - 10.0 * pos.z;
 
-	 res = vector_get_inverse(&res, &thor->dir);
+	 res = vector_get_inverse(&res, &kube->dir);
 	 return (res);
 }
 
@@ -1400,18 +1441,19 @@ __host__ __device__ t_hit		ray_hit(const  t_scene *scene, const float3 origin, c
 	{
 		obj = (t_object *)((char *)scene->mem_obj + mem_index_obj);
 		if (obj->type == OBJ_SPHERE)
-		 	ret = inter_sphere(( struct s_sphere *)obj, ray, origin);
+		 	ret = inter_sphere((struct s_sphere *)obj, ray, origin);
 		else if (obj->type == OBJ_CYLINDER)
-		 	ret = inter_cylinder(( struct s_cylinder *)obj, ray, origin);
+		 	ret = inter_cylinder((struct s_cylinder *)obj, ray, origin);
 		else if (obj->type == OBJ_PLANE)
-		 	ret = inter_plan(( struct s_plane *)obj, ray, origin);
+		 	ret = inter_plan((struct s_plane *)obj, ray, origin);
 		else if (obj->type == OBJ_CONE)
-		 	ret = inter_cone(( struct s_cone *)obj, ray, origin);
+		 	ret = inter_cone((struct s_cone *)obj, ray, origin);
 		else if (obj->type == OBJ_ELLIPSOID)
-		   	ret = inter_ellipsoid(( struct s_ellipsoid *)obj, ray, origin);
+		   	ret = inter_ellipsoid((struct s_ellipsoid *)obj, ray, origin);
 		else if (obj->type == OBJ_THOR)
-			ret = inter_kube(( struct s_thor *)obj, ray, origin);
-			// ret = inter_thor(( struct s_thor *)obj, ray, origin);
+			ret = inter_thor((struct s_thor *)obj, ray, origin);
+		else if (obj->type == OBJ_KUBE)
+			ret = inter_kube((struct s_kube *)obj, ray, origin);
 		if (lightdist > 0 && ret.dist < lightdist && ret.dist > EPSILON)
 			hit.opacity += obj->opacity;
 		if ((ret.dist < hit.dist || hit.dist == 0) && ret.dist > EPSILON)
@@ -1449,8 +1491,9 @@ __host__ __device__ float3		get_hit_normal(const  t_scene *scene, float3 ray, t_
 		else if (hit.obj->type == OBJ_ELLIPSOID)
 			res = get_ellipsoid_normal(( t_ellipsoid *)hit.obj, &hit);
 		else if (hit.obj->type == OBJ_THOR)
-			res = get_kube_normal((t_thor *)hit.obj, hit.pos);
-			// res = get_thor_normal((t_thor *)hit.obj, hit.pos);
+			res = get_thor_normal((t_thor *)hit.obj, hit.pos);
+		else if (hit.obj->type == OBJ_KUBE)
+			res = get_kube_normal((t_kube *)hit.obj, hit.pos);
 		else if (hit.obj->type == OBJ_PLANE)
 		{
 			if (dot(hit.obj->dir, ray * -1) < 0)

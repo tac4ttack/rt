@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 17:43:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/13 16:32:38 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/14 17:29:40 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static void			xml_write_objects(t_env *e, int fd)
 			xml_write_sphere((t_sphere *)obj, fd);
 		else if (obj->type == OBJ_TORUS)
 			xml_write_torus((t_torus *)obj, fd);
+		else if (obj->type == OBJ_KUBE)
+			xml_write_kube((t_kube *)obj, fd);
 		mem_index += *((int *)(gen->mem + mem_index));
 		index++;
 	}

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 01:39:58 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/14 17:10:57 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@
 # define OBJ_SPHERE			6
 # define OBJ_ELLIPSOID		7
 # define OBJ_TORUS			8
+# define OBJ_KUBE			9
 
 # define NB_TEXTURE			4
 
@@ -316,6 +317,34 @@ typedef struct			s_torus
 	double				lil_radius;
 	double				big_radius;
 }						t_torus;
+
+typedef struct			s_kube
+{
+	int					size;
+	int					type;
+	int					flags;
+	int					id;
+	FT_FLOAT3			pos;
+	FT_FLOAT3			dir;
+	FT_FLOAT3			diff;
+	FT_FLOAT3			spec;
+	int					color;
+	float				reflex;
+	float				refract;
+	float				opacity;
+	FT_FLOAT3			limit_pos;
+	FT_FLOAT3			limit_dir;
+	FT_FLOAT3			waves_p1;
+	FT_FLOAT3			waves_p2;
+	FT_FLOAT3			check_size;
+	int					diff_map_id;
+	FT_FLOAT3			diff_offset;
+	FT_FLOAT3			diff_ratio;
+	FT_FLOAT3			cut_min;
+	FT_FLOAT3			cut_max;
+
+	double				option;
+}						t_kube;
 
 typedef struct			s_ellipsoid
 {
@@ -594,6 +623,8 @@ void					xml_data_normale(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_opacity(t_env *e, char **attributes, \
 										int *i, t_node *node);
+void					xml_data_option(t_env *e, char **attributes, \
+										int *i, t_node *node);
 void					xml_data_plane_limit_dir(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_plane_limit_pos(t_env *e, char **attributes, \
@@ -628,6 +659,7 @@ void					xml_node_clean(char **target);
 void					xml_node_cone(t_env *e, char *node);
 void					xml_node_cylinder(t_env *e, char *node);
 void					xml_node_ellipsoid(t_env *e, char *node);
+void					xml_node_kube(t_env *e, char *node);
 void					xml_node_light(t_env *e, char *node);
 void					xml_node_plane(t_env *e, char *node);
 void					xml_node_scene(t_env *e, char *node, char mod);
@@ -639,6 +671,7 @@ void					xml_push_cam(t_env *e, t_node *list);
 void					xml_push_cone(t_env *e, t_node *list);
 void					xml_push_cyl(t_env *e, t_node *list);
 void					xml_push_ellipsoid(t_env *e, t_node *list);
+void					xml_push_kube(t_env *e, t_node *list);
 void					xml_push_light(t_env *e, t_node *list);
 void					xml_push_plane(t_env *e, t_node *list);
 void					xml_push_sphere(t_env *e, t_node *list);
@@ -663,6 +696,7 @@ void					xml_write_ellipsoid(t_ellipsoid *elli, const int fd);
 void					xml_write_plane(t_plane *plane, const int fd);
 void					xml_write_sphere(t_sphere *sphere, const int fd);
 void					xml_write_torus(t_torus *torus, const int fd);
+void					xml_write_kube(t_kube *kube, const int fd);
 
 void					init_gtk_obj_cut(t_env *e);
 void					init_cb_obj_cut(t_env *e);
