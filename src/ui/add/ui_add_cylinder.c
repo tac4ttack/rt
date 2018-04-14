@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:56 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 16:32:27 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 19:13:33 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	ui_add_cylinder_effects(t_cylinder *cylinder)
+static void		ui_add_cylinder_effects(t_cylinder *cylinder)
 {
 	cylinder->reflex = 0;
 	cylinder->refract = 0;
@@ -39,7 +39,7 @@ static void	ui_add_cylinder_effects(t_cylinder *cylinder)
 	cylinder->u_axis = cross_vect(cylinder->dir);
 }
 
-void	ui_add_cylinder(t_env *e)
+void			ui_add_cylinder(t_env *e)
 {
 	t_cylinder cylinder;
 

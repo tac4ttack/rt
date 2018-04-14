@@ -6,21 +6,14 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:17 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/12 11:59:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 19:12:39 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void		init_gtk(GtkApplication *app, gpointer data)
+static void	init_gtk_wid(t_env *e)
 {
-	t_env *e;
-
-	e = data;
-	(void)app;
-	init_gtk_css(e);
-	e->ui->builder = gtk_builder_new();
-	gtk_builder_add_from_file(e->ui->builder, "./theme/rt_ui.glade", NULL);
 	init_gtk_win(e);
 	init_gtk_object(e);
 	init_gtk_scene(e);
@@ -32,6 +25,18 @@ void		init_gtk(GtkApplication *app, gpointer data)
 	init_cb_cam(e);
 	init_cb_light(e);
 	init_cb_object(e);
+}
+
+void		init_gtk(GtkApplication *app, gpointer data)
+{
+	t_env *e;
+
+	e = data;
+	(void)app;
+	init_gtk_css(e);
+	e->ui->builder = gtk_builder_new();
+	gtk_builder_add_from_file(e->ui->builder, "./theme/rt_ui.glade", NULL);
+	init_gtk_wid(e);
 	g_object_unref(e->ui->builder);
 	e->ui->builder = NULL;
 	gtk_widget_show_all(e->ui->main_window);

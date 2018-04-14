@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:59 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 11:08:40 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 19:13:27 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	ui_add_cone_effects(t_cone *cone)
+static void		ui_add_cone_effects(t_cone *cone)
 {
 	cone->limit_pos.x = 0;
 	cone->limit_pos.y = 0;
@@ -36,7 +36,7 @@ static void	ui_add_cone_effects(t_cone *cone)
 	cone->u_axis = cross_vect(cone->dir);
 }
 
-void	ui_add_cone(t_env *e)
+void			ui_add_cone(t_env *e)
 {
 	t_cone cone;
 

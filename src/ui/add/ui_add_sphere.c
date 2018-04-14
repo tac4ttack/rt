@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:42 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 16:25:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 19:13:43 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	ui_add_sphere_effects(t_sphere *sphere)
+static void		ui_add_sphere_effects(t_sphere *sphere)
 {
 	sphere->limit_pos.x = 0;
 	sphere->limit_pos.y = 0;
@@ -35,7 +35,7 @@ static void	ui_add_sphere_effects(t_sphere *sphere)
 	sphere->diff_ratio.y = 1;
 }
 
-void	ui_add_sphere(t_env *e)
+void			ui_add_sphere(t_env *e)
 {
 	t_sphere sphere;
 

@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:37 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 15:41:19 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 19:13:47 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	ui_add_torus_effects(t_torus *torus)
+static void		ui_add_torus_effects(t_torus *torus)
 {
 	torus->limit_pos.x = 0;
 	torus->limit_pos.y = 0;
@@ -35,7 +35,7 @@ static void	ui_add_torus_effects(t_torus *torus)
 	torus->diff_ratio.y = 1;
 }
 
-void	ui_add_torus(t_env *e)
+void			ui_add_torus(t_env *e)
 {
 	t_torus torus;
 
