@@ -152,7 +152,6 @@ SRC_NAME =	 			init.c \
 						xml/data/xml_data_color.c \
 						xml/data/xml_data_diffuse.c \
 						xml/data/xml_data_dir.c \
-						xml/data/xml_data_height.c \
 						xml/data/xml_data_min_max.c \
 						xml/data/xml_data_normale.c \
 						xml/data/xml_data_opacity.c \
@@ -172,6 +171,13 @@ SRC_NAME =	 			init.c \
 						xml/object/xml_planes.c \
 						xml/object/xml_spheres.c \
 						xml/object/xml_torus.c \
+						xml/object/xml_push_ellipsoid.c \
+						xml/object/xml_push_plane.c \
+						xml/object/xml_push_sphere.c \
+						xml/object/xml_push_cone.c \
+						xml/object/xml_push_kube.c \
+						xml/object/xml_push_torus.c \
+						xml/object/xml_push_cylinder.c \
 						xml/save/xml_save_camera.c \
 						xml/save/xml_save_cone.c \
 						xml/save/xml_save_cylinder.c \

@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ui_add_plane.c                                     :+:      :+:    :+:   */
+/*   xml_push_plane.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/30 19:59:52 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 19:13:38 by ntoniolo         ###   ########.fr       */
+/*   Created: 2018/04/14 18:28:13 by ntoniolo          #+#    #+#             */
+/*   Updated: 2018/04/14 18:31:11 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void		ui_add_plane_effects(t_plane *plane)
+static void	xml_push_plane_effects(t_plane *plane)
 {
-	plane->limit_pos.x = 0;
-	plane->limit_pos.y = 0;
-	plane->limit_pos.z = 0;
-	plane->limit_dir.x = 0;
-	plane->limit_dir.y = 0;
-	plane->limit_dir.z = 0;
 	plane->waves_p1.x = 0.8;
 	plane->waves_p1.y = 0.8;
 	plane->waves_p1.z = 0.8;
@@ -33,31 +27,35 @@ static void		ui_add_plane_effects(t_plane *plane)
 	plane->diff_offset.y = 0;
 	plane->diff_ratio.x = 100;
 	plane->diff_ratio.y = 100;
+	plane->cut_min.x = 0;
+	plane->cut_min.y = 0;
+	plane->cut_min.z = 0;
+	plane->cut_max.x = 0;
+	plane->cut_max.y = 0;
+	plane->cut_max.z = 0;
 	plane->u_axis = cross_vect(plane->normal);
 }
 
-void			ui_add_plane(t_env *e)
+void		xml_push_plane(t_env *e, t_node *list)
 {
 	t_plane plane;
 
 	plane.size = sizeof(t_plane);
-	plane.id = e->gen_objects->length;
+	plane.id = e->current_index_objects;
 	plane.type = OBJ_PLANE;
-	plane.pos.x = 0;
-	plane.pos.y = 0;
-	plane.pos.z = 0;
 	plane.flags = 0;
-	plane.normal = plane.pos;
-	plane.normal.z = 1;
-	plane.color = rand();
-	plane.diff.x = 0.42;
-	plane.diff.y = 0.42;
-	plane.diff.z = 0.42;
-	plane.spec = plane.diff;
-	plane.reflex = 0;
-	plane.refract = 0;
-	plane.opacity = 1;
-	plane.radius = 0;
-	ui_add_plane_effects(&plane);
+	plane.pos = list->pos;
+	plane.normal = list->normale;
+	plane.color = list->color;
+	plane.diff = list->diff;
+	plane.spec = list->spec;
+	plane.reflex = list->reflex;
+	plane.radius = list->radius;
+	plane.refract = list->refract;
+	plane.opacity = list->opacity;
+	plane.limit_pos = list->limit_pos;
+	plane.limit_dir = list->limit_dir;
+	plane.flags = list->flags;
+	xml_push_plane_effects(&plane);
 	e->gen_objects->add(e->gen_objects, (void*)&plane);
 }

@@ -1,63 +1,60 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ui_add_cone.c                                      :+:      :+:    :+:   */
+/*   xml_push_cone.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/30 19:59:59 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 19:13:27 by ntoniolo         ###   ########.fr       */
+/*   Created: 2018/04/14 18:26:50 by ntoniolo          #+#    #+#             */
+/*   Updated: 2018/04/14 18:40:01 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void		ui_add_cone_effects(t_cone *cone)
+static void	xml_push_cone_effects(t_cone *cone)
 {
-	cone->limit_pos.x = 0;
-	cone->limit_pos.y = 0;
-	cone->limit_pos.z = 0;
-	cone->limit_dir.x = 0;
-	cone->limit_dir.y = 0;
-	cone->limit_dir.z = 0;
 	cone->waves_p1.x = 0.8;
 	cone->waves_p1.y = 0.8;
 	cone->waves_p1.z = 0.8;
 	cone->waves_p2.x = 5;
 	cone->waves_p2.y = 5;
 	cone->waves_p2.z = 5;
-	cone->check_size.x = 20;
-	cone->check_size.y = 10;
+	cone->check_size.x = 1;
+	cone->check_size.y = 1;
 	cone->diff_map_id = -1;
 	cone->diff_offset.x = 0;
 	cone->diff_offset.y = 0;
 	cone->diff_ratio.x = 1;
 	cone->diff_ratio.y = 1;
+	cone->cut_min.x = 0;
+	cone->cut_min.y = 0;
+	cone->cut_min.z = 0;
+	cone->cut_max.x = 0;
+	cone->cut_max.y = 0;
+	cone->cut_max.z = 0;
 	cone->u_axis = cross_vect(cone->dir);
 }
 
-void			ui_add_cone(t_env *e)
+void		xml_push_cone(t_env *e, t_node *list)
 {
 	t_cone cone;
 
 	cone.size = sizeof(t_cone);
+	cone.id = e->current_index_objects;
 	cone.type = OBJ_CONE;
-	cone.id = e->gen_objects->length;
-	cone.pos.x = 0;
-	cone.pos.y = 0;
-	cone.pos.z = 0;
-	cone.flags = 0;
-	cone.dir = cone.pos;
-	cone.dir.z = 1;
-	cone.angle = 4;
-	cone.color = rand();
-	cone.diff.x = 0.42;
-	cone.diff.y = 0.42;
-	cone.diff.z = 0.42;
-	cone.spec = cone.diff;
-	cone.reflex = 0;
-	cone.refract = 0;
-	cone.opacity = 1;
-	ui_add_cone_effects(&cone);
+	cone.flags = list->flags;
+	cone.pos = list->pos;
+	cone.angle = list->angle;
+	cone.color = list->color;
+	cone.diff = list->diff;
+	cone.spec = list->spec;
+	cone.reflex = list->reflex;
+	cone.refract = list->refract;
+	cone.opacity = list->opacity;
+	cone.limit_pos = list->limit_pos;
+	cone.limit_dir = list->limit_dir;
+	cone.dir = normalize_vect(list->dir);
+	xml_push_cone_effects(&cone);
 	e->gen_objects->add(e->gen_objects, (void*)&cone);
 }

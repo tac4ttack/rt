@@ -6,123 +6,55 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 21:09:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/12 13:25:44 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 21:14:22 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void		load_texture(t_env *e)
+void	charge_texture(t_env *e, const char *name, const int index)
 {
 	int		i = 0;
 	int		j = 0;
 	guchar	*picsou;
 
-	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file("./textures/earthhd.jpg", NULL);
+	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file(name, NULL);
 	e->raw_texture.pixels = gdk_pixbuf_get_pixels(e->raw_texture.pixbuf);
 	e->raw_texture.n_channels = gdk_pixbuf_get_n_channels(e->raw_texture.pixbuf);
 	e->raw_texture.rowstride = gdk_pixbuf_get_rowstride(e->raw_texture.pixbuf);
 	e->raw_texture.width = gdk_pixbuf_get_width(e->raw_texture.pixbuf);
 	e->raw_texture.height = gdk_pixbuf_get_height(e->raw_texture.pixbuf);
-	if (!(e->texture = (t_tex *)malloc(sizeof(t_tex) * NB_TEXTURE)) || \
-	!(e->texture[0].pixel_array = (unsigned int *)malloc((sizeof(unsigned int) * (e->raw_texture.width * e->raw_texture.height)))))
-	{
-		ft_putendl("Definitly not Charlie\n");
-		exit(1);
-	}
-	e->texture[0].width = e->raw_texture.width;
-	e->texture[0].height = e->raw_texture.height;
-	while (j < e->texture[0].height)
+	if (!(e->texture[index].pixel_array = (unsigned int *)malloc((sizeof(unsigned int) * (e->raw_texture.width * e->raw_texture.height)))))
+		s_error("Error: Failed to charge RAM Texture", e);
+	e->texture[index].width = e->raw_texture.width;
+	e->texture[index].height = e->raw_texture.height;
+	while (j < e->texture[index].height)
 	{
 		i = 0;
-		while (i < e->texture[0].width)
+		while (i < e->texture[index].width)
 		{
 			picsou = e->raw_texture.pixels + j * e->raw_texture.rowstride + i * e->raw_texture.n_channels;
-			e->texture[0].pixel_array[i + (j * e->texture[0].width)] = (picsou[0] << 16) + (picsou[1] << 8) + picsou[2];
+			e->texture[index].pixel_array[i + (j * e->texture[index].width)] = (picsou[0] << 16) + (picsou[1] << 8) + picsou[2];
 			i++;
 		}
 		j++;
 	}
 	g_object_unref(e->raw_texture.pixbuf);
-	j = 0;
-	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file("./textures/Moonhd.jpg", NULL);
-	e->raw_texture.pixels = gdk_pixbuf_get_pixels(e->raw_texture.pixbuf);
-	e->raw_texture.n_channels = gdk_pixbuf_get_n_channels(e->raw_texture.pixbuf);
-	e->raw_texture.rowstride = gdk_pixbuf_get_rowstride(e->raw_texture.pixbuf);
-	e->raw_texture.width = gdk_pixbuf_get_width(e->raw_texture.pixbuf);
-	e->raw_texture.height = gdk_pixbuf_get_height(e->raw_texture.pixbuf);
-	if (!(e->texture[1].pixel_array = (unsigned int *)malloc(sizeof(unsigned int) * (e->raw_texture.width * e->raw_texture.height))))
-	{
-		ft_putendl("Definitly not Charlie\n");
-		exit(1);
-	}
-	e->texture[1].width = e->raw_texture.width;
-	e->texture[1].height = e->raw_texture.height;
-	while (j < e->texture[1].height)
-	{
-		i = 0;
-		while (i < e->texture[1].width)
-		{
-			picsou = e->raw_texture.pixels + j * e->raw_texture.rowstride + i * e->raw_texture.n_channels;
-			e->texture[1].pixel_array[i + (j * e->texture[1].width)] = (picsou[0] << 16) + (picsou[1] << 8) + picsou[2];
-			i++;
-		}
-		j++;
-	}
-	g_object_unref(e->raw_texture.pixbuf);
-	j = 0;
-	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file("./textures/starmap_g4k.jpg", NULL);
-	e->raw_texture.pixels = gdk_pixbuf_get_pixels(e->raw_texture.pixbuf);
-	e->raw_texture.n_channels = gdk_pixbuf_get_n_channels(e->raw_texture.pixbuf);
-	e->raw_texture.rowstride = gdk_pixbuf_get_rowstride(e->raw_texture.pixbuf);
-	e->raw_texture.width = gdk_pixbuf_get_width(e->raw_texture.pixbuf);
-	e->raw_texture.height = gdk_pixbuf_get_height(e->raw_texture.pixbuf);
-	if (!(e->texture[2].pixel_array = (unsigned int *)malloc(sizeof(unsigned int) * (e->raw_texture.width * e->raw_texture.height))))
-	{
-		ft_putendl("Definitly not Charlie\n");
-		exit(1);
-	}
-	e->texture[2].width = e->raw_texture.width;
-	e->texture[2].height = e->raw_texture.height;
-	printf("w : %i, h : %i\n", e->texture[2].width, e->texture[2].height);
-	while (j < e->texture[2].height)
-	{
-		i = 0;
-		while (i < e->texture[2].width)
-		{
-			picsou = e->raw_texture.pixels + j * e->raw_texture.rowstride + i * e->raw_texture.n_channels;
-			e->texture[2].pixel_array[i + (j * e->texture[2].width)] = (picsou[0] << 16) + (picsou[1] << 8) + picsou[2];
-			i++;
-		}
-		j++;
-	}
-	g_object_unref(e->raw_texture.pixbuf);
-	j = 0;
-	e->raw_texture.pixbuf = gdk_pixbuf_new_from_file("./textures/pierres_jaune.png", NULL);
-	e->raw_texture.pixels = gdk_pixbuf_get_pixels(e->raw_texture.pixbuf);
-	e->raw_texture.n_channels = gdk_pixbuf_get_n_channels(e->raw_texture.pixbuf);
-	e->raw_texture.rowstride = gdk_pixbuf_get_rowstride(e->raw_texture.pixbuf);
-	e->raw_texture.width = gdk_pixbuf_get_width(e->raw_texture.pixbuf);
-	e->raw_texture.height = gdk_pixbuf_get_height(e->raw_texture.pixbuf);
-	if (!(e->texture[3].pixel_array = (unsigned int *)malloc(sizeof(unsigned int) * (e->raw_texture.width * e->raw_texture.height))))
-	{
-		ft_putendl("Definitly not Charlie\n");
-		exit(1);
-	}
-	e->texture[3].width = e->raw_texture.width;
-	e->texture[3].height = e->raw_texture.height;
-	while (j < e->texture[3].height)
-	{
-		i = 0;
-		while (i < e->texture[3].width)
-		{
-			picsou = e->raw_texture.pixels + j * e->raw_texture.rowstride + i * e->raw_texture.n_channels;
-			e->texture[3].pixel_array[i + (j * e->texture[3].width)] = (picsou[0] << 16) + (picsou[1] << 8) + picsou[2];
-			i++;
-		}
-		j++;
-	}
-	g_object_unref(e->raw_texture.pixbuf);
+}
+
+void		load_texture(t_env *e)
+{
+	int i;
+
+
+	if (!(e->texture = (t_tex *)malloc(sizeof(t_tex) * NB_TEXTURE)))
+		s_error("Error: Failed to charge RAM Texture", e);
+	i = 0;
+	charge_texture(e, "./textures/medium_ntoniolo.jpg", 0);
+	//charge_texture(e, "./textures/earthhd.jpg", 0);
+	charge_texture(e, "./textures/Moonhd.jpg", 1);
+	charge_texture(e, "./textures/starmap_g4k.jpg", 2);
+	charge_texture(e, "./textures/pierres_jaune.png", 3);
 }
 
 void			print_usage(void)

@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ui_add_sphere.c                                    :+:      :+:    :+:   */
+/*   xml_push_sphere.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/30 19:59:42 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 19:13:43 by ntoniolo         ###   ########.fr       */
+/*   Created: 2018/04/14 18:26:38 by ntoniolo          #+#    #+#             */
+/*   Updated: 2018/04/14 18:35:23 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void		ui_add_sphere_effects(t_sphere *sphere)
+static void	xml_push_sphere_effects(t_sphere *sphere)
 {
-	sphere->limit_pos.x = 0;
-	sphere->limit_pos.y = 0;
-	sphere->limit_pos.z = 0;
-	sphere->limit_dir.x = 0;
-	sphere->limit_dir.y = 0;
-	sphere->limit_dir.z = 0;
 	sphere->waves_p1.x = 0.8;
 	sphere->waves_p1.y = 0.8;
 	sphere->waves_p1.z = 0.8;
@@ -33,30 +27,34 @@ static void		ui_add_sphere_effects(t_sphere *sphere)
 	sphere->diff_offset.y = 0;
 	sphere->diff_ratio.x = 1;
 	sphere->diff_ratio.y = 1;
+	sphere->cut_min.x = 0;
+	sphere->cut_min.y = 0;
+	sphere->cut_min.z = 0;
+	sphere->cut_max.x = 0;
+	sphere->cut_max.y = 0;
+	sphere->cut_max.z = 0;
 }
 
-void			ui_add_sphere(t_env *e)
+void		xml_push_sphere(t_env *e, t_node *list)
 {
 	t_sphere sphere;
 
 	sphere.size = sizeof(t_sphere);
-	sphere.id = e->gen_objects->length;
+	sphere.id = e->current_index_objects;
 	sphere.type = OBJ_SPHERE;
-	sphere.pos.x = 0;
-	sphere.pos.y = 0;
+	sphere.pos = list->pos;
 	sphere.flags = 0;
-	sphere.pos.z = 0;
-	sphere.dir = sphere.pos;
-	sphere.dir.z = 1;
-	sphere.radius = 4;
-	sphere.color = rand();
-	sphere.diff.x = 0.42;
-	sphere.diff.y = 0.42;
-	sphere.diff.z = 0.42;
-	sphere.spec = sphere.diff;
-	sphere.reflex = 0;
-	sphere.refract = 0;
-	sphere.opacity = 1;
-	ui_add_sphere_effects(&sphere);
+	sphere.dir = list->dir;
+	sphere.radius = list->radius;
+	sphere.color = list->color;
+	sphere.diff = list->diff;
+	sphere.spec = list->spec;
+	sphere.reflex = list->reflex;
+	sphere.refract = list->refract;
+	sphere.opacity = list->opacity;
+	sphere.limit_pos = list->limit_pos;
+	sphere.limit_dir = list->limit_dir;
+	sphere.flags = list->flags;
+	xml_push_sphere_effects(&sphere);
 	e->gen_objects->add(e->gen_objects, (void*)&sphere);
 }

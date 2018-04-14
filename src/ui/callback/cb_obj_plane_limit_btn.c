@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 15:47:45 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 19:34:29 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 19:19:10 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void			cb_obj_plane_limit_btn(GtkButton *btn, gpointer data)
 	if (obj->flags & OBJ_FLAG_PLANE_LIMIT)
 		obj->flags ^= OBJ_FLAG_PLANE_LIMIT;
 	else
-		obj->flags |= OBJ_FLAG_PLANE_LIMIT;	
+		obj->flags |= OBJ_FLAG_PLANE_LIMIT;
 }
 
 void			cb_obj_plane_limit_fix_btn(GtkButton *btn, gpointer data)

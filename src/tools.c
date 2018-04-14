@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/14 21:16:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 22:18:33 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,44 +17,36 @@ void	flush(t_env *e)
 	int i;
 
 	i = -1;
-	if (e)
-	{
-		while (++i < NB_TEXTURE)
+	while (++i < NB_TEXTURE)
+		if (e->texture[i].pixel_array)
 			ft_memdel((void **)&e->texture[i].pixel_array);
-		ft_memdel((void **)&e->texture);
-
-		if (e->cl)
-		{
-			gen_destruct(&e->gen_objects);
-			gen_destruct(&e->gen_lights);
-		}
-		if (e->ui->surface)
-			cairo_surface_destroy(e->ui->surface);
-		ft_memdel((void**)&e->xml);
-		ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
-
-		ft_memdel((void**)&e->cameras);
-		ft_putendl("\x1b[1;29mFreed cameras array\x1b[0m");
-
-		ft_memdel((void**)&e->scene);
-		ft_putendl("\x1b[1;29mFreed scene datas\x1b[0m");
-
-		ft_memdel((void**)&e->pixel_data);
-		ft_putendl("\x1b[1;29mFreed pixel buffer\x1b[0m");
-
-		ft_memdel((void**)&e->ui);
-		ft_putendl("\x1b[1;29mFreed UI environnement\x1b[0m");
-
-		ft_memdel((void**)&e);
-		ft_putendl("\x1b[1;29mFreed RT environnement\x1b[0m");
-	}
+	ft_memdel((void **)&e->texture);
+	if (e->cuda)
+		cuda_destruct(&e->cuda);
+	gen_destruct(&e->gen_objects);
+	gen_destruct(&e->gen_lights);
+	if (e->ui->surface)
+		cairo_surface_destroy(e->ui->surface);
+	ft_memdel((void**)&e->xml);
+	ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
+	ft_memdel((void**)&e->cameras);
+	ft_putendl("\x1b[1;29mFreed cameras array\x1b[0m");
+	ft_memdel((void**)&e->scene);
+	ft_putendl("\x1b[1;29mFreed scene datas\x1b[0m");
+	ft_memdel((void**)&e->pixel_data);
+	ft_putendl("\x1b[1;29mFreed pixel buffer\x1b[0m");
+	ft_memdel((void**)&e->ui);
+	ft_putendl("\x1b[1;29mFreed UI environnement\x1b[0m");
+	ft_memdel((void**)&e);
+	ft_putendl("\x1b[1;29mFreed RT environnement\x1b[0m");
 }
 
 void	s_error(char *str, t_env *e)
 {
 	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
 	ft_putendl(str);
-	flush(e);
+	if (e)
+		flush(e);
 	exit(EXIT_FAILURE);
 }
 

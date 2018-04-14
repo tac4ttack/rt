@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 17:45:41 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 22:17:32 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,6 @@ typedef struct			s_cylinder
 	FT_FLOAT3			cut_min;
 	FT_FLOAT3			cut_max;
 
-	// float				height;
 	FT_FLOAT3			base_dir;
 	float				radius;
 	FT_FLOAT3			u_axis;
@@ -393,7 +392,6 @@ typedef struct			s_node
 	int					light;
 	int					shrink;
 	float				brightness;
-	// float				height;
 	FT_FLOAT3			diff;
 	FT_FLOAT3			spec;
 	float				reflex;
@@ -600,8 +598,6 @@ void					xml_data_diffiouse(t_env *e, char **attributes, \
 void					xml_data_dir(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_flag(t_env *e, char **attributes, \
-										int *i, t_node *node);
-void					xml_data_height(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_lil_radius(t_env *e, char **attributes, \
 										int *i, t_node *node);

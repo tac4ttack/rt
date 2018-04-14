@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:54 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/04 11:07:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 19:13:36 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	ui_add_ellipsoid_effects(t_ellipsoid *ellipsoid)
+static void		ui_add_ellipsoid_effects(t_ellipsoid *ellipsoid)
 {
 	ellipsoid->limit_pos.x = 0;
 	ellipsoid->limit_pos.y = 0;
@@ -35,7 +35,7 @@ static void	ui_add_ellipsoid_effects(t_ellipsoid *ellipsoid)
 	ellipsoid->diff_ratio.y = 1;
 }
 
-void	ui_add_ellipsoid(t_env *e)
+void			ui_add_ellipsoid(t_env *e)
 {
 	t_ellipsoid ellipsoid;
 
