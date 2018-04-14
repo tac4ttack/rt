@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/13 23:48:37 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 01:39:58 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -485,7 +485,7 @@ void					init_cuda(t_env *e, t_cuda *cuda);
 int						draw(t_env *e);
 void					init_kernel(t_env *e);
 
-void					render_cuda(t_cuda2 *cuda, int 		*pixel_data, int *target,
+void					render_cuda(t_cuda *cuda, int 		*pixel_data, int *target,
 							t_gen		*gen_objects,
 							t_gen		*gen_lights,
 							float		u_time,
