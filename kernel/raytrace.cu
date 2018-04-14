@@ -11,6 +11,8 @@ static void HandleError( cudaError_t err, const char *file,	int line )
 	if (err != cudaSuccess)
 	{
 		printf( "%s in %s at line %d\n", cudaGetErrorString( err ),	file, line );
+		//test
+		cudaDeviceReset();
 		exit( EXIT_FAILURE );
 	}
 }
@@ -1522,12 +1524,17 @@ __host__ __device__ t_ret	inter_cylinder(const t_cylinder *cylinder, const float
 	abc = get_cylinder_abc(cylinder->radius, cylinder->dir, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
-	//if (cylinder->flags & OBJ_FLAG_PLANE_LIMIT)
-	//	return (object_limited((t_object *)cylinder, res1, res2, ray, origin));
-	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
-		ret.dist = res1;
+	if (cylinder->flags & OBJ_FLAG_PLANE_LIMIT)
+		return (object_limited((t_object *)cylinder, res1, res2, ray, origin));
 	else
-		ret.dist = res2;
+	{
+		if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+			ret.dist = res1;
+		else
+			ret.dist = res2;
+	}
+	// if (cylinder->flags & OBJ_FLAG_CUT)
+	// 	return(sphere_cut(cylinder, ray, origin, res1, res2));
 	return (ret);
 }
 
@@ -2119,6 +2126,7 @@ __host__ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit
 	t_hit			new_hit;
 	unsigned int	ncolor = 0;
 	float3			new_ray = make_float3(0.f);
+	float3			dummy = make_float3(0.f);
 	float			fr = 0.f;
 	// float			eta = 0.f;		// UNUSED
 	float			cos1 = 0.f;
@@ -2127,7 +2135,7 @@ __host__ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit
 	int				i = 0;
 	int				tor_depth = 0;
 
-	tor_depth = (unsigned int)(pow(2.f, (float)(depth))) - 1;
+	tor_depth = (int)(pow(2.f, (float)(depth))) - 1;
 	i = 0;
 	while (i < 63)
 	{
@@ -2145,7 +2153,6 @@ __host__ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit
 	}
 	i = 0;
 	
-	// ERROR | an illegal memory access was encountered
 	tor[i] = tor_push(	ray, 
 						old_hit.normal, 
 						old_hit.pos, 
@@ -2194,7 +2201,6 @@ __host__ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit
 						new_hit.pos = (new_hit.dist * new_ray) + tor[i].pos;
 					new_hit.normal = get_hit_normal(scene, new_ray, new_hit);
 					new_hit.pos = new_hit.pos + (0.001f * new_hit.normal);
-
 
 					if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 						new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
@@ -2247,6 +2253,7 @@ __host__ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit
 				new_hit.normal = get_hit_normal(scene, new_ray, new_hit);
 				new_hit.pos = new_hit.pos + (new_hit.dist / SHADOW_BIAS * new_hit.normal);
 
+
 				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 					new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
 				else if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
@@ -2262,17 +2269,24 @@ __host__ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit
 
 				else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
 					new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, ((t_cone *)new_hit.obj)->diff_ratio, ((t_cone *)new_hit.obj)->diff_offset);
-
 				else
 					new_hit.color = new_hit.obj->color;
-
+				
 				ncolor = phong(scene, new_hit, new_ray);
 			}
 			else if (scene->flag & OPTION_SKYBOX)
 				ncolor = skybox(new_ray, scene->texture_star, 4096, 2048);
 			else
 				ncolor = get_ambient(scene, BACKCOLOR);
-			tor[(2 * i) + 2] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.obj->type, fr);
+			
+			
+			// new_hit.obj is cuasing problem
+			if (new_hit.dist > 0)
+			{
+					// printf("testicule %f\n", new_hit.obj->reflex);
+				tor[(2 * i) + 2] = tor_push(new_ray, new_hit.normal, new_hit.pos, 0, 0, 0, ncolor, 0, fr);
+				// tor[(2 * i) + 2] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.obj->type, fr);
+			}
 		}
 		i = i + 1;
 		while (i < 31 && tor[i].activate == 0)
