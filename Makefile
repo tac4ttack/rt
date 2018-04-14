@@ -213,6 +213,7 @@ SRC_CUDA_NAME =		cuda/cuda_construct.c \
 					cuda/cuda_destruct.c \
 					cuda/cuda_create_buffer.c \
 					cuda/cuda_update_buffer.c \
+					cuda/cuda_error.c \
 					draw_cuda.c \
 					init_cuda.c
 
@@ -238,7 +239,7 @@ opencl: libft $(SRC) $(SRC_CL) $(INC) $(OBJ_PATH) $(OBJ) $(OBJ_CL)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(OBJ_CL)  -D DCL -L $(LIBFT_PATH) $(LIBFTFLAGS) $(GTK_CLIBS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
-	$(CC) $(CFLAGS) -c $< -o $@ -D DCUDA -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+	/usr/local/cuda/bin/nvcc -c $< -o $@ -D DCUDA -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_CL_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
 	$(CC) $(CFLAGS) -c $< -o $@ -D DCL -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)

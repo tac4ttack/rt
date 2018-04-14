@@ -7,7 +7,7 @@ t_cuda		*cuda_construct()
 
 	if (!(cuda = ft_memalloc(sizeof(t_cuda))))
 		return (NULL);
-	cuda->add_buffer = &cuda_add_buffer;
-	//cuda->update_buffer = &cuda_update_buffer;
+	cuda->add_buffer = cuda_add_buffer;
+	cuda->update_buffer = cuda_update_buffer;
 	return (cuda);
 }

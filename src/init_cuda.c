@@ -29,10 +29,10 @@ void	init_kernel(t_env *e)
 	cuda_add_buffer(cuda, sizeof(unsigned int));
 	cuda_add_buffer(cuda, sizeof(unsigned int) * texture[0].width * texture[0].height);
 	cuda_add_buffer(cuda, sizeof(unsigned int) * texture[1].width * texture[1].height);
-	cuda_add_buffer(cuda, sizeof(unsigned int) * texture[2].width * texture[2].height);
-	
+//	cuda_add_buffer(cuda, sizeof(unsigned int) * texture[2].width * texture[2].height);
+
 	cudaMemcpy(cuda->mem[6], texture[0].pixel_array, sizeof(unsigned int) * texture[0].width * texture[0].height, cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->mem[7], texture[1].pixel_array, sizeof(unsigned int) * texture[1].width * texture[1].height, cudaMemcpyHostToDevice);
-	cudaMemcpy(cuda->mem[8], texture[2].pixel_array, sizeof(unsigned int) * texture[2].width * texture[2].height, cudaMemcpyHostToDevice);
+	//cudaMemcpy(cuda->mem[8], texture[2].pixel_array, sizeof(unsigned int) * texture[2].width * texture[2].height, cudaMemcpyHostToDevice);
 	//cudaMemcpy(cuda->texture_3, texture[3].pixel_array, sizeof(unsigned int) * texture[3].width * texture[3].height, cudaMemcpyHostToDevice);
 }

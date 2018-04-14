@@ -12,7 +12,10 @@ void		*cuda_destruct(t_cuda **ptr_cuda)
 	while (cuda->nb_mem)
 	{
 		if (cuda->mem[cuda->nb_mem - 1])
-			cudaFree(cuda->mem[cuda->nb_mem - 1]);
+		{
+			if ((cuda->err = cudaFree(cuda->mem[cuda->nb_mem - 1])) != cudaSuccess)
+				return (cuda_error(cuda->err));
+		}
 		cuda->nb_mem--;
 	}
 	return (NULL);
