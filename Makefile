@@ -167,6 +167,7 @@ SRC_NAME =	 			init.c \
 						xml/object/xml_kube.c \
 						xml/object/xml_cones.c \
 						xml/object/xml_cylinders.c \
+						xml/object/xml_push_cylinder.c \
 						xml/object/xml_ellipsoid.c \
 						xml/object/xml_lights.c \
 						xml/object/xml_planes.c \

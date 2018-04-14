@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 17:43:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 17:29:40 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/14 17:45:19 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-static void	xml_write_scene_res(int width, int height, int fd)
+static void			xml_write_scene_res(int width, int height, int fd)
 {
 	ft_putstr_fd("res=\"", fd);
 	ft_putstr_fd(ft_itoa(width), fd);
@@ -25,7 +25,7 @@ static void	xml_write_scene_res(int width, int height, int fd)
 	ft_putstr_fd("\" ", fd);
 }
 
-static void	xml_write_scene_ambient(FT_FLOAT3 ambient, int fd)
+static void			xml_write_scene_ambient(FT_FLOAT3 ambient, int fd)
 {
 	ft_putstr_fd("ambient=\"", fd);
 	ft_putstr_fd(ft_ftoa(ambient.x), fd);
@@ -38,17 +38,13 @@ static void	xml_write_scene_ambient(FT_FLOAT3 ambient, int fd)
 
 static void			xml_write_objects(t_env *e, int fd)
 {
-	t_gen			*gen;
 	t_object		*obj;
 	size_t			mem_index;
-	size_t			index;
 
 	mem_index = 0;
-	index = 0;
-	gen = e->gen_objects;
-	while (index < gen->length)
+	while (mem_index < e->gen_objects->mem_size)
 	{
-		obj = gen->mem + mem_index;
+		obj = e->gen_objects->mem + mem_index;
 		if (obj->type == OBJ_CONE)
 			xml_write_cone((t_cone *)obj, fd);
 		else if (obj->type == OBJ_CYLINDER)
@@ -63,12 +59,11 @@ static void			xml_write_objects(t_env *e, int fd)
 			xml_write_torus((t_torus *)obj, fd);
 		else if (obj->type == OBJ_KUBE)
 			xml_write_kube((t_kube *)obj, fd);
-		mem_index += *((int *)(gen->mem + mem_index));
-		index++;
+		mem_index += *((int *)(e->gen_objects->mem + mem_index));
 	}
 }
 
-void			xml_save_scene(t_env *e, char *filename)
+void				xml_save_scene(t_env *e, char *filename)
 {
 	int			fd;
 
