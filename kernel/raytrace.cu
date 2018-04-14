@@ -2134,28 +2134,20 @@ extern "C" void render_cuda(t_cuda *cuda,
 {
 	dim3					threads_per_block(8, 8);
 	dim3					grid_size(scene_data->win_w / threads_per_block.x, scene_data->win_h / threads_per_block.y);
-
-		/*cudaMalloc(&output, width * height * sizeof(int));
-		cudaMalloc(&mem_objects, gen_objects->mem_size);
-		cudaMalloc(&mem_lights, gen_lights->mem_size);
-		cudaMalloc(&scene, sizeof(t_scene));
-		cudaMalloc(&cameras, sizeof(t_cam) * scene_data->n_cams);
-		*/
-
-		printf("GPU\n");
-			printf("t_cam %zu\n", sizeof(t_cam));
-			printf("t_scene %zu\n", sizeof(t_scene));
-			printf("t_object %zu\n", sizeof(t_object));
-			printf("t_gen %zu\n", sizeof(t_gen));
-			printf("t_sphere %zu\n", sizeof(t_sphere));
-			printf("t_light %zu\n", sizeof(t_light));
-			printf("t_cylinder %zu\n", sizeof(t_cylinder));
-			printf("t_sphere %zu\n", sizeof(t_sphere));
-			printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
-			printf("t_plane %zu\n", sizeof(t_plane));
-			printf("t_cone %zu\n", sizeof(t_cone));
-			printf("t_cone %zu\n", sizeof(t_cone));
-			printf("\n");
+		/*printf("GPU\n");
+		printf("t_cam %zu\n", sizeof(t_cam));
+		printf("t_scene %zu\n", sizeof(t_scene));
+		printf("t_object %zu\n", sizeof(t_object));
+		printf("t_gen %zu\n", sizeof(t_gen));
+		printf("t_sphere %zu\n", sizeof(t_sphere));
+		printf("t_light %zu\n", sizeof(t_light));
+		printf("t_cylinder %zu\n", sizeof(t_cylinder));
+		printf("t_sphere %zu\n", sizeof(t_sphere));
+		printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
+		printf("t_plane %zu\n", sizeof(t_plane));
+		printf("t_cone %zu\n", sizeof(t_cone));
+		printf("t_cone %zu\n", sizeof(t_cone));
+		printf("\n");*/
 
 	cudaMemcpy(cuda->mem[1], gen_objects->mem, gen_objects->mem_size, cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->mem[2], gen_lights->mem, gen_lights->mem_size, cudaMemcpyHostToDevice);
@@ -2197,7 +2189,6 @@ extern "C" void render_cuda(t_cuda *cuda,
 	{
 	  fprintf(stderr, "CUDA3 ERROR: %s \n", cudaGetErrorString(error));
 	}
-	cudaMemcpy(pixel_data, cuda->mem[0], scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost);
 	/*if (output != NULL)
 		cudaFree(output);
 	if (mem_objects != NULL)

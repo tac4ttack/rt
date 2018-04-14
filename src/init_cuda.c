@@ -1,38 +1,63 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_cuda.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/14 20:13:04 by ntoniolo          #+#    #+#             */
+/*   Updated: 2018/04/14 21:19:30 by ntoniolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 #include "t_cuda.h"
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-void	init_kernel(t_env *e)
+static void		init_kernel_buffer(t_env *e)
 {
-	t_scene		*scene;
-	t_gen		*gen_objects;
-	t_gen		*gen_lights;
-	t_tex		*texture;
-	t_cuda		*cuda;
+	if (!(cuda_add_buffer(e->cuda,
+						e->scene->win_w * e->scene->win_h * sizeof(int))))
+		s_error("\x1b[2;31mError t_cuda cudaMalloc 0\x1b[0m", e);
+	if (!(cuda_add_buffer(e->cuda, e->gen_objects->mem_size)))
+		s_error("\x1b[2;31mError t_cuda cudaMalloc 1\x1b[0m", e);
+	if (!(cuda_add_buffer(e->cuda, e->gen_lights->mem_size)))
+		s_error("\x1b[2;31mError t_cuda cudaMalloc 2\x1b[0m", e);
+	if (!(cuda_add_buffer(e->cuda, sizeof(t_scene))))
+		s_error("\x1b[2;31mError t_cuda cudaMalloc 3\x1b[0m", e);
+	if (!(cuda_add_buffer(e->cuda, sizeof(t_cam) * e->scene->n_cams)))
+		s_error("\x1b[2;31mError t_cuda cudaMalloc 4\x1b[0m", e);
+	if (!(cuda_add_buffer(e->cuda, sizeof(unsigned int))))
+		s_error("\x1b[2;31mError t_cuda cudaMalloc 5\x1b[0m", e);
+	printf("height%i\nwidth %i\n", e->texture[0].height, e->texture[0].width);
+	if (!(cuda_add_buffer(e->cuda, sizeof(unsigned int)
+							* e->texture[0].width * e->texture[0].height)))
+		s_error("\x1b[2;31mError t_cuda cudaMalloc 6\x1b[0m", e);
+	//if (!(cuda_add_buffer(e->cuda, sizeof(unsigned int)
+	//						* e->texture[1].width * e->texture[1].height)))
+	//	s_error("\x1b[2;31mError t_cuda cudaMalloc 7\x1b[0m", e);
+}
 
-	scene = e->scene;
-	gen_objects = e->gen_objects;
-	gen_lights = e->gen_lights;
-	texture = e->texture;
-	e->cuda = cuda_construct();
-	cuda = e->cuda;
-	//if (!(e->cuda = cuda_construct()))
-		//return ();
+static void		init_kernel_write_texture(t_env *e)
+{
+	if ((e->cuda->err = cudaMemcpy(e->cuda->mem[6], e->texture[0].pixel_array,
+			sizeof(unsigned int) * e->texture[0].width * e->texture[0].height,
+			cudaMemcpyHostToDevice)) != cudaSuccess)
+	{
+		cuda_error(e->cuda->err);
+		s_error("\x1b[2;31mError t_cuda cudaMemcpy 0 failed\x1b[0m", e);
+	}
+	//if (!(cudaMemcpy(e->cuda->mem[7], e->texture[1].pixel_array,
+	//		sizeof(unsigned int) * e->texture[1].width * e->texture[1].height,
+	//		cudaMemcpyHostToDevice)))
+	//	s_error("\x1b[2;31mError t_cuda creation failed\x1b[0m", e);
+}
 
-		printf("2\n");
-	cuda_add_buffer(cuda, scene->win_w * scene->win_h * sizeof(int));
-	cuda_add_buffer(cuda, gen_objects->mem_size);
-	cuda_add_buffer(cuda, gen_lights->mem_size);
-	cuda_add_buffer(cuda, sizeof(t_scene));
-	cuda_add_buffer(cuda, sizeof(t_cam) * scene->n_cams);
-	cuda_add_buffer(cuda, sizeof(unsigned int));
-	cuda_add_buffer(cuda, sizeof(unsigned int) * texture[0].width * texture[0].height);
-	cuda_add_buffer(cuda, sizeof(unsigned int) * texture[1].width * texture[1].height);
-//	cuda_add_buffer(cuda, sizeof(unsigned int) * texture[2].width * texture[2].height);
-
-	cudaMemcpy(cuda->mem[6], texture[0].pixel_array, sizeof(unsigned int) * texture[0].width * texture[0].height, cudaMemcpyHostToDevice);
-	cudaMemcpy(cuda->mem[7], texture[1].pixel_array, sizeof(unsigned int) * texture[1].width * texture[1].height, cudaMemcpyHostToDevice);
-	//cudaMemcpy(cuda->mem[8], texture[2].pixel_array, sizeof(unsigned int) * texture[2].width * texture[2].height, cudaMemcpyHostToDevice);
-	//cudaMemcpy(cuda->texture_3, texture[3].pixel_array, sizeof(unsigned int) * texture[3].width * texture[3].height, cudaMemcpyHostToDevice);
+void			init_kernel(t_env *e)
+{
+	if (!(e->cuda = cuda_construct()))
+		s_error("\x1b[2;31mError t_cuda creation failed\x1b[0m", e);
+	init_kernel_buffer(e);
+	init_kernel_write_texture(e);
 }
