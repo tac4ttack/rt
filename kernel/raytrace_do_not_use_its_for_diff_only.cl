@@ -922,6 +922,7 @@ static unsigned int		plane_checkerboard(const float3 normale, const float3 pos, 
 	return (0);
 }
 
+//DONE
 static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, float2 ratio, float2 offset, unsigned int __global *texture, int width, int height)
 {
 	float3			v_axis = 0;
@@ -1293,6 +1294,8 @@ static unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, fl
 /*
 ** SPHERES FUNCTIONS ///////////////////////////////////////////////////////////
 */
+
+//DONE
 static t_ret			sphere_cut(const __local t_sphere *sphere, float2 tmp, const float3 ray, const float3 origin)
 {
 	t_ret		ret;
@@ -1413,6 +1416,7 @@ static t_ret			sphere_cut(const __local t_sphere *sphere, float2 tmp, const floa
 //
 
 // ANROCHE ONE
+//DONE
 static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
@@ -1458,6 +1462,8 @@ static t_ret	inter_sphere(const __local t_sphere *sphere, const float3 ray, cons
 /*
 ** CONES FUNCTIONS /////////////////////////////////////////////////////////////
 */
+
+//DONE
 static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigned int __global *texture, int t_width, int t_height, float2 ratio, float2 offset)
 {
 	unsigned int	color = 0;
@@ -1888,7 +1894,9 @@ static unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, unsigne
 		// 		color = blend_add(blend_factor(tor[i].color, 1 - tor[i].coef_ref), blend_factor(color, tor[i].coef_ref));
 		// 	return (color);
 		// }
+//
 
+//DONE
 static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_hit, int depth, unsigned int color)
 {
 	t_hit			new_hit;
@@ -2048,7 +2056,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 }
 
 
-
+//DONE
 static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __global int *target, bool isHim)
 {
 	t_hit			hit;
