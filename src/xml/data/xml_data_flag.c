@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   xml_data_flag.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ntoniolo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/14 18:46:47 by ntoniolo          #+#    #+#             */
+/*   Updated: 2018/04/14 18:46:48 by ntoniolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 void		xml_data_flag(t_env *e, char **attributes, int *i, t_node *node)
@@ -15,20 +27,10 @@ void		xml_data_flag(t_env *e, char **attributes, int *i, t_node *node)
 		while (attributes[(*i)][j] && attributes[(*i)][j] != '\"')
 		{
 			if (attributes[(*i)][j] - 48)
-			{
-				printf("%c %i\n", attributes[(*i)][j], attributes[(*i)][j] - 48);
 				node->flags |= (1 << (j - 7));
-			}
 			j++;
 		}
 		(*i)++;
-		int k = node->flags;
-		while (k)
-		{
-			printf("%i\n", k%2);
-			k /= 2;
-		}
-		printf("\n");
 	}
 	else
 		s_error("\x1b[1;31mError reading FLAG from scene\x1b[0m", e);

@@ -152,7 +152,6 @@ SRC_NAME =	 			init.c \
 						xml/data/xml_data_color.c \
 						xml/data/xml_data_diffuse.c \
 						xml/data/xml_data_dir.c \
-						xml/data/xml_data_height.c \
 						xml/data/xml_data_min_max.c \
 						xml/data/xml_data_normale.c \
 						xml/data/xml_data_opacity.c \
