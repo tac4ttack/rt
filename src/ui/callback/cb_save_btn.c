@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:16:29 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 18:05:53 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 19:16:31 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void		cb_save_btn(GtkButton *btn, gpointer data)
 {
 	t_env	*e;
 	char	*filename;
-	
+
 	(void)btn;
 	filename = NULL;
 	e = data;

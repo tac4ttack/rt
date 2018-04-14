@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:34 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/05 18:26:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 19:17:16 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,3 @@ gboolean		cb_plane_disk_radius(GtkSpinButton *spin, gpointer data)
 	obj->radius = (float)value;
 	return (TRUE);
 }
-
-
-

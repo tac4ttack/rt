@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cb_obj_cut_z.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ntoniolo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/14 19:19:41 by ntoniolo          #+#    #+#             */
+/*   Updated: 2018/04/14 19:21:50 by ntoniolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 gboolean		cb_obj_cut_z_min(GtkSpinButton *spin, gpointer data)
@@ -25,4 +37,3 @@ gboolean		cb_obj_cut_z_max(GtkSpinButton *spin, gpointer data)
 	obj->cut_max.z = (float)value;
 	return (TRUE);
 }
-
