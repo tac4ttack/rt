@@ -1623,20 +1623,18 @@ __host__ __device__ t_ret	inter_ellipsoid(const t_ellipsoid *ellipsoid, float3 r
 }
 
 // OCL TO CUDA -> need test
-__host__ __device__ float3	get_cone_normal(const t_cone *cone, const t_hit hit)
+__host__ __device__ float3	get_cone_normal(t_cone *cone, const t_hit hit)
 {
 	float3		res = make_float3(0.f);
 	float3		v = make_float3(0.f);
 	float3		project = make_float3(0.f);
 	float		doty = 0.f;
-	// float		m = 0.f; // UNUSED
 
 	v = hit.pos - cone->pos;
 	doty = dot(v, cone->dir);
 	project = doty * cone->dir;
-	// m = length(project);
-	res = v - project;
-
+	res = cross(v, project);
+	res = cross(v, res);
 	return (normalize(res));
 }
 
@@ -1728,11 +1726,7 @@ __host__ __device__ t_hit		ray_hit(const t_scene *scene, const float3 origin, co
 
 	hit = hit_init();
 	obj = 0;
-	ret.dist = 0.f;
-	ret.wall = 0;
 	ret.normal = make_float3(0.f);
-	if (lightdist == 0)
-		hit.opacity = 1;
 	while (mem_index_obj < scene->mem_size_obj)
 	{
 		obj = (t_object *)((char *)scene->mem_obj + mem_index_obj);
@@ -1880,7 +1874,7 @@ __host__ __device__ unsigned int			phong(const t_scene *scene, const t_hit hit, 
 	float 				brightness = 0.f;
 	unsigned int 		hue = 0;
 	unsigned int 		hue_light = 0;
-	unsigned int 		col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g = 0;
+	unsigned int 		col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g, base_r, base_g, base_b = 0;
 	t_light_ray			light_ray;
 	t_hit				light_hit;
 	float 				pow_of_spec = 0.f;
@@ -1893,13 +1887,13 @@ __host__ __device__ unsigned int			phong(const t_scene *scene, const t_hit hit, 
 	else
 		hue = obj->color;
 
-	col_r = (hue & 0x00FF0000) >> 16;
-	col_g = (hue & 0x0000FF00) >> 8;
-	col_b = (hue & 0x000000FF);
-	col_r = (0.01 + col_r * scene->ambient.x > 255 ? 255 : 0.01 + col_r * scene->ambient.x);
-	col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
-	col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
-	res_color = ((col_r << 16) + (col_g << 8) + col_b);
+	obj_r = (hue & 0x00FF0000) >> 16;
+	obj_g = (hue & 0x0000FF00) >> 8;
+	obj_b = (hue & 0x000000FF);
+	base_r = (0.01 + obj_r * scene->ambient.x > 255 ? 255 : 0.01 + obj_r * scene->ambient.x);
+	base_g = (0.01 + obj_g * scene->ambient.y > 255 ? 255 : 0.01 + obj_g * scene->ambient.y);
+	base_b = (0.01 + obj_b * scene->ambient.z > 255 ? 255 : 0.01 + obj_b * scene->ambient.z);
+	res_color = ((base_r << 16) + (base_g << 8) + base_b);
 
 	while (mem_index_lights < scene->mem_size_lights)
 	{
@@ -1922,9 +1916,6 @@ __host__ __device__ unsigned int			phong(const t_scene *scene, const t_hit hit, 
 				col_r = (res_color & 0xFF0000) >> 16;
 				col_g = (res_color & 0x00FF00) >> 8;
 				col_b = (res_color & 0x0000FF);
-				obj_r = (hue & 0xFF0000) >> 16;
-				obj_g = (hue & 0x00FF00) >> 8;
-				obj_b = (hue & 0x00000FF);
 				l_r = (hue_light & 0xFF0000) >> 16;
 				l_g = (hue_light & 0x00FF00) >> 8;
 				l_b = (hue_light & 0x0000FF);
@@ -1969,30 +1960,17 @@ __host__ __device__ unsigned int			phong(const t_scene *scene, const t_hit hit, 
 
 
 			// opacite de l'ombre à debug!!!!!
-			res_color = blend_factor(res_color, ((light_hit.opacity - 1) * -1));
-			// res_color = blend_factor(res_color, 1 - (light_hit.opacity / 2));
-	
-			// si pas de depth alors opacity = 0, la couleur n'est pas touchée
-			// res_color = blend_factor(res_color, 1 - (light_hit.opacity * light_hit.opacity));
-			// if (light_hit.opacity != 0)
-			// {
-			// 	light_hit.opacity = 1 - light_hit.opacity;
-			// 	if (light_hit.opacity > scene->ambient.x)
-			// 		col_r = (0.01 + col_r * light_hit.opacity > 255 ? 255 : 0.01 + col_r * light_hit.opacity);
-			// 	else
-			// 		col_r = (0.01 + col_r * scene->ambient.x > 255 ? 255 : 0.01 + col_r * scene->ambient.x);
-			// 	if (light_hit.opacity > scene->ambient.y)
-			// 		col_g = (0.01 + col_g * light_hit.opacity > 255 ? 255 : 0.01 + col_g * light_hit.opacity);
-			// 	else
-			// 		col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
-			// 	if (light_hit.opacity > scene->ambient.z)
-			// 		col_b = (0.01 + col_b * light_hit.opacity > 255 ? 255 : 0.01 + col_b * light_hit.opacity);					
-			// 	else
-			// 		col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
-			// 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
-			// }
-
-
+			if (light_hit.dist < light_ray.dist && light_hit.dist > EPSILONF && light_hit.dist < MAX_DIST && hit.mem_index != light_hit.mem_index)
+			{
+				light_hit.opacity = 1 - light_hit.opacity;
+				col_r = (col_r - base_r) * light_hit.opacity + base_r;
+				col_g = (col_g - base_g) * light_hit.opacity + base_g;
+				col_b = (col_b - base_b) * light_hit.opacity + base_b;
+				(col_r > 255 ? col_r = 255 : 0);
+				(col_g > 255 ? col_g = 255 : 0);
+				(col_b > 255 ? col_b = 255 : 0);
+				res_color = ((col_r << 16) + (col_g << 8) + col_b);
+			}
 			if (scene->flag & OPTION_CARTOON_FOUR)
 			 	res_color = cartoonize_four(col_r, col_g, col_b);
 			else if (scene->flag & OPTION_CARTOON_TWO)
