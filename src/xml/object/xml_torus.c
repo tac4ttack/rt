@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 18:32:58 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/15 14:31:26 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	xml_torus_data(t_env *e, char **att, t_node *torus_node, int *i)
 	else
 		xml_data_lil_radius(e, att, i, torus_node);
 	if (ft_strncmp(att[*i], "big_radius=\"", 12) != 0)
-		s_error("\x1b[1;31mTorus error, BIGRADIUS expected in #3\x1b[0m", e);
+		s_error("\x1b[1;31mTorus error, BIGRADIUS expected in #4\x1b[0m", e);
 	else
 		xml_data_big_radius(e, att, i, torus_node);
 	xml_torus_data_n(e, att, torus_node, i);
