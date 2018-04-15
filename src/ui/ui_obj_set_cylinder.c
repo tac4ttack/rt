@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:10:55 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/15 15:24:48 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/15 18:45:28 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	show_only_cylinder(t_env *e)
 	gtk_widget_show(e->ui->obj_list_limit);
 	gtk_widget_show(e->ui->obj_list_sinwave);
 	gtk_widget_show(e->ui->obj_list_texture_diff);
-	gtk_widget_hide(e->ui->obj_list_cut); // WIP
+	gtk_widget_show(e->ui->obj_list_cut); // WIP
 	gtk_widget_hide(e->ui->obj_list_kube);
 }
 
