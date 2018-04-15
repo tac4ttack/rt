@@ -1365,11 +1365,69 @@ __device__ t_ret	sphere_cut(t_sphere *sphere, float3 ray, float3 origin, float r
 	pt_i2.y = origin.y + ray.y * res2;
 	pt_i2.z = origin.z + ray.z * res2;
 	
-	if (pt_i1.x <= 	bord1.x - sphere->cut_max.x && pt_i1.y <= bord1.y - sphere->cut_max.y && pt_i1.z <= bord1.z - sphere->cut_max.z && pt_i1.x >= bord2.x + sphere->cut_min.x && pt_i1.y >= bord2.y + sphere->cut_min.y && pt_i1.z >= bord2.z + sphere->cut_min.z)
+	if (pt_i1.x <= bord1.x - sphere->cut_max.x && \
+		pt_i1.y <= bord1.y - sphere->cut_max.y && \
+		pt_i1.z <= bord1.z - sphere->cut_max.z && \
+		pt_i1.x >= bord2.x + sphere->cut_min.x && \
+		pt_i1.y >= bord2.y + sphere->cut_min.y && \
+		pt_i1.z >= bord2.z + sphere->cut_min.z)
 	{
 		ret.dist = res1;
 	}
-	else if (pt_i2.x <= bord1.x - sphere->cut_max.x && pt_i2.y <= bord1.y - sphere->cut_max.y && pt_i2.z <= bord1.z - sphere->cut_max.z && pt_i2.x >= bord2.x + sphere->cut_min.x && pt_i2.y >= bord2.y + sphere->cut_min.y && pt_i2.z >= bord2.z + sphere->cut_min.z) 
+	else if (pt_i2.x <= bord1.x - sphere->cut_max.x && \
+			 pt_i2.y <= bord1.y - sphere->cut_max.y && \
+			 pt_i2.z <= bord1.z - sphere->cut_max.z && \
+			 pt_i2.x >= bord2.x + sphere->cut_min.x && \
+			 pt_i2.y >= bord2.y + sphere->cut_min.y && \
+			 pt_i2.z >= bord2.z + sphere->cut_min.z) 
+	{
+		ret.dist = res2;
+	}
+	return (ret);
+}
+
+__device__ t_ret	cylinder_cut(t_cylinder *cyl, float3 ray, float3 origin, float res1, float res2)
+{
+	t_ret		ret;
+	float3		pt_i1 = make_float3(0.f);
+	float3		pt_i2 = make_float3(0.f);
+	float3		bord1 = make_float3(0.f);
+	float3		bord2 = make_float3(0.f);
+	ret.dist = 0;
+	ret.wall = 0;
+	ret.normal = make_float3(0.f);
+
+	pt_i1.x = origin.x + ray.x * res1;
+	pt_i1.y = origin.y + ray.y * res1;
+	pt_i1.z = origin.z + ray.z * res1;
+
+	pt_i2.x = origin.x + ray.x * res2;
+	pt_i2.y = origin.y + ray.y * res2;
+	pt_i2.z = origin.z + ray.z * res2;
+
+	// ne fonctionne que pour cylindre aligné en Z
+	bord1.x = cyl->pos.x + cyl->radius;    
+	bord2.x = cyl->pos.x - cyl->radius;	  	
+	bord1.y = cyl->pos.y + cyl->radius;		
+	bord2.y = cyl->pos.y - cyl->radius;		
+	bord1.z = cyl->pos.z + MAX_DIST;
+	bord2.z = cyl->pos.z - MAX_DIST;
+	
+	if (pt_i1.x <= bord1.x - cyl->cut_max.x && \
+		pt_i1.y <= bord1.y - cyl->cut_max.y && \
+		pt_i1.z <= bord1.z - cyl->cut_max.z && \
+		pt_i1.x >= bord2.x + cyl->cut_min.x && \
+		pt_i1.y >= bord2.y + cyl->cut_min.y && \
+		pt_i1.z >= bord2.z + cyl->cut_min.z)
+	{
+		ret.dist = res1;
+	}
+	else if (pt_i2.x <= bord1.x - cyl->cut_max.x && \
+			 pt_i2.y <= bord1.y - cyl->cut_max.y && \
+			 pt_i2.z <= bord1.z - cyl->cut_max.z && \
+			 pt_i2.x >= bord2.x + cyl->cut_min.x && \
+			 pt_i2.y >= bord2.y + cyl->cut_min.y && \
+			 pt_i2.z >= bord2.z + cyl->cut_min.z) 
 	{
 		ret.dist = res2;
 	}
@@ -1513,8 +1571,8 @@ __device__ t_ret	inter_cylinder(t_cylinder *cylinder, float3 ray, float3 origin)
 		else
 			ret.dist = res2;
 	}
-	// if (cylinder->flags & OBJ_FLAG_CUT)
-	// 	return(sphere_cut(cylinder, ray, origin, res1, res2));
+	 if (cylinder->flags & OBJ_FLAG_CUT)
+	 	return(cylinder_cut(cylinder, ray, origin, res1, res2));
 	return (ret);
 }
 
