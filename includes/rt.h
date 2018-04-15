@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 22:17:32 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/15 15:31:02 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -552,6 +552,7 @@ void					gtk_render_events(t_env *e);
 void					ui_add_cone(t_env *e);
 void					ui_add_cylinder(t_env *e);
 void					ui_add_ellipsoid(t_env *e);
+void					ui_add_kube(t_env *e);
 void					ui_add_plane(t_env *e);
 void					ui_add_sphere(t_env *e);
 void					ui_add_torus(t_env *e);
@@ -565,6 +566,7 @@ void					ui_obj_jump_list(t_env *e);
 void					ui_obj_set_cone(t_env *e, t_cone *obj);
 void					ui_obj_set_cylinder(t_env *e, t_cylinder *obj);
 void					ui_obj_set_ellipsoid(t_env *e, t_ellipsoid *obj);
+void					ui_obj_set_kube(t_env *e, t_kube *obj);
 void					ui_obj_set_plane(t_env *e, t_plane *obj);
 void					ui_obj_set_sphere(t_env *e, t_sphere *obj);
 void					ui_obj_set_torus(t_env *e, t_torus *obj);

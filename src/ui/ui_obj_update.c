@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:12:43 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/10 20:00:21 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/15 15:22:39 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static void		ui_obj_get_id(t_env *e, t_object *obj)
 		obj_label = ft_strjoin_frs1(obj_label, " ELLIPSOID");
 	else if (obj->type == OBJ_TORUS)
 		obj_label = ft_strjoin_frs1(obj_label, " TORUS");
+	else if (obj->type == OBJ_KUBE)
+		obj_label = ft_strjoin_frs1(obj_label, " KUBE");		
 	gtk_label_set_text(GTK_LABEL(e->ui->obj_list_id_label), obj_label);
 	free(obj_label);
 }
@@ -101,6 +103,8 @@ static	void	ui_obj_set_custom(t_env *e, t_object *obj)
 		ui_obj_set_ellipsoid(e, (t_ellipsoid*)obj);
 	else if (obj->type == OBJ_TORUS)
 		ui_obj_set_torus(e, (t_torus*)obj);
+	else if (obj->type == OBJ_KUBE)
+		ui_obj_set_kube(e, (t_kube*)obj);
 }
 
 void			ui_obj_update(t_env *e, t_object *obj)

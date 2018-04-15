@@ -46,6 +46,7 @@ SRC_NAME =	 			init.c \
 						ui/add/ui_add_cone.c \
 						ui/add/ui_add_cylinder.c \
 						ui/add/ui_add_ellipsoid.c \
+						ui/add/ui_add_kube.c \
 						ui/add/ui_add_plane.c \
 						ui/add/ui_add_sphere.c \
 						ui/add/ui_add_torus.c \
@@ -64,6 +65,7 @@ SRC_NAME =	 			init.c \
 						ui/callback/cb_ellipsoid_axis.c \
 						ui/callback/cb_ellipsoid_radius.c \
 						ui/callback/cb_export_dialog.c \
+						ui/callback/cb_kube_option.c \
 						ui/callback/cb_light_manager.c \
 						ui/callback/cb_light_nav.c \
 						ui/callback/cb_light_params.c \
@@ -138,6 +140,7 @@ SRC_NAME =	 			init.c \
 						ui/ui_obj_set_cone.c \
 						ui/ui_obj_set_cylinder.c \
 						ui/ui_obj_set_ellipsoid.c \
+						ui/ui_obj_set_kube.c \
 						ui/ui_obj_set_plane.c \
 						ui/ui_obj_set_sphere.c \
 						ui/ui_obj_set_torus.c \

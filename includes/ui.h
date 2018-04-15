@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/12 12:03:54 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/15 14:49:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,8 @@ typedef	struct			s_ui
 	GtkWidget			*obj_cut_y_max_spin;
 	GtkWidget			*obj_cut_z_min_spin;
 	GtkWidget			*obj_cut_z_max_spin;
+	GtkWidget			*obj_list_kube;
+	GtkWidget			*obj_kube_option_spin;
 	
 }						t_ui;
 
@@ -233,6 +235,8 @@ gboolean				cb_ellipsoid_axis_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_ellipsoid_radius(GtkSpinButton *spin, gpointer data);
 
 void					cb_export_btn(GtkButton *btn, gpointer data);
+
+gboolean				cb_kube_option(GtkSpinButton *spin, gpointer data);
 
 gboolean				cb_light_brightness(GtkSpinButton *spin, gpointer data);
 void					cb_light_color(GtkColorButton *button, gpointer data);
