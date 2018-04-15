@@ -6,7 +6,7 @@
 #include "ft_maths.hu"
 
 
-static void HandleError(cudaError_t err, char *file,	int line)
+static void HandleError(cudaError_t err, const char *file,	int line)
 {
 	if (err != cudaSuccess)
 	{
@@ -1790,7 +1790,9 @@ __device__ float3		get_hit_normal(t_scene *scene, float3 ray, t_hit hit)
 		// no sinwave with torus
 		else if (object->type == OBJ_THOR)
 		{
-			save.y = res.y + object->waves_p1.x * sinf((hit.pos.x + scene->u_time));
+			save.x = res.x + object->waves_p1.x * 100 * sinf(res.y * object->waves_p2.x + scene->u_time);
+			save.z = res.z + object->waves_p1.y * 100 * sinf(res.x * object->waves_p2.y + scene->u_time);
+			save.y = res.y + object->waves_p1.z * 100 * sinf(res.x * object->waves_p2.z + scene->u_time);
 		}
 		else
 		{
