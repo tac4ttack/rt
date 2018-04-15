@@ -6,17 +6,16 @@
 #include "ft_maths.hu"
 
 
-static void HandleError( cudaError_t err, const char *file,	int line )
+static void HandleError(cudaError_t err, char *file,	int line)
 {
 	if (err != cudaSuccess)
 	{
-		printf( "%s in %s at line %d\n", cudaGetErrorString( err ),	file, line );
+		printf("%s in %s at line %d\n", cudaGetErrorString(err), file, line);
 		cudaDeviceReset();
 		// exit( EXIT_FAILURE );
 	}
 }
-
-#define HANDLE_ERROR( err ) (HandleError( err, __FILE__, __LINE__ ))
+#define HANDLE_ERROR(err) (HandleError(err, __FILE__, __LINE__))
 
 
 #define BACKCOLOR 0x00999999
@@ -481,7 +480,7 @@ typedef struct			s_hit
 	int					mem_index;
 	float				opacity;
 	unsigned int		color;
-	int					wall; // WIP decoupe Noe
+	int					wall;
 	int					lock;
 }						t_hit;
 
@@ -509,11 +508,8 @@ typedef struct			s_scene
 	unsigned int		mem_size_obj;
 	unsigned int		mem_size_lights;
 	t_cam				*cameras;
-//	void				*dummy_pedro;
-	void				*mem_lights; //repassé en void à cause de l'erreur compilation, sinon pour oclgrind foutre char
-//	void				*dummy_gomez;
-	void				*mem_obj; //repassé en void à cause de l'erreur compilation, sinon pour oclgrind foutre char
-//	void				*dummy_ramon;
+	void				*mem_lights;
+	void				*mem_obj;
 	unsigned int		*texture_earth;
 	unsigned int		*texture_moon;
 	unsigned int		*texture_earth_cloud;
@@ -537,7 +533,7 @@ typedef struct			s_tex
 
 
 // OCL TO CUDA -> need tests
-__device__ unsigned int	skybox(const float3 dir, unsigned int *texture, int t_width, int t_height)
+__device__ unsigned int	skybox(float3 dir, unsigned int *texture, int t_width, int t_height)
 {
 	unsigned int	color = 0;
 	int2			uv = make_int2(0);
@@ -562,7 +558,7 @@ inline __device__ float radians(double degree) {
 }
 
 // OCL TO CUDA -> need tests
-__device__ float3	vector_get_rotate(const float3 *me, const float3 *rot)
+__device__ float3	vector_get_rotate(float3 *me, float3 *rot)
 {
 	float3		n = make_float3(0.f);
 	float		tmp = 0.f;
@@ -590,7 +586,7 @@ __device__ float3	vector_get_rotate(const float3 *me, const float3 *rot)
 }
 
 // OCL TO CUDA -> need tests
-__device__ float3	vector_get_inverse(const float3 *me, const float3 *rot)
+__device__ float3	vector_get_inverse(float3 *me, float3 *rot)
 {
 	float3		n = make_float3(0.f);
 	float		tmp = 0.f;
@@ -635,7 +631,7 @@ __device__ t_hit	hit_init(void)
 }
 
 // OCL TO CUDA -> need tests
-__device__ float3	rotat_zyx(const float3 vect, const float pitch, const float yaw, const float roll)
+__device__ float3	rotat_zyx(float3 vect, float pitch, float yaw, float roll)
 {
 	float3		res = make_float3(0.f);
 	float		rad_pitch = radians(pitch);
@@ -649,7 +645,7 @@ __device__ float3	rotat_zyx(const float3 vect, const float pitch, const float ya
 }
 
 // OCL TO CUDA -> need tests
-__device__ float3	rotat_xyz(const float3 vect, const float pitch, const float yaw, const float roll)
+__device__ float3	rotat_xyz(float3 vect, float pitch, float yaw, float roll)
 {
 	float3		res = make_float3(0.f);
 	float		rad_pitch = radians(pitch);
@@ -663,7 +659,7 @@ __device__ float3	rotat_xyz(const float3 vect, const float pitch, const float ya
 }
 
 // OCL TO CUDA -> need tests
-__device__ float3	rotat_x(const float3 vect, const float angle)
+__device__ float3	rotat_x(float3 vect, float angle)
 {
 	float3 		res = make_float3(0.f);
 	float		teta = radians(angle);
@@ -675,7 +671,7 @@ __device__ float3	rotat_x(const float3 vect, const float angle)
 }
 
 // OCL TO CUDA -> need tests
-__device__ float3	rotat_y(const float3 vect, const float angle)
+__device__ float3	rotat_y(float3 vect, float angle)
 {
 	float3 		res = make_float3(0.f);
 	float		teta = radians(angle);
@@ -687,7 +683,7 @@ __device__ float3	rotat_y(const float3 vect, const float angle)
 }
 
 // OCL TO CUDA -> need tests
-__device__ float3	rotat_z(const float3 vect, const float angle)
+__device__ float3	rotat_z(float3 vect, float angle)
 {
 	float3 		res = make_float3(0.f);
 	float		teta = radians(angle);
@@ -701,7 +697,7 @@ __device__ float3	rotat_z(const float3 vect, const float angle)
 
 
 // OCL TO CUDA -> need tests (is unused in kernel)
-__device__ unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
+__device__ unsigned int	blend_multiply(unsigned int c1, unsigned int c2)
 {
 	unsigned int r, g, b;
 	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
@@ -719,7 +715,7 @@ __device__ unsigned int	blend_multiply(const unsigned int c1, const unsigned int
 }
 
 // OCL TO CUDA -> need tests in use
-__device__ unsigned int	blend_med(const unsigned int c1, const unsigned int c2)
+__device__ unsigned int	blend_med(unsigned int c1, unsigned int c2)
 {
 	unsigned int r, g, b;
 	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
@@ -736,7 +732,7 @@ __device__ unsigned int	blend_med(const unsigned int c1, const unsigned int c2)
 }
 
 // OCL TO CUDA -> OK
-__device__ unsigned int	blend_add(const unsigned int c1, const unsigned int c2)
+__device__ unsigned int	blend_add(unsigned int c1, unsigned int c2)
 {
 	unsigned int r, g, b;
 	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
@@ -753,7 +749,7 @@ __device__ unsigned int	blend_add(const unsigned int c1, const unsigned int c2)
 }
 
 // OCL TO CUDA -> OK
-__device__ unsigned int	blend_factor(const unsigned int c1, const float factor)
+__device__ unsigned int	blend_factor(unsigned int c1, float factor)
 {
 	unsigned int r, g, b;
 	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
@@ -767,7 +763,7 @@ __device__ unsigned int	blend_factor(const unsigned int c1, const float factor)
 }
 
 // OCL TO CUDA -> OK
-__device__ unsigned int	get_ambient(const t_scene *scene, const unsigned int obj_color)
+__device__ unsigned int	get_ambient(t_scene *scene, unsigned int obj_color)
 {
 	unsigned int r, g, b;
 
@@ -781,7 +777,7 @@ __device__ unsigned int	get_ambient(const t_scene *scene, const unsigned int obj
 }
 
 // OCL TO CUDA -> OK
-__device__ unsigned int	sepiarize(const unsigned int color)
+__device__ unsigned int	sepiarize(unsigned int color)
 {
 	uint3	base, cooking_pot = make_uint3(0, 0, 0);
 	base.x = (color & 0x00FF0000) >> 16;
@@ -797,7 +793,7 @@ __device__ unsigned int	sepiarize(const unsigned int color)
 }
 
 // OCL TO CUDA -> OK
-__device__ unsigned int	invert(const unsigned int color)
+__device__ unsigned int	invert(unsigned int color)
 {
 	uint3	base = make_uint3(0, 0, 0);
 	base.x = (color & 0x00FF0000) >> 16;
@@ -810,7 +806,7 @@ __device__ unsigned int	invert(const unsigned int color)
 }
 
 // OCL TO CUDA -> OK
-__device__ unsigned int	desaturate(const unsigned int color)
+__device__ unsigned int	desaturate(unsigned int color)
 {
 	uint3	rgb = make_uint3(0, 0, 0);
 	rgb.x = (color & 0x00FF0000) >> 16;
@@ -887,7 +883,7 @@ __device__ unsigned int cartoonize_two(unsigned int col_r, unsigned int col_g, u
 }
 
 // OCL TO CUDA -> need tests
-__device__ float	inter_plan_private(const t_plane *plane, const float3 ray, const float3 origin)
+__device__ float	inter_plan_private(t_plane *plane, float3 ray, float3 origin)
 {
 	float		t = 0.f;
 
@@ -902,8 +898,8 @@ __device__ float	inter_plan_private(const t_plane *plane, const float3 ray, cons
 
 // OCL TO CUDA -> need tests
 __device__ t_ret	object_limited(t_object *object,
-							const float res1, const float res2,
-							const float3 ray, const float3 origin)
+							float res1, float res2,
+							float3 ray, float3 origin)
 {
 	t_ret		ret;
 	t_plane		t;
@@ -970,7 +966,7 @@ __device__ t_ret	object_limited(t_object *object,
 }
 
 // OCL TO CUDA -> need tests
-__device__ unsigned int	plane_checkerboard(const float3 normale, const float3 pos, const unsigned int color, const float3 check_size)
+__device__ unsigned int	plane_checkerboard(float3 normale, float3 pos, unsigned int color, float3 check_size)
 {
 	float3			u_axis = make_float3(0.f);
 	float3			v_axis = make_float3(0.f);
@@ -1004,34 +1000,19 @@ __device__ unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis
 	v_axis = cross(u_axis, normale);
 	uv.x = (int)(floor(dot(pos, u_axis) * ratio.x + offset.x));
 	uv.y = (int)(floor(dot(pos, v_axis) * ratio.y + offset.y));
-	// if (uv.x < 0)
-	// {
-	// 	uv.x %= width;
-	// 	uv.x = (uv.x - width) * -1;
-	// }
-	// uv.x %= width;
-	// if (uv.y < 0)
-	// 	uv.y %= height;
-	// else
-	// {
-	// 	uv.y %= height;
-	// 	uv.y = (uv.y - height) * -1;
-	// }
 	uv.x %= width - 1;
 	uv.y %= height - 1;
 	if (uv.x < 0)
 		uv.x = (uv.x + width - 1);
 	if (uv.y < 0)
 		uv.y = (uv.y + height - 1);
-	// else
-	// 	uv.y = -uv.y;
-	//if (uv.x < 0 || uv.y < 0)
-	//printf("agrougrou");
+	uv.x %= width - 1;
+	uv.y %= height - 1;
 	return (texture[uv.y + uv.x * width]);
 }
 
 // OCL TO CUDA -> OK
-__device__ bool		solve_quadratic(const float a, const float b, const float c, float *inter0, float *inter1)
+__device__ bool		solve_quadratic(float a, float b, float c, float *inter0, float *inter1)
 {
 	float 		discr;
 	float 		tmp;
@@ -1068,7 +1049,7 @@ __device__ bool		solve_quadratic(const float a, const float b, const float c, fl
 }
 
 // OCL TO CUDA -> need tests in use 
-__device__ double3	thor_get_rotate(const double3 *that, const float3 *rot)
+__device__ double3	thor_get_rotate(double3 *that, float3 *rot)
 {
 	double3		n = make_double3(0.f);
 	float		tmp = 0.f;
@@ -1214,7 +1195,7 @@ __device__ double	ft_solve_4(double t[5])
 
 
 // OCL TO CUDA -> need tests in use 
-__device__ t_ret		inter_thor(const t_thor *thor, const float3 ray, const float3 origin)
+__device__ t_ret		inter_thor(t_thor *thor, float3 ray, float3 origin)
 {
 	t_ret			ret;
 	ret.dist = 0.f;
@@ -1261,7 +1242,7 @@ __device__ t_ret		inter_thor(const t_thor *thor, const float3 ray, const float3 
 }
 
 // OCL TO CUDA -> need tests in use 
-__device__ float3 get_thor_normal(const t_thor *thor, const float3 hitpos)
+__device__ float3 get_thor_normal(t_thor *thor, float3 hitpos)
 {
 	float3	res = make_float3(0.f);
 	float	c = 0.f;
@@ -1282,7 +1263,7 @@ __device__ float3 get_thor_normal(const t_thor *thor, const float3 hitpos)
 	return (res);
 }
 
-__device__ t_ret		inter_kube(const t_kube *kube, const float3 ray, const float3 origin)
+__device__ t_ret		inter_kube(t_kube *kube, float3 ray, float3 origin)
 {
 	t_ret		ret;
 	ret.dist = 0;
@@ -1313,7 +1294,7 @@ __device__ t_ret		inter_kube(const t_kube *kube, const float3 ray, const float3 
 }
 
 // KUBE
-__device__ float3 get_kube_normal(const t_kube *kube, const float3 hitpos)
+__device__ float3 get_kube_normal(t_kube *kube, float3 hitpos)
 {
 	float3 pos = hitpos - kube->pos;
 	pos = vector_get_rotate(&pos, &kube->dir);
@@ -1358,7 +1339,7 @@ __device__ unsigned int		sphere_texture(float3 pos, unsigned int *texture, int t
 }
 
 // OCL TO CUDA -> need tests
-__device__ t_ret	sphere_cut(t_sphere *sphere, const float3 ray, const float3 origin, float res1, float res2)
+__device__ t_ret	sphere_cut(t_sphere *sphere, float3 ray, float3 origin, float res1, float res2)
 {
 	t_ret		ret;
 	float3		pt_i1 = make_float3(0.f);
@@ -1396,7 +1377,7 @@ __device__ t_ret	sphere_cut(t_sphere *sphere, const float3 ray, const float3 ori
 }
 
 // OCL TO CUDA -> OK
-__device__ unsigned int		sphere_checkerboard(const float3 dir, const unsigned int color, const float3 check_size)
+__device__ unsigned int		sphere_checkerboard(float3 dir, unsigned int color, float3 check_size)
 {
 	int2	uv = make_int2(0);
 
@@ -1415,7 +1396,7 @@ __device__ unsigned int		sphere_checkerboard(const float3 dir, const unsigned in
 }
 
 // OCL TO CUDA -> OK
-__device__ float3	get_sphere_abc(const float radius, const float3 ray, const float3 origin)
+__device__ float3	get_sphere_abc(float radius, float3 ray, float3 origin)
 {
 	float3		abc = make_float3(0.f);
 
@@ -1425,7 +1406,7 @@ __device__ float3	get_sphere_abc(const float radius, const float3 ray, const flo
 	return (abc);
 }
 
-__device__ t_ret	mini_inter_sphere(t_sphere *sphere, const float3 ray, const float3 origin)
+__device__ t_ret	mini_inter_sphere(t_sphere *sphere, float3 ray, float3 origin)
 {
 	float3		abc = make_float3(0.f);
 	float		res1 = 0.f;
@@ -1452,7 +1433,7 @@ __device__ t_ret	mini_inter_sphere(t_sphere *sphere, const float3 ray, const flo
 
 
 // OCL TO CUDA -> decoupe noe a test
-__device__ t_ret	inter_sphere(t_sphere *sphere, const float3 ray, const float3 origin)
+__device__ t_ret	inter_sphere(t_sphere *sphere, float3 ray, float3 origin)
 {
 	float3		abc = make_float3(0.f);
 	float		res1 = 0.f;
@@ -1482,7 +1463,7 @@ __device__ t_ret	inter_sphere(t_sphere *sphere, const float3 ray, const float3 o
 }
 
 // OCL TO CUDA -> OK
-__device__ float3	get_cylinder_normal(const t_cylinder *cylinder, t_hit hit)
+__device__ float3	get_cylinder_normal(t_cylinder *cylinder, t_hit hit)
 {
 	float3		res = make_float3(0.f);
 	float3		v = make_float3(0.f);;
@@ -1497,7 +1478,7 @@ __device__ float3	get_cylinder_normal(const t_cylinder *cylinder, t_hit hit)
 }
 
 // OCL TO CUDA -> OK
-__device__ float3	get_cylinder_abc(const float radius, const float3 dir, const float3 ray, const float3 origin)
+__device__ float3	get_cylinder_abc(float radius, float3 dir, float3 ray, float3 origin)
 {
 	float3		abc = make_float3(0.f);
 
@@ -1508,7 +1489,7 @@ __device__ float3	get_cylinder_abc(const float radius, const float3 dir, const f
 }
 
 // OCL TO CUDA -> need test avec la decoupe de Noe
-__device__ t_ret	inter_cylinder(const t_cylinder *cylinder, const float3 ray, const float3 origin)
+__device__ t_ret	inter_cylinder(t_cylinder *cylinder, float3 ray, float3 origin)
 {
 	float3		abc = make_float3(0.f);
 	float3		pos = make_float3(0.f);
@@ -1538,7 +1519,7 @@ __device__ t_ret	inter_cylinder(const t_cylinder *cylinder, const float3 ray, co
 }
 
 // OCL TO CUDA -> need test avec la decoupe de Noe
-__device__ t_ret	inter_plan(const t_plane *plane, const float3 ray, const float3 origin)
+__device__ t_ret	inter_plan(t_plane *plane, float3 ray, float3 origin)
 {
 	float		t = 0.f;
 	t_ret		ret;
@@ -1560,14 +1541,14 @@ __device__ t_ret	inter_plan(const t_plane *plane, const float3 ray, const float3
 		if (sqrtf(d2) > plane->radius)
 			return (ret);
 	}
-	//if (plane->flags & OBJ_FLAG_PLANE_LIMIT)
-	//	return (object_limited((t_object *)plane, t, t, ray, origin));
+	if (plane->flags & OBJ_FLAG_PLANE_LIMIT)
+		return (object_limited((t_object *)plane, t, t, ray, origin));
 	ret.dist = t;
 	return (ret);
 }
 
 // OCL TO CUDA -> need test
-__device__ float3		get_ellipsoid_normal(const t_ellipsoid *ellipsoid, const t_hit *hit)
+__device__ float3		get_ellipsoid_normal(t_ellipsoid *ellipsoid, t_hit *hit)
 {
 	float3 pos = hit->pos - ellipsoid->pos;
 	pos = vector_get_rotate(&pos, &ellipsoid->dir);
@@ -1582,7 +1563,7 @@ __device__ float3		get_ellipsoid_normal(const t_ellipsoid *ellipsoid, const t_hi
 }
 
 // OCL TO CUDA -> need test avec la decoupe de Noe
-__device__ t_ret	inter_ellipsoid(const t_ellipsoid *ellipsoid, float3 ray, float3 origin)
+__device__ t_ret	inter_ellipsoid(t_ellipsoid *ellipsoid, float3 ray, float3 origin)
 {
 	float3		abc = make_float3(0.f);
 	float		res1, res2 = 0.f;
@@ -1612,8 +1593,8 @@ __device__ t_ret	inter_ellipsoid(const t_ellipsoid *ellipsoid, float3 ray, float
 
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
-	//if (ellipsoid->flags & OBJ_FLAG_PLANE_LIMIT)
-	//	return (object_limited((t_object *)ellipsoid, res1, res2, save_ray, origin));
+	if (ellipsoid->flags & OBJ_FLAG_PLANE_LIMIT)
+		return (object_limited((t_object *)ellipsoid, res1, res2, save_ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		ret.dist = res1;
 	else
@@ -1622,25 +1603,23 @@ __device__ t_ret	inter_ellipsoid(const t_ellipsoid *ellipsoid, float3 ray, float
 }
 
 // OCL TO CUDA -> need test
-__device__ float3	get_cone_normal(const t_cone *cone, const t_hit hit)
+__device__ float3	get_cone_normal(t_cone *cone, t_hit hit)
 {
 	float3		res = make_float3(0.f);
 	float3		v = make_float3(0.f);
 	float3		project = make_float3(0.f);
 	float		doty = 0.f;
-	// float		m = 0.f; // UNUSED
 
 	v = hit.pos - cone->pos;
 	doty = dot(v, cone->dir);
 	project = doty * cone->dir;
-	// m = length(project);
 	res = v - project;
 
 	return (normalize(res));
 }
 
 // OCL TO CUDA -> need test
-__device__ float3	get_cone_abc(const t_cone *cone, const float3 ray, const float3 origin)
+__device__ float3	get_cone_abc(t_cone *cone, float3 ray, float3 origin)
 {
 	float3		abc = make_float3(0.f);
 	float		k = radians(cone->angle);
@@ -1656,7 +1635,7 @@ __device__ float3	get_cone_abc(const t_cone *cone, const float3 ray, const float
 }
 
 // OCL TO CUDA -> need test avec decoupe Noe
-__device__ t_ret	inter_cone(const t_cone *cone, const float3 ray, const float3 origin)
+__device__ t_ret	inter_cone(t_cone *cone, float3 ray, float3 origin)
 {
 	float3		abc = make_float3(0.f);
 	float		res1 = 0.f;
@@ -1671,8 +1650,6 @@ __device__ t_ret	inter_cone(const t_cone *cone, const float3 ray, const float3 o
 	abc = get_cone_abc(cone, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
-	//if (cone->flags & OBJ_FLAG_PLANE_LIMIT)
-	//	return (object_limited_cone((t_object *)cone, res1, res2, ray, origin));
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		ret.dist = res1;
 	else
@@ -1687,12 +1664,10 @@ __device__ unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, uns
 	float3			v_axis = make_float3(0.f);
 	float			npos = 0.f;
 	float			vpos = 0.f;
-	// float			radius = 0.f; // UNUSED
 	int2			uv = make_int2(0);
 
 	v_axis = cross(u_axis, dir);
 	npos = dot(pos, dir);
-	// radius = length(pos - (npos * dir));
 	while (npos > 10)
 		npos -= 10;
 	while (npos < 0)
@@ -1717,10 +1692,9 @@ __device__ unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, uns
 
 
 // OCL TO CUDA -> need test
-__device__ t_hit		ray_hit(const t_scene *scene, const float3 origin, const float3 ray, float lightdist)
+__device__ t_hit		ray_hit(t_scene *scene, float3 origin, float3 ray, float lightdist)
 {
 	t_hit						hit;
-	// float						dist = 0.f; // UNUSED
 	t_object 					*obj;
 	unsigned int				mem_index_obj = 0;
 	t_ret						ret;
@@ -1766,7 +1740,7 @@ __device__ t_hit		ray_hit(const t_scene *scene, const float3 origin, const float
 }
 
 // OCL TO CUDA -> need test
-__device__ float3		get_hit_normal(const t_scene *scene, float3 ray, t_hit hit)
+__device__ float3		get_hit_normal(t_scene *scene, float3 ray, t_hit hit)
 {
 	float3						res, save = make_float3(0.f);
 	t_object 					*object;
@@ -1813,14 +1787,11 @@ __device__ float3		get_hit_normal(const t_scene *scene, float3 ray, t_hit hit)
 	{
 		if (object->type == OBJ_PLANE)
 			save.y = res.y + object->waves_p1.x * sinf((hit.pos.x + scene->u_time));
-
 		// no sinwave with torus
-		// else if (object->type == OBJ_THOR)
-		// {
-			// printf("toto\n");
-		// 	save.y = res.y + object->waves_p1.x * sinf((hit.pos.x + scene->u_time));
-		// }
-
+		else if (object->type == OBJ_THOR)
+		{
+			save.y = res.y + object->waves_p1.x * sinf((hit.pos.x + scene->u_time));
+		}
 		else
 		{
 			save.x = res.x + object->waves_p1.x * sinf(res.y * object->waves_p2.x + scene->u_time);
@@ -1866,7 +1837,7 @@ __device__ unsigned int		cylinder_texture(float3 pos, t_cylinder *cyl, unsigned 
 }
 
 // OCL TO CUDA -> need test
-__device__ unsigned int			phong(const t_scene *scene, const t_hit hit, const float3 ray)
+__device__ unsigned int			phong(t_scene *scene, t_hit hit, float3 ray)
 {
 	t_object 			*obj;
 	t_light 			*light;
@@ -2027,7 +1998,7 @@ __device__ float		reflect_ratio(float n1, float n2, float cos1, float sint)
 }
 
 // OCL TO CUDA -> need test
-__device__ float3		refract_ray(const t_scene *scene, const float3 ray, float3 normale, float tra) // pour le plan, indice de refraction (pour tout objet non plein)
+__device__ float3		refract_ray(t_scene *scene, float3 ray, float3 normale, float tra)
 {
 	float3			refract = make_float3(0.f);
 	float			c1 = 0.f;
@@ -2050,7 +2021,7 @@ __device__ float3		refract_ray(const t_scene *scene, const float3 ray, float3 no
 	return (refract);
 }
 
-__device__ float3		bounce_ray(const t_scene *scene, const float3 ray, t_tor tor)
+__device__ float3		bounce_ray(t_scene *scene, float3 ray, t_tor tor)
 {
 	float3			reflex;
 
@@ -2088,8 +2059,6 @@ __device__ unsigned int	tor_final_color(t_tor *tor)
 				tor[i].color = blend_add(blend_factor(tor[i].color, tor[i].opacity), blend_factor(color, 1 - tor[i].opacity));
 			else if (tor[i].coef_ref != 0)
 				tor[i].color = blend_add(blend_factor(tor[i].color, 1 - tor[i].coef_ref), blend_factor(color, tor[i].coef_ref));
-			// else
-			// 	tor[i].color = blend_add(color, tor[i].color);
 		}
 		i = i - 1;
 	}
@@ -2120,14 +2089,13 @@ __device__ t_tor		tor_push(float3 ray, float3 normale, float3 pos, float coef_re
 }
 
 // OCL TO CUDA -> need test
-__device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit old_hit, int depth, unsigned int color)
+__device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int depth, unsigned int color)
 {
 	t_hit			new_hit;
 	unsigned int	ncolor = 0;
 	float3			new_ray = make_float3(0.f);
 	float3			dummy = make_float3(0.f);
 	float			fr = 0.f;
-	// float			eta = 0.f;		// UNUSED
 	float			cos1 = 0.f;
 	float			sint = 0.f;
 	t_tor			tor[63];
@@ -2169,10 +2137,7 @@ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit old_hit,
 		{
 			while (rhododendron < 4)
 			{
-				// eta = 1 / tor[i].coef_tra;
 				cos1 = dot(tor[i].normale, tor[i].prim);
-				// if (cos1 >= 0)
-				// 	eta = tor[i].coef_tra;
 				if (cos1 >= 0)
 					sint = tor[i].coef_tra * sqrt(1 - cos1 * cos1);
 				else
@@ -2181,10 +2146,6 @@ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit old_hit,
 					fr = 1;
 				else
 					fr = reflect_ratio(1, tor[i].coef_tra, cos1, sint);
-				// if (fr > 0.9f)
-				// 	fr = 1;
-				// else if (fr < 0.1f)
-				// 	fr = 0;
 				if (fr < 1)
 				{
 					if (tor[i].type != OBJ_PLANE)
@@ -2303,7 +2264,7 @@ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit old_hit,
 }
 
 // OCL TO CUDA -> need test
-__device__ unsigned int	get_pixel_color(const t_scene *scene, float3 ray, int *target, bool isHim, int index)
+__device__ unsigned int	get_pixel_color(t_scene *scene, float3 ray, int *target, bool isHim, int index)
 {
 	t_hit			hit;
 	int				depth = 0;
@@ -2347,7 +2308,6 @@ __device__ unsigned int	get_pixel_color(const t_scene *scene, float3 ray, int *t
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
 			return (fresnel(scene, ray, hit, depth, color));
-			// return (fresnel(scene, ray, hit, depth + 1, color));
 
 		return (blend_add(color, bounce_color));
 	}
@@ -2361,71 +2321,9 @@ __device__ unsigned int	get_pixel_color(const t_scene *scene, float3 ray, int *t
 		return (get_ambient(scene, BACKCOLOR));
 }
 
-// OCL TO CUDA -> need test
-// OLD
-// __device__ unsigned int	get_pixel_color(const t_scene *scene, float3 ray, int *target, bool isHim, int index)
-// {
-// 	t_hit			hit;
-// 	int				depth = 0;
-// 	unsigned int	color = 0;
-// 	unsigned int	bounce_color = 0;
-
-// 	hit = hit_init();
-// 	hit.dist = MAX_DIST;
-// 	depth = scene->depth;
-// 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
-// 	if ((isHim == 1) && (hit.lock == 1))
-// 		*target = hit.mem_index;
-// 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
-// 	{
-// 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
-// 		/*if (index == 1024*500 + 900)
-// 			printf("%.2f * %.2f %.2f %.2f + %.2f %.2f %.2f == %.2f %.2f %.2f\n",
-// 				hit.dist, ray.x, ray.y, ray.z, ACTIVECAM.pos.x, ACTIVECAM.pos.y, ACTIVECAM.pos.z,
-// 				hit.pos.x, hit.pos.y, hit.pos.z);*/
-// 		hit.normal = get_hit_normal(scene, ray, hit);
-// 		//hit.pos = hit.pos + (0.001f * hit.normal);
-// 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
-// /*
-// 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 			hit.color = sphere_texture(normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, (( t_sphere *)hit.obj)->diff_ratio, (( t_sphere *)hit.obj)->diff_offset);
-// 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
-// 			hit.color = sphere_checkerboard(normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
-
-// 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 			hit.color = plane_texture(hit.normal, hit.pos, (( t_plane *)hit.obj)->u_axis, (( t_plane *)hit.obj)->diff_ratio, (( t_plane *)hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
-// 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
-// 			hit.color = plane_checkerboard(hit.normal, hit.pos, hit.obj->color, hit.obj->check_size);
-
-// 		if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 			hit.color = cylinder_texture(hit.pos - hit.obj->pos, ( t_cylinder *)hit.obj, scene->texture_earth, 4915, 2457);
-// 			*/
-// /*
-// 		if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 			hit.color = cone_texture(hit.pos - hit.obj->pos, hit.obj->dir, (( t_cone *)hit.obj)->u_axis, scene->texture_star, 1500, 1500, (( t_cone *)hit.obj)->diff_ratio, (( t_cone *)hit.obj)->diff_offset);
-// */
-// 		color = phong(scene, hit, ray);
-// 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
-// 			return (fresnel(scene, ray, hit, depth + 1, color));
-
-// 		// c'est quoi ce bloc commenté en dessous?
-// 		/*else if (hit.obj->refract != 0 && hit.obj->opacity < 1)
-// 		{
-// 			bounce_color = refract(scene, ray, hit);
-// 			if (bounce_color == 0)
-// 				return (blend_med(bounce_color, blend_factor(color, ((hit.obj->opacity - 1) * -1))));
-// 			bounce_color = blend_factor(bounce_color, ((hit.obj->opacity - 1) * -1));
-// 		}
-// 		else if (depth > 0 && hit.obj->reflex > 0)
-// 			bounce_color = bounce(scene, ray, hit, depth);*/
-
-// 		return (blend_add(color, bounce_color));
-// 	}
-// 	return (get_ambient(scene, BACKCOLOR));
-// }
 
 // OCL TO CUDA -> ok
-__device__ float3		get_ray_cam(t_scene *scene, const int x, const int y, const int width, const int height)
+__device__ float3		get_ray_cam(t_scene *scene, int x, int y, int width, int height)
 {
 	float3			cam_ray = make_float3(0.f);
 	float			ratio = ((float)width) / ((float)height);

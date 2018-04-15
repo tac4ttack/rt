@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:48 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 22:18:38 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/15 17:41:32 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 void		ui_update_resolution(t_env *e, int width, int height)
 {
 	WIDTH = width;
-	e->cl->dimension[0] = WIDTH;
 	HEIGHT = height;
-	e->cl->dimension[1] = HEIGHT;
 	free(e->pixel_data);
 	if (!(e->pixel_data = malloc(sizeof(int) * WIDTH * HEIGHT)))
 		s_error("\x1b[1;31mCan't initialize new pixel buffer\x1b[0m", e);

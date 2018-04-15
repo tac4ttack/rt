@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/15 15:31:02 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/15 17:38:03 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -463,6 +463,7 @@ typedef struct			s_scene
 typedef	struct			s_env
 {
 	t_cl				*cl;
+	t_cuda				*cuda;
 	t_ui				*ui;
 
 	char				*scene_file;
@@ -484,9 +485,6 @@ typedef	struct			s_env
 	int					target;
 	t_rtx				raw_texture;
 	t_tex				*texture;
-
-
-	t_cuda				*cuda;
 
 	int					current_index_objects;
 }						t_env;
