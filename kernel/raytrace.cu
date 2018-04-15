@@ -1915,7 +1915,7 @@ __device__ unsigned int			phong(t_scene *scene, t_hit hit, float3 ray)
 	t_hit				light_hit;
 	float 				pow_of_spec = 0.f;
 	int 				light_color = 0;
-	float3 			speculos = make_float3(0.f);
+	float3	 			speculos = make_float3(0.f);
 
 	obj = hit.obj;
 	if ((hit.obj->flags & OBJ_FLAG_CHECKERED) || hit.obj->flags & OBJ_FLAG_DIFF_MAP)
