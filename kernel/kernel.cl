@@ -376,12 +376,12 @@ static t_hit	hit_init(void)
 	return (hit);
 }
 
-static unsigned int		skybox(const float3 dir, unsigned int __global *texture, int t_width, int t_height)
+static unsigned int		skybox(const float3 dir, unsigned int __global *texture, int t_width, int t_height, float u_time)
 {
 	unsigned int	color = 0;
 	int2			uv = 0;
 
-	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * M_PI))) * t_width);
+	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * M_PI))) * t_width + u_time * 10);
 	uv.y = (int)floor((0.5 - (asin(dir.y) / M_PI)) * t_height);
 	if (uv.x < 0)
 		uv.x = -uv.x;
@@ -1548,12 +1548,7 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 	t_ret				ret;
 
 	hit = hit_init();
-	ret.dist = 0;
-	ret.wall = 0;
-	ret.normal = 0;
 	obj = 0;
-	if (lightdist == 0)
-		hit.opacity = 1;
 	while (mem_index_obj < scene->mem_size_obj)
 	{
 		obj = scene->mem_obj + mem_index_obj;
@@ -1644,7 +1639,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	float 					brightness = 0;
 	unsigned int 		 	hue = 0;
 	unsigned int 			hue_light = 0;
-	unsigned int 		 	col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g = 0;
+	unsigned int 		 	col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g, base_r, base_g, base_b = 0;
 	float 			 		pow_of_spec = 0;
 	int 					light_color = 0;
 	float3 			 		speculos = 0;
@@ -1655,13 +1650,13 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	else
 		hue = obj->color;
 
-	col_r = (hue & 0x00FF0000) >> 16;
-	col_g = (hue & 0x0000FF00) >> 8;
-	col_b = (hue & 0x000000FF);
-	col_r = (0.01 + col_r * scene->ambient.x > 255 ? 255 : 0.01 + col_r * scene->ambient.x);
-	col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
-	col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
-	res_color = ((col_r << 16) + (col_g << 8) + col_b);
+	obj_r = (hue & 0x00FF0000) >> 16;
+	obj_g = (hue & 0x0000FF00) >> 8;
+	obj_b = (hue & 0x000000FF);
+	base_r = (0.01 + obj_r * scene->ambient.x > 255 ? 255 : 0.01 + obj_r * scene->ambient.x);
+	base_g = (0.01 + obj_g * scene->ambient.y > 255 ? 255 : 0.01 + obj_g * scene->ambient.y);
+	base_b = (0.01 + obj_b * scene->ambient.z > 255 ? 255 : 0.01 + obj_b * scene->ambient.z);
+	res_color = ((base_r << 16) + (base_g << 8) + base_b);
 
 	while (mem_index_lights < scene->mem_size_lights)
 	{
@@ -1671,7 +1666,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir, light_ray.dist);
-		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILONF) || (light_hit.opacity <= 1 && scene->depth != 0))
+		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILONF) || (light_hit.opacity < 1 && scene->depth != 0))
 		{
 			// diffuse part
 			tmp = (dot(hit.normal, light_ray.dir));
@@ -1684,9 +1679,6 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 				col_r = (res_color & 0xFF0000) >> 16;
 				col_g = (res_color & 0x00FF00) >> 8;
 				col_b = (res_color & 0x0000FF);
-				obj_r = (hue & 0xFF0000) >> 16;
-				obj_g = (hue & 0x00FF00) >> 8;
-				obj_b = (hue & 0x00000FF);
 				l_r = (hue_light & 0xFF0000) >> 16;
 				l_g = (hue_light & 0x00FF00) >> 8;
 				l_b = (hue_light & 0x0000FF);
@@ -1735,24 +1727,18 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	
 			// si pas de depth alors opacity = 0, la couleur n'est pas touchée
 			// res_color = blend_factor(res_color, 1 - (light_hit.opacity * light_hit.opacity));
-			// if (light_hit.opacity != 0)
-			// {
-			// 	light_hit.opacity = 1 - light_hit.opacity;
-			// 	if (light_hit.opacity > scene->ambient.x)
-			// 		col_r = (0.01 + col_r * light_hit.opacity > 255 ? 255 : 0.01 + col_r * light_hit.opacity);
-			// 	else
-			// 		col_r = (0.01 + col_r * scene->ambient.x > 255 ? 255 : 0.01 + col_r * scene->ambient.x);
-			// 	if (light_hit.opacity > scene->ambient.y)
-			// 		col_g = (0.01 + col_g * light_hit.opacity > 255 ? 255 : 0.01 + col_g * light_hit.opacity);
-			// 	else
-			// 		col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
-			// 	if (light_hit.opacity > scene->ambient.z)
-			// 		col_b = (0.01 + col_b * light_hit.opacity > 255 ? 255 : 0.01 + col_b * light_hit.opacity);					
-			// 	else
-			// 		col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
-			// 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
-			// }
-			
+			if (light_hit.dist < light_ray.dist && light_hit.dist > EPSILONF)
+			{
+				light_hit.opacity = 1 - light_hit.opacity;
+				col_r = (col_r - base_r) * light_hit.opacity + base_r;
+				col_g = (col_g - base_g) * light_hit.opacity + base_g;
+				col_b = (col_b - base_b) * light_hit.opacity + base_b;
+				(col_r > 255 ? col_r = 255 : 0);
+				(col_g > 255 ? col_g = 255 : 0);
+				(col_b > 255 ? col_b = 255 : 0);
+				if (hit.mem_index != light_hit.mem_index)
+					res_color = ((col_r << 16) + (col_g << 8) + col_b);
+			}
 
 			if (scene->flag & OPTION_CARTOON_FOUR)
 			 	res_color = cartoonize_four(col_r, col_g, col_b);
@@ -1964,7 +1950,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 					ncolor = phong(scene, new_hit, new_ray);
 				}
 				else if (scene->flag & OPTION_SKYBOX)
-					ncolor = skybox(new_ray, scene->texture_skybox, 4096, 2048);
+					ncolor = skybox(new_ray, scene->texture_skybox, 4096, 2048, scene->u_time);
 				else
 					ncolor = get_ambient(scene, BACKCOLOR);
 				tor[(i * 2) + 1] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.obj->type, 1 - fr);
@@ -2016,7 +2002,7 @@ static unsigned int	fresnel(const __local t_scene *scene, float3 ray, t_hit old_
 				ncolor = phong(scene, new_hit, new_ray);
 			}
 			else if (scene->flag & OPTION_SKYBOX)
-				ncolor = skybox(new_ray, scene->texture_skybox, 4096, 2048);
+				ncolor = skybox(new_ray, scene->texture_skybox, 4096, 2048, scene->u_time);
 			else
 				ncolor = get_ambient(scene, BACKCOLOR);
 			tor[(2 * i) + 2] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.obj->type, fr);
@@ -2081,7 +2067,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray, __
 	
 	if (scene->flag & OPTION_SKYBOX)
 	{
-		color = skybox(ray, scene->texture_skybox, 4096, 2048);
+		color = skybox(ray, scene->texture_skybox, 4096, 2048, scene->u_time);
 		return (color);
 	}
 	else
