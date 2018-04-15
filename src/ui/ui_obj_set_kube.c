@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:12:01 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/15 15:30:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/15 16:27:48 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ static void	show_only_kube(t_env *e)
 	gtk_widget_hide(e->ui->obj_list_plane);
 	gtk_widget_show(e->ui->obj_list_sphere);
 	gtk_widget_hide(e->ui->obj_list_torus);
-	gtk_widget_show(e->ui->obj_list_checkboard);
-	gtk_widget_show(e->ui->obj_list_limit);
+	gtk_widget_hide(e->ui->obj_list_checkboard);
+	gtk_widget_hide(e->ui->obj_list_limit);
 	gtk_widget_show(e->ui->obj_list_sinwave);
-	gtk_widget_show(e->ui->obj_list_texture_diff);
-	gtk_widget_show(e->ui->obj_list_cut); // WIP
+	gtk_widget_hide(e->ui->obj_list_texture_diff);
+	gtk_widget_hide(e->ui->obj_list_cut); // WIP
 	gtk_widget_show(e->ui->obj_list_kube);
 }
 
