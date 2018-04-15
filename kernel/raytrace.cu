@@ -2221,12 +2221,16 @@ __host__ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit
 						new_hit.color = new_hit.obj->color;
 	
 					ncolor = phong(scene, new_hit, new_ray);
+					tor[(i * 2) + 1] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.obj->type, 1 - fr);
 				}
-				else if (scene->flag & OPTION_SKYBOX)
-					ncolor = skybox(new_ray, scene->texture_star, 4096, 2048);
 				else
-					ncolor = get_ambient(scene, BACKCOLOR);
-				tor[(i * 2) + 1] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.obj->type, 1 - fr);
+				{
+					if (scene->flag & OPTION_SKYBOX)
+						ncolor = skybox(new_ray, scene->texture_star, 4096, 2048);
+					else
+						ncolor = get_ambient(scene, BACKCOLOR);
+					tor[(i * 2) + 1] = tor_push(new_ray, new_hit.normal, new_hit.pos, 0, 0, 0, ncolor, 0, 1 - fr);
+				}
 			}
 		}
 		else if (tor[i].coef_ref != 0)
@@ -2273,19 +2277,16 @@ __host__ __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit
 					new_hit.color = new_hit.obj->color;
 				
 				ncolor = phong(scene, new_hit, new_ray);
+				tor[(2 * i) + 2] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.obj->type, fr);
 			}
-			else if (scene->flag & OPTION_SKYBOX)
-				ncolor = skybox(new_ray, scene->texture_star, 4096, 2048);
 			else
-				ncolor = get_ambient(scene, BACKCOLOR);
-			
-			
-			// new_hit.obj is cuasing problem
-			if (new_hit.dist > 0)
 			{
-					// printf("testicule %f\n", new_hit.obj->reflex);
+				if (scene->flag & OPTION_SKYBOX)
+					ncolor = skybox(new_ray, scene->texture_star, 4096, 2048);
+				else
+					ncolor = get_ambient(scene, BACKCOLOR);
 				tor[(2 * i) + 2] = tor_push(new_ray, new_hit.normal, new_hit.pos, 0, 0, 0, ncolor, 0, fr);
-				// tor[(2 * i) + 2] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.obj->type, fr);
+
 			}
 		}
 		i = i + 1;
