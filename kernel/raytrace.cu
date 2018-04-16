@@ -1898,6 +1898,9 @@ __device__ unsigned int			phong(const t_scene *scene, const t_hit hit, const flo
 
 	while (mem_index_lights < scene->mem_size_lights)
 	{
+		col_r = 0;
+		col_g = 0;
+		col_b = 0;
 		tmp = 0;
 		light = (t_light *)((char *)scene->mem_lights + mem_index_lights);
 		light_ray.dir = light->pos - hit.pos;
@@ -1967,20 +1970,26 @@ __device__ unsigned int			phong(const t_scene *scene, const t_hit hit, const flo
 				op_r = __uint2float_rd(col_r);
 				op_g = __uint2float_rd(col_g);
 				op_b = __uint2float_rd(col_b);
-				if (col_r - base_r < 0)
-				printf("base_r = %u, base_g = %u, base_b = %u\ncol_r = %u, col_g = %u, col_b = %u\nop_r = %f, op_g = %f, op_b = %f\n\n", base_r, base_g, base_b, col_r, col_g, col_b, op_r, op_g, op_b);
+				// if (hit.obj->type == OBJ_CONE)
+				// 	printf("base_r = %u, base_g = %u, base_b = %u\ncol_r = %u, col_g = %u, col_b = %u\nop_r = %f, op_g = %f, op_b = %f\n\n", base_r, base_g, base_b, col_r, col_g, col_b, op_r, op_g, op_b);
+				// if (op_r > base_r)
+				// 	op_r = (op_r - base_r) * light_hit.opacity + base_r;
+				// else
+				// 	op_r = -(op_r - base_r) * light_hit.opacity + base_r;
+				// if (op_g > base_g)
+				// 	op_g = (op_g - base_g) * light_hit.opacity + base_g;
+				// else
+				// 	op_g = -(op_g - base_g) * light_hit.opacity + base_g;
+				// if (op_b > base_b)
+				// 	op_b = (op_b - base_b) * light_hit.opacity + base_b;
+				// else
+				// 	op_b = -(op_b - base_b) * light_hit.opacity + base_b;
 				op_r = (op_r - base_r) * light_hit.opacity + base_r;
 				op_g = (op_g - base_g) * light_hit.opacity + base_g;
 				op_b = (op_b - base_b) * light_hit.opacity + base_b;
 				(op_r > 255 ? op_r = 255 : 0);
 				(op_g > 255 ? op_g = 255 : 0);
 				(op_b > 255 ? op_b = 255 : 0);
-				if (op_r < 0)
-					printf("pouet\n");
-				if (op_g < 0)
-					printf("pouet2\n");
-				if (op_b < 0)
-					printf("pouet3\n");
 				col_r = __float2uint_rn(op_r);
 				col_g = __float2uint_rn(op_g);
 				col_b = __float2uint_rn(op_b);
