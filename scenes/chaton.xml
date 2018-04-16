@@ -2,7 +2,7 @@
 
 <!-- La scene made in Chaton 1024, 768-->
 
-<scene		res="1024, 768" ambient="0.1, 0.1, 0.1">
+<scene		res="1025, 768" ambient="0.1, 0.1, 0.1">
 
 <cam		pos="0, 0, -80"
 			dir="0, 0, 1"
