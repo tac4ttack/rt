@@ -1671,8 +1671,8 @@ __device__ float3	get_cone_normal(t_cone *cone, t_hit hit)
 	v = hit.pos - cone->pos;
 	doty = dot(v, cone->dir);
 	project = doty * cone->dir;
-	res = v - project;
-
+	res = cross(v, project);
+	res = cross(v, res);
 	return (normalize(res));
 }
 
@@ -1759,11 +1759,7 @@ __device__ t_hit		ray_hit(t_scene *scene, float3 origin, float3 ray, float light
 
 	hit = hit_init();
 	obj = 0;
-	ret.dist = 0.f;
-	ret.wall = 0;
 	ret.normal = make_float3(0.f);
-	if (lightdist == 0)
-		hit.opacity = 1;
 	while (mem_index_obj < scene->mem_size_obj)
 	{
 		obj = (t_object *)((char *)scene->mem_obj + mem_index_obj);
@@ -1910,7 +1906,8 @@ __device__ unsigned int			phong(t_scene *scene, t_hit hit, float3 ray)
 	float 				brightness = 0.f;
 	unsigned int 		hue = 0;
 	unsigned int 		hue_light = 0;
-	unsigned int 		col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g = 0;
+	unsigned int 		col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g, base_r, base_g, base_b = 0;
+	float				op_r, op_g, op_b = 0.f;
 	t_light_ray			light_ray;
 	t_hit				light_hit;
 	float 				pow_of_spec = 0.f;
@@ -1923,23 +1920,26 @@ __device__ unsigned int			phong(t_scene *scene, t_hit hit, float3 ray)
 	else
 		hue = obj->color;
 
-	col_r = (hue & 0x00FF0000) >> 16;
-	col_g = (hue & 0x0000FF00) >> 8;
-	col_b = (hue & 0x000000FF);
-	col_r = (0.01 + col_r * scene->ambient.x > 255 ? 255 : 0.01 + col_r * scene->ambient.x);
-	col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
-	col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
-	res_color = ((col_r << 16) + (col_g << 8) + col_b);
+	obj_r = (hue & 0x00FF0000) >> 16;
+	obj_g = (hue & 0x0000FF00) >> 8;
+	obj_b = (hue & 0x000000FF);
+	base_r = (0.01 + obj_r * scene->ambient.x > 255 ? 255 : 0.01 + obj_r * scene->ambient.x);
+	base_g = (0.01 + obj_g * scene->ambient.y > 255 ? 255 : 0.01 + obj_g * scene->ambient.y);
+	base_b = (0.01 + obj_b * scene->ambient.z > 255 ? 255 : 0.01 + obj_b * scene->ambient.z);
+	res_color = ((base_r << 16) + (base_g << 8) + base_b);
 
 	while (mem_index_lights < scene->mem_size_lights)
 	{
+		col_r = 0;
+		col_g = 0;
+		col_b = 0;
 		tmp = 0;
 		light = (t_light *)((char *)scene->mem_lights + mem_index_lights);
 		light_ray.dir = light->pos - hit.pos;
 		light_ray.dist = length(light_ray.dir);
 		light_ray.dir = normalize(light_ray.dir);
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir, light_ray.dist);
-		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILON) || (light_hit.opacity < 1 && scene->depth != 0))
+		if (!(light_hit.dist < light_ray.dist && light_hit.dist > EPSILONF) || (light_hit.opacity < 1 && scene->depth != 0))
 		{
 			// diffuse part
 			tmp = (dot(hit.normal, light_ray.dir));
@@ -1952,9 +1952,6 @@ __device__ unsigned int			phong(t_scene *scene, t_hit hit, float3 ray)
 				col_r = (res_color & 0xFF0000) >> 16;
 				col_g = (res_color & 0x00FF00) >> 8;
 				col_b = (res_color & 0x0000FF);
-				obj_r = (hue & 0xFF0000) >> 16;
-				obj_g = (hue & 0x00FF00) >> 8;
-				obj_b = (hue & 0x00000FF);
 				l_r = (hue_light & 0xFF0000) >> 16;
 				l_g = (hue_light & 0x00FF00) >> 8;
 				l_b = (hue_light & 0x0000FF);
@@ -1999,30 +1996,37 @@ __device__ unsigned int			phong(t_scene *scene, t_hit hit, float3 ray)
 
 
 			// opacite de l'ombre à debug!!!!!
-			res_color = blend_factor(res_color, ((light_hit.opacity - 1) * -1));
-			// res_color = blend_factor(res_color, 1 - (light_hit.opacity / 2));
-	
-			// si pas de depth alors opacity = 0, la couleur n'est pas touchée
-			// res_color = blend_factor(res_color, 1 - (light_hit.opacity * light_hit.opacity));
-			// if (light_hit.opacity != 0)
-			// {
-			// 	light_hit.opacity = 1 - light_hit.opacity;
-			// 	if (light_hit.opacity > scene->ambient.x)
-			// 		col_r = (0.01 + col_r * light_hit.opacity > 255 ? 255 : 0.01 + col_r * light_hit.opacity);
-			// 	else
-			// 		col_r = (0.01 + col_r * scene->ambient.x > 255 ? 255 : 0.01 + col_r * scene->ambient.x);
-			// 	if (light_hit.opacity > scene->ambient.y)
-			// 		col_g = (0.01 + col_g * light_hit.opacity > 255 ? 255 : 0.01 + col_g * light_hit.opacity);
-			// 	else
-			// 		col_g = (0.01 + col_g * scene->ambient.y > 255 ? 255 : 0.01 + col_g * scene->ambient.y);
-			// 	if (light_hit.opacity > scene->ambient.z)
-			// 		col_b = (0.01 + col_b * light_hit.opacity > 255 ? 255 : 0.01 + col_b * light_hit.opacity);					
-			// 	else
-			// 		col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
-			// 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
-			// }
-
-
+			if (light_hit.dist < light_ray.dist && light_hit.dist > EPSILONF && light_hit.dist < MAX_DIST && hit.mem_index != light_hit.mem_index)
+			{
+				light_hit.opacity = 1 - light_hit.opacity;
+				op_r = __uint2float_rd(col_r);
+				op_g = __uint2float_rd(col_g);
+				op_b = __uint2float_rd(col_b);
+				// if (hit.obj->type == OBJ_CONE)
+				// 	printf("base_r = %u, base_g = %u, base_b = %u\ncol_r = %u, col_g = %u, col_b = %u\nop_r = %f, op_g = %f, op_b = %f\n\n", base_r, base_g, base_b, col_r, col_g, col_b, op_r, op_g, op_b);
+				// if (op_r > base_r)
+				// 	op_r = (op_r - base_r) * light_hit.opacity + base_r;
+				// else
+				// 	op_r = -(op_r - base_r) * light_hit.opacity + base_r;
+				// if (op_g > base_g)
+				// 	op_g = (op_g - base_g) * light_hit.opacity + base_g;
+				// else
+				// 	op_g = -(op_g - base_g) * light_hit.opacity + base_g;
+				// if (op_b > base_b)
+				// 	op_b = (op_b - base_b) * light_hit.opacity + base_b;
+				// else
+				// 	op_b = -(op_b - base_b) * light_hit.opacity + base_b;
+				op_r = (op_r - base_r) * light_hit.opacity + base_r;
+				op_g = (op_g - base_g) * light_hit.opacity + base_g;
+				op_b = (op_b - base_b) * light_hit.opacity + base_b;
+				(op_r > 255 ? op_r = 255 : 0);
+				(op_g > 255 ? op_g = 255 : 0);
+				(op_b > 255 ? op_b = 255 : 0);
+				col_r = __float2uint_rn(op_r);
+				col_g = __float2uint_rn(op_g);
+				col_b = __float2uint_rn(op_b);
+				res_color = ((col_r << 16) + (col_g << 8) + col_b);
+			}
 			if (scene->flag & OPTION_CARTOON_FOUR)
 			 	res_color = cartoonize_four(col_r, col_g, col_b);
 			else if (scene->flag & OPTION_CARTOON_TWO)
@@ -2324,6 +2328,157 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 }
 
 // OCL TO CUDA -> need test
+// __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit old_hit, int depth, unsigned int color)
+// {
+// 	t_hit			new_hit;
+// 	unsigned int	ncolor = 0;
+// 	float3			refract = make_float3(0.f);
+// 	float3			bounce = make_float3(0.f);
+// 	float			fr = 0.f;
+// 	float			ft = 0.f;
+// 	float			eta = 0.f;
+// 	float			cos1 = 0.f;
+// 	float			sint = 0.f;
+// 	t_tor			tor[64];
+// 	int				i = 0;
+
+// 	depth = (int)powf(2.f, (float)depth) - 1;
+// 	i = 0;
+// 	while (i < 64)
+// 	{
+// 		tor[i].activate = 0;
+// 		tor[i].prim = make_float3(0.f);
+// 		tor[i].normale = make_float3(0.f);
+// 		tor[i].pos = make_float3(0.f);
+// 		tor[i].coef_ref = 0;
+// 		tor[i].coef_tra = 0;
+// 		tor[i].color = 0;
+// 		tor[i].opacity = 0;
+// 		tor[i].mem_index = 0;
+// 		tor[i].id = 0;
+// 		tor[i].type = 0;
+// 		tor[i].dist = 0;
+// 		i++;
+// 	}
+// 	i = 0;
+// 	tor[i] = tor_push(ray, old_hit.normal, old_hit.pos, old_hit.obj->reflex, old_hit.obj->refract, old_hit.obj->opacity, color, old_hit.mem_index, old_hit.obj->id, old_hit.obj->type, 0, 0);
+// 	while (i < 31 && i < depth)
+// 	{
+// 		if (tor[i].coef_tra != 0)
+// 		{
+// 			eta = 1 / tor[i].coef_tra;
+// 			cos1 = dot(tor[i].normale, tor[i].prim);
+// 			if (cos1 >= 0)
+// 				eta = tor[i].coef_tra;
+// 			if (cos1 >= 0)
+// 				sint = tor[i].coef_tra * sqrtf(1 - cos1 * cos1);
+// 			else
+// 				sint = 1 / tor[i].coef_tra * sqrtf(1 - cos1 * cos1);
+// 			if (sint >= 1)
+// 				fr = 1;
+// 			else if (cos1 < 0)
+// 				fr = reflect_ratio(1, tor[i].coef_tra, cos1, sint);
+// 			else
+// 				fr = reflect_ratio(tor[i].coef_tra, 1, cos1, sint);
+// 			// if (fr > 0.99)
+// 			// 	fr = 1;
+// 			// if (fr < 0.01)
+// 			// 	fr = 0;
+// 			ft = 1 - fr;
+// 			if (fr < 1)
+// 			{
+// 				if (tor[i].type != OBJ_PLANE)
+// 					refract = refract_ray(scene, tor[i].prim, tor[i].normale, tor[i].coef_tra);
+// 				else
+// 					refract = tor[i].prim;
+// 				if (cos1 < 0)
+// 					new_hit = ray_hit(scene, tor[i].pos + (0.001f * (2.f * -tor[i].normale)), refract, 0);
+// 				else
+// 					new_hit = ray_hit(scene, tor[i].pos, refract, 0);
+// 				if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
+// 				{
+// 					if (cos1 < 0)
+// 					 	new_hit.pos = (new_hit.dist * refract) + tor[i].pos + (0.001f * (2.f * -tor[i].normale));
+// 					else
+// 						new_hit.pos = (new_hit.dist * refract) + tor[i].pos;
+// 					new_hit.normal = get_hit_normal(scene, refract, new_hit);
+// 					new_hit.pos = new_hit.pos + (0.001f * new_hit.normal);
+
+
+// 					/*if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 						new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, (( t_sphere *)new_hit.obj)->diff_ratio, (( t_sphere *)new_hit.obj)->diff_offset);
+// 					if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+// 						new_hit.color = sphere_checkerboard(normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
+
+// 					if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 						new_hit.color = plane_texture(new_hit.normal, new_hit.pos, (( t_plane *)new_hit.obj)->u_axis, (( t_plane *)new_hit.obj)->diff_ratio, (( t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
+// 					if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+// 						new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
+
+// 					if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 						new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, ( t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
+
+// 					if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 						new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, (( t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, (( t_cone *)new_hit.obj)->diff_ratio, (( t_cone *)new_hit.obj)->diff_offset);
+// */
+
+// 					ncolor = phong(scene, new_hit, refract);
+// 					tor[i * 2 + 1] = tor_push(refract, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type, 0, ft);
+// 				}
+// 			}
+// 		}
+// 		else if (tor[i].coef_ref != 0)
+// 			fr = 1;
+// 		else
+// 			fr = 0;
+// 		if (fr > 0)
+// 		{
+// 			cos1 = dot(tor[i].normale, tor[i].prim);
+// 			bounce = bounce_ray(scene, tor[i].prim, tor[i]);
+// 			if (cos1 >= 0)
+// 				new_hit = ray_hit(scene, tor[i].pos + (0.001f * (2.f * -tor[i].normale)), bounce, 0);
+// 			else
+// 				new_hit = ray_hit(scene, tor[i].pos, bounce, 0);
+// 			if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
+// 			{
+// 				if (cos1 >= 0)
+// 					new_hit.pos = (new_hit.dist * bounce) + tor[i].pos + (0.001f * (2.f * -tor[i].normale));
+// 				else
+// 					new_hit.pos = (new_hit.dist * bounce) + tor[i].pos;
+// 				new_hit.normal = get_hit_normal(scene, bounce, new_hit);
+// 				new_hit.pos = new_hit.pos + (0.001f * new_hit.normal);
+// /*
+
+// 				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 					new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, (( t_sphere *)new_hit.obj)->diff_ratio, (( t_sphere *)new_hit.obj)->diff_offset);
+// 				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+// 					new_hit.color = sphere_checkerboard(normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
+
+// 				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 					new_hit.color = plane_texture(new_hit.normal, new_hit.pos, (( t_plane *)new_hit.obj)->u_axis, (( t_plane *)new_hit.obj)->diff_ratio, (( t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
+// 				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
+// 					new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
+
+// 				if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 					new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, ( t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
+
+// 				if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 					new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, (( t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, (( t_cone *)new_hit.obj)->diff_ratio, (( t_cone *)new_hit.obj)->diff_offset);
+// */
+
+
+// 				ncolor = phong(scene, new_hit, bounce);
+// 				tor[i * 2 + 2] = tor_push(bounce, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type, fr, 0);
+// 			}
+// 		}
+// 		i = i + 1;
+// 		while (i < 31 && tor[i].activate == 0)
+// 			i = i + 1;
+// 	}
+// 	return (tor_final_color(tor));
+// }
+
+// OCL TO CUDA -> need test
 __device__ unsigned int	get_pixel_color(t_scene *scene, float3 ray, int *target, bool isHim, int index)
 {
 	t_hit			hit;
@@ -2381,6 +2536,68 @@ __device__ unsigned int	get_pixel_color(t_scene *scene, float3 ray, int *target,
 		return (get_ambient(scene, BACKCOLOR));
 }
 
+// OCL TO CUDA -> need test
+// OLD
+// __device__ unsigned int	get_pixel_color(const t_scene *scene, float3 ray, int *target, bool isHim, int index)
+// {
+// 	t_hit			hit;
+// 	int				depth = 0;
+// 	unsigned int	color = 0;
+// 	unsigned int	bounce_color = 0;
+
+// 	hit = hit_init();
+// 	hit.dist = MAX_DIST;
+// 	depth = scene->depth;
+// 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
+// 	if ((isHim == 1) && (hit.lock == 1))
+// 		*target = hit.mem_index;
+// 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
+// 	{
+// 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
+// 		/*if (index == 1024*500 + 900)
+// 			printf("%.2f * %.2f %.2f %.2f + %.2f %.2f %.2f == %.2f %.2f %.2f\n",
+// 				hit.dist, ray.x, ray.y, ray.z, ACTIVECAM.pos.x, ACTIVECAM.pos.y, ACTIVECAM.pos.z,
+// 				hit.pos.x, hit.pos.y, hit.pos.z);*/
+// 		hit.normal = get_hit_normal(scene, ray, hit);
+// 		//hit.pos = hit.pos + (0.001f * hit.normal);
+// 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
+// /*
+// 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 			hit.color = sphere_texture(normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, (( t_sphere *)hit.obj)->diff_ratio, (( t_sphere *)hit.obj)->diff_offset);
+// 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
+// 			hit.color = sphere_checkerboard(normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
+
+// 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 			hit.color = plane_texture(hit.normal, hit.pos, (( t_plane *)hit.obj)->u_axis, (( t_plane *)hit.obj)->diff_ratio, (( t_plane *)hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
+// 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
+// 			hit.color = plane_checkerboard(hit.normal, hit.pos, hit.obj->color, hit.obj->check_size);
+
+// 		if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 			hit.color = cylinder_texture(hit.pos - hit.obj->pos, ( t_cylinder *)hit.obj, scene->texture_earth, 4915, 2457);
+// 			*/
+// /*
+// 		if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
+// 			hit.color = cone_texture(hit.pos - hit.obj->pos, hit.obj->dir, (( t_cone *)hit.obj)->u_axis, scene->texture_star, 1500, 1500, (( t_cone *)hit.obj)->diff_ratio, (( t_cone *)hit.obj)->diff_offset);
+// */
+// 		color = phong(scene, hit, ray);
+// 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
+// 			return (fresnel(scene, ray, hit, depth + 1, color));
+
+// 		// c'est quoi ce bloc commenté en dessous?
+// 		/*else if (hit.obj->refract != 0 && hit.obj->opacity < 1)
+// 		{
+// 			bounce_color = refract(scene, ray, hit);
+// 			if (bounce_color == 0)
+// 				return (blend_med(bounce_color, blend_factor(color, ((hit.obj->opacity - 1) * -1))));
+// 			bounce_color = blend_factor(bounce_color, ((hit.obj->opacity - 1) * -1));
+// 		}
+// 		else if (depth > 0 && hit.obj->reflex > 0)
+// 			bounce_color = bounce(scene, ray, hit, depth);*/
+
+// 		return (blend_add(color, bounce_color));
+// 	}
+// 	return (get_ambient(scene, BACKCOLOR));
+// }
 
 // OCL TO CUDA -> ok
 __device__ float3		get_ray_cam(t_scene *scene, int x, int y, int width, int height)
