@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 21:09:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 21:14:22 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/17 11:22:52 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void		load_texture(t_env *e)
 	charge_texture(e, "./textures/starmap_g4k.jpg", 2);
 	charge_texture(e, "./textures/pierres_jaune.png", 3);
 }
+
 
 void			print_usage(void)
 {

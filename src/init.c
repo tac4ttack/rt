@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/14 20:33:31 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/17 13:02:25 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ void		init(GtkApplication *app, gpointer data)
 	load_scene(e);
 	ft_putendl("\n\x1b[1;32m/\\ Loading UI... /\\\x1b[0m\n");
 	init_kernel(e);
+	texture_init(e);
 	draw(e);
 }

@@ -147,6 +147,7 @@ SRC_NAME =	 			init.c \
 						ui/ui_obj_update.c \
 						ui/ui_obj_update_effects.c \
 						update_fps.c \
+						texture.c \
 						vectors.c \
 						xml/data/xml_data_angle.c \
 						xml/data/xml_data_flag.c \

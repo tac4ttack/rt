@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/15 17:38:03 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/17 13:07:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,6 +436,20 @@ typedef struct			s_tex
 	int					height;
 }						t_tex;
 
+typedef struct				s_texture
+{
+	struct cudaChannelFormatDesc	channel_desc;
+	struct cudaResourceDesc		res_desc;
+	struct cudaTextureDesc 		tex_desc;
+	struct cudaArray				*cu_array;
+	GdkPixbuf				*pixbuf;
+	guchar					*pixels;
+	cudaTextureObject_t		tex;
+	unsigned int			w;
+	unsigned int			h;
+	
+}							t_texture;
+
 typedef struct			s_scene
 {
 	unsigned int		n_cams;
@@ -483,6 +497,12 @@ typedef	struct			s_env
 
 	int					*pixel_data;
 	int					target;
+
+	t_texture			*textures;
+	cudaTextureObject_t		*tex_0;
+	cudaTextureObject_t		*tex_1;
+	cudaTextureObject_t		*tex_2;
+	cudaTextureObject_t		*tex_3;
 	t_rtx				raw_texture;
 	t_tex				*texture;
 
@@ -501,7 +521,11 @@ void					render_cuda(t_cuda *cuda, int 		*pixel_data, int *target,
 							t_gen		*gen_lights,
 							float		u_time,
 							t_scene			*scene_data,
-							t_cam			*cameras_data);
+							t_cam			*cameras_data,
+							cudaTextureObject_t *tex0,
+							cudaTextureObject_t *tex1,
+							cudaTextureObject_t *tex2,
+							cudaTextureObject_t *tex3);
 
 FT_FLOAT3				add_cl_float(FT_FLOAT3 v1, FT_FLOAT3 v2);
 FT_FLOAT3				sub_cl_float(FT_FLOAT3 v1, FT_FLOAT3 v2);
@@ -518,6 +542,7 @@ void					init_cb_light(t_env *e);
 void					init_cb_main(t_env *e);
 void					init_cb_object(t_env *e);
 void					init_cb_scene(t_env *e);
+void					init_cb_obj_cut(t_env *e);
 void					init_cb_object_checkboard(t_env *e);
 void					init_cb_object_diffmap(t_env *e);
 void					init_cb_object_limit(t_env *e);
@@ -525,6 +550,7 @@ void					init_cb_object_sinwave(t_env *e);
 void					init_gtk_cam(t_env *e);
 void					init_gtk_css(t_env *e);
 void					init_gtk_light(t_env *e);
+void					init_gtk_obj_cut(t_env *e);
 void					init_gtk_object(t_env *e);
 void					init_gtk_object_checkboard(t_env *e);
 void					init_gtk_object_diffmap(t_env *e);
@@ -680,6 +706,10 @@ void					xml_write_sphere(t_sphere *sphere, const int fd);
 void					xml_write_torus(t_torus *torus, const int fd);
 void					xml_write_kube(t_kube *kube, const int fd);
 
-void					init_gtk_obj_cut(t_env *e);
-void					init_cb_obj_cut(t_env *e);
+
+void					texture_init(t_env *e);
+void					texture_load_default(t_env *e);
+void					texture_load_from_file(t_env *e, char *file, int slot);
+void					texture_destroy(t_env *e, t_texture *tex);
+
 #endif

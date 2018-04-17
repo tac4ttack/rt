@@ -2711,11 +2711,20 @@ __global__ void rt_launcher(unsigned int *output,
 						unsigned int *texture_0,
 						unsigned int *texture_1,
 						unsigned int *texture_2,
-						unsigned int *texture_3)
+						unsigned int *texture_3,
+						cudaTextureObject_t tex0,
+						cudaTextureObject_t tex1,
+						cudaTextureObject_t tex2,
+						cudaTextureObject_t tex3)
 {
 	int col = blockIdx.x * blockDim.x + threadIdx.x;
 	int row = blockIdx.y * blockDim.y + threadIdx.y;
 	int index = row * scene_data->win_w + col;
+
+	float test;
+	test = tex2D<float>(tex0, 350, 235);
+	printf("testicule %f\n", test);
+
 	output[index] = ray_trace(index, mem_objects, mem_size_objects,
 								u_time,
 							scene_data, cameras_data,
@@ -2729,7 +2738,11 @@ extern "C" void render_cuda(t_cuda			*cuda,
 							t_gen			*gen_lights,
 							float			u_time,
 							t_scene			*scene_data,
-							t_cam			*cameras_data)
+							t_cam			*cameras_data,
+							cudaTextureObject_t *tex0,
+							cudaTextureObject_t *tex1,
+							cudaTextureObject_t *tex2,
+							cudaTextureObject_t *tex3)
 {
 	dim3					threads_per_block(8, 8);
 	dim3					grid_size(scene_data->win_w / threads_per_block.x, scene_data->win_h / threads_per_block.y);
@@ -2761,7 +2774,11 @@ extern "C" void render_cuda(t_cuda			*cuda,
 												NULL,
 												NULL,
 												NULL,
-												NULL);
+												NULL,
+												*tex0,
+												*tex1,
+												*tex2,
+												*tex3);
 	cudaDeviceSynchronize();
 
 	// check for errors

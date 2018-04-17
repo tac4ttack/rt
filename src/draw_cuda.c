@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 19:22:54 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/14 22:18:25 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/17 13:09:05 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ int				draw(t_env *e)
 					e->gen_lights,
 					e->fps.u_time,
 					e->scene,
-					e->cameras);
+					e->cameras,
+					e->tex_0,
+					e->tex_1,
+					e->tex_2,
+					e->tex_3);
 	return (0);
 }
