@@ -1406,12 +1406,12 @@ typedef struct			s_tex
 // 	pt_i2.z = origin.z + ray.z * res2;
 
 // 	// ne fonctionne que pour cylindre aligné en Z
-// 	bord1.x = cyl->pos.x + cyl->radius;    
-// 	bord2.x = cyl->pos.x - cyl->radius;	  	
-// 	bord1.y = cyl->pos.y + cyl->radius;		
-// 	bord2.y = cyl->pos.y - cyl->radius;		
-// 	bord1.z = cyl->pos.z + MAX_DIST;
-// 	bord2.z = cyl->pos.z - MAX_DIST;
+// 	bord1.x = cyl->pos.x + cyl->radius + 1;    
+// 	bord2.x = cyl->pos.x - cyl->radius - 1;	  	
+// 	bord1.y = cyl->pos.y + cyl->radius + 1;		
+// 	bord2.y = cyl->pos.y - cyl->radius - 1;		
+// 	bord1.z = cyl->pos.z + cyl->radius + 1;
+// 	bord2.z = cyl->pos.z - cyl->radius - 1;
 	
 // 	if (pt_i1.x <= bord1.x - cyl->cut_max.x && \
 // 		pt_i1.y <= bord1.y - cyl->cut_max.y && \
@@ -2723,9 +2723,10 @@ __global__ void rt_launcher(unsigned int *output,
 
 	if (col == 350 && row == 235)
 	{
-		float test;
-		test = tex2D<float>(tex0, 42, 0);
-		printf("testicule x %f\n", test);
+		uint test;
+		test = tex2D<uint>(tex0, 350, 235);
+		printf("testicule A %u\n", test);
+
 		// printf("testicule y %f\n", test.y);
 		// printf("testicule z %f\n", test.z);
 		// printf("testicule w %f\n", test.w);

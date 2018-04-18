@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/17 19:02:30 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/18 21:00:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -444,11 +444,7 @@ typedef struct				s_texture
 	struct cudaArray				*cu_array;
 	GdkPixbuf						*pixbuf;
 	guchar							*pixels;
-	
-	float							*f_pixels;
-	float3							*f3_pixels;
-	int								*i_pixels;
-	
+	unsigned int					*i_pixels;
 	cudaTextureObject_t				tex;
 	unsigned int					w;
 	unsigned int					h;

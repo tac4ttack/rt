@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 20:13:04 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/15 19:32:33 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/18 17:04:31 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static void		init_kernel_buffer(t_env *e)
 		s_error("\x1b[2;31mError t_cuda cudaMalloc 4\x1b[0m", e);
 	if (!(cuda_add_buffer(e->cuda, sizeof(unsigned int))))
 		s_error("\x1b[2;31mError t_cuda cudaMalloc 5\x1b[0m", e);
-	if (!(cuda_add_buffer(e->cuda, sizeof(unsigned int)
-							* e->texture[0].width * e->texture[0].height)))
-		s_error("\x1b[2;31mError t_cuda cudaMalloc 6\x1b[0m", e);
+	// if (!(cuda_add_buffer(e->cuda, sizeof(unsigned int)
+	// 						* e->texture[0].width * e->texture[0].height)))
+	// 	s_error("\x1b[2;31mError t_cuda cudaMalloc 6\x1b[0m", e);
 	//if (!(cuda_add_buffer(e->cuda, sizeof(unsigned int)
 	//						* e->texture[1].width * e->texture[1].height)))
 	//	s_error("\x1b[2;31mError t_cuda cudaMalloc 7\x1b[0m", e);
@@ -40,13 +40,13 @@ static void		init_kernel_buffer(t_env *e)
 
 static void		init_kernel_write_texture(t_env *e)
 {
-	if ((e->cuda->err = cudaMemcpy(e->cuda->mem[6], e->texture[0].pixel_array,
-			sizeof(unsigned int) * e->texture[0].width * e->texture[0].height,
-			cudaMemcpyHostToDevice)) != cudaSuccess)
-	{
-		cuda_error(e->cuda->err);
-		s_error("\x1b[2;31mError t_cuda cudaMemcpy 0 failed\x1b[0m", e);
-	}
+	// if ((e->cuda->err = cudaMemcpy(e->cuda->mem[6], e->texture[0].pixel_array,
+	// 		sizeof(unsigned int) * e->texture[0].width * e->texture[0].height,
+	// 		cudaMemcpyHostToDevice)) != cudaSuccess)
+	// {
+	// 	cuda_error(e->cuda->err);
+	// 	s_error("\x1b[2;31mError t_cuda cudaMemcpy 0 failed\x1b[0m", e);
+	// }
 	//if (!(cudaMemcpy(e->cuda->mem[7], e->texture[1].pixel_array,
 	//		sizeof(unsigned int) * e->texture[1].width * e->texture[1].height,
 	//		cudaMemcpyHostToDevice)))
