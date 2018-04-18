@@ -2721,11 +2721,11 @@ __global__ void rt_launcher(unsigned int *output,
 	int row = blockIdx.y * blockDim.y + threadIdx.y;
 	int index = row * scene_data->win_w + col;
 
-	if (col == 350 && row == 235)
+	if (col == 0 && row == 0)
 	{
 		uint test;
-		test = tex2D<uint>(tex0, 350, 235);
-		printf("testicule A %u\n", test);
+		test = tex2D<uint>(tex0, 0, 0);
+		printf("testicule %d\n", test);
 
 		// printf("testicule y %f\n", test.y);
 		// printf("testicule z %f\n", test.z);

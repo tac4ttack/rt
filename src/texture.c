@@ -25,7 +25,7 @@ void	texture_load_from_file(t_env *e, char *file, int slot)
 	
 
 	guchar	*picsou;
-	int		i, j = 0;
+	int		i = 0, j = 0;
 	if (!(e->textures[slot].i_pixels = ft_memalloc(sizeof(unsigned int) * e->textures[slot].w * e->textures[slot].h)))
 		s_error("Error: Failed allocate image int datas", e);
 	while (j < e->textures[slot].h)
@@ -39,7 +39,7 @@ void	texture_load_from_file(t_env *e, char *file, int slot)
 		}
 		j++;
 	}
-	// printf("test int %d\n", e->textures[slot].i_pixels[350 + (1024*235)]);
+	// printf("test int %d\n", e->textures[slot].i_pixels[325]); // semble ok
 
 
 
@@ -117,7 +117,7 @@ void	texture_load_from_file(t_env *e, char *file, int slot)
 
 
 	// channelDesc
-	e->textures[slot].channel_desc = cudaCreateChannelDesc(8, 8, 8, 8, \
+	e->textures[slot].channel_desc = cudaCreateChannelDesc((int)sizeof(unsigned int) * 8, 0, 0, 0, \
 													cudaChannelFormatKindUnsigned);
 
 
@@ -158,7 +158,7 @@ void	texture_load_from_file(t_env *e, char *file, int slot)
 	e->textures[slot].tex_desc.addressMode[1] = cudaAddressModeWrap;
 	e->textures[slot].tex_desc.filterMode = cudaFilterModePoint;
 	e->textures[slot].tex_desc.readMode = cudaReadModeElementType;
-	e->textures[slot].tex_desc.normalizedCoords = 1;
+	e->textures[slot].tex_desc.normalizedCoords = FALSE;
 	e->textures[slot].tex = 0;
 
 
@@ -171,7 +171,8 @@ void	texture_load_from_file(t_env *e, char *file, int slot)
 	if (error != cudaSuccess)
 		fprintf(stderr, \
 		"TEXTURE cudaCreateTextureObject LOAD CUDA  ERROR: %s \n",\
-		cudaGetErrorString(error));}
+		cudaGetErrorString(error));
+}
 
 void	texture_load_default(t_env *e)
 {
