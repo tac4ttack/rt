@@ -12,7 +12,7 @@ static void HandleError(cudaError_t err, const char *file,	int line)
 	{
 		printf("%s in %s at line %d\n", cudaGetErrorString(err), file, line);
 		cudaDeviceReset();
-		// exit( EXIT_FAILURE );
+		exit( EXIT_FAILURE );
 	}
 }
 #define HANDLE_ERROR(err) (HandleError(err, __FILE__, __LINE__))
@@ -546,7 +546,6 @@ __device__ unsigned int	skybox(float3 dir, cudaTextureObject_t skybox, uint2 res
 		uv.x %= (res.x - 1);
 	if (uv.y >= res.y)
 		uv.y %= (res.y - 1);
-	// color = texture[uv.y + uv.x * width];
 	color = tex2D<uint>(skybox, uv.x, uv.y);
 	return (color);
 }
@@ -913,7 +912,6 @@ __device__ t_ret	object_limited(t_object *object,
 	t.radius = 0.f;
 	dist_plan = inter_plan_private(&t, ray, origin);
 
-	// IN OBJECT
 	if (res1 < EPSILONF)
 	{
 		if (dot(t.normal, ray) > EPSILONF)

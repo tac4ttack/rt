@@ -3077,14 +3077,15 @@ max_ratio = 100</property>
                                                             <property name="can_focus">False</property>
                                                             <property name="margin_left">10</property>
                                                             <property name="margin_right">5</property>
-                                                            <property name="active_id">-1</property>
+                                                            <property name="active">0</property>
+                                                            <property name="active_id">0</property>
                                                             <items>
-                                                            <item id="-1" translatable="yes">None</item>
-                                                            <item id="0" translatable="yes">Slot #1</item>
-                                                            <item id="1" translatable="yes">Slot #2</item>
-                                                            <item id="2" translatable="yes">Slot #3</item>
-                                                            <item id="3" translatable="yes">Slot #4</item>
-                                                            <item id="4" translatable="yes">Skybox</item>
+                                                            <item id="0" translatable="yes">None</item>
+                                                            <item id="1" translatable="yes">Slot #1</item>
+                                                            <item id="2" translatable="yes">Slot #2</item>
+                                                            <item id="3" translatable="yes">Slot #3</item>
+                                                            <item id="4" translatable="yes">Slot #4</item>
+                                                            <item id="5" translatable="yes">Skybox</item>
                                                             </items>
                                                           </object>
                                                           <packing>

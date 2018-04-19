@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:11:49 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/15 15:25:00 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/19 17:55:16 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,6 @@ void		ui_obj_set_plane(t_env *e, t_plane *obj)
 	ui_obj_update_sinwave(e, (t_object *)obj);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_plane_disk_spin, \
 	(gdouble)obj->radius);
+	gtk_combo_box_set_active((GtkComboBox*)e->ui->obj_texture_diff_chooser, \
+	(gint)obj->diff_map_id + 1);
 }

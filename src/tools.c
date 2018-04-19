@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/19 17:03:19 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/19 17:08:52 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ int		gtk_quit(GtkApplication *app, gpointer data)
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
 	flush(e);
 	cudaDeviceReset();
-	while(1)
-	;
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
 	exit(EXIT_SUCCESS);
 	return (0);
