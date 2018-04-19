@@ -2399,69 +2399,6 @@ __device__ unsigned int	get_pixel_color(t_scene *scene, float3 ray, int *target,
 		return (get_ambient(scene, BACKCOLOR));
 }
 
-// OCL TO CUDA -> need test
-// OLD
-// __device__ unsigned int	get_pixel_color(const t_scene *scene, float3 ray, int *target, bool isHim, int index)
-// {
-// 	t_hit			hit;
-// 	int				depth = 0;
-// 	unsigned int	color = 0;
-// 	unsigned int	bounce_color = 0;
-
-// 	hit = hit_init();
-// 	hit.dist = MAX_DIST;
-// 	depth = scene->depth;
-// 	hit = ray_hit(scene, (ACTIVECAM.pos), ray, 0);
-// 	if ((isHim == 1) && (hit.lock == 1))
-// 		*target = hit.mem_index;
-// 	if (hit.dist > EPSILON && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
-// 	{
-// 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
-// 		/*if (index == 1024*500 + 900)
-// 			printf("%.2f * %.2f %.2f %.2f + %.2f %.2f %.2f == %.2f %.2f %.2f\n",
-// 				hit.dist, ray.x, ray.y, ray.z, ACTIVECAM.pos.x, ACTIVECAM.pos.y, ACTIVECAM.pos.z,
-// 				hit.pos.x, hit.pos.y, hit.pos.z);*/
-// 		hit.normal = get_hit_normal(scene, ray, hit);
-// 		//hit.pos = hit.pos + (0.001f * hit.normal);
-// 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normal);
-// /*
-// 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 			hit.color = sphere_texture(normalize(hit.obj->pos - hit.pos), scene->texture_earth, 4915, 2457, (( t_sphere *)hit.obj)->diff_ratio, (( t_sphere *)hit.obj)->diff_offset);
-// 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
-// 			hit.color = sphere_checkerboard(normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
-
-// 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 			hit.color = plane_texture(hit.normal, hit.pos, (( t_plane *)hit.obj)->u_axis, (( t_plane *)hit.obj)->diff_ratio, (( t_plane *)hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
-// 		if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
-// 			hit.color = plane_checkerboard(hit.normal, hit.pos, hit.obj->color, hit.obj->check_size);
-
-// 		if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 			hit.color = cylinder_texture(hit.pos - hit.obj->pos, ( t_cylinder *)hit.obj, scene->texture_earth, 4915, 2457);
-// 			*/
-// /*
-// 		if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 			hit.color = cone_texture(hit.pos - hit.obj->pos, hit.obj->dir, (( t_cone *)hit.obj)->u_axis, scene->texture_star, 1500, 1500, (( t_cone *)hit.obj)->diff_ratio, (( t_cone *)hit.obj)->diff_offset);
-// */
-// 		color = phong(scene, hit, ray);
-// 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
-// 			return (fresnel(scene, ray, hit, depth + 1, color));
-
-// 		// c'est quoi ce bloc commenté en dessous?
-// 		/*else if (hit.obj->refract != 0 && hit.obj->opacity < 1)
-// 		{
-// 			bounce_color = refract(scene, ray, hit);
-// 			if (bounce_color == 0)
-// 				return (blend_med(bounce_color, blend_factor(color, ((hit.obj->opacity - 1) * -1))));
-// 			bounce_color = blend_factor(bounce_color, ((hit.obj->opacity - 1) * -1));
-// 		}
-// 		else if (depth > 0 && hit.obj->reflex > 0)
-// 			bounce_color = bounce(scene, ray, hit, depth);*/
-
-// 		return (blend_add(color, bounce_color));
-// 	}
-// 	return (get_ambient(scene, BACKCOLOR));
-// }
-
 // OCL TO CUDA -> ok
 __device__ float3		get_ray_cam(t_scene *scene, int x, int y, int width, int height)
 {
@@ -2555,7 +2492,6 @@ __device__ unsigned int	ray_trace(	int					index,
 	if (scene->flag & OPTION_INVERT)
 		final_color = invert(final_color);
 
-	// test
 	__syncthreads();
 
 	// ALPHA INSERT and RGB SWAP
@@ -2604,21 +2540,6 @@ extern "C" void render_cuda(t_cuda			*cuda,
 {
 	dim3					threads_per_block(8, 8);
 	dim3					grid_size(scene_data->win_w / threads_per_block.x, scene_data->win_h / threads_per_block.y);
-	
-		/*printf("GPU\n");
-		printf("t_cam %zu\n", sizeof(t_cam));
-		printf("t_scene %zu\n", sizeof(t_scene));
-		printf("t_object %zu\n", sizeof(t_object));
-		printf("t_gen %zu\n", sizeof(t_gen));
-		printf("t_sphere %zu\n", sizeof(t_sphere));
-		printf("t_light %zu\n", sizeof(t_light));
-		printf("t_cylinder %zu\n", sizeof(t_cylinder));
-		printf("t_sphere %zu\n", sizeof(t_sphere));
-		printf("t_ellipsoid %zu\n", sizeof(t_ellipsoid));
-		printf("t_plane %zu\n", sizeof(t_plane));
-		printf("t_cone %zu\n", sizeof(t_cone));
-		printf("t_cone %zu\n", sizeof(t_cone));
-		printf("\n");*/
 
 	cudaMemcpy(cuda->mem[1], gen_objects->mem, gen_objects->mem_size, cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->mem[2], gen_lights->mem, gen_lights->mem_size, cudaMemcpyHostToDevice);
@@ -2626,44 +2547,35 @@ extern "C" void render_cuda(t_cuda			*cuda,
 	cudaMemcpy(cuda->mem[4], cameras_data, sizeof(t_cam), cudaMemcpyHostToDevice);
 
 
-	rt_launcher <<< grid_size, threads_per_block >>> ((unsigned int *)cuda->mem[0],
-												(char *)cuda->mem[1], gen_objects->mem_size,
-												u_time,
-												(t_scene *)cuda->mem[3], (t_cam *)cuda->mem[4],
-												(char *)cuda->mem[2], gen_lights->mem_size, (int *)cuda->mem[5],
-												*tex0,
-												*tex1,
-												*tex2,
-												*tex3,
+	rt_launcher <<< grid_size, threads_per_block >>> ((unsigned int *)cuda->mem[0], \
+												(char *)cuda->mem[1], \
+												gen_objects->mem_size, \
+												u_time, \
+												(t_scene *)cuda->mem[3], \
+												(t_cam *)cuda->mem[4], \
+												(char *)cuda->mem[2], \
+												gen_lights->mem_size, \
+												(int *)cuda->mem[5], \
+												*tex0, \
+												*tex1, \
+												*tex2, \
+												*tex3, \
 												*skybox);
 
 	cudaDeviceSynchronize();
 
-	// check for errors
 	cudaError_t error = cudaGetLastError();
-	// HANDLE_ERROR(error);
-	if (error != cudaSuccess)
-	{
-	 fprintf(stderr, "CUDA1 ERROR: %s \n", cudaGetErrorString(error));
-	}
+	HANDLE_ERROR(error);
 
-	//lecture framebuffer
-	HANDLE_ERROR(cudaMemcpy(pixel_data, cuda->mem[0], scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost));
-	// error = cudaMemcpy(pixel_data, cuda->mem[0], scene_data->win_w * scene_data->win_h * sizeof(int), cudaMemcpyDeviceToHost);
-	// if (error != cudaSuccess)
-	// {
-	//  fprintf(stderr, "CUDA2 ERROR: %s \n", cudaGetErrorString(error));
-	// }
+	HANDLE_ERROR(cudaMemcpy(pixel_data, cuda->mem[0], \
+						scene_data->win_w * scene_data->win_h * sizeof(int), \
+						cudaMemcpyDeviceToHost));
 
-	//lecture target
 	if (scene_data->flag & OPTION_RUN)
 	{
-		HANDLE_ERROR(cudaMemcpy(target, cuda->mem[5], sizeof(int), cudaMemcpyDeviceToHost));
-		// error = cudaMemcpy(target, cuda->mem[5], sizeof(int), cudaMemcpyDeviceToHost);
+		HANDLE_ERROR(cudaMemcpy(target, cuda->mem[5], \
+								sizeof(int), \
+								cudaMemcpyDeviceToHost));
 		scene_data->flag ^= OPTION_RUN;
 	}
-	// if (error != cudaSuccess)
-	// {
-	//  fprintf(stderr, "CUDA3 ERROR: %s \n", cudaGetErrorString(error));
-	// }
 }
