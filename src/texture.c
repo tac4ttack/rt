@@ -22,6 +22,8 @@ void	texture_load_from_file(t_env *e, char *file, int slot)
 		s_error("Error: incorrect texture color format", e);
 	e->textures[slot].rowstride = gdk_pixbuf_get_rowstride(e->textures[slot].pixbuf);
 	e->textures[slot].pixels = gdk_pixbuf_get_pixels(e->textures[slot].pixbuf);
+	e->scene->tex_res[slot].x = e->textures[slot].w;
+	e->scene->tex_res[slot].y = e->textures[slot].h;
 	
 
 	guchar	*picsou;
@@ -39,7 +41,6 @@ void	texture_load_from_file(t_env *e, char *file, int slot)
 		}
 		j++;
 	}
-	// printf("test int %d\n", e->textures[slot].i_pixels[325]); // semble ok
 
 
 
@@ -177,15 +178,15 @@ void	texture_load_from_file(t_env *e, char *file, int slot)
 void	texture_load_default(t_env *e)
 {
 	texture_load_from_file(e, "./textures/default/0.bmp", 0);
-	e->scene->tex0 = &e->textures[0].tex;
-	texture_load_from_file(e, "./textures/default/0.bmp", 1);
-	e->scene->tex1 = &e->textures[1].tex;
-	texture_load_from_file(e, "./textures/default/0.bmp", 2);
-	e->scene->tex2 = &e->textures[2].tex;
-	texture_load_from_file(e, "./textures/default/0.bmp", 3);
-	e->scene->tex3 = &e->textures[3].tex;
+	e->scene->tex[0] = e->textures[0].tex;
+	texture_load_from_file(e, "./textures/default/1.bmp", 1);
+	e->scene->tex[1] = e->textures[1].tex;
+	texture_load_from_file(e, "./textures/default/2.bmp", 2);
+	e->scene->tex[2] = e->textures[2].tex;
+	texture_load_from_file(e, "./textures/default/4.bmp", 3);
+	e->scene->tex[3] = e->textures[3].tex;
 	texture_load_from_file(e, "./textures/default/skybox.bmp", 4);
-	e->scene->skybox = &e->textures[4].tex;
+	e->scene->tex[4] = e->textures[4].tex;
 }
 
 void	texture_init(t_env *e)

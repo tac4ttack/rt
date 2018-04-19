@@ -510,12 +510,8 @@ typedef struct			s_scene
 	t_cam				*cameras;
 	void				*mem_lights;
 	void				*mem_obj;
-	cudaTextureObject_t *tex0;
-	cudaTextureObject_t *tex1;
-	cudaTextureObject_t *tex2;
-	cudaTextureObject_t *tex3;
-	cudaTextureObject_t tex[4];
-	cudaTextureObject_t *skybox;
+	cudaTextureObject_t tex[5];
+	uint2				tex_res[5];
 }						t_scene;
 
 typedef struct			s_cuda
@@ -535,21 +531,21 @@ typedef struct			s_tex
 
 
 // OCL TO CUDA -> need tests
-__device__ unsigned int	skybox(float3 dir, cudaTextureObject_t skybox)
+__device__ unsigned int	skybox(float3 dir, cudaTextureObject_t skybox, uint2 res)
 {
 	unsigned int	color = 0;
 	int2			uv = make_int2(0);
 
-	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * M_PI))) * 1024);
-	uv.y = (int)floor((0.5 - (asin(dir.y) / M_PI)) * 512);
+	uv.x = (int)floor((0.5 + (atan2(dir.z, dir.x) / (2 * M_PI))) * res.x);
+	uv.y = (int)floor((0.5 - (asin(dir.y) / M_PI)) * res.y);
 	if (uv.x < 0)
 		uv.x = -uv.x;
 	if (uv.y < 0)
 		uv.y = -uv.y;
-	if (uv.x >= 1024)
-		uv.x %= (1024 - 1);
-	if (uv.y >= 512)
-		uv.y %= (512 - 1);
+	if (uv.x >= res.x)
+		uv.x %= (res.x - 1);
+	if (uv.y >= res.y)
+		uv.y %= (res.y - 1);
 	// color = texture[uv.y + uv.x * width];
 	color = tex2D<uint>(skybox, uv.x, uv.y);
 	return (color);
@@ -996,7 +992,7 @@ __device__ unsigned int	plane_checkerboard(float3 normale, float3 pos, unsigned 
 
 
 // OCL TO CUDA -> need tests
-__device__ unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, float3 ratio, float3 offset, cudaTextureObject_t texture, int width, int height)
+__device__ unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis, float3 ratio, float3 offset, cudaTextureObject_t texture, uint2 res)
 {
 	float3			v_axis = make_float3(0.f);
 	int2			uv = make_int2(0);
@@ -1004,14 +1000,14 @@ __device__ unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis
 	v_axis = cross(u_axis, normale);
 	uv.x = (int)(floor(dot(pos, u_axis) * ratio.x + offset.x));
 	uv.y = (int)(floor(dot(pos, v_axis) * ratio.y + offset.y));
-	uv.x %= width - 1;
-	uv.y %= height - 1;
+	uv.x %= res.x - 1;
+	uv.y %= res.y - 1;
 	if (uv.x < 0)
-		uv.x = (uv.x + width - 1);
+		uv.x = (uv.x + res.x - 1);
 	if (uv.y < 0)
-		uv.y = (uv.y + height - 1);
-	uv.x %= width - 1;
-	uv.y %= height - 1;
+		uv.y = (uv.y + res.y - 1);
+	uv.x %= res.x - 1;
+	uv.y %= res.y - 1;
 	// return (texture[uv.y + uv.x * width]);
 	return (tex2D<uint>(texture, uv.x, uv.y));
 }
@@ -1313,29 +1309,29 @@ __device__ float3 get_kube_normal(t_kube *kube, float3 hitpos)
 
 
 // OCL TO CUDA -> need tests in use (earth texture missing)
-__device__ unsigned int		sphere_texture(float3 pos, cudaTextureObject_t texture, int t_width, int t_height, float3 ratio, float3 offset)
+__device__ unsigned int		sphere_texture(float3 pos, cudaTextureObject_t texture, uint2 res, float3 ratio, float3 offset)
 {
 	unsigned int	color = 0;
 	int3			uv = make_int3(0);
 	int3			size = make_int3(0);
 
-	size.x = (int)(floor(t_width * ratio.x));
-	size.y = (int)(floor(t_height * ratio.y));
+	size.x = (int)(floor(res.x * ratio.x));
+	size.y = (int)(floor(res.y * ratio.y));
 	uv.x = (int)(floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * size.x + offset.x));
 	uv.y = (int)(floor((0.5 - (asin(pos.y) / M_PI)) * size.y + offset.y));
 	if (uv.x < 0)
 	{
-		uv.x %= t_width;
-		uv.x = (uv.x - t_width) * -1;
+		uv.x %= res.x;
+		uv.x = (uv.x - (int)res.y) * -1;
 	}
 	else
-		uv.x %= t_width;
+		uv.x %= res.x;
 	if (uv.y < 0)
-		uv.y %= t_height;
+		uv.y %= res.y;
 	else
 	{
-		uv.y %= t_height;
-		uv.y = (uv.y - t_height) * -1;
+		uv.y %= res.y;
+		uv.y = (uv.y - (int)res.y) * -1;
 	}
 	// color = texture[uv.x + uv.y * t_width];
 	color = tex2D<uint>(texture, uv.x, uv.y);
@@ -1721,7 +1717,7 @@ __device__ t_ret	inter_cone(t_cone *cone, float3 ray, float3 origin)
 }
 
 // OCL TO CUDA -> need test
-__device__ unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, cudaTextureObject_t texture, int t_width, int t_height, float3 ratio, float3 offset)
+__device__ unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, cudaTextureObject_t texture, uint2 res, float3 ratio, float3 offset)
 {
 	unsigned int	color = 0;
 	float3			v_axis = make_float3(0.f);
@@ -1735,20 +1731,20 @@ __device__ unsigned int		cone_texture(float3 pos, float3 dir, float3 u_axis, cud
 		npos -= 10;
 	while (npos < 0)
 		npos += 10;
-	uv.y = (int)(floor((length(npos * dir) / 10) * ratio.y * (t_height - 1) + offset.y));
+	uv.y = (int)(floor((length(npos * dir) / 10) * ratio.y * (res.y - 1) + offset.y));
 	npos = dot(pos, u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)(floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * ratio.x * (t_width - 1) + offset.x));
-	uv.x %= t_width - 1;
-	uv.y %= t_height - 1;
+	uv.x = (int)(floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * ratio.x * (res.x - 1) + offset.x));
+	uv.x %= res.x - 1;
+	uv.y %= res.y - 1;
 	if (uv.x < 0)
-		uv.x = uv.x + t_width - 1;
+		uv.x = uv.x + res.x - 1;
 	if (uv.y < 0)
 		uv.y = -uv.y;
 	else
-		uv.y = (uv.y - t_height - 1) * -1;
-	uv.x %= t_width - 1;
-	uv.y %= t_height - 1;
+		uv.y = (uv.y - (int)res.y - 1) * -1;
+	uv.x %= res.x - 1;
+	uv.y %= res.y - 1;
 	// color = (unsigned int)texture[uv.x + (uv.y * t_width)];
 	color = tex2D<uint>(texture, uv.x, uv.y);
 	return (color);
@@ -1867,7 +1863,7 @@ __device__ float3		get_hit_normal(t_scene *scene, float3 ray, t_hit hit)
 }
 
 // OCL TO CUDA -> need test
-__device__ unsigned int		cylinder_texture(float3 pos, t_cylinder *cyl, cudaTextureObject_t texture, int t_width, int t_height)
+__device__ unsigned int		cylinder_texture(float3 pos, t_cylinder *cyl, cudaTextureObject_t texture, uint2 res)
 {
 	unsigned int	color = 0;
 	float3			v_axis = make_float3(0.f);
@@ -1881,20 +1877,20 @@ __device__ unsigned int		cylinder_texture(float3 pos, t_cylinder *cyl, cudaTextu
 		npos -= 10;
 	if (dot(pos, cyl->dir) < 0)
 		npos = (npos - 10) * -1;
-	uv.y = (int)(floor((npos / 10) * t_height * cyl->diff_ratio.y + cyl->diff_offset.y));
+	uv.y = (int)(floor((npos / 10) * res.y* cyl->diff_ratio.y + cyl->diff_offset.y));
 	npos = dot(pos, cyl->u_axis);
 	vpos = dot(pos, v_axis);
-	uv.x = (int)(floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * t_width * cyl->diff_ratio.x + cyl->diff_offset.x));
-	uv.x %= t_width;
-	uv.y %= t_height;
+	uv.x = (int)(floor((0.5 + (atan2(npos, vpos) / (2 * M_PI))) * res.x * cyl->diff_ratio.x + cyl->diff_offset.x));
+	uv.x %= res.x;
+	uv.y %= res.y;
 	if (uv.x < 0)
-		uv.x = uv.x + t_width;
+		uv.x = uv.x + res.x;
 	if (uv.y < 0)
 		uv.y = -uv.y;
 	else
-		uv.y = (uv.y - t_height) * -1;
-	uv.x %= t_width;
-	uv.y %= t_height;
+		uv.y = (uv.y - (int)res.y) * -1;
+	uv.x %= res.x;
+	uv.y %= res.y;
 	// color = (unsigned int)texture[uv.x + (uv.y * t_width)];
 	color = tex2D<uint>(texture, uv.x, uv.y);
 	return (color);
@@ -1936,7 +1932,7 @@ __device__ unsigned int			phong(t_scene *scene, t_hit hit, float3 ray)
 	float3	 			speculos = make_float3(0.f);
 
 	obj = hit.obj;
-	if ((hit.obj->flags & OBJ_FLAG_CHECKERED) || hit.obj->flags & OBJ_FLAG_DIFF_MAP)
+	if ((hit.obj->flags & OBJ_FLAG_CHECKERED) || hit.obj->flags & OBJ_FLAG_DIFF_MAP && hit.obj->diff_map_id != -1)
 		hue = hit.color;
 	else
 		hue = obj->color;
@@ -2250,21 +2246,21 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 						new_hit.normal = get_hit_normal(scene, new_ray, new_hit);
 						new_hit.pos = new_hit.pos + (0.001f * new_hit.normal);
 
-						if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-							new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), *scene->tex0, 1024, 512, ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
+						if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id != -1))
+							new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
 						else if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
 							new_hit.color = sphere_checkerboard(normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
 
-						else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-							new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((t_plane *)new_hit.obj)->u_axis, ((t_plane *)new_hit.obj)->diff_ratio, ((t_plane *)new_hit.obj)->diff_offset, *scene->tex0, 1024, 512);
+						else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id > -1))
+							new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((t_plane *)new_hit.obj)->u_axis, ((t_plane *)new_hit.obj)->diff_ratio, ((t_plane *)new_hit.obj)->diff_offset, scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id]);
 						else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
 							new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
 
-						else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-							new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (t_cylinder *)new_hit.obj, *scene->tex0, 1024, 512);
+						else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id > -1))
+							new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (t_cylinder *)new_hit.obj, scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id]);
 
-						else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-							new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((t_cone *)new_hit.obj)->u_axis, *scene->tex0, 1024, 512, ((t_cone *)new_hit.obj)->diff_ratio, ((t_cone *)new_hit.obj)->diff_offset);
+						else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id > -1))
+							new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((t_cone *)new_hit.obj)->u_axis, scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_cone *)new_hit.obj)->diff_ratio, ((t_cone *)new_hit.obj)->diff_offset);
 						else
 							new_hit.color = new_hit.obj->color;
 		
@@ -2274,7 +2270,7 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 					else
 					{
 						if (scene->flag & OPTION_SKYBOX)
-							ncolor = skybox(new_ray, *scene->skybox);
+							ncolor = skybox(new_ray, scene->tex[4], scene->tex_res[4]);
 						else
 							ncolor = get_ambient(scene, BACKCOLOR);
 						tor[(i * 2) + 1] = tor_push(new_ray, new_hit.normal, new_hit.pos, 0, 0, 0, ncolor, 0, 1 - fr);
@@ -2309,22 +2305,21 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 				new_hit.normal = get_hit_normal(scene, new_ray, new_hit);
 				new_hit.pos = new_hit.pos + (new_hit.dist / SHADOW_BIAS * new_hit.normal);
 
-
-				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), *scene->tex0, 1024, 512, ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
+				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id > -1))
+					new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
 				else if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
 					new_hit.color = sphere_checkerboard(normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
 
-				else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((t_plane *)new_hit.obj)->u_axis, ((t_plane *)new_hit.obj)->diff_ratio, ((t_plane *)new_hit.obj)->diff_offset, *scene->tex0, 1024, 512);
+				else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id > -1))
+					new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((t_plane *)new_hit.obj)->u_axis, ((t_plane *)new_hit.obj)->diff_ratio, ((t_plane *)new_hit.obj)->diff_offset, scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id]);
 				else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
 					new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
 
-				else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (t_cylinder *)new_hit.obj, *scene->tex0, 1024, 512);
+				else if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id > -1))
+					new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, (t_cylinder *)new_hit.obj, scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id]);
 
-				else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-					new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((t_cone *)new_hit.obj)->u_axis, *scene->tex0, 1024, 512, ((t_cone *)new_hit.obj)->diff_ratio, ((t_cone *)new_hit.obj)->diff_offset);
+				else if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id > -1))
+					new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((t_cone *)new_hit.obj)->u_axis, scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_cone *)new_hit.obj)->diff_ratio, ((t_cone *)new_hit.obj)->diff_offset);
 				else
 					new_hit.color = new_hit.obj->color;
 				
@@ -2334,7 +2329,7 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 			else
 			{
 				if (scene->flag & OPTION_SKYBOX)
-					ncolor = skybox(new_ray, *scene->skybox);
+					ncolor = skybox(new_ray, scene->tex[4], scene->tex_res[4]);
 				else
 					ncolor = get_ambient(scene, BACKCOLOR);
 				tor[(2 * i) + 2] = tor_push(new_ray, new_hit.normal, new_hit.pos, 0, 0, 0, ncolor, 0, fr);
@@ -2347,157 +2342,6 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 	}
 	return (tor_final_color(tor));
 }
-
-// OCL TO CUDA -> need test
-// __device__ unsigned int	fresnel(const t_scene *scene, float3 ray, t_hit old_hit, int depth, unsigned int color)
-// {
-// 	t_hit			new_hit;
-// 	unsigned int	ncolor = 0;
-// 	float3			refract = make_float3(0.f);
-// 	float3			bounce = make_float3(0.f);
-// 	float			fr = 0.f;
-// 	float			ft = 0.f;
-// 	float			eta = 0.f;
-// 	float			cos1 = 0.f;
-// 	float			sint = 0.f;
-// 	t_tor			tor[64];
-// 	int				i = 0;
-
-// 	depth = (int)powf(2.f, (float)depth) - 1;
-// 	i = 0;
-// 	while (i < 64)
-// 	{
-// 		tor[i].activate = 0;
-// 		tor[i].prim = make_float3(0.f);
-// 		tor[i].normale = make_float3(0.f);
-// 		tor[i].pos = make_float3(0.f);
-// 		tor[i].coef_ref = 0;
-// 		tor[i].coef_tra = 0;
-// 		tor[i].color = 0;
-// 		tor[i].opacity = 0;
-// 		tor[i].mem_index = 0;
-// 		tor[i].id = 0;
-// 		tor[i].type = 0;
-// 		tor[i].dist = 0;
-// 		i++;
-// 	}
-// 	i = 0;
-// 	tor[i] = tor_push(ray, old_hit.normal, old_hit.pos, old_hit.obj->reflex, old_hit.obj->refract, old_hit.obj->opacity, color, old_hit.mem_index, old_hit.obj->id, old_hit.obj->type, 0, 0);
-// 	while (i < 31 && i < depth)
-// 	{
-// 		if (tor[i].coef_tra != 0)
-// 		{
-// 			eta = 1 / tor[i].coef_tra;
-// 			cos1 = dot(tor[i].normale, tor[i].prim);
-// 			if (cos1 >= 0)
-// 				eta = tor[i].coef_tra;
-// 			if (cos1 >= 0)
-// 				sint = tor[i].coef_tra * sqrtf(1 - cos1 * cos1);
-// 			else
-// 				sint = 1 / tor[i].coef_tra * sqrtf(1 - cos1 * cos1);
-// 			if (sint >= 1)
-// 				fr = 1;
-// 			else if (cos1 < 0)
-// 				fr = reflect_ratio(1, tor[i].coef_tra, cos1, sint);
-// 			else
-// 				fr = reflect_ratio(tor[i].coef_tra, 1, cos1, sint);
-// 			// if (fr > 0.99)
-// 			// 	fr = 1;
-// 			// if (fr < 0.01)
-// 			// 	fr = 0;
-// 			ft = 1 - fr;
-// 			if (fr < 1)
-// 			{
-// 				if (tor[i].type != OBJ_PLANE)
-// 					refract = refract_ray(scene, tor[i].prim, tor[i].normale, tor[i].coef_tra);
-// 				else
-// 					refract = tor[i].prim;
-// 				if (cos1 < 0)
-// 					new_hit = ray_hit(scene, tor[i].pos + (0.001f * (2.f * -tor[i].normale)), refract, 0);
-// 				else
-// 					new_hit = ray_hit(scene, tor[i].pos, refract, 0);
-// 				if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
-// 				{
-// 					if (cos1 < 0)
-// 					 	new_hit.pos = (new_hit.dist * refract) + tor[i].pos + (0.001f * (2.f * -tor[i].normale));
-// 					else
-// 						new_hit.pos = (new_hit.dist * refract) + tor[i].pos;
-// 					new_hit.normal = get_hit_normal(scene, refract, new_hit);
-// 					new_hit.pos = new_hit.pos + (0.001f * new_hit.normal);
-
-
-// 					/*if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 						new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, (( t_sphere *)new_hit.obj)->diff_ratio, (( t_sphere *)new_hit.obj)->diff_offset);
-// 					if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-// 						new_hit.color = sphere_checkerboard(normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
-
-// 					if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 						new_hit.color = plane_texture(new_hit.normal, new_hit.pos, (( t_plane *)new_hit.obj)->u_axis, (( t_plane *)new_hit.obj)->diff_ratio, (( t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
-// 					if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-// 						new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
-
-// 					if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 						new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, ( t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
-
-// 					if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 						new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, (( t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, (( t_cone *)new_hit.obj)->diff_ratio, (( t_cone *)new_hit.obj)->diff_offset);
-// */
-
-// 					ncolor = phong(scene, new_hit, refract);
-// 					tor[i * 2 + 1] = tor_push(refract, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type, 0, ft);
-// 				}
-// 			}
-// 		}
-// 		else if (tor[i].coef_ref != 0)
-// 			fr = 1;
-// 		else
-// 			fr = 0;
-// 		if (fr > 0)
-// 		{
-// 			cos1 = dot(tor[i].normale, tor[i].prim);
-// 			bounce = bounce_ray(scene, tor[i].prim, tor[i]);
-// 			if (cos1 >= 0)
-// 				new_hit = ray_hit(scene, tor[i].pos + (0.001f * (2.f * -tor[i].normale)), bounce, 0);
-// 			else
-// 				new_hit = ray_hit(scene, tor[i].pos, bounce, 0);
-// 			if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
-// 			{
-// 				if (cos1 >= 0)
-// 					new_hit.pos = (new_hit.dist * bounce) + tor[i].pos + (0.001f * (2.f * -tor[i].normale));
-// 				else
-// 					new_hit.pos = (new_hit.dist * bounce) + tor[i].pos;
-// 				new_hit.normal = get_hit_normal(scene, bounce, new_hit);
-// 				new_hit.pos = new_hit.pos + (0.001f * new_hit.normal);
-// /*
-
-// 				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 					new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), scene->texture_earth, 4915, 2457, (( t_sphere *)new_hit.obj)->diff_ratio, (( t_sphere *)new_hit.obj)->diff_offset);
-// 				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-// 					new_hit.color = sphere_checkerboard(normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
-
-// 				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 					new_hit.color = plane_texture(new_hit.normal, new_hit.pos, (( t_plane *)new_hit.obj)->u_axis, (( t_plane *)new_hit.obj)->diff_ratio, (( t_plane *)new_hit.obj)->diff_offset, scene->texture_star, 1500, 1500);
-// 				if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-// 					new_hit.color = plane_checkerboard(new_hit.normal, new_hit.pos, new_hit.obj->color, new_hit.obj->check_size);
-
-// 				if ((new_hit.obj->type == OBJ_CYLINDER) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 					new_hit.color = cylinder_texture(new_hit.pos - new_hit.obj->pos, ( t_cylinder *)new_hit.obj, scene->texture_star, 1500, 1500);
-
-// 				if ((new_hit.obj->type == OBJ_CONE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-// 					new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, (( t_cone *)new_hit.obj)->u_axis, scene->texture_star, 1500, 1500, (( t_cone *)new_hit.obj)->diff_ratio, (( t_cone *)new_hit.obj)->diff_offset);
-// */
-
-
-// 				ncolor = phong(scene, new_hit, bounce);
-// 				tor[i * 2 + 2] = tor_push(bounce, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.mem_index, new_hit.obj->id, old_hit.obj->type, fr, 0);
-// 			}
-// 		}
-// 		i = i + 1;
-// 		while (i < 31 && tor[i].activate == 0)
-// 			i = i + 1;
-// 	}
-// 	return (tor_final_color(tor));
-// }
 
 // OCL TO CUDA -> need test
 __device__ unsigned int	get_pixel_color(t_scene *scene, float3 ray, int *target, bool isHim, int index)
@@ -2525,21 +2369,21 @@ __device__ unsigned int	get_pixel_color(t_scene *scene, float3 ray, int *target,
 		hit.pos = hit.pos + (hit.dist / 1000.f * hit.normal);
 
 
-		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			 hit.color = sphere_texture(normalize(hit.obj->pos - hit.pos), *scene->tex0, 1024, 512, ((t_sphere *)hit.obj)->diff_ratio, ((t_sphere *)hit.obj)->diff_offset);
+		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (hit.obj->diff_map_id > -1))
+			 hit.color = sphere_texture(normalize(hit.obj->pos - hit.pos), scene->tex[hit.obj->diff_map_id], scene->tex_res[hit.obj->diff_map_id], ((t_sphere *)hit.obj)->diff_ratio, ((t_sphere *)hit.obj)->diff_offset);
 		else if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = sphere_checkerboard(normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
 
-		else if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = plane_texture(hit.normal, hit.pos, ((t_plane *)hit.obj)->u_axis, ((t_plane *)hit.obj)->diff_ratio, ((t_plane *)hit.obj)->diff_offset, *scene->tex0, 1024, 512);
+		else if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (hit.obj->diff_map_id > -1))
+			hit.color = plane_texture(hit.normal, hit.pos, ((t_plane *)hit.obj)->u_axis, ((t_plane *)hit.obj)->diff_ratio, ((t_plane *)hit.obj)->diff_offset, scene->tex[hit.obj->diff_map_id], scene->tex_res[hit.obj->diff_map_id]);
 		else if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = plane_checkerboard(hit.normal, hit.pos, hit.obj->color, hit.obj->check_size);
 
-		else if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = cylinder_texture(hit.pos - hit.obj->pos, (t_cylinder *)hit.obj, *scene->tex0, 1024, 512);
+		else if ((hit.obj->type == OBJ_CYLINDER) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (hit.obj->diff_map_id > -1))
+			hit.color = cylinder_texture(hit.pos - hit.obj->pos, (t_cylinder *)hit.obj, scene->tex[hit.obj->diff_map_id], scene->tex_res[hit.obj->diff_map_id]);
 
-		else if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP))
-			hit.color = cone_texture(hit.pos - hit.obj->pos, hit.obj->dir, ((t_cone *)hit.obj)->u_axis, *scene->tex0, 1024, 512, ((t_cone *)hit.obj)->diff_ratio, ((t_cone *)hit.obj)->diff_offset);
+		else if ((hit.obj->type == OBJ_CONE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (hit.obj->diff_map_id > -1))
+			hit.color = cone_texture(hit.pos - hit.obj->pos, hit.obj->dir, ((t_cone *)hit.obj)->u_axis, scene->tex[hit.obj->diff_map_id], scene->tex_res[hit.obj->diff_map_id], ((t_cone *)hit.obj)->diff_ratio, ((t_cone *)hit.obj)->diff_offset);
 
 		color = phong(scene, hit, ray);
 		if (((hit.obj->refract != 0 && hit.obj->opacity < 1) || hit.obj->reflex > 0) && depth > 0)
@@ -2550,7 +2394,7 @@ __device__ unsigned int	get_pixel_color(t_scene *scene, float3 ray, int *target,
 	
 	if (scene->flag & OPTION_SKYBOX)
 	{
-		color = skybox(ray, *scene->skybox);
+		color = skybox(ray, scene->tex[4], scene->tex_res[4]);
 		return (color);
 	}
 	else
@@ -2667,23 +2511,11 @@ __device__ unsigned int	ray_trace(	int					index,
 	scene->mem_obj = mem_objects;
 	scene->mem_size_obj = mem_size_objects;
 	scene->mem_size_lights = mem_size_lights;
-	scene->tex0 = &tex0;
-	scene->tex1 = &tex1;
-	scene->tex2 = &tex2;
-	scene->tex3 = &tex3;
-	scene->skybox = &skybox;
 	scene->tex[0] = tex0;
 	scene->tex[1] = tex1;
 	scene->tex[2] = tex2;
 	scene->tex[3] = tex3;
-
-	if (x == 0 && y == 0)
-	{
-		uint test1, test2;
-		test1 = tex2D<uint>(scene->tex[0], 0, 0);
-		test2 = tex2D<uint>(scene->tex[0], 415, 315);
-		printf("testicule A %d \t testicule B %d\n", test1, test2);
-	}
+	scene->tex[4] = skybox;
 	
 	if (scene->flag & OPTION_RUN && scene->mou_x + scene->win_h * scene->mou_y == index)
 		*target = -1;
@@ -2753,18 +2585,6 @@ __global__ void rt_launcher(unsigned int *output,
 	int row = blockIdx.y * blockDim.y + threadIdx.y;
 	int index = row * scene_data->win_w + col;
 
-	// if (col == 0 && row == 0)
-	// {
-	// 	uint test;
-	// 	test = tex2D<uint>(tex0, 0, 0);
-	// 	printf("testicule A %d\n", test);
-	// 	test = tex2D<uint>(tex0, 415, 315);
-	// 	printf("testicule B %d\n", test);
-		// printf("testicule y %f\n", test.y);
-		// printf("testicule z %f\n", test.z);
-		// printf("testicule w %f\n", test.w);
-	// }
-
 	output[index] = ray_trace(index, mem_objects, mem_size_objects,	u_time, \
 							scene_data, cameras_data, mem_lights, mem_size_lights, target, \
 							tex0, tex1, tex2, tex3, skybox);
@@ -2786,6 +2606,7 @@ extern "C" void render_cuda(t_cuda			*cuda,
 {
 	dim3					threads_per_block(8, 8);
 	dim3					grid_size(scene_data->win_w / threads_per_block.x, scene_data->win_h / threads_per_block.y);
+	
 		/*printf("GPU\n");
 		printf("t_cam %zu\n", sizeof(t_cam));
 		printf("t_scene %zu\n", sizeof(t_scene));
@@ -2805,6 +2626,7 @@ extern "C" void render_cuda(t_cuda			*cuda,
 	cudaMemcpy(cuda->mem[2], gen_lights->mem, gen_lights->mem_size, cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->mem[3], scene_data, sizeof(t_scene), cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->mem[4], cameras_data, sizeof(t_cam), cudaMemcpyHostToDevice);
+
 
 	rt_launcher <<< grid_size, threads_per_block >>> ((unsigned int *)cuda->mem[0],
 												(char *)cuda->mem[1], gen_objects->mem_size,

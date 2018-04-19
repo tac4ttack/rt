@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/19 12:30:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/19 14:36:21 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,12 @@ typedef struct			s_float3
 	float				z;
 	float				w;
 }						t_float3;
+
+typedef struct			s_uint2
+{
+	unsigned int		x;
+	unsigned int		y;
+}						t_uint2;
 
 # ifdef DCUDA
 #  define FT_FLOAT3	t_float3
@@ -471,16 +477,8 @@ typedef struct			s_scene
 	t_cam				*cameras;
 	void				*mem_lights;
 	void				*mem_obj;
-	unsigned int		*texture_earth;
-	unsigned int		*texture_moon;
-	unsigned int		*texture_earth_cloud;
-	unsigned int		*texture_star;
-	cudaTextureObject_t *tex0;
-	cudaTextureObject_t *tex1;
-	cudaTextureObject_t *tex2;
-	cudaTextureObject_t *tex3;
-	cudaTextureObject_t tex[4];
-	cudaTextureObject_t *skybox;
+	cudaTextureObject_t tex[5];
+	t_uint2				tex_res[5];
 }						t_scene;
 
 typedef	struct			s_env
