@@ -6,7 +6,7 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 15:27:01 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/14 15:29:41 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/19 22:46:39 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,7 @@ void		*cuda_destruct(t_cuda **ptr_cuda)
 		}
 		cuda->nb_mem--;
 	}
+	ft_memdel((void **)&cuda->mem);
+	ft_memdel((void **)ptr_cuda);
 	return (NULL);
 }
