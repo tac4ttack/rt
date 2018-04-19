@@ -1812,17 +1812,16 @@ __device__ float3		get_sphere_normal(t_hit *hit, t_sphere *sphere, t_scene *scen
 	if (sphere->flags & OBJ_FLAG_CUT)
 	{
 		t_ret tmp  = mini_inter_sphere(sphere, ray, ACTIVECAM.pos);
-		if (tmp.dist < hit->dist)
-			res = sphere->pos - pos;
+		if (tmp.dist + 0.1f < hit->dist)
+			res = -pos;
 		else
-			res = pos - sphere->pos;
-		//return (res);
+			res = pos;
 	}
 	else
 		res = pos;
 
 	res = vector_get_inverse(&res, &sphere->dir);
-	return (res);
+	return (normalize(res));
 }
 
 // OCL TO CUDA -> need test
