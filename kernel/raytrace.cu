@@ -1006,8 +1006,8 @@ __device__ unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis
 		uv.x = (uv.x + res.x - 1);
 	if (uv.y < 0)
 		uv.y = (uv.y + res.y - 1);
-	uv.x %= res.x - 1;
-	uv.y %= res.y - 1;
+	// uv.x %= res.x - 1;
+	// uv.y %= res.y - 1;
 	// return (texture[uv.y + uv.x * width]);
 	return (tex2D<uint>(texture, uv.x, uv.y));
 }

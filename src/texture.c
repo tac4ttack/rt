@@ -1,197 +1,124 @@
 #include "rt.h"
 
-void	texture_destroy(t_env *e, t_texture *tex)
-{
-	cudaDestroyTextureObject(tex->tex);
-	cudaFreeArray(tex->cu_array);
-	g_object_unref(tex->pixbuf);
-	ft_memdel((void**)&tex);
-}
-
-void	texture_load_from_file(t_env *e, char *file, int slot)
+static void		texture_load_from_file(t_env *e, char *file, int slot)
 {
 	cudaError_t error;
 
-	// gtk file loading
 	e->textures[slot].pixbuf = gdk_pixbuf_new_from_file(file, &e->ui->error);
 	g_assert_no_error(e->ui->error);
 	e->textures[slot].w = gdk_pixbuf_get_width(e->textures[slot].pixbuf);
 	e->textures[slot].h = gdk_pixbuf_get_height(e->textures[slot].pixbuf);
-	e->textures[slot].n_channels = gdk_pixbuf_get_n_channels(e->textures[slot].pixbuf);
-	if (e->textures[slot].n_channels != 3)
+	e->textures[slot].n_cha = gdk_pixbuf_get_n_channels( \
+													e->textures[slot].pixbuf);
+	if (e->textures[slot].n_cha != 3)
 		s_error("Error: incorrect texture color format", e);
-	e->textures[slot].rowstride = gdk_pixbuf_get_rowstride(e->textures[slot].pixbuf);
+	e->textures[slot].rows = gdk_pixbuf_get_rowstride(e->textures[slot].pixbuf);
 	e->textures[slot].pixels = gdk_pixbuf_get_pixels(e->textures[slot].pixbuf);
 	e->scene->tex_res[slot].x = e->textures[slot].w;
 	e->scene->tex_res[slot].y = e->textures[slot].h;
-	
+}	
 
-	guchar	*picsou;
-	int		i = 0, j = 0;
-	if (!(e->textures[slot].i_pixels = ft_memalloc(sizeof(unsigned int) * e->textures[slot].w * e->textures[slot].h)))
+static void 	texture_copy_raw_data(t_env *e, t_texture *texture)
+{
+	guchar		*pixel;
+	int			i;
+	int			j;
+
+	i = 0;
+	j = 0;
+	if (!(texture->i_pixels = ft_memalloc(sizeof(unsigned int) * texture->w * texture->h)))
 		s_error("Error: Failed allocate image int datas", e);
-	while (j < e->textures[slot].h)
+	while (j < texture->h)
 	{
 		i = 0;
-		while (i < e->textures[slot].w)
+		while (i < texture->w)
 		{
-			picsou = e->textures[slot].pixels + j * e->textures[slot].rowstride + i * e->textures[slot].n_channels;
-			e->textures[slot].i_pixels[i + (j * e->textures[slot].w)] = (picsou[0] << 16) + (picsou[1] << 8) + picsou[2];
+			pixel = texture->pixels + j * texture->rows + i * texture->n_cha;
+			texture->i_pixels[i + (j * texture->w)] = (pixel[0] << 16) + (pixel[1] << 8) + pixel[2];
 			i++;
 		}
 		j++;
 	}
-
-
-
-	// gdk pixbuf pixels copy float format
-	
-	// if (!(e->textures[slot].f_pixels = ft_memalloc(sizeof(float) * e->textures[slot].w * e->textures[slot].h * 4)))
-	// 	s_error("Error: Failed allocate image float datas", e);
-	// int		i, j;
-	// i = 0;
-	// j = 0;
-	// while (i < (e->textures[slot].h * e->textures[slot].w * 4))
-	// {
-	// 	e->textures[slot].f_pixels[i++] = (float)e->textures[slot].pixels[j++] / 255.f;
-	// 	e->textures[slot].f_pixels[i++] = (float)e->textures[slot].pixels[j++] / 255.f;
-	// 	e->textures[slot].f_pixels[i++] = (float)e->textures[slot].pixels[j++] / 255.f;
-	// 	e->textures[slot].f_pixels[i++] = 0;
-	// }
-
-	// if (slot == 0)
-	// {
-	// 	int x, y;
-	// 	x = 350;
-	// 	y = 235;
-	// 	printf("\ntest x=%d y=%d | u = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y)]);
-	// 	printf("test x=%d y=%d | v = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 1]);
-	// 	printf("test x=%d y=%d | w = %f\n\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 2]);
-	// 	x = 450;
-	// 	y = 75;
-	// 	printf("test x=%d y=%d | u = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y)]);
-	// 	printf("test x=%d y=%d | v = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 1]);
-	// 	printf("test x=%d y=%d | w = %f\n\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 2]);
-	// 	x = 415;
-	// 	y = 315;
-	// 	printf("test x=%d y=%d | u = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y)]);
-	// 	printf("test x=%d y=%d | v = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 1]);
-	// 	printf("test x=%d y=%d | w = %f\n\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 2]);
-	// 	x = 325;
-	// 	y = 0;
-	// 	printf("test x=%d y=%d | u = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y)]);
-	// 	printf("test x=%d y=%d | v = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 1]);
-	// 	printf("test x=%d y=%d | w = %f\n\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 2]);
-	// 	x = 325;
-	// 	y = 50;
-	// 	printf("test x=%d y=%d | u = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y)]);
-	// 	printf("test x=%d y=%d | v = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 1]);
-	// 	printf("test x=%d y=%d | w = %f\n\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 2]);
-	// 	x = 752;
-	// 	y = 0;
-	// 	printf("test x=%d y=%d | u = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y)]);
-	// 	printf("test x=%d y=%d | v = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 1]);
-	// 	printf("test x=%d y=%d | w = %f\n\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 2]);
-	// 	x = 0;
-	// 	y = 0;
-	// 	printf("test x=%d y=%d | u = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y)]);
-	// 	printf("test x=%d y=%d | v = %f\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 1]);
-	// 	printf("test x=%d y=%d | w = %f\n\n", x, y, e->textures[slot].f_pixels[(x * 4) + (e->textures[slot].w * 4 * y) + 2]);
-	// }
-
-
-
-	// // gdk pixbuf pixels copy float3 format
-	// int		i, j = 0;
-	// if (!(e->textures[slot].f3_pixels = ft_memalloc(sizeof(float3) * e->textures[slot].w * e->textures[slot].h)))
-	// 	s_error("Error: Failed allocate image float3 datas", e);
-	// while (i < e->textures[slot].h * e->textures[slot].w)
-	// {
-	// 	e->textures[slot].f3_pixels[i].x = (float)e->textures[slot].pixels[j++] / 255.f;
-	// 	e->textures[slot].f3_pixels[i].y = (float)e->textures[slot].pixels[j++] / 255.f;
-	// 	e->textures[slot].f3_pixels[i].z = (float)e->textures[slot].pixels[j++] / 255.f;
-	// 	i++;
-	// }
-	// printf("test fx %f\n", e->textures[slot].f3_pixels[(325)].x);
-	// printf("test fy %f\n", e->textures[slot].f3_pixels[(325)].y);
-	// printf("test fz %f\n\n", e->textures[slot].f3_pixels[(325)].z);
-
-
-	// channelDesc
-	e->textures[slot].channel_desc = cudaCreateChannelDesc((int)sizeof(unsigned int) * 8, 0, 0, 0, \
-													cudaChannelFormatKindUnsigned);
-
-
-
-	// cudaArray
-	error = cudaMallocArray(&e->textures[slot].cu_array,\
-					&e->textures[slot].channel_desc,\
-					e->textures[slot].w,\
-					e->textures[slot].h,\
-					0);
-	if (error != cudaSuccess)
-		fprintf(stderr, "cudaMallocArray  ERROR: %s \n", cudaGetErrorString(error));
-
-
-
-	// cudaArray fill
-	error = cudaMemcpyToArray(e->textures[slot].cu_array, 0, 0,\
-					e->textures[slot].i_pixels,\
-					(e->textures[slot].w) * e->textures[slot].h * sizeof(unsigned int),\
-					cudaMemcpyHostToDevice);
-	if (error != cudaSuccess)
-		fprintf(stderr, "cudaMemcpyToArray ERROR: %s \n", cudaGetErrorString(error));
-
-
-
-	// resDesc
-	ft_memset(&e->textures[slot].res_desc, 0, \
-			sizeof(e->textures[slot].res_desc));
-	e->textures[slot].res_desc.resType = cudaResourceTypeArray;
-	e->textures[slot].res_desc.res.array.array = e->textures[slot].cu_array;
-
-
-
-	// texDesc
-	ft_memset(&e->textures[slot].tex_desc, 0, \
-				sizeof(e->textures[slot].tex_desc));
-	e->textures[slot].tex_desc.addressMode[0] = cudaAddressModeWrap;
-	e->textures[slot].tex_desc.addressMode[1] = cudaAddressModeWrap;
-	e->textures[slot].tex_desc.filterMode = cudaFilterModePoint;
-	e->textures[slot].tex_desc.readMode = cudaReadModeElementType;
-	e->textures[slot].tex_desc.normalizedCoords = FALSE;
-	e->textures[slot].tex = 0;
-
-
-	// textureObject creation
-	error = cudaCreateTextureObject(&e->textures[slot].tex,\
-							&e->textures[slot].res_desc,\
-							&e->textures[slot].tex_desc,\
-							NULL);
-	printf("texture \"%s\" set in slot #%d\n", file, slot);
-	if (error != cudaSuccess)
-		fprintf(stderr, \
-		"TEXTURE cudaCreateTextureObject LOAD CUDA  ERROR: %s \n",\
-		cudaGetErrorString(error));
 }
 
-void	texture_load_default(t_env *e)
+static void		texture_create_cudarray(t_env *e, t_texture *texture)
 {
-	texture_load_from_file(e, "./textures/default/0.bmp", 0);
-	e->scene->tex[0] = e->textures[0].tex;
-	texture_load_from_file(e, "./textures/default/1.bmp", 1);
-	e->scene->tex[1] = e->textures[1].tex;
-	texture_load_from_file(e, "./textures/default/2.bmp", 2);
-	e->scene->tex[2] = e->textures[2].tex;
-	texture_load_from_file(e, "./textures/default/4.bmp", 3);
-	e->scene->tex[3] = e->textures[3].tex;
-	texture_load_from_file(e, "./textures/default/skybox.bmp", 4);
-	e->scene->tex[4] = e->textures[4].tex;
+	cudaError_t error;
+
+	texture->channel_desc = cudaCreateChannelDesc(32, 0, 0, 0, \
+											cudaChannelFormatKindUnsigned);
+	error = cudaMallocArray(&texture->cu_array, &texture->channel_desc, \
+							texture->w, texture->h, 0);
+	if (error != cudaSuccess)
+	{
+		ft_putendl(cudaGetErrorString(error));
+		s_error("\x1b[2;31mError can't create texture array\x1b[0m", e);
+	}
+	error = cudaMemcpyToArray(texture->cu_array, 0, 0,\
+					texture->i_pixels,\
+					(texture->w) * texture->h * sizeof(unsigned int),\
+					cudaMemcpyHostToDevice);
+	if (error != cudaSuccess)
+	{
+		ft_putendl(cudaGetErrorString(error));
+		s_error("\x1b[2;31mError can't copy texture to array\x1b[0m", e);
+	}
+	ft_memset(&texture->res_desc, 0, \
+			sizeof(texture->res_desc));
+	texture->res_desc.resType = cudaResourceTypeArray;
+	texture->res_desc.res.array.array = texture->cu_array;
+}
+
+static void		texture_finalize_object(t_env *e, t_texture *texture)
+{
+	cudaError_t error;
+
+	ft_memset(&texture->tex_desc, 0, \
+				sizeof(texture->tex_desc));
+	texture->tex_desc.addressMode[0] = cudaAddressModeWrap;
+	texture->tex_desc.addressMode[1] = cudaAddressModeWrap;
+	texture->tex_desc.filterMode = cudaFilterModePoint;
+	texture->tex_desc.readMode = cudaReadModeElementType;
+	texture->tex_desc.normalizedCoords = FALSE;
+	texture->tex = 0;
+	error = cudaCreateTextureObject(&texture->tex,\
+							&texture->res_desc,\
+							&texture->tex_desc,\
+							NULL);
+	if (error != cudaSuccess)
+	{
+		ft_putendl(cudaGetErrorString(error));
+		s_error("\x1b[2;31mError can't create texture object\x1b[0m", e);
+	}
 }
 
 void	texture_init(t_env *e)
 {
 	if (!(e->textures = ft_memalloc(sizeof(t_texture) * 5)))
 		s_error("Error: Failed allocate host textures data", e);
-	texture_load_default(e);
+	texture_load_from_file(e, "./textures/default/0.bmp", 0);
+	texture_copy_raw_data(e, &e->textures[0]);
+	texture_create_cudarray(e, &e->textures[0]);
+	texture_finalize_object(e, &e->textures[0]);
+	e->scene->tex[0] = e->textures[0].tex;
+	texture_load_from_file(e, "./textures/default/1.bmp", 1);
+	texture_copy_raw_data(e, &e->textures[1]);
+	texture_create_cudarray(e, &e->textures[1]);
+	texture_finalize_object(e, &e->textures[1]);
+	e->scene->tex[1] = e->textures[1].tex;
+	texture_load_from_file(e, "./textures/default/2.bmp", 2);
+	texture_copy_raw_data(e, &e->textures[2]);
+	texture_create_cudarray(e, &e->textures[2]);
+	texture_finalize_object(e, &e->textures[2]);
+	e->scene->tex[2] = e->textures[2].tex;
+	texture_load_from_file(e, "./textures/default/3.bmp", 3);
+	texture_copy_raw_data(e, &e->textures[3]);
+	texture_create_cudarray(e, &e->textures[3]);
+	texture_finalize_object(e, &e->textures[3]);
+	e->scene->tex[3] = e->textures[3].tex;
+	texture_load_from_file(e, "./textures/default/skybox.bmp", 4);
+	texture_copy_raw_data(e, &e->textures[4]);
+	texture_create_cudarray(e, &e->textures[4]);
+	texture_finalize_object(e, &e->textures[4]);
+	e->scene->tex[4] = e->textures[4].tex;
 }

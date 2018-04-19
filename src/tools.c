@@ -6,17 +6,31 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/19 12:23:41 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/19 17:03:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
+void			texture_destroy(t_env *e, t_texture *tex)
+{
+	cudaDestroyTextureObject(tex->tex);
+	cudaFreeArray(tex->cu_array);
+	g_object_unref(tex->pixbuf);
+	ft_memdel((void**)tex);
+}
+
+
 void	flush(t_env *e)
 {
 	int i;
 
-	i = -1;
+	i = 0;
+	while (i < 5)
+	{	
+		// texture_destroy(e, &e->textures[i]); // cause segfault
+		i++;
+	}
 	if (e->cuda)
 		cuda_destruct(&e->cuda);
 	gen_destruct(&e->gen_objects);
@@ -73,8 +87,9 @@ int		gtk_quit(GtkApplication *app, gpointer data)
 	g_object_unref(e->ui->app);
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
 	flush(e);
-	//test
 	cudaDeviceReset();
+	while(1)
+	;
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
 	exit(EXIT_SUCCESS);
 	return (0);

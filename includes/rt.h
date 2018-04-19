@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/19 14:36:21 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/19 16:44:53 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -425,23 +425,6 @@ typedef	struct			s_xml
 	int					excl;
 }						t_xml;
 
-typedef struct			s_rtx
-{
-	GdkPixbuf			*pixbuf;
-	guchar				*pixels;
-	int					width;
-	int					height;
-	int					rowstride;
-	int					n_channels;
-}						t_rtx;
-
-typedef struct			s_tex
-{
-	unsigned int		*pixel_array;
-	int					width;
-	int					height;
-}						t_tex;
-
 typedef struct				s_texture
 {
 	struct cudaChannelFormatDesc	channel_desc;
@@ -454,9 +437,8 @@ typedef struct				s_texture
 	cudaTextureObject_t				tex;
 	unsigned int					w;
 	unsigned int					h;
-	int								rowstride;
-	int								n_channels;
-	
+	int								rows;
+	int								n_cha;
 }							t_texture;
 
 typedef struct			s_scene
@@ -710,8 +692,6 @@ void					xml_write_kube(t_kube *kube, const int fd);
 
 
 void					texture_init(t_env *e);
-void					texture_load_default(t_env *e);
-void					texture_load_from_file(t_env *e, char *file, int slot);
 void					texture_destroy(t_env *e, t_texture *tex);
 
 #endif
