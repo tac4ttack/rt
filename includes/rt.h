@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/18 21:00:37 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/19 12:30:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -475,6 +475,12 @@ typedef struct			s_scene
 	unsigned int		*texture_moon;
 	unsigned int		*texture_earth_cloud;
 	unsigned int		*texture_star;
+	cudaTextureObject_t *tex0;
+	cudaTextureObject_t *tex1;
+	cudaTextureObject_t *tex2;
+	cudaTextureObject_t *tex3;
+	cudaTextureObject_t tex[4];
+	cudaTextureObject_t *skybox;
 }						t_scene;
 
 typedef	struct			s_env
@@ -502,12 +508,6 @@ typedef	struct			s_env
 	int					target;
 
 	t_texture			*textures;
-	cudaTextureObject_t		*tex_0;
-	cudaTextureObject_t		*tex_1;
-	cudaTextureObject_t		*tex_2;
-	cudaTextureObject_t		*tex_3;
-	t_rtx				raw_texture;
-	t_tex				*texture;
 
 	int					current_index_objects;
 }						t_env;
@@ -528,7 +528,8 @@ void					render_cuda(t_cuda *cuda, int 		*pixel_data, int *target,
 							cudaTextureObject_t *tex0,
 							cudaTextureObject_t *tex1,
 							cudaTextureObject_t *tex2,
-							cudaTextureObject_t *tex3);
+							cudaTextureObject_t *tex3,
+							cudaTextureObject_t *skybox);
 
 FT_FLOAT3				add_cl_float(FT_FLOAT3 v1, FT_FLOAT3 v2);
 FT_FLOAT3				sub_cl_float(FT_FLOAT3 v1, FT_FLOAT3 v2);

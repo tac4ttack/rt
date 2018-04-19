@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/14 22:18:33 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/19 12:23:41 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@ void	flush(t_env *e)
 	int i;
 
 	i = -1;
-	while (++i < NB_TEXTURE)
-		if (e->texture[i].pixel_array)
-			ft_memdel((void **)&e->texture[i].pixel_array);
-	ft_memdel((void **)&e->texture);
 	if (e->cuda)
 		cuda_destruct(&e->cuda);
 	gen_destruct(&e->gen_objects);

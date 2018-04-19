@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 19:22:54 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/17 13:09:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/19 12:17:10 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ int				draw(t_env *e)
 					e->fps.u_time,
 					e->scene,
 					e->cameras,
-					e->tex_0,
-					e->tex_1,
-					e->tex_2,
-					e->tex_3);
+					e->scene->tex0,
+					e->scene->tex1,
+					e->scene->tex2,
+					e->scene->tex3,
+					e->scene->skybox);
 	return (0);
 }

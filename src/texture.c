@@ -177,18 +177,20 @@ void	texture_load_from_file(t_env *e, char *file, int slot)
 void	texture_load_default(t_env *e)
 {
 	texture_load_from_file(e, "./textures/default/0.bmp", 0);
-	e->tex_0 = &e->textures[0].tex;
+	e->scene->tex0 = &e->textures[0].tex;
 	texture_load_from_file(e, "./textures/default/0.bmp", 1);
-	e->tex_1 = &e->textures[1].tex;
+	e->scene->tex1 = &e->textures[1].tex;
 	texture_load_from_file(e, "./textures/default/0.bmp", 2);
-	e->tex_2 = &e->textures[2].tex;
+	e->scene->tex2 = &e->textures[2].tex;
 	texture_load_from_file(e, "./textures/default/0.bmp", 3);
-	e->tex_3 = &e->textures[3].tex;
+	e->scene->tex3 = &e->textures[3].tex;
+	texture_load_from_file(e, "./textures/default/skybox.bmp", 4);
+	e->scene->skybox = &e->textures[4].tex;
 }
 
 void	texture_init(t_env *e)
 {
-	if (!(e->textures = ft_memalloc(sizeof(t_texture) * 4)))
+	if (!(e->textures = ft_memalloc(sizeof(t_texture) * 5)))
 		s_error("Error: Failed allocate host textures data", e);
 	texture_load_default(e);
 }
