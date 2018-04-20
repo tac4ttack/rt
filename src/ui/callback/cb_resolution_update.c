@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:48 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/15 17:41:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/20 10:42:01 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void		ui_update_resolution(t_env *e, int width, int height)
 		s_error("\x1b[1;31mCan't initialize new pixel buffer\x1b[0m", e);
 	ft_bzero(e->pixel_data, sizeof(int) * WIDTH * HEIGHT);
 	if (!(e->cuda->update_buffer(e->cuda, WIDTH * HEIGHT * 4, 0)))
-		s_error("\x1b[2;31mFailed replacing pixel buffer\x1b[0m", e);
+		s_error("\x1b[2;31mFailed replacing Cuda pixel buffer\x1b[0m", e);
 	gtk_widget_set_size_request(e->ui->render, WIDTH, HEIGHT);
 	e->ui->pixbuf = gdk_pixbuf_new_from_data((const guchar *)e->pixel_data, \
 					GDK_COLORSPACE_RGB, 1, 8, WIDTH, \
