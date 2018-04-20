@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/19 17:08:52 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/19 22:40:47 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	flush(t_env *e)
 
 	i = 0;
 	while (i < 5)
-	{	
+	{
 		// texture_destroy(e, &e->textures[i]); // cause segfault
 		i++;
 	}
@@ -57,6 +57,8 @@ void	s_error(char *str, t_env *e)
 	ft_putendl(str);
 	if (e)
 		flush(e);
+		while (1)
+		;
 	exit(EXIT_FAILURE);
 }
 
@@ -89,6 +91,8 @@ int		gtk_quit(GtkApplication *app, gpointer data)
 	flush(e);
 	cudaDeviceReset();
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
+	while (1)
+	;
 	exit(EXIT_SUCCESS);
 	return (0);
 }

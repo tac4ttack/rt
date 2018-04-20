@@ -1045,7 +1045,7 @@ __device__ bool		solve_quadratic(float a, float b, float c, float *inter0, float
 	return (true);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __device__ double3	thor_get_rotate(double3 *that, float3 *rot)
 {
 	double3		n = make_double3(0.f);
@@ -1191,7 +1191,7 @@ __device__ double	ft_solve_4(double t[5])
 }
 
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __device__ t_ret		inter_thor(t_thor *thor, float3 ray, float3 origin)
 {
 	t_ret			ret;
@@ -1238,7 +1238,7 @@ __device__ t_ret		inter_thor(t_thor *thor, float3 ray, float3 origin)
 	return (ret);
 }
 
-// OCL TO CUDA -> need tests in use 
+// OCL TO CUDA -> need tests in use
 __device__ float3 get_thor_normal(t_thor *thor, float3 hitpos)
 {
 	float3	res = make_float3(0.f);
@@ -1307,7 +1307,7 @@ __device__ float3 get_kube_normal(t_kube *kube, float3 hitpos)
 
 
 // OCL TO CUDA -> need tests in use (earth texture missing)
-__device__ unsigned int		sphere_texture(float3 pos, cudaTextureObject_t texture, uint2 res, float3 ratio, float3 offset)
+__device__ unsigned int		sphere_texture(t_object *sphere, float3 pos, cudaTextureObject_t texture, uint2 res, float3 ratio, float3 offset)
 {
 	unsigned int	color = 0;
 	int3			uv = make_int3(0);
@@ -1315,8 +1315,12 @@ __device__ unsigned int		sphere_texture(float3 pos, cudaTextureObject_t texture,
 
 	size.x = (int)(floor(res.x * ratio.x));
 	size.y = (int)(floor(res.y * ratio.y));
+
+	pos = vector_get_rotate(&pos, &sphere->dir);
+
 	uv.x = (int)(floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * size.x + offset.x));
 	uv.y = (int)(floor((0.5 - (asin(pos.y) / M_PI)) * size.y + offset.y));
+
 	if (uv.x < 0)
 	{
 		uv.x %= res.x;
@@ -1348,12 +1352,12 @@ __device__ t_ret	sphere_cut(t_sphere *sphere, float3 ray, float3 origin, float r
 	ret.wall = 0;
 	ret.normal = make_float3(0.f);
 
-	bord1.x = sphere->pos.x + sphere->radius;    
-	bord2.x = sphere->pos.x - sphere->radius;	  	
-	bord1.y = sphere->pos.y + sphere->radius;		
-	bord2.y = sphere->pos.y - sphere->radius;		
-	bord1.z = sphere->pos.z + sphere->radius;		
-	bord2.z = sphere->pos.z - sphere->radius;	
+	bord1.x = sphere->pos.x + sphere->radius;
+	bord2.x = sphere->pos.x - sphere->radius;
+	bord1.y = sphere->pos.y + sphere->radius;
+	bord2.y = sphere->pos.y - sphere->radius;
+	bord1.z = sphere->pos.z + sphere->radius;
+	bord2.z = sphere->pos.z - sphere->radius;
 
 	pt_i1.x = origin.x + ray.x * res1;
 	pt_i1.y = origin.y + ray.y * res1;
@@ -1362,7 +1366,7 @@ __device__ t_ret	sphere_cut(t_sphere *sphere, float3 ray, float3 origin, float r
 	pt_i2.x = origin.x + ray.x * res2;
 	pt_i2.y = origin.y + ray.y * res2;
 	pt_i2.z = origin.z + ray.z * res2;
-	
+
 	if (pt_i1.x <= bord1.x - sphere->cut_max.x && \
 		pt_i1.y <= bord1.y - sphere->cut_max.y && \
 		pt_i1.z <= bord1.z - sphere->cut_max.z && \
@@ -1377,7 +1381,7 @@ __device__ t_ret	sphere_cut(t_sphere *sphere, float3 ray, float3 origin, float r
 			 pt_i2.z <= bord1.z - sphere->cut_max.z && \
 			 pt_i2.x >= bord2.x + sphere->cut_min.x && \
 			 pt_i2.y >= bord2.y + sphere->cut_min.y && \
-			 pt_i2.z >= bord2.z + sphere->cut_min.z) 
+			 pt_i2.z >= bord2.z + sphere->cut_min.z)
 	{
 		ret.dist = res2;
 	}
@@ -1404,13 +1408,13 @@ __device__ t_ret	cylinder_cut(t_cylinder *cyl, float3 ray, float3 origin, float 
 	pt_i2.z = origin.z + ray.z * res2;
 
 	// ne fonctionne que pour cylindre aligné en Z
-	bord1.x = cyl->pos.x + cyl->radius + 1;    
-	bord2.x = cyl->pos.x - cyl->radius - 1;	  	
-	bord1.y = cyl->pos.y + cyl->radius + 1;		
-	bord2.y = cyl->pos.y - cyl->radius - 1;		
+	bord1.x = cyl->pos.x + cyl->radius + 1;
+	bord2.x = cyl->pos.x - cyl->radius - 1;
+	bord1.y = cyl->pos.y + cyl->radius + 1;
+	bord2.y = cyl->pos.y - cyl->radius - 1;
 	bord1.z = cyl->pos.z + cyl->radius + 1;
 	bord2.z = cyl->pos.z - cyl->radius - 1;
-	
+
 	if (pt_i1.x <= bord1.x - cyl->cut_max.x && \
 		pt_i1.y <= bord1.y - cyl->cut_max.y && \
 		pt_i1.z <= bord1.z - cyl->cut_max.z && \
@@ -1425,7 +1429,7 @@ __device__ t_ret	cylinder_cut(t_cylinder *cyl, float3 ray, float3 origin, float 
 			 pt_i2.z <= bord1.z - cyl->cut_max.z && \
 			 pt_i2.x >= bord2.x + cyl->cut_min.x && \
 			 pt_i2.y >= bord2.y + cyl->cut_min.y && \
-			 pt_i2.z >= bord2.z + cyl->cut_min.z) 
+			 pt_i2.z >= bord2.z + cyl->cut_min.z)
 	{
 		ret.dist = res2;
 	}
@@ -1474,6 +1478,9 @@ __device__ t_ret	mini_inter_sphere(t_sphere *sphere, float3 ray, float3 origin)
 	ret.wall = 0;
 	ret.normal = make_float3(0.f);
 	pos = origin - sphere->pos;
+	pos = vector_get_rotate(&pos, &sphere->dir);
+	ray = vector_get_rotate(&ray, &sphere->dir);
+
 	abc = get_sphere_abc(sphere->radius, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
@@ -1488,24 +1495,28 @@ __device__ t_ret	mini_inter_sphere(t_sphere *sphere, float3 ray, float3 origin)
 }
 
 
-// OCL TO CUDA -> decoupe noe a test
 __device__ t_ret	inter_sphere(t_sphere *sphere, float3 ray, float3 origin)
 {
 	float3		abc = make_float3(0.f);
 	float		res1 = 0.f;
 	float		res2 = 0.f;
+	float3		save_ray;
 	float3		pos = make_float3(0.f);
 	t_ret		ret;
 
+	save_ray = ray;
 	ret.dist = 0.f;
 	ret.wall = 0;
 	ret.normal = make_float3(0.f);
 	pos = origin - sphere->pos;
+	pos = vector_get_rotate(&pos, &sphere->dir);
+	ray = vector_get_rotate(&ray, &sphere->dir);
+
 	abc = get_sphere_abc(sphere->radius, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
 		return (ret);
 	if (sphere->flags & OBJ_FLAG_PLANE_LIMIT)
-		return (object_limited((t_object *)sphere, res1, res2, ray, origin));
+		return (object_limited((t_object *)sphere, res1, res2, save_ray, origin));
 	else
 	{
 		if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
@@ -1514,11 +1525,10 @@ __device__ t_ret	inter_sphere(t_sphere *sphere, float3 ray, float3 origin)
 			ret.dist = res2;
 	}
 	if (sphere->flags & OBJ_FLAG_CUT)
-		return(sphere_cut(sphere, ray, origin, res1, res2));
+		return(sphere_cut(sphere, ray, pos, res1, res2));
 	return (ret);
 }
 
-// OCL TO CUDA -> OK
 __device__ float3	get_cylinder_normal(t_cylinder *cylinder, t_hit hit)
 {
 	float3		res = make_float3(0.f);
@@ -1793,6 +1803,27 @@ __device__ t_hit		ray_hit(t_scene *scene, float3 origin, float3 ray, float light
 	return (hit);
 }
 
+__device__ float3		get_sphere_normal(t_hit *hit, t_sphere *sphere, t_scene *scene, float3 ray)
+{
+	float3 pos = hit->pos - sphere->pos;
+	pos = vector_get_rotate(&pos, &sphere->dir);
+	float3 res = make_float3(0.f);
+
+	if (sphere->flags & OBJ_FLAG_CUT)
+	{
+		t_ret tmp  = mini_inter_sphere(sphere, ray, ACTIVECAM.pos);
+		if (tmp.dist + 0.1f < hit->dist)
+			res = -pos;
+		else
+			res = pos;
+	}
+	else
+		res = pos;
+
+	res = vector_get_inverse(&res, &sphere->dir);
+	return (normalize(res));
+}
+
 // OCL TO CUDA -> need test
 __device__ float3		get_hit_normal(t_scene *scene, float3 ray, t_hit hit)
 {
@@ -1807,18 +1838,7 @@ __device__ float3		get_hit_normal(t_scene *scene, float3 ray, t_hit hit)
 	else
 	{
 		if (hit.obj->type == OBJ_SPHERE)
-		{ 
-			if (hit.obj->flags & OBJ_FLAG_CUT)
-			{
-				t_ret tmp  = mini_inter_sphere((t_sphere*)hit.obj, ray, ACTIVECAM.pos);
-				if (tmp.dist < hit.dist)
-					res = hit.obj->pos - hit.pos;
-				else
-					res = hit.pos - hit.obj->pos;
-			}
-			else
-				res = hit.pos - hit.obj->pos;
-		}
+			res = get_sphere_normal(&hit, (t_sphere *)hit.obj, scene, ray);
 		else if (hit.obj->type == OBJ_CYLINDER)
 			res = get_cylinder_normal((t_cylinder *)hit.obj, hit);
 		else if (hit.obj->type == OBJ_CONE)
@@ -1981,7 +2001,7 @@ __device__ unsigned int			phong(t_scene *scene, t_hit hit, float3 ray)
 				(col_r > 255 ? col_r = 255 : 0);
 				(col_g > 255 ? col_g = 255 : 0);
 				(col_b > 255 ? col_b = 255 : 0);
-				
+
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 
@@ -2198,15 +2218,15 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 		i++;
 	}
 	i = 0;
-	
-	tor[i] = tor_push(	ray, 
-						old_hit.normal, 
-						old_hit.pos, 
+
+	tor[i] = tor_push(	ray,
+						old_hit.normal,
+						old_hit.pos,
 						old_hit.obj->reflex,
-						old_hit.obj->refract, 
-						old_hit.obj->opacity, 
+						old_hit.obj->refract,
+						old_hit.obj->opacity,
 						color,
-						old_hit.obj->type, 
+						old_hit.obj->type,
 						0);
 
 	while (i < 31 && i < tor_depth)
@@ -2245,7 +2265,7 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 						new_hit.pos = new_hit.pos + (0.001f * new_hit.normal);
 
 						if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id != -1))
-							new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
+							new_hit.color = sphere_texture(new_hit.obj, normalize(new_hit.obj->pos - new_hit.pos), scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
 						else if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
 							new_hit.color = sphere_checkerboard(normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
 
@@ -2261,7 +2281,7 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 							new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((t_cone *)new_hit.obj)->u_axis, scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_cone *)new_hit.obj)->diff_ratio, ((t_cone *)new_hit.obj)->diff_offset);
 						else
 							new_hit.color = new_hit.obj->color;
-		
+
 						ncolor = phong(scene, new_hit, new_ray);
 						tor[(i * 2) + 1] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.obj->type, 1 - fr);
 					}
@@ -2304,7 +2324,7 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 				new_hit.pos = new_hit.pos + (new_hit.dist / SHADOW_BIAS * new_hit.normal);
 
 				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id > -1))
-					new_hit.color = sphere_texture(normalize(new_hit.obj->pos - new_hit.pos), scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
+					new_hit.color = sphere_texture(new_hit.obj, normalize(new_hit.obj->pos - new_hit.pos), scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
 				else if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
 					new_hit.color = sphere_checkerboard(normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
 
@@ -2320,7 +2340,7 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 					new_hit.color = cone_texture(new_hit.pos - new_hit.obj->pos, new_hit.obj->dir, ((t_cone *)new_hit.obj)->u_axis, scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_cone *)new_hit.obj)->diff_ratio, ((t_cone *)new_hit.obj)->diff_offset);
 				else
 					new_hit.color = new_hit.obj->color;
-				
+
 				ncolor = phong(scene, new_hit, new_ray);
 				tor[(2 * i) + 2] = tor_push(new_ray, new_hit.normal, new_hit.pos, new_hit.obj->reflex, new_hit.obj->refract, new_hit.obj->opacity, ncolor, new_hit.obj->type, fr);
 			}
@@ -2352,7 +2372,7 @@ __device__ unsigned int	get_pixel_color(t_scene *scene, float3 ray, int *target,
 	hit = hit_init();
 	hit.dist = MAX_DIST;
 	depth = scene->depth;
-	
+
 	// DEBUG
 	if (depth < 0)
 		printf("!WARNING!\nget_pixel_color | depth < 0 !!!!\n");
@@ -2368,7 +2388,7 @@ __device__ unsigned int	get_pixel_color(t_scene *scene, float3 ray, int *target,
 
 
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (hit.obj->diff_map_id > -1))
-			 hit.color = sphere_texture(normalize(hit.obj->pos - hit.pos), scene->tex[hit.obj->diff_map_id], scene->tex_res[hit.obj->diff_map_id], ((t_sphere *)hit.obj)->diff_ratio, ((t_sphere *)hit.obj)->diff_offset);
+			 hit.color = sphere_texture(hit.obj, normalize(hit.obj->pos - hit.pos), scene->tex[hit.obj->diff_map_id], scene->tex_res[hit.obj->diff_map_id], ((t_sphere *)hit.obj)->diff_ratio, ((t_sphere *)hit.obj)->diff_offset);
 		else if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
 			hit.color = sphere_checkerboard(normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
 
@@ -2389,7 +2409,7 @@ __device__ unsigned int	get_pixel_color(t_scene *scene, float3 ray, int *target,
 
 		return (blend_add(color, bounce_color));
 	}
-	
+
 	if (scene->flag & OPTION_SKYBOX)
 	{
 		color = skybox(ray, scene->tex[4], scene->tex_res[4]);
@@ -2451,10 +2471,10 @@ __device__ unsigned int	ray_trace(	int					index,
 	scene->tex[2] = tex2;
 	scene->tex[3] = tex3;
 	scene->tex[4] = skybox;
-	
+
 	if (scene->flag & OPTION_RUN && scene->mou_x + scene->win_h * scene->mou_y == index)
 		*target = -1;
-	
+
 	final_color = 0;
 
 	if (scene->over_sampling > 1)
