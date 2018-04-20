@@ -106,12 +106,12 @@ void	texture_init(t_env *e)
 	texture_create_cudarray(e, &e->textures[1]);
 	texture_finalize_object(e, &e->textures[1]);
 	e->scene->tex[1] = e->textures[1].tex;
-	texture_load_from_file(e, "./textures/default/2.bmp", 2);
+	texture_load_from_file(e, "./textures/default/6.bmp", 2);
 	texture_copy_raw_data(e, &e->textures[2]);
 	texture_create_cudarray(e, &e->textures[2]);
 	texture_finalize_object(e, &e->textures[2]);
 	e->scene->tex[2] = e->textures[2].tex;
-	texture_load_from_file(e, "./textures/default/3.bmp", 3);
+	texture_load_from_file(e, "./textures/default/4.bmp", 3);
 	texture_copy_raw_data(e, &e->textures[3]);
 	texture_create_cudarray(e, &e->textures[3]);
 	texture_finalize_object(e, &e->textures[3]);
