@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/17 18:15:29 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/20 16:28:04 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef	struct			s_ui
 	int					redraw;
 	unsigned int		light_selector;
 	GError				*error;
-	cl_int4				render_pos;
+	int					render_pos[4];
 	t_keystate			keys;
 	GtkApplication		*app;
 	GtkBuilder			*builder;

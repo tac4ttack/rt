@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/19 16:44:53 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/20 16:43:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 # include <unistd.h>
 # include <math.h>
 # include <sys/time.h>
+# include <fcntl.h>
 # include "libft.h"
 
-# include "cl.h"
 # include "ui.h"
 # include "gen.h"
 # include "t_cuda.h"
@@ -96,6 +96,7 @@
 
 # define NB_TEXTURE			4
 
+
 typedef struct			s_float3
 {
 	float				x;
@@ -104,20 +105,14 @@ typedef struct			s_float3
 	float				w;
 }						t_float3;
 
+# define FT_FLOAT3	t_float3
+# define CUDA		1
+
 typedef struct			s_uint2
 {
 	unsigned int		x;
 	unsigned int		y;
 }						t_uint2;
-
-# ifdef DCUDA
-#  define FT_FLOAT3	t_float3
-#  define CUDA		1
-# else
-#  define FT_FLOAT3	cl_float3
-#  define CUDA		0
-# endif
-
 
 typedef struct			s_object
 {
@@ -465,7 +460,6 @@ typedef struct			s_scene
 
 typedef	struct			s_env
 {
-	t_cl				*cl;
 	t_cuda				*cuda;
 	t_ui				*ui;
 
@@ -476,7 +470,6 @@ typedef	struct			s_env
 	t_xml				*xml;
 	t_cam				*cameras;
 
-	cl_mem				gen_mem;
 	t_gen				*gen_objects;
 	t_gen				*gen_lights;
 
@@ -547,8 +540,6 @@ void					init_gtk_toolbar(t_env *e);
 void					init_gtk_win(t_env *e);
 
 FT_FLOAT3				normalize_vect(FT_FLOAT3 v);
-
-void					opencl_set_args(t_env *e, t_cl *cl);
 
 void					p_error(char *str, t_env *e);
 void					s_error(char *str, t_env *e);

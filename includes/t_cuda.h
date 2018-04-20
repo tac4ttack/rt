@@ -14,6 +14,7 @@ typedef struct			s_cuda
 	bool				(*update_buffer)(struct s_cuda *, size_t, size_t);
 }						t_cuda;
 
+void					cuda_print_mem(void);
 t_cuda					*cuda_construct();
 void					*cuda_destruct();
 bool					cuda_add_buffer(t_cuda *cuda, size_t size);

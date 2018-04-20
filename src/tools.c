@@ -6,19 +6,21 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/20 15:56:25 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/20 19:29:52 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void			cuda_print_mem(void)
+void			cuda_print_mem(void)
 {
 	int						device_id;
 	size_t 					mem_free;
 	size_t 					mem_total;
 	struct cudaDeviceProp	device_prop;
+	char					*str;
 
+	device_id = 0;
 	cudaSetDevice(device_id);
 	cudaGetDeviceProperties(&device_prop, device_id);
 	cudaMemGetInfo(&mem_free, &mem_total);
@@ -27,9 +29,13 @@ static void			cuda_print_mem(void)
 	ft_putstr(" ");
 	ft_putstr(device_prop.name);
 	ft_putstr(" ");
-	ft_putstr(ft_ftoa((float)mem_free / (1024 * 1024)));
+	str = ft_ftoa((float)mem_free / (1024 * 1024));
+	ft_putstr(str);
+	free(str);
 	ft_putstr(" MB Free of ");
-	ft_putstr(ft_ftoa((float)mem_total / (1024 * 1024)));
+	str = ft_ftoa((float)mem_total / (1024 * 1024));
+	ft_putstr(str);
+	free(str);
 	ft_putstr(" MB Total\n");
 }
 
@@ -85,6 +91,7 @@ void	s_error(char *str, t_env *e)
 	if (e)
 		flush(e);
 	cuda_print_mem();
+	cudaDeviceReset();
 	exit(EXIT_FAILURE);
 }
 
@@ -94,6 +101,7 @@ void	p_error(char *str, t_env *e)
 	perror((const char *)str);
 	flush(e);
 	cuda_print_mem();
+	cudaDeviceReset();
 	exit(EXIT_FAILURE);
 }
 
@@ -101,6 +109,7 @@ int		quit(t_env *e)
 {
 	flush(e);
 	cuda_print_mem();
+	cudaDeviceReset();
 	ft_putendl("Exiting");
 	exit(EXIT_SUCCESS);
 	return (0);
@@ -120,6 +129,11 @@ int		gtk_quit(GtkApplication *app, gpointer data)
 	cuda_print_mem();
 	cudaDeviceReset();
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
+
+	int i = 0;
+	while (i < 99999999999)
+		i++;
+		
 	exit(EXIT_SUCCESS);
 	return (0);
 }

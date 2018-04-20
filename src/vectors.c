@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vectors.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 18:51:49 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/13 16:32:21 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/20 16:31:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 FT_FLOAT3			normalize_vect(FT_FLOAT3 v)
 {
 	FT_FLOAT3		res;
-	cl_float		id;
+	float		id;
 
 	id = 1 / sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 	res.x = v.x * id;

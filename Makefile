@@ -8,8 +8,6 @@ RM := 					rm -rf
 INC = $(addprefix $(INC_PATH)/,$(INC_NAMES))
 INC_PATH = ./includes
 
-OPENCL =	-framework OpenCL
-
 LIBFT := $(LIBFT_PATH)/libft.a
 LIBFT_PATH := ./libft
 LIBFT_INC_PATH := ./libft
@@ -18,7 +16,6 @@ LIBFTFLAGS := -lft
 LIBMATHFLAGS := -lm
 
 GTK_CFLAGS		=	$(shell pkg-config --cflags gtk+-3.0)
-GTK_CLIBS		=	$(shell pkg-config --libs gtk+-3.0)
 GTK_CUDALIBS	=	$(shell pkg-config --libs-only-L --libs-only-l gtk+-3.0)
 
 INC_NAMES = 			$(NAME).h \
@@ -207,19 +204,6 @@ SRC_NAME =	 			init.c \
 						ui/callback/cb_obj_cut_y.c \
 						ui/callback/cb_obj_cut_z.c
 
-SRC_CL = $(addprefix $(SRC_PATH)/,$(SRC_CL_NAME))
-SRC_CL_NAME = 	cl/cl_compute.c \
-			cl/cl_construct.c \
-			cl/cl_create_buffer.c \
-			cl/cl_print_error.c \
-			cl/cl_destruct.c \
-			draw_opencl.c \
-			init_opencl.c
-
-OBJ_CL =			$(addprefix $(OBJ_CL_PATH)/,$(OBJ_CL_NAME))
-OBJ_CL_PATH =		./objcl
-OBJ_CL_NAME =		$(SRC_CL_NAME:.c=.o)
-
 SRC_CUDA = $(addprefix $(SRC_PATH)/,$(SRC_CUDA_NAME))
 SRC_CUDA_NAME =		cuda/cuda_construct.c \
 					cuda/cuda_destruct.c \
@@ -253,9 +237,6 @@ opencl: libft $(SRC) $(SRC_CL) $(INC) $(OBJ_PATH) $(OBJ) $(OBJ_CL)
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
 	/usr/local/cuda/bin/nvcc -c $< -o $@ -D DCUDA -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
-$(OBJ_CL_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
-	$(CC) $(CFLAGS) -c $< -o $@ -D DCL -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
-
 $(OBJ_CUDA_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
 	/usr/local/cuda/bin/nvcc -c $< -o $@ -D DCL -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
@@ -276,21 +257,9 @@ $(OBJ_PATH):
 	@mkdir $(OBJ_PATH)/cuda
 	@mkdir $(OBJ_CUDA_PATH)
 	@mkdir $(OBJ_CUDA_PATH)/cuda
-	@mkdir $(OBJ_CL_PATH)
-	@mkdir $(OBJ_CL_PATH)/cl
-
-CPU:
-	@echo "$(GREEN)Checking for CPU ONLY RT$(EOC)"
-	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make cpu_flags $(NAME)
-
-cpu: libft CPU
-cpu_flags:
-$(eval GPU_MACRO = )
 
 GPU:
 	@echo "$(GREEN)Checking for GPU accelerated RT$(EOC)"
-	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
 	@make gpu_flags $(NAME)
 
 gpu: libft GPU
@@ -311,20 +280,6 @@ debugasangpu: debugasanlibft
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
 	@make debug_asan_flag gpu_flags $(NAME)
 
-
-debugcpu: debuglibft
-	@echo "$(GREEN)So you want to compile RT with CPU mode forced and DEBUG enabled hu?$(EOC)"
-	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
-	@echo "$(GREEN)Checking for CPU ONLY RT with debug flags enabled$(EOC)"
-	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make debug_flag cpu_flags $(NAME)
-
-debugasancpu: debugasanlibft
-	@echo "$(GREEN)So you want to compile RT with CPU mode forced and DEBUG enabled hu?$(EOC)"
-	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
-	@echo "$(GREEN)Checking for CPU ONLY RT with ASAN debug flags enabled$(EOC)"
-	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make debug_asan_flag cpu_flags $(NAME)
 
 debug_flag:
 	$(eval DEBUG_MACRO = -DDEBUG -g)

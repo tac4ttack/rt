@@ -10,11 +10,37 @@ static void HandleError(cudaError_t err, const char *file,	int line)
 {
 	if (err != cudaSuccess)
 	{
+		int						device_id = 0;
+		size_t 					mem_free = 0;
+		size_t 					mem_total = 0;
+		struct cudaDeviceProp	device_prop;
+	
+		cudaSetDevice(device_id);
+		cudaGetDeviceProperties(&device_prop, device_id);
+		cudaMemGetInfo(&mem_free, &mem_total);
+		// ft_putstr("\nDevice ");
+		// ft_putnbr(device_id);
+		// ft_putstr(" ");
+		// ft_putstr(device_prop.name);
+		// ft_putstr(" ");
+		// ft_putstr(ft_ftoa((float)mem_free / (1024 * 1024)));
+		// ft_putstr(" MB Free of ");
+		// ft_putstr(ft_ftoa((float)mem_total / (1024 * 1024)));
+		// ft_putstr(" MB Total\n");
+		// ft_putstr(cudaGetErrorString(err));
+		// ft_putstr(" in ");
+		// ft_putstr(file);
+		// ft_putstr(" at line ");
+		// ft_putendl(ft_itoa(line));
+		printf("\nDevice %d %s : %f MB free of %f MB Total\n", \
+				device_id, device_prop.name, (float)mem_free / (1024 * 1024), \
+				(float)mem_total / (1024 * 1024));
 		printf("%s in %s at line %d\n", cudaGetErrorString(err), file, line);
 		cudaDeviceReset();
 		exit( EXIT_FAILURE );
 	}
 }
+
 #define HANDLE_ERROR(err) (HandleError(err, __FILE__, __LINE__))
 
 
@@ -2565,7 +2591,6 @@ extern "C" void render_cuda(t_cuda			*cuda,
 	cudaMemcpy(cuda->mem[2], gen_lights->mem, gen_lights->mem_size, cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->mem[3], scene_data, sizeof(t_scene), cudaMemcpyHostToDevice);
 	cudaMemcpy(cuda->mem[4], cameras_data, sizeof(t_cam), cudaMemcpyHostToDevice);
-
 
 	rt_launcher <<< grid_size, threads_per_block >>> ((unsigned int *)cuda->mem[0], \
 												(char *)cuda->mem[1], \

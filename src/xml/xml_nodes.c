@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 17:15:20 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/20 16:42:26 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,26 @@
 
 int					xml_check_node_format(char **node, int mod)
 {
-	cl_int2			i;
+	int			i[2];
 
-	i.x = 0;
-	i.y = 6;
+	i[0] = 0;
+	i[1] = 6;
 	if (node)
 	{
-		i.y = (mod == 1 ? 9 : i.y);
-		i.y = (mod == 4 ? 15 : i.y);
-		i.y = (mod == 7 ? 31 + 1 : i.y);
+		i[1] = (mod == 1 ? 9 : i[1]);
+		i[1] = (mod == 4 ? 15 : i[1]);
+		i[1] = (mod == 7 ? 31 + 1 : i[1]);
 		if (mod == 2 || mod == 3 || mod == 5 || mod == 6 || mod == 10)
-			i.y = 28 + 1;
+			i[1] = 28 + 1;
 		if (mod == 8 || mod == 9)
-			i.y = 29 + 1;
-		while (i.x <= i.y)
+			i[1] = 29 + 1;
+		while (i[0] <= i[1])
 		{
-			if (i.x == i.y && node[i.x] != NULL)
+			if (i[0] == i[1] && node[i[0]] != NULL)
 				return (1);
-			else if (i.x < i.y && node[i.x] == NULL)
+			else if (i[0] < i[1] && node[i[0]] == NULL)
 				return (1);
-			i.x++;
+			i[0]++;
 		}
 		return (0);
 	}

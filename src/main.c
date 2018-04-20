@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 21:09:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/19 12:32:14 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/20 19:19:41 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int				main(int ac, char **av)
 {
 	t_env		*e;
 
+	cudaDeviceReset();
 	if (ac != 2)
 		print_usage();
 	if (!(e = malloc(sizeof(t_env))))
