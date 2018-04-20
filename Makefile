@@ -244,7 +244,7 @@ all: libft
 
 $(NAME): $(SRC) $(SRC_CUDA) $(INC) $(OBJ_PATH) $(OBJ) $(OBJ_CUDA) $(SRC_CUDA_CU) $(INC_CUDA_CU)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
-	/usr/local/cuda/bin/nvcc -g -o rt -D DCUDA $(OBJ) $(OBJ_CUDA) $(SRC_CUDA_CU) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
+	/usr/local/cuda/bin/nvcc -o rt -D DCUDA $(OBJ) $(OBJ_CUDA) $(SRC_CUDA_CU) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
 
 opencl: libft $(SRC) $(SRC_CL) $(INC) $(OBJ_PATH) $(OBJ) $(OBJ_CL)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
