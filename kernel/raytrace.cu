@@ -2564,8 +2564,7 @@ extern "C" void render_cuda(t_cuda			*cuda,
 
 	cudaDeviceSynchronize();
 
-	cudaError_t error = cudaGetLastError();
-	HANDLE_ERROR(error);
+	HANDLE_ERROR(cudaGetLastError());
 
 	HANDLE_ERROR(cudaMemcpy(pixel_data, cuda->mem[0], \
 						scene_data->win_w * scene_data->win_h * sizeof(int), \
