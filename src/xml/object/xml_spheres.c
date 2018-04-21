@@ -12,16 +12,8 @@
 
 #include "rt.h"
 
-static void	xml_sphere_data_m(t_env *e, char **att, t_node *sphere_node, int *i)
+static void	xml_sphere_data_l(t_env *e, char **att, t_node *sphere_node, int *i)
 {
-	if (ft_strncmp(att[*i], "refract=\"", 9) != 0)
-		s_error("\x1b[2;31mSphere error, REFRACT expected in #8\x1b[0m", e);
-	else
-		xml_data_refract(e, att, i, sphere_node);
-	if (ft_strncmp(att[*i], "opacity=\"", 9) != 0)
-		s_error("\x1b[2;31mSphere error, OPACITY expected in #9\x1b[0m", e);
-	else
-		xml_data_opacity(e, att, i, sphere_node);
 	if (ft_strncmp(att[*i], "p_limit_pos=\"", 13) != 0)
 		s_error("\x1b[2;31mSphere error, P_LIMIT_POS expected in #10\x1b[0m",
 																			e);
@@ -44,6 +36,19 @@ static void	xml_sphere_data_m(t_env *e, char **att, t_node *sphere_node, int *i)
 		s_error("\x1b[1;31mSphere error, FLAG expected in #14\x1b[0m", e);
 	else
 		xml_data_flag(e, att, i, sphere_node);
+}
+
+static void	xml_sphere_data_m(t_env *e, char **att, t_node *sphere_node, int *i)
+{
+	if (ft_strncmp(att[*i], "refract=\"", 9) != 0)
+		s_error("\x1b[2;31mSphere error, REFRACT expected in #8\x1b[0m", e);
+	else
+		xml_data_refract(e, att, i, sphere_node);
+	if (ft_strncmp(att[*i], "opacity=\"", 9) != 0)
+		s_error("\x1b[2;31mSphere error, OPACITY expected in #9\x1b[0m", e);
+	else
+		xml_data_opacity(e, att, i, sphere_node);
+	xml_sphere_data_l(e, att, sphere_node, i);
 }
 
 static void	xml_sphere_data_n(t_env *e, char **att, t_node *sphere_node, int *i)
