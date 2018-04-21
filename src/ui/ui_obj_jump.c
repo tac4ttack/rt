@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:09:07 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:09:43 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/22 00:40:13 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static	char	*obj_jump_get_label(t_env *e, t_object *obj)
 		label = ft_strjoin_frs1(label, " ELLIPSOID");
 	else if (obj->type == OBJ_TORUS)
 		label = ft_strjoin_frs1(label, " TORUS");
+	else if (obj->type == OBJ_KUBE)
+		label = ft_strjoin_frs1(label, " KUBE");
 	return (label);
 }
 
