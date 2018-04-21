@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cuda_update_buffer.c                               :+:      :+:    :+:   */
+/*   cuda_update_buffer.cu                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -18,9 +18,9 @@ bool		cuda_update_buffer(t_cuda *cuda, size_t size, size_t target)
 {
 	if ((cuda->err = cudaFree(cuda->mem[target])) != cudaSuccess)
 		return (cuda_error(cuda->err));
-	if ((cuda->err = cudaMalloc(&(cuda->mem[target]), size) != cudaSuccess))
+	if (cudaMalloc(&(cuda->mem[target]), size) != cudaSuccess)
 		return (cuda_error(cuda->err));
-	if ((cuda->err = cudaMemset(cuda->mem[target], 0,	size) != cudaSuccess))
+	if (cudaMemset(cuda->mem[target], 0, size) != cudaSuccess)
 		return (cuda_error(cuda->err));
 	return (true);
 }

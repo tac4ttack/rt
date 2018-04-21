@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cuda_construct.c                                   :+:      :+:    :+:   */
+/*   cuda_construct.cu                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -17,7 +17,7 @@ t_cuda		*cuda_construct(void)
 {
 	t_cuda *cuda;
 
-	if (!(cuda = ft_memalloc(sizeof(t_cuda))))
+	if (!(cuda = (t_cuda *)ft_memalloc(sizeof(t_cuda))))
 		return (NULL);
 	cuda->add_buffer = cuda_add_buffer;
 	cuda->update_buffer = cuda_update_buffer;
