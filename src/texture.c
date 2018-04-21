@@ -20,7 +20,7 @@ static void		texture_load_from_file(t_env *e, char *file, int slot)
 	&e->ui->error)))
 	{
 		ft_putendl(e->ui->error->message);
-		s_error("\x1b[1;31mError opening UI theme file\x1b[0m", e);
+		s_error("\x1b[1;31mError opening texture file\x1b[0m", e);
 	}
 	g_assert_no_error(e->ui->error);
 	e->textures[slot].w = gdk_pixbuf_get_width(e->textures[slot].pixbuf);

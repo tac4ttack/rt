@@ -6,13 +6,13 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/21 17:36:49 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 20:57:14 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void		load_scene_objects(t_env *e)
+static void	load_scene_objects(t_env *e)
 {
 	t_node	*list;
 
@@ -40,7 +40,7 @@ void		load_scene_objects(t_env *e)
 	ft_putendl("\x1b[1;29mSuccessfully loaded the scene!\n\x1b[0m");
 }
 
-void		load_scene(t_env *e)
+static void	load_scene(t_env *e)
 {
 	t_node	*list;
 
@@ -59,7 +59,7 @@ void		load_scene(t_env *e)
 	load_scene_objects(e);
 }
 
-void		env_init(t_env *e)
+static void	env_init(t_env *e)
 {
 	ft_putendl("\n\x1b[1;32m/\\ Initializing RT environnement /\\\x1b[0m\n");
 	e->scene->depth = 0;
@@ -72,6 +72,13 @@ void		env_init(t_env *e)
 		e->scene->flag |= OPTION_GPU;
 	e->ui->redraw = 1;
 	ft_putendl("\x1b[1;29mRT environnement initialized!\n\x1b[0m");
+}
+
+static bool	scene_requirements(t_env *e, t_scene *scene)
+{
+	if (!scene->n_cams || !e->gen_lights->length || !e->gen_objects->length)
+		return (false);
+	return (true);
 }
 
 void		init(GtkApplication *app, gpointer data)
@@ -92,6 +99,8 @@ void		init(GtkApplication *app, gpointer data)
 		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
 	ft_bzero(e->pixel_data, sizeof(int) * WIDTH * HEIGHT);
 	load_scene(e);
+	if (!scene_requirements(e, e->scene))
+		s_error("\x1b[2;31mScene requirements\x1b[0m", e);
 	ft_putendl("\n\x1b[1;32m/\\ Loading UI... /\\\x1b[0m\n");
 	init_kernel(e);
 	draw(e);

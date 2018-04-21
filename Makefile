@@ -47,6 +47,11 @@ SRC_NAME =	 			init.c \
 						ui/add/ui_add_plane.c \
 						ui/add/ui_add_sphere.c \
 						ui/add/ui_add_torus.c \
+						ui/callback/cb_skybox_check.c \
+						ui/callback/cb_obj_cut_check.c \
+						ui/callback/cb_obj_cut_x.c \
+						ui/callback/cb_obj_cut_y.c \
+						ui/callback/cb_obj_cut_z.c \
 						ui/callback/cb_about_dialog.c \
 						ui/callback/cb_ambient_update.c \
 						ui/callback/cb_cam_dir.c \
@@ -107,6 +112,8 @@ SRC_NAME =	 			init.c \
 						ui/gdkrgba_to_int.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
+						ui/init/init_gtk_obj_cut.c \
+						ui/init/init_cb_obj_cut.c \
 						ui/init/init_cb_cam.c \
 						ui/init/init_cb_light.c \
 						ui/init/init_cb_main.c \
@@ -198,14 +205,7 @@ SRC_NAME =	 			init.c \
 						xml/xml_list.c \
 						xml/xml_nodes.c \
 						xml/xml_scene.c \
-						xml/xml_tools.c \
-						ui/callback/cb_skybox_check.c \
-						ui/callback/cb_obj_cut_check.c \
-						ui/init/init_gtk_obj_cut.c \
-						ui/init/init_cb_obj_cut.c \
-						ui/callback/cb_obj_cut_x.c \
-						ui/callback/cb_obj_cut_y.c \
-						ui/callback/cb_obj_cut_z.c
+						xml/xml_tools.c
 
 SRC_CUDA = $(addprefix $(SRC_PATH)/,$(SRC_CUDA_NAME))
 SRC_CUDA_NAME =		cuda/cuda_construct.c \

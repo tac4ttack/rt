@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/21 20:04:54 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 20:43:46 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,18 @@ void						waiting(char *str) {
 
 void						texture_destroy(t_env *e, t_texture *tex)
 {
-
-	if ((e->cuda->err = cudaDestroyTextureObject(tex->tex)) != cudaSuccess)
-		cuda_error(e->cuda->err);
-	if ((e->cuda->err = cudaFreeArray(tex->cu_array)) != cudaSuccess)
-		cuda_error(e->cuda->err);
-	g_object_unref(tex->pixbuf);
-	ft_memdel((void**)&tex->i_pixels);
+	if (tex && e->cuda)
+	{
+		if ((e->cuda->err = cudaDestroyTextureObject(tex->tex)) != cudaSuccess)
+			cuda_error(e->cuda->err);
+		if ((e->cuda->err = cudaFreeArray(tex->cu_array)) != cudaSuccess)
+			cuda_error(e->cuda->err);
+	}
+	if (tex)
+	{
+		g_object_unref(tex->pixbuf);
+		ft_memdel((void**)&tex->i_pixels);
+	}
 }
 
 void						flush_scene(t_env *e)
@@ -57,34 +62,39 @@ void						flush_scene(t_env *e)
 
 void						flush(t_env *e)
 {
-	int						i;
-
-	i = 0;
+	int i;
 	if (e->textures)
-		while (i < 5)
-		{
-			texture_destroy(e, &e->textures[i]);
-			i++;
-		}
-	ft_memdel((void**)&e->textures);
-	if (e->cuda)
-		cuda_destruct(&e->cuda);
+	{
+		i = 0;
+		if (e->textures)
+			while (i < 5)
+			{
+				texture_destroy(e, &e->textures[i]);
+				i++;
+			}
+		ft_memdel((void**)&e->textures);
+	}
+	cuda_destruct(&e->cuda);
 	gen_destruct(&e->gen_objects);
 	gen_destruct(&e->gen_lights);
 	if (e->ui)
 	{
+		if (e->ui->pixbuf)
+			g_object_unref(e->ui->pixbuf);
 		if (e->ui->surface)
 			cairo_surface_destroy(e->ui->surface);
 		if (e->ui->error)
 			g_error_free(e->ui->error);
-		g_object_unref(e->ui->pixbuf);
+		ft_memdel((void**)&e->ui);
+		ft_putendl("\x1b[1;29mFreed UI environnement\x1b[0m");
 	}
 	flush_scene(e);
 }
 
-int							quit(t_env *e)
+int			quit(t_env *e)
 {
-	flush(e);
+	if (e)
+		flush(e);
 	cuda_print_mem();
 	cudaDeviceReset();
 	ft_putendl("Exiting");
@@ -92,31 +102,25 @@ int							quit(t_env *e)
 	return (0);
 }
 
-int							gtk_quit(GtkApplication *app, gpointer data)
+int			gtk_quit(GtkApplication *app, gpointer data)
 {
-	t_env *e;
-	int		lol;
+	t_env	*e;
 
 	(void)app;
 	e = data;
-
 	gtk_main_quit();
-
-	gtk_widget_destroy(e->ui->main_window);
-
-	g_object_unref(e->ui->app);
-
+	if (e->ui)
+	{
+		gtk_widget_destroy(e->ui->main_window);
+		g_object_unref(e->ui->app);
+	}
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
-
-	flush(e);
-
+	if (e)
+		flush(e);
 	cuda_print_mem();
-
 	cudaDeviceReset();
-	waiting("++8\n");
+	waiting("This is the end...\n");
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
-
-
 	exit(EXIT_SUCCESS);
 	return (0);
 }
