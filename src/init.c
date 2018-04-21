@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/21 20:57:14 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 21:17:17 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ static bool	scene_requirements(t_env *e, t_scene *scene)
 {
 	if (!scene->n_cams || !e->gen_lights->length || !e->gen_objects->length)
 		return (false);
+	if (scene->win_w > 2000|| scene->win_h > 2000)
+		return (false);
 	return (true);
 }
 
@@ -95,12 +97,11 @@ void		init(GtkApplication *app, gpointer data)
 		s_error("\x1b[2;31mCan't initialize lights t_gen\x1b[0m", e);
 	xml_init(e);
 	env_init(e);
-	if (!(e->pixel_data = malloc(sizeof(int) * WIDTH * HEIGHT)))
-		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
-	ft_bzero(e->pixel_data, sizeof(int) * WIDTH * HEIGHT);
 	load_scene(e);
 	if (!scene_requirements(e, e->scene))
 		s_error("\x1b[2;31mScene requirements\x1b[0m", e);
+	if (!(e->pixel_data = ft_memalloc(sizeof(int) * WIDTH * HEIGHT)))
+		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
 	ft_putendl("\n\x1b[1;32m/\\ Loading UI... /\\\x1b[0m\n");
 	init_kernel(e);
 	draw(e);
