@@ -1021,7 +1021,7 @@ __device__ unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis
 	float3			v_axis = make_float3(0.f);
 	int2			uv = make_int2(0);
 
-	v_axis = cross(u_axis, normale);
+	v_axis = cross(normale, u_axis);
 	uv.x = (int)(floor(dot(pos, u_axis) * ratio.x + offset.x));
 	uv.y = (int)(floor(dot(pos, v_axis) * ratio.y + offset.y));
 	uv.x %= res.x - 1;
@@ -1030,10 +1030,9 @@ __device__ unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis
 		uv.x = (uv.x + res.x - 1);
 	if (uv.y < 0)
 		uv.y = (uv.y + res.y - 1);
-	// uv.x %= res.x - 1;
-	// uv.y %= res.y - 1;
-	// return (texture[uv.y + uv.x * width]);
-	return (tex2D<uint>(texture, uv.x, uv.y));
+	uv.x %= res.x - 1;
+	uv.y %= res.y - 1;
+	return (tex2D<uint>(texture, uv.y, uv.x));
 }
 
 // OCL TO CUDA -> OK
@@ -2257,6 +2256,7 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 
 	while (i < 31 && i < tor_depth)
 	{
+		ncolor = 0;
 		int rhododendron = 0;
 		if (tor[i].coef_tra != 0)
 		{

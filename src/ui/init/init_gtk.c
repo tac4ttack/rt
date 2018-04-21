@@ -41,7 +41,6 @@ void		init_gtk(GtkApplication *app, gpointer data)
 		ft_putendl(e->ui->error->message);
 		s_error("\x1b[1;31mError opening UI theme file\x1b[0m", e);
 	}
-
 	init_gtk_widgets(e);
 	g_object_unref(e->ui->builder);
 	e->ui->builder = NULL;
