@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 18:18:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 22:45:01 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@
 # include <math.h>
 # include <sys/time.h>
 # include <fcntl.h>
-# include "libft.h"
+# include <float.h>
+# include <stdbool.h>
+# include <stdint.h>
 
+# include "libft.h"
 # include "ui.h"
 # include "gen.h"
 # include "t_cuda.h"
-
-#include <float.h>
-#include <stdbool.h>
-#include <stdint.h>
+# include "cuda.hl"
 
 # ifdef GPU
 #  define IS_GPU			1
@@ -95,7 +95,6 @@
 # define OBJ_KUBE			9
 
 # define NB_TEXTURE			4
-
 
 typedef struct			s_float3
 {
@@ -420,22 +419,6 @@ typedef	struct			s_xml
 	int					excl;
 }						t_xml;
 
-typedef struct				s_texture
-{
-	struct cudaChannelFormatDesc	channel_desc;
-	struct cudaResourceDesc			res_desc;
-	struct cudaTextureDesc 			tex_desc;
-	struct cudaArray				*cu_array;
-	GdkPixbuf						*pixbuf;
-	guchar							*pixels;
-	unsigned int					*i_pixels;
-	cudaTextureObject_t				tex;
-	unsigned int					w;
-	unsigned int					h;
-	int								rows;
-	int								n_cha;
-}							t_texture;
-
 typedef struct			s_scene
 {
 	unsigned int		n_cams;
@@ -485,14 +468,12 @@ typedef	struct			s_env
 	int					current_index_objects;
 }						t_env;
 
-
-
 void					init_cuda(t_env *e, t_cuda *cuda);
 
 int						draw(t_env *e);
 void					init_kernel(t_env *e);
 
-void					render_cuda(t_cuda *cuda, int 		*pixel_data, int *target,
+void					render_cuda(t_cuda *cuda, int *pixel_data, int *target,
 							t_gen		*gen_objects,
 							t_gen		*gen_lights,
 							float		u_time,
@@ -584,7 +565,7 @@ void					ui_obj_update_limit_plane_check(t_env *e, \
 														t_object *obj);
 void					ui_obj_update_limit_fix_check(t_env *e, \
 													t_object *obj);
-													
+
 void					update_fps(t_fps *fps);
 
 void					xml_allocate_cam(t_env *e);

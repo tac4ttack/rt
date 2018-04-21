@@ -1,0 +1,23 @@
+
+#ifndef CUDA_HL
+# define CUDA_HL
+
+# include "ui.h"
+# include "t_cuda.h"
+
+	typedef struct				s_texture
+	{
+		struct cudaChannelFormatDesc	channel_desc;
+		struct cudaResourceDesc			res_desc;
+		struct cudaTextureDesc 			tex_desc;
+		struct cudaArray				*cu_array;
+		GdkPixbuf						*pixbuf;
+		guchar							*pixels;
+		unsigned int					*i_pixels;
+		cudaTextureObject_t				tex;
+		unsigned int					w;
+		unsigned int					h;
+		int								rows;
+		int								n_cha;
+	}							t_texture;
+#endif
