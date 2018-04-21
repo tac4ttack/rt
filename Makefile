@@ -1,4 +1,4 @@
-NAME = rt
+		NAME = rt
 
 CC = 					clang
 CFLAGS +=				-Wall -Wextra -Werror
@@ -143,6 +143,7 @@ SRC_NAME =	 			init.c \
 						ui/ui_obj_set_torus.c \
 						ui/ui_obj_update.c \
 						ui/ui_obj_update_effects.c \
+						ui/norme.c \
 						update_fps.c \
 						texture.c \
 						vectors.c \

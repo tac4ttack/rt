@@ -684,5 +684,6 @@ void					xml_write_kube(t_kube *kube, const int fd);
 
 void					texture_init(t_env *e);
 void					texture_destroy(t_env *e, t_texture *tex);
+void	ui_obj_update_cut_norm(t_env *e, t_object *obj);
 
 #endif
