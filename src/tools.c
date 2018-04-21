@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/21 20:37:32 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 20:43:46 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void						flush(t_env *e)
 	waiting("flushed the toilet!");
 }
 
-void						s_error(char *str, t_env *e)
+void		s_error(char *str, t_env *e)
 {
 	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
 	ft_putendl(str);
@@ -134,7 +134,7 @@ void						s_error(char *str, t_env *e)
 	exit(EXIT_FAILURE);
 }
 
-void						p_error(char *str, t_env *e)
+void		p_error(char *str, t_env *e)
 {
 	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
 	perror((const char *)str);
@@ -145,7 +145,7 @@ void						p_error(char *str, t_env *e)
 	exit(EXIT_FAILURE);
 }
 
-int							quit(t_env *e)
+int			quit(t_env *e)
 {
 	if (e)
 		flush(e);
@@ -156,14 +156,12 @@ int							quit(t_env *e)
 	return (0);
 }
 
-int							gtk_quit(GtkApplication *app, gpointer data)
+int			gtk_quit(GtkApplication *app, gpointer data)
 {
-	t_env *e;
-	int		lol;
+	t_env	*e;
 
 	(void)app;
 	e = data;
-
 	gtk_main_quit();
 	if (e->ui)
 	{
@@ -174,12 +172,9 @@ int							gtk_quit(GtkApplication *app, gpointer data)
 	if (e)
 		flush(e);
 	cuda_print_mem();
-
 	cudaDeviceReset();
-	waiting("++8\n");
+	waiting("This is the end...\n");
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
-	waiting("flushed the toilet!");
-
 	exit(EXIT_SUCCESS);
 	return (0);
 }
