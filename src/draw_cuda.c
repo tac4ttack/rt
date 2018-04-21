@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 19:22:54 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/20 18:52:21 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 18:34:51 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int				draw(t_env *e)
 	printf("t_cone %zu\n", sizeof(t_cone));
 	printf("t_cone %zu\n", sizeof(t_cone));
 	printf("\n");*/
-	// while(1)
-	// ;
 	render_cuda(e->cuda, e->pixel_data, &e->target,
 					e->gen_objects,
 					e->gen_lights,

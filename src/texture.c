@@ -4,7 +4,12 @@ static void		texture_load_from_file(t_env *e, char *file, int slot)
 {
 	cudaError_t error;
 
-	e->textures[slot].pixbuf = gdk_pixbuf_new_from_file(file, &e->ui->error);
+	if (!(e->textures[slot].pixbuf = gdk_pixbuf_new_from_file(file, &e->ui->error)))
+	{
+		ft_putendl(e->ui->error->message);
+		s_error("\x1b[1;31mError opening UI theme file\x1b[0m", e);
+	}
+	
 	g_assert_no_error(e->ui->error);
 	e->textures[slot].w = gdk_pixbuf_get_width(e->textures[slot].pixbuf);
 	e->textures[slot].h = gdk_pixbuf_get_height(e->textures[slot].pixbuf);

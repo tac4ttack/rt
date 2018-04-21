@@ -143,7 +143,7 @@ SRC_NAME =	 			init.c \
 						ui/ui_obj_set_torus.c \
 						ui/ui_obj_update.c \
 						ui/ui_obj_update_effects.c \
-						ui/norme.c \
+						ui/ui_obj_update_limit_check.c \
 						update_fps.c \
 						texture.c \
 						vectors.c \

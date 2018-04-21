@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 17:35:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 18:04:23 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 20:14:12 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ char		*xml_check_line(t_env *e, char *buf)
 	int		i;
 
 	i = 0;
+	if (buf == NULL)
+		return (NULL);
 	while (buf[i])
 	{
 		if (xml_check_char(buf[i]) != 0)

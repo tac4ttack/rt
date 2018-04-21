@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 18:36:31 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/12 12:10:49 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:47:39 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ui_obj_update_cut(t_env *e, t_object *obj)
 {
-	ui_obj_update_cut_norm(e, obj);
+	ui_obj_update_cut_check(e, obj);
 	gtk_spin_button_set_value(\
 						(GtkSpinButton*)e->ui->obj_cut_x_min_spin, \
 						(gdouble)obj->cut_min.x);
@@ -88,7 +88,8 @@ void	ui_obj_update_diff_map(t_env *e, t_object *obj)
 
 void	ui_obj_update_limit(t_env *e, t_object *obj)
 {
-	ui_obj_update_limit_norm(e, obj);
+	ui_obj_update_limit_plane_check(e, obj);
+	ui_obj_update_limit_fix_check(e, obj);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_limit_dir_spin_x, \
 								(gdouble)obj->limit_dir.x);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_limit_dir_spin_y, \
