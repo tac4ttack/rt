@@ -12,7 +12,7 @@
 
 #include "rt.h"
 
-static void	ui_obj_apply(t_env *e, FT_FLOAT3 *target)
+static void		ui_obj_apply(t_env *e, FT_FLOAT3 *target)
 {
 	(KEY_STATE_I ? *target = rotx(*target, 1 * DEG2RAD) : *target);
 	(KEY_STATE_K ? *target = rotx(*target, -1 * DEG2RAD) : *target);
@@ -28,7 +28,31 @@ static void	ui_obj_apply(t_env *e, FT_FLOAT3 *target)
 	(KEY_STATE_N9 ? target->z += 0.1 : 0);
 }
 
-void		ui_obj(t_env *e)
+void			ui_obj_limit(t_env *e, t_object *obj)
+{
+	if (KEY_STATE_I || KEY_STATE_J || KEY_STATE_K || KEY_STATE_L \
+	|| KEY_STATE_U || KEY_STATE_O)
+		target = &obj->limit_dir;
+	else
+		target = &obj->limit_pos;
+	if (target)
+		ui_obj_apply(e, target);
+}
+
+void			ui_obj_uaxis(t_env *e, t_object *obj)
+{
+	FT_FLOAT3	*target;
+
+	if (obj->type == OBJ_CYLINDER)
+		target = &((t_cylinder *)obj)->u_axis;
+	else if (obj->type == OBJ_CONE)
+		target = &((t_cone *)obj)->u_axis;
+	else if (obj->type == OBJ_PLANE)
+		target = &((t_plane *)obj)->u_axis;
+	ui_obj_apply(e, target);
+}
+
+void			ui_obj(t_env *e)
 {
 	t_object	*obj;
 	FT_FLOAT3	*target;
@@ -47,25 +71,9 @@ void		ui_obj(t_env *e)
 		if ((obj->type == OBJ_CYLINDER || obj->type == OBJ_CONE || \
 		obj->type == OBJ_PLANE) && (KEY_STATE_I || KEY_STATE_J || \
 		KEY_STATE_K || KEY_STATE_L || KEY_STATE_U || KEY_STATE_O))
-		{
-			if (obj->type == OBJ_CYLINDER)
-				target = &((t_cylinder *)obj)->u_axis;
-			else if (obj->type == OBJ_CONE)
-				target = &((t_cone *)obj)->u_axis;
-			else if (obj->type == OBJ_PLANE)
-				target = &((t_plane *)obj)->u_axis;
-			ui_obj_apply(e, target);
-		}
+			ui_obj_uaxis(e, obj);
 		if (obj->flags & OBJ_FLAG_PLANE_LIMIT_FIX)
-		{
-			if (KEY_STATE_I || KEY_STATE_J || KEY_STATE_K || KEY_STATE_L \
-			|| KEY_STATE_U || KEY_STATE_O)
-				target = &obj->limit_dir;
-			else
-				target = &obj->limit_pos;
-			if (target)
-				ui_obj_apply(e, target);
-		}
+			ui_obj_limit(e, obj);
 		ui_obj_update(e, obj);
 	}
 }

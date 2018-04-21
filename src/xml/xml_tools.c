@@ -12,10 +12,10 @@
 
 #include "rt.h"
 
-void	xml_node_clean(char ***target)
+void		xml_node_clean(char ***target)
 {
-	int	i;
-	char **s;
+	int		i;
+	char	**s;
 
 	s = *target;
 	i = 0;
@@ -25,7 +25,7 @@ void	xml_node_clean(char ***target)
 	ft_memdel((void **)target);
 }
 
-int		xml_check_char(char c)
+int			xml_check_char(char c)
 {
 	if ((c < 32 || c > 125) && c != 0 && c != 9 && c != 10)
 		return (1);
@@ -33,9 +33,9 @@ int		xml_check_char(char c)
 		return (0);
 }
 
-char	*xml_check_line(t_env *e, char *buf)
+char		*xml_check_line(t_env *e, char *buf)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (buf[i])

@@ -12,7 +12,7 @@
 
 #include "rt.h"
 
-void			cuda_print_mem(void)
+void						cuda_print_mem(void)
 {
 	int						device_id;
 	size_t 					mem_free;
@@ -39,7 +39,7 @@ void			cuda_print_mem(void)
 	ft_putstr(" MB Total\n");
 }
 
-void			texture_destroy(t_env *e, t_texture *tex)
+void						texture_destroy(t_env *e, t_texture *tex)
 {
 
 	if ((e->cuda->err = cudaDestroyTextureObject(tex->tex)) != cudaSuccess)
@@ -50,16 +50,18 @@ void			texture_destroy(t_env *e, t_texture *tex)
 	ft_memdel((void**)&tex->i_pixels);
 }
 
-void waiting(char *str) {
-	static int a = 999;
-	int b;
+void						waiting(char *str) {
+	static int				a = 999;
+	int						b;
+
 	printf("// waiting att %i %s\n", a, str);
 	scanf("%i", &b);
 	a++;
 }
-void	flush(t_env *e)
+
+void						flush(t_env *e)
 {
-	int i;
+	int						i;
 
 	i = 0;
 	if (e->textures)
@@ -109,7 +111,7 @@ void	flush(t_env *e)
 	// waiting("14");
 }
 
-void	s_error(char *str, t_env *e)
+void						s_error(char *str, t_env *e)
 {
 	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
 	ft_putendl(str);
@@ -120,7 +122,7 @@ void	s_error(char *str, t_env *e)
 	exit(EXIT_FAILURE);
 }
 
-void	p_error(char *str, t_env *e)
+void						p_error(char *str, t_env *e)
 {
 	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
 	perror((const char *)str);
@@ -130,7 +132,7 @@ void	p_error(char *str, t_env *e)
 	exit(EXIT_FAILURE);
 }
 
-int		quit(t_env *e)
+int							quit(t_env *e)
 {
 	flush(e);
 	cuda_print_mem();
@@ -140,7 +142,7 @@ int		quit(t_env *e)
 	return (0);
 }
 
-int		gtk_quit(GtkApplication *app, gpointer data)
+int							gtk_quit(GtkApplication *app, gpointer data)
 {
 	t_env *e;
 	int		lol;
@@ -165,8 +167,8 @@ int		gtk_quit(GtkApplication *app, gpointer data)
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
 
 	int i = 0;
-	while (i < 99999999999)
-		i++;
+	// while (i < 99999999999)
+	// 	i++;
 
 	exit(EXIT_SUCCESS);
 	return (0);
