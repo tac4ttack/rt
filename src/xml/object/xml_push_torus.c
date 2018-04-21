@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xml_push_torus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:27:16 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/19 15:09:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:17:53 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ static void	xml_push_torus_effects(t_torus *torus)
 	torus->diff_offset.y = 0;
 	torus->diff_ratio.x = 1;
 	torus->diff_ratio.y = 1;
-	torus->cut_min.x = 0;
-	torus->cut_min.y = 0;
-	torus->cut_min.z = 0;
-	torus->cut_max.x = 0;
-	torus->cut_max.y = 0;
-	torus->cut_max.z = 0;
 }
 
 void		xml_push_torus(t_env *e, t_node *list)
@@ -55,6 +49,8 @@ void		xml_push_torus(t_env *e, t_node *list)
 	torus.limit_pos = list->limit_pos;
 	torus.limit_dir = list->limit_dir;
 	torus.flags = list->flags;
+	torus.cut_min = list->min;
+	torus.cut_max = list->max;
 	xml_push_torus_effects(&torus);
 	e->gen_objects->add(e->gen_objects, (void*)&torus);
 }

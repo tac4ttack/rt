@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 20:38:01 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 20:38:31 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:25:55 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	xml_write_ellipsoid(t_ellipsoid *elli, const int fd)
 	xml_write_float("\topacity", elli->opacity, fd);
 	xml_write_float3("\tp_limit_pos", elli->limit_pos, fd);
 	xml_write_float3("\tp_limit_dir", elli->limit_dir, fd);
+	xml_write_float3("\tmin", elli->cut_min, fd);
+	xml_write_float3("\tmax", elli->cut_max, fd);
 	xml_write_flags(elli->flags, fd);
 	ft_putstr_fd("/>\n", fd);
 }

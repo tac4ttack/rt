@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xml_push_cylinder.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 17:56:46 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/19 15:09:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:07:59 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	cylinder.limit_pos = list->limit_pos;
 	cylinder.limit_dir = list->limit_dir;
 	cylinder.dir = normalize_vect(list->dir);
+	cylinder.cut_min = list->min;
+	cylinder.cut_max = list->max;
 	xml_push_cylinder_effects(&cylinder);
 	e->gen_objects->add(e->gen_objects, (void*)&cylinder);
 }

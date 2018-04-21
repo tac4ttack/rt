@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 20:35:37 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 17:42:16 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:25:32 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	xml_write_cone(t_cone *cone, const int fd)
 	xml_write_float("\topacity", cone->opacity, fd);
 	xml_write_float3("\tp_limit_pos", cone->limit_pos, fd);
 	xml_write_float3("\tp_limit_dir", cone->limit_dir, fd);
+	xml_write_float3("\tmin", cone->cut_min, fd);
+	xml_write_float3("\tmax", cone->cut_max, fd);
 	xml_write_flags(cone->flags, fd);
 	ft_putstr_fd("/>\n", fd);
 }

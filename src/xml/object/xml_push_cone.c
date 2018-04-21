@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xml_push_cone.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:26:50 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/19 15:09:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:18:12 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ static void	xml_push_cone_effects(t_cone *cone)
 	cone->diff_offset.y = 0;
 	cone->diff_ratio.x = 1;
 	cone->diff_ratio.y = 1;
-	cone->cut_min.x = 0;
-	cone->cut_min.y = 0;
-	cone->cut_min.z = 0;
-	cone->cut_max.x = 0;
-	cone->cut_max.y = 0;
-	cone->cut_max.z = 0;
 	cone->u_axis = cross_vect(cone->dir);
 }
 
@@ -55,6 +49,8 @@ void		xml_push_cone(t_env *e, t_node *list)
 	cone.limit_pos = list->limit_pos;
 	cone.limit_dir = list->limit_dir;
 	cone.dir = normalize_vect(list->dir);
+	cone.cut_min = list->min;
+	cone.cut_max = list->max;
 	xml_push_cone_effects(&cone);
 	e->gen_objects->add(e->gen_objects, (void*)&cone);
 }

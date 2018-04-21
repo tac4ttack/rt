@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xml_push_plane.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:28:13 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/19 15:09:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:17:50 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ static void	xml_push_plane_effects(t_plane *plane)
 	plane->diff_offset.y = 0;
 	plane->diff_ratio.x = 100;
 	plane->diff_ratio.y = 100;
-	plane->cut_min.x = 0;
-	plane->cut_min.y = 0;
-	plane->cut_min.z = 0;
-	plane->cut_max.x = 0;
-	plane->cut_max.y = 0;
-	plane->cut_max.z = 0;
 	plane->u_axis = cross_vect(plane->normal);
 }
 
@@ -56,6 +50,8 @@ void		xml_push_plane(t_env *e, t_node *list)
 	plane.limit_pos = list->limit_pos;
 	plane.limit_dir = list->limit_dir;
 	plane.flags = list->flags;
+	plane.cut_min = list->min;
+	plane.cut_max = list->max;
 	xml_push_plane_effects(&plane);
 	e->gen_objects->add(e->gen_objects, (void*)&plane);
 }
