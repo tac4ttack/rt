@@ -33,8 +33,6 @@ void		cb_cam_nav_prev(GtkButton *btn, gpointer data)
 		e->scene->active_cam = e->scene->n_cams - 1;
 	else
 		e->scene->active_cam--;
-	// e->scene->active_cam = ((int)e->scene->active_cam - 1 \
-	// < 0 ? e->scene->n_cams - 1 : e->scene->active_cam - 1);
 	ui_cam_set_id(e);
 	ui_cam_update(e);
 }
@@ -49,8 +47,6 @@ void		cb_cam_nav_next(GtkButton *btn, gpointer data)
 		e->scene->active_cam = 0;
 	else
 		e->scene->active_cam++;
-	// e->scene->active_cam = (e->scene->active_cam + 1 \
-	// 	< e->scene->n_cams ? e->scene->active_cam + 1 : 0);
 	ui_cam_set_id(e);
 	ui_cam_update(e);
 }

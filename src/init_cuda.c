@@ -37,5 +37,7 @@ void			init_kernel(t_env *e)
 	if (!(e->cuda = cuda_construct()))
 		s_error("\x1b[2;31mError t_cuda creation failed\x1b[0m", e);
 	init_kernel_buffer(e);
+	if (!(e->textures = ft_memalloc(sizeof(t_texture) * 5)))
+		s_error("Error: Failed allocate host textures data", e);
 	texture_init(e);
 }
