@@ -543,6 +543,7 @@ FT_FLOAT3				normalize_vect(FT_FLOAT3 v);
 
 void					p_error(char *str, t_env *e);
 void					s_error(char *str, t_env *e);
+void					flush(t_env *e);
 void					print_usage();
 int						quit(t_env *e);
 
