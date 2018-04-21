@@ -6,12 +6,26 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 17:09:09 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 21:46:38 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 22:08:55 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <float.h>
+
+static char	*ft_ftoa_check_sign(float n)
+{
+	char	*res;
+
+	if (n < 0.0f && n > -1.f)
+	{
+		res = ft_strjoin_frs2("-", ft_itoa(n));
+		res = ft_strjoin_frs1(res, ".");
+	}
+	else
+		res = ft_strjoin_frs1(ft_itoa(n), ".");
+	return (res);
+}
 
 char	*ft_ftoa(float n)
 {
@@ -25,7 +39,7 @@ char	*ft_ftoa(float n)
 		return ("3.402823e+38");
 	if (n == FLT_MIN)
 		return ("1.175494e-38");
-	res = ft_strjoin_frs1(ft_itoa(n), ".");
+	res = ft_ftoa_check_sign(n);
 	n -= (int)n;
 	(n < 0.0 ? n = -n : 0);
 	n *= 10;
