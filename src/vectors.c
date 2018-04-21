@@ -15,7 +15,7 @@
 FT_FLOAT3			normalize_vect(FT_FLOAT3 v)
 {
 	FT_FLOAT3		res;
-	float		id;
+	float			id;
 
 	id = 1 / sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 	res.x = v.x * id;

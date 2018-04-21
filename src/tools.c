@@ -6,13 +6,13 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/21 20:29:12 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 20:37:32 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void			cuda_print_mem(void)
+void						cuda_print_mem(void)
 {
 	int						device_id;
 	size_t 					mem_free;
@@ -39,7 +39,7 @@ void			cuda_print_mem(void)
 	ft_putstr(" MB Total\n");
 }
 
-void			texture_destroy(t_env *e, t_texture *tex)
+void						texture_destroy(t_env *e, t_texture *tex)
 {
 	if (tex && e->cuda)
 	{
@@ -55,14 +55,16 @@ void			texture_destroy(t_env *e, t_texture *tex)
 	}
 }
 
-void waiting(char *str) {
-	static int a = 999;
-	int b;
+void						waiting(char *str) {
+	static int				a = 999;
+	int						b;
+
 	printf("// waiting att %i %s\n", a, str);
 	scanf("%i", &b);
 	a++;
 }
-void	flush(t_env *e)
+
+void						flush(t_env *e)
 {
 	int i;
 	if (e->textures)
@@ -74,25 +76,22 @@ void	flush(t_env *e)
 				texture_destroy(e, &e->textures[i]);
 				i++;
 			}
-		// waiting("1");
 		ft_memdel((void**)&e->textures);
 	}
-	// waiting("2");
 	cuda_destruct(&e->cuda);
-	// waiting("2.5");
 	gen_destruct(&e->gen_objects);
-	// waiting("3");
 	gen_destruct(&e->gen_lights);
-	// waiting("4");
-	if (e->ui && e->ui->surface)
+	if (e->ui)
 	{
-		g_object_unref(e->ui->pixbuf);
-		cairo_surface_destroy(e->ui->surface);
+		if (e->ui->pixbuf)
+			g_object_unref(e->ui->pixbuf);
+		if (e->ui->surface)
+			cairo_surface_destroy(e->ui->surface);
+		if (e->ui->error)
+			g_error_free(e->ui->error);
 		ft_memdel((void**)&e->ui);
 		ft_putendl("\x1b[1;29mFreed UI environnement\x1b[0m");
 	}
-	// waiting("4.5");
-	// waiting("5");
 	if (e->xml)
 	{
 		if (e->xml->nodes)
@@ -102,34 +101,29 @@ void	flush(t_env *e)
 		ft_memdel((void**)&e->xml);
 		ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
 	}
-	// waiting("7");
-	// waiting("8");
-	// waiting("9");
 	if (e->cameras)
 	{
 		ft_memdel((void**)&e->cameras);
 		ft_putendl("\x1b[1;29mFreed cameras array\x1b[0m");
 	}
-	// waiting("10");
 	if (e->scene)
 	{
 		ft_memdel((void**)&e->scene);
 		ft_putendl("\x1b[1;29mFreed scene datas\x1b[0m");
 	}
-	// waiting("11");
 	if (e->pixel_data)
 	{
 		ft_memdel((void**)&e->pixel_data);
 		ft_putendl("\x1b[1;29mFreed pixel buffer\x1b[0m");
 	}
-	// waiting("12");
-	// waiting("13");
 	ft_memdel((void**)&e);
 	ft_putendl("\x1b[1;29mFreed RT environnement\x1b[0m");
-	// waiting("14");
+
+	// debug
+	waiting("flushed the toilet!");
 }
 
-void	s_error(char *str, t_env *e)
+void						s_error(char *str, t_env *e)
 {
 	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
 	ft_putendl(str);
@@ -140,7 +134,7 @@ void	s_error(char *str, t_env *e)
 	exit(EXIT_FAILURE);
 }
 
-void	p_error(char *str, t_env *e)
+void						p_error(char *str, t_env *e)
 {
 	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
 	perror((const char *)str);
@@ -151,7 +145,7 @@ void	p_error(char *str, t_env *e)
 	exit(EXIT_FAILURE);
 }
 
-int		quit(t_env *e)
+int							quit(t_env *e)
 {
 	if (e)
 		flush(e);
@@ -162,38 +156,30 @@ int		quit(t_env *e)
 	return (0);
 }
 
-int		gtk_quit(GtkApplication *app, gpointer data)
+int							gtk_quit(GtkApplication *app, gpointer data)
 {
 	t_env *e;
 	int		lol;
 
 	(void)app;
 	e = data;
-	// waiting("++1\n");
+
 	gtk_main_quit();
-	// waiting("++2\n");
 	if (e->ui)
 	{
 		gtk_widget_destroy(e->ui->main_window);
-		// waiting("++3\n");
 		g_object_unref(e->ui->app);
 	}
-	// waiting("++4\n");
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
-	// waiting("++5\n");
 	if (e)
 		flush(e);
-	// waiting("++6\n");
 	cuda_print_mem();
-	// waiting("++7\n");
+
 	cudaDeviceReset();
-	// waiting("++8\n");
+	waiting("++8\n");
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
-/*
-	int i = 0;
-	while (i < 99999999999)
-		i++;
-*/
+	waiting("flushed the toilet!");
+
 	exit(EXIT_SUCCESS);
 	return (0);
 }

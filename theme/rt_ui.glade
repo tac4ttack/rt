@@ -14,7 +14,7 @@
     <property name="comments" translatable="yes">This project is just a computer graphics grand finale!
 
 GUI made with GTK+3 and Glade
-Optimized with OpenCL
+Optimized with CUDA
 </property>
     <property name="website">https://github.com/tac4ttack/rt</property>
     <property name="website_label" translatable="yes">https://github.com/tac4ttack/rt</property>
@@ -574,6 +574,7 @@ ntoniolo - Noé TONIOLO</property>
     <property name="can_focus">True</property>
     <property name="has_focus">True</property>
     <property name="is_focus">True</property>
+    <property name="events"/>
     <property name="window_position">center</property>
     <property name="has_resize_grip">True</property>
     <child type="titlebar">
@@ -4717,5 +4718,6 @@ High setting decreases a lot the rendering speed</property>
         </child>
       </object>
     </child>
+    <accelerator key="p" signal="activate-focus"/>
   </object>
 </interface>
