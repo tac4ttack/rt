@@ -14,7 +14,7 @@ static void HandleError(cudaError_t err, const char *file,	int line)
 		size_t 					mem_free = 0;
 		size_t 					mem_total = 0;
 		struct cudaDeviceProp	device_prop;
-	
+
 		cudaSetDevice(device_id);
 		cudaGetDeviceProperties(&device_prop, device_id);
 		cudaMemGetInfo(&mem_free, &mem_total);
@@ -2467,6 +2467,7 @@ __global__ void rt_launcher(unsigned int *output,
 							scene_data, cameras_data, mem_lights, mem_size_lights, target, \
 							tex0, tex1, tex2, tex3, skybox);
 }
+
 
 extern "C" void render_cuda(t_cuda			*cuda,
 							int 			*pixel_data,
