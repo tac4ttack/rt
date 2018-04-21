@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 20:30:36 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/13 16:32:35 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:35:19 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	xml_write_flags(const int flags, const int fd)
 	(flags & OBJ_FLAG_PLANE_LIMIT ? ft_putchar_fd('1', fd) \
 								: ft_putchar_fd('0', fd));
 	(flags & OBJ_FLAG_PLANE_LIMIT_FIX ? ft_putchar_fd('1', fd) \
+								: ft_putchar_fd('0', fd));
+	(flags & OBJ_FLAG_CUT ? ft_putchar_fd('1', fd) \
 								: ft_putchar_fd('0', fd));
 	ft_putendl_fd("\"", fd);
 }

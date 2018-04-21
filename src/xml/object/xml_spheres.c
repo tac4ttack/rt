@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 17:22:29 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:17:12 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,16 @@ static void	xml_sphere_data_m(t_env *e, char **att, t_node *sphere_node, int *i)
 																			e);
 	else
 		xml_data_plane_limit_dir(e, att, i, sphere_node);
+	if (ft_strncmp(att[*i], "min=\"", 5) != 0)
+		s_error("\x1b[1;31mSphere error, MIN expected in #12\x1b[0m", e);
+	else
+		xml_data_min_max(e, att, i, &sphere_node->min);
+	if (ft_strncmp(att[*i], "max=\"", 5) != 0)
+		s_error("\x1b[1;31mSphere error, MAX expected in #13\x1b[0m", e);
+	else
+		xml_data_min_max(e, att, i, &sphere_node->max);
 	if (ft_strncmp(att[*i], "flags=\"", 7) != 0)
-		s_error("\x1b[1;31mSphere error, FLAG expected in #12\x1b[0m", e);
+		s_error("\x1b[1;31mSphere error, FLAG expected in #14\x1b[0m", e);
 	else
 		xml_data_flag(e, att, i, sphere_node);
 }

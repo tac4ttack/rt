@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xml_push_ellipsoid.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:26:29 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/19 15:09:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:18:01 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ static void	xml_push_ellipsoid_effects(t_ellipsoid *ellipsoid)
 	ellipsoid->diff_offset.y = 0;
 	ellipsoid->diff_ratio.x = 1;
 	ellipsoid->diff_ratio.y = 1;
-	ellipsoid->cut_min.x = 0;
-	ellipsoid->cut_min.y = 0;
-	ellipsoid->cut_min.z = 0;
-	ellipsoid->cut_max.x = 0;
-	ellipsoid->cut_max.y = 0;
-	ellipsoid->cut_max.z = 0;
 }
 
 void		xml_push_ellipsoid(t_env *e, t_node *list)
@@ -56,6 +50,8 @@ void		xml_push_ellipsoid(t_env *e, t_node *list)
 	ellipsoid.limit_pos = list->limit_pos;
 	ellipsoid.limit_dir = list->limit_dir;
 	ellipsoid.flags = list->flags;
+	ellipsoid.cut_min = list->min;
+	ellipsoid.cut_max = list->max;
 	xml_push_ellipsoid_effects(&ellipsoid);
 	e->gen_objects->add(e->gen_objects, (void*)&ellipsoid);
 }

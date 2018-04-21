@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xml_push_sphere.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:26:38 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/19 15:09:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:17:44 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ static void	xml_push_sphere_effects(t_sphere *sphere)
 	sphere->diff_offset.y = 0;
 	sphere->diff_ratio.x = 1;
 	sphere->diff_ratio.y = 1;
-	sphere->cut_min.x = 0;
-	sphere->cut_min.y = 0;
-	sphere->cut_min.z = 0;
-	sphere->cut_max.x = 0;
-	sphere->cut_max.y = 0;
-	sphere->cut_max.z = 0;
 }
 
 void		xml_push_sphere(t_env *e, t_node *list)
@@ -55,6 +49,8 @@ void		xml_push_sphere(t_env *e, t_node *list)
 	sphere.limit_pos = list->limit_pos;
 	sphere.limit_dir = list->limit_dir;
 	sphere.flags = list->flags;
+	sphere.cut_min = list->min;
+	sphere.cut_max = list->max;
 	xml_push_sphere_effects(&sphere);
 	e->gen_objects->add(e->gen_objects, (void*)&sphere);
 }

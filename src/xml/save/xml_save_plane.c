@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 20:38:39 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/06 20:38:55 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:26:11 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	xml_write_plane(t_plane *plane, const int fd)
 	xml_write_float("\tradius", plane->radius, fd);
 	xml_write_float3("\tp_limit_pos", plane->limit_pos, fd);
 	xml_write_float3("\tp_limit_dir", plane->limit_dir, fd);
+	xml_write_float3("\tmin", plane->cut_min, fd);
+	xml_write_float3("\tmax", plane->cut_max, fd);
 	xml_write_flags(plane->flags, fd);
 	ft_putstr_fd("/>\n", fd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xml_push_kube.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:26:57 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/19 15:09:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:17:57 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ static void	xml_push_kube_effects(t_kube *kube)
 	kube->diff_offset.y = 0;
 	kube->diff_ratio.x = 1;
 	kube->diff_ratio.y = 1;
-	kube->cut_min.x = 0;
-	kube->cut_min.y = 0;
-	kube->cut_min.z = 0;
-	kube->cut_max.x = 0;
-	kube->cut_max.y = 0;
-	kube->cut_max.z = 0;
 }
 
 void		xml_push_kube(t_env *e, t_node *list)
@@ -54,6 +48,8 @@ void		xml_push_kube(t_env *e, t_node *list)
 	kube.limit_pos = list->limit_pos;
 	kube.limit_dir = list->limit_dir;
 	kube.flags = list->flags;
+	kube.cut_min = list->min;
+	kube.cut_max = list->max;
 	xml_push_kube_effects(&kube);
 	e->gen_objects->add(e->gen_objects, (void*)&kube);
 }
