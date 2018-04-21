@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 12:35:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:18:48 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void		xml_node_light(t_env *e, char *node)
 		XML->node_lst = light_node;
 	else
 		xml_list_add_first(&XML->node_lst, light_node);
-	xml_node_clean(tmp);
+	xml_node_clean(&tmp);
 }
 
 void		xml_push_light(t_env *e, t_node *list)

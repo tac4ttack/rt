@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 18:31:35 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:18:50 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,5 @@ void		xml_node_plane(t_env *e, char *node)
 		XML->node_lst = plane_node;
 	else
 		xml_list_add_first(&XML->node_lst, plane_node);
-	xml_node_clean(tmp);
+	xml_node_clean(&tmp);
 }

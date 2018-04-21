@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:46:52 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/23 18:33:33 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 16:55:16 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_node		*xml_list_new(char type)
 {
 	t_node	*new;
 
-	if (!(new = (t_node *)malloc(sizeof(t_node))))
+	if (!(new = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
 	ft_bzero(new, sizeof(t_node));
 	new->type = type;
@@ -55,6 +55,7 @@ void		xml_list_clean(t_env *e, t_node **list)
 			free(*list);
 			*list = tmp;
 		}
+		*list = NULL;
 	}
 	else
 		s_error("\x1b[1;31mError while cleaning scene linked list\x1b[0m", e);

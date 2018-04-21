@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xml_scene.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 17:11:29 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/25 16:35:45 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:25:17 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	xml_scene_parse(t_env *e, char *node)
 	}
 	else if (tmp[i][ft_strlen(tmp[i]) - 1] != '>')
 		s_error("\x1b[1;31mError CAMERA node isn't closed\x1b[0m", e);
-	xml_node_clean(tmp);
+	xml_node_clean(&tmp);
 }
 
 void		xml_node_scene(t_env *e, char *node, char mod)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/13 16:43:43 by fmessina          #+#    #+#             */
-/*   Updated: 2017/05/17 14:56:56 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 19:36:17 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,15 @@ static t_gnl	*ft_gnl_init(t_list **lst, int fd)
 			return (gnl);
 		tmp = tmp->next;
 	}
-	gnl = (t_gnl *)ft_memalloc(sizeof(t_gnl));
+	if (!(gnl = (t_gnl *)ft_memalloc(sizeof(t_gnl))))
+		return (NULL);
 	gnl->buffer = ft_strnew(b_size);
 	gnl->b_read = b_size;
 	gnl->i = b_size;
 	gnl->fd = fd;
 	gnl->new_line = 1;
-	tmp = ft_lstnew(gnl, sizeof(t_gnl));
+	if (!(tmp = ft_lstnew(gnl, sizeof(t_gnl))))
+		return (NULL);
 	ft_memdel((void **)&gnl);
 	ft_lstadd(lst, tmp);
 	return ((t_gnl *)(tmp->content));
@@ -119,7 +121,8 @@ int				get_next_line(int const fd, char **line)
 
 	if (fd < 0 || !line || fd >= FD_MAX)
 		return (-1);
-	gnl = ft_gnl_init(&lst, fd);
+	if (!(gnl = ft_gnl_init(&lst, fd)))
+		return (-1);
 	tmp = ft_strnew(0);
 	while (gnl->b_read > 0)
 	{

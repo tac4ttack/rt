@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/19 12:20:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:36:49 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void		init(GtkApplication *app, gpointer data)
 		s_error("\x1b[2;31mCan't initialize objects t_gen\x1b[0m", e);
 	if (!(e->gen_lights = gen_construct()))
 		s_error("\x1b[2;31mCan't initialize lights t_gen\x1b[0m", e);
-	ft_bzero(e->scene, sizeof(t_scene));
 	xml_init(e);
 	env_init(e);
 	if (!(e->pixel_data = malloc(sizeof(int) * WIDTH * HEIGHT)))

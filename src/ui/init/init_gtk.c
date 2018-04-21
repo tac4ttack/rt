@@ -6,13 +6,13 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:00:17 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 19:12:39 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 18:50:27 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	init_gtk_wid(t_env *e)
+static void	init_gtk_widgets(t_env *e)
 {
 	init_gtk_win(e);
 	init_gtk_object(e);
@@ -35,8 +35,14 @@ void		init_gtk(GtkApplication *app, gpointer data)
 	(void)app;
 	init_gtk_css(e);
 	e->ui->builder = gtk_builder_new();
-	gtk_builder_add_from_file(e->ui->builder, "./theme/rt_ui.glade", NULL);
-	init_gtk_wid(e);
+	if (gtk_builder_add_from_file(e->ui->builder, "./theme/rt_ui.glade", \
+														&e->ui->error) == 0)
+	{
+		ft_putendl(e->ui->error->message);
+		s_error("\x1b[1;31mError opening UI theme file\x1b[0m", e);
+	}
+
+	init_gtk_widgets(e);
 	g_object_unref(e->ui->builder);
 	e->ui->builder = NULL;
 	gtk_widget_show_all(e->ui->main_window);

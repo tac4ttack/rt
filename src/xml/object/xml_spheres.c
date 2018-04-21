@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 18:36:54 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:22:29 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,5 @@ void		xml_node_sphere(t_env *e, char *node)
 		XML->node_lst = sphere_node;
 	else
 		xml_list_add_first(&XML->node_lst, sphere_node);
-	xml_node_clean(tmp);
+	xml_node_clean(&tmp);
 }
