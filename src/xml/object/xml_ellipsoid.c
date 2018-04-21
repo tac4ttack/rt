@@ -12,13 +12,9 @@
 
 #include "rt.h"
 
-static void	xml_ellipsoid_data_m(t_env *e, char **att, \
+static void	xml_ellipsoid_data_limit(t_env *e, char **att, \
 								t_node *ellipsoid_node, int *i)
 {
-	if (ft_strncmp(att[*i], "opacity=\"", 9) != 0)
-		s_error("\x1b[2;31mEllipsoid error, OPACITY expected in #10\x1b[0m", e);
-	else
-		xml_data_opacity(e, att, i, ellipsoid_node);
 	if (ft_strncmp(att[*i], "p_limit_pos=\"", 13) != 0)
 		s_error("\x1b[2;31mEllipsoid error, P_LIMIT_POS expected in #10\x1b[0m",
 																			e);
@@ -41,6 +37,20 @@ static void	xml_ellipsoid_data_m(t_env *e, char **att, \
 		s_error("\x1b[1;31mEllipsoid error, FLAG expected in #14\x1b[0m", e);
 	else
 		xml_data_flag(e, att, i, ellipsoid_node);
+}
+
+static void	xml_ellipsoid_data_m(t_env *e, char **att, \
+								t_node *ellipsoid_node, int *i)
+{
+	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
+		s_error("\x1b[1;31mEllipsoid error, COLOR expected in #5\x1b[0m", e);
+	else
+		xml_data_color(e, att, i, ellipsoid_node);
+	if (ft_strncmp(att[*i], "opacity=\"", 9) != 0)
+		s_error("\x1b[2;31mEllipsoid error, OPACITY expected in #10\x1b[0m", e);
+	else
+		xml_data_opacity(e, att, i, ellipsoid_node);
+	xml_ellipsoid_data_limit(e, att, ellipsoid_node, i);
 }
 
 static void	xml_ellipsoid_data_n(t_env *e, char **att, \
@@ -86,11 +96,7 @@ static void	xml_ellipsoid_data(t_env *e, char **att, \
 		s_error("\x1b[1;31mEllipsoid error AXIS_SIZE expected in #4\x1b[0m", e);
 	else
 		xml_data_axis_size(e, att, i, ellipsoid_node);
-	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
-		s_error("\x1b[1;31mEllipsoid error, COLOR expected in #5\x1b[0m", e);
-	else
-		xml_data_color(e, att, i, ellipsoid_node);
-	xml_ellipsoid_data_n(e, att, ellipsoid_node, i);
+	xml_ellipsoid_data_m(e, att, ellipsoid_node, i);
 }
 
 void		xml_node_ellipsoid(t_env *e, char *node)

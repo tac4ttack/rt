@@ -12,16 +12,8 @@
 
 #include "rt.h"
 
-static void	xml_torus_data_m(t_env *e, char **att, t_node *torus_node, int *i)
+static void	xml_torus_data_lim(t_env *e, char **att, t_node *torus_node, int *i)
 {
-	if (ft_strncmp(att[*i], "refract=\"", 9) != 0)
-		s_error("\x1b[2;31mTorus error, REFRACT expected in #9\x1b[0m", e);
-	else
-		xml_data_refract(e, att, i, torus_node);
-	if (ft_strncmp(att[*i], "opacity=\"", 9) != 0)
-		s_error("\x1b[2;31mTorus error, OPACITY expected in #10\x1b[0m", e);
-	else
-		xml_data_opacity(e, att, i, torus_node);
 	if (ft_strncmp(att[*i], "p_limit_pos=\"", 13) != 0)
 		s_error("\x1b[2;31mTorus error, P_LIMIT_POS expected in #11\x1b[0m", e);
 	else
@@ -42,6 +34,19 @@ static void	xml_torus_data_m(t_env *e, char **att, t_node *torus_node, int *i)
 		s_error("\x1b[1;31mTorus error, FLAG expected in #15\x1b[0m", e);
 	else
 		xml_data_flag(e, att, i, torus_node);
+}
+
+static void	xml_torus_data_m(t_env *e, char **att, t_node *torus_node, int *i)
+{
+	if (ft_strncmp(att[*i], "refract=\"", 9) != 0)
+		s_error("\x1b[2;31mTorus error, REFRACT expected in #9\x1b[0m", e);
+	else
+		xml_data_refract(e, att, i, torus_node);
+	if (ft_strncmp(att[*i], "opacity=\"", 9) != 0)
+		s_error("\x1b[2;31mTorus error, OPACITY expected in #10\x1b[0m", e);
+	else
+		xml_data_opacity(e, att, i, torus_node);
+	xml_torus_data_lim(e, att, torus_node, i);
 }
 
 static void	xml_torus_data_n(t_env *e, char **att, t_node *torus_node, int *i)

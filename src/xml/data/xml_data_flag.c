@@ -14,7 +14,7 @@
 
 void		xml_data_flag(t_env *e, char **attributes, int *i, t_node *node)
 {
-	int j;
+	int		j;
 
 	if (node && attributes && e)
 	{
@@ -23,7 +23,8 @@ void		xml_data_flag(t_env *e, char **attributes, int *i, t_node *node)
 		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
 			s_error("\x1b[1;31mError in FLAG from scene\x1b[0m", e);
 		if (ft_strlen(&attributes[(*i)][j + 7]) - 1 != 8)
-				s_error("\x1b[1;31mError in FLAG : expect 8 [01] elements\x1b[0m", e);
+			s_error("\x1b[1;31mError in FLAG : expect 8 [01] elements\x1b[0m", \
+					e);
 		j = 7;
 		while (attributes[(*i)][j] && attributes[(*i)][j] != '\"')
 		{
