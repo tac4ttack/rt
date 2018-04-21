@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/20 16:43:19 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:49:24 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -548,6 +548,10 @@ int						quit(t_env *e);
 
 void					clear_surface(t_env *e);
 void					gtk_render_events(t_env *e);
+
+void					texture_init(t_env *e);
+void					texture_destroy(t_env *e, t_texture *tex);
+
 void					ui_add_cone(t_env *e);
 void					ui_add_cylinder(t_env *e);
 void					ui_add_ellipsoid(t_env *e);
@@ -575,7 +579,12 @@ void					ui_obj_update_cut(t_env *e, t_object *obj);
 void					ui_obj_update_diff_map(t_env *e, t_object *obj);
 void					ui_obj_update_limit(t_env *e, t_object *obj);
 void					ui_obj_update_sinwave(t_env *e, t_object *obj);
-
+void					ui_obj_update_cut_check(t_env *e, t_object *obj);
+void					ui_obj_update_limit_plane_check(t_env *e, \
+														t_object *obj);
+void					ui_obj_update_limit_fix_check(t_env *e, \
+													t_object *obj);
+													
 void					update_fps(t_fps *fps);
 
 void					xml_allocate_cam(t_env *e);
@@ -680,10 +689,5 @@ void					xml_write_plane(t_plane *plane, const int fd);
 void					xml_write_sphere(t_sphere *sphere, const int fd);
 void					xml_write_torus(t_torus *torus, const int fd);
 void					xml_write_kube(t_kube *kube, const int fd);
-
-
-void					texture_init(t_env *e);
-void					texture_destroy(t_env *e, t_texture *tex);
-void	ui_obj_update_cut_norm(t_env *e, t_object *obj);
 
 #endif
