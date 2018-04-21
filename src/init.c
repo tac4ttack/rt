@@ -78,7 +78,7 @@ static bool	scene_requirements(t_env *e, t_scene *scene)
 {
 	if (!scene->n_cams || !e->gen_lights->length || !e->gen_objects->length)
 		return (false);
-	if (scene->win_w > 2000|| scene->win_h > 2000)
+	if (scene->win_w > 2000 || scene->win_h > 2000)
 		return (false);
 	return (true);
 }

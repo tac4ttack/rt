@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cuda_create_buffer.c                               :+:      :+:    :+:   */
+/*   cuda_create_buffer.cu                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,7 +16,7 @@
 
 bool		cuda_add_buffer(t_cuda *cuda, size_t size)
 {
-	if (!(cuda->mem = ft_memrealloc(cuda->mem,
+	if (!(cuda->mem = (void **)ft_memrealloc(cuda->mem,
 					sizeof(void **) * cuda->nb_mem,
 					sizeof(void **) * (cuda->nb_mem + 1))))
 		return (false);
