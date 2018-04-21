@@ -6,14 +6,14 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/20 16:28:04 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 22:08:23 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UI_H
 # define UI_H
 
-# define GTB	GTK_TOGGLE_BUTTON
+# define GTB GTK_TOGGLE_BUTTON
 
 # include "gtk/gtk.h"
 
@@ -194,7 +194,7 @@ typedef	struct			s_ui
 	GtkWidget			*obj_cut_z_max_spin;
 	GtkWidget			*obj_list_kube;
 	GtkWidget			*obj_kube_option_spin;
-	
+
 }						t_ui;
 
 void					cb_about_btn(GtkButton *btn, gpointer data);
@@ -253,7 +253,7 @@ gboolean				cb_light_pos_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_light_shrink(GtkSpinButton *spin, gpointer data);
 
 void					cb_obj_checkboard_button(GtkButton *btn, \
-												gpointer data);;
+												gpointer data);
 gboolean				cb_obj_checkboard_width(GtkSpinButton *spin, \
 												gpointer data);
 gboolean				cb_obj_checkboard_height(GtkSpinButton *spin, \

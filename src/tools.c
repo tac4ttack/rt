@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/21 20:43:46 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 21:10:26 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ void			texture_destroy(t_env *e, t_texture *tex)
 	}
 	if (tex)
 	{
-		g_object_unref(tex->pixbuf);
-		ft_memdel((void**)&tex->i_pixels);
+		if (tex->pixbuf)
+			g_object_unref(tex->pixbuf);
+		if (tex->i_pixels)
+			ft_memdel((void**)&tex->i_pixels);
 	}
 }
 
@@ -57,8 +59,10 @@ int				gtk_quit(GtkApplication *app, gpointer data)
 	gtk_main_quit();
 	if (e->ui)
 	{
-		gtk_widget_destroy(e->ui->main_window);
-		g_object_unref(e->ui->app);
+		if (e->ui->main_window)
+			gtk_widget_destroy(e->ui->main_window);
+		if (e->ui->app)
+			g_object_unref(e->ui->app);
 	}
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
 	if (e)
