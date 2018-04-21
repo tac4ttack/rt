@@ -147,6 +147,8 @@ SRC_NAME =	 			init.c \
 						update_fps.c \
 						texture.c \
 						vectors.c \
+						cuda_print_mem.c \
+						error_handle.c \
 						xml/data/xml_data_angle.c \
 						xml/data/xml_data_flag.c \
 						xml/data/xml_data_axis_size.c \
