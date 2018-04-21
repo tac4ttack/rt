@@ -1,29 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   texture.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/21 20:39:37 by adalenco          #+#    #+#             */
+/*   Updated: 2018/04/21 20:39:38 by adalenco         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 static void		texture_load_from_file(t_env *e, char *file, int slot)
 {
-	cudaError_t error;
+	cudaError_t	error;
 
-	if (!(e->textures[slot].pixbuf = gdk_pixbuf_new_from_file(file, &e->ui->error)))
+	if (!(e->textures[slot].pixbuf = gdk_pixbuf_new_from_file(file, \
+	&e->ui->error)))
 	{
 		ft_putendl(e->ui->error->message);
-		s_error("\x1b[1;31mError opening UI theme file\x1b[0m", e);
+		s_error("\x1b[1;31mError opening texture file\x1b[0m", e);
 	}
-	
 	g_assert_no_error(e->ui->error);
 	e->textures[slot].w = gdk_pixbuf_get_width(e->textures[slot].pixbuf);
 	e->textures[slot].h = gdk_pixbuf_get_height(e->textures[slot].pixbuf);
-	e->textures[slot].n_cha = gdk_pixbuf_get_n_channels( \
-													e->textures[slot].pixbuf);
+	e->textures[slot].n_cha = gdk_pixbuf_get_n_channels(\
+								e->textures[slot].pixbuf);
 	if (e->textures[slot].n_cha != 3)
 		s_error("Error: incorrect texture color format", e);
 	e->textures[slot].rows = gdk_pixbuf_get_rowstride(e->textures[slot].pixbuf);
 	e->textures[slot].pixels = gdk_pixbuf_get_pixels(e->textures[slot].pixbuf);
 	e->scene->tex_res[slot].x = e->textures[slot].w;
 	e->scene->tex_res[slot].y = e->textures[slot].h;
-}	
+}
 
-static void 	texture_copy_raw_data(t_env *e, t_texture *texture)
+static void		texture_copy_raw_data(t_env *e, t_texture *texture)
 {
 	guchar		*pixel;
 	int			i;
@@ -31,7 +43,8 @@ static void 	texture_copy_raw_data(t_env *e, t_texture *texture)
 
 	i = 0;
 	j = 0;
-	if (!(texture->i_pixels = ft_memalloc(sizeof(unsigned int) * texture->w * texture->h)))
+	if (!(texture->i_pixels = ft_memalloc(sizeof(unsigned int) * texture->w \
+	* texture->h)))
 		s_error("Error: Failed allocate image int datas", e);
 	while (j < texture->h)
 	{
@@ -39,7 +52,8 @@ static void 	texture_copy_raw_data(t_env *e, t_texture *texture)
 		while (i < texture->w)
 		{
 			pixel = texture->pixels + j * texture->rows + i * texture->n_cha;
-			texture->i_pixels[i + (j * texture->w)] = (pixel[0] << 16) + (pixel[1] << 8) + pixel[2];
+			texture->i_pixels[i + (j * texture->w)] = (pixel[0] << 16) \
+			+ (pixel[1] << 8) + pixel[2];
 			i++;
 		}
 		j++;
@@ -97,10 +111,8 @@ static void		texture_finalize_object(t_env *e, t_texture *texture)
 	}
 }
 
-void	texture_init(t_env *e)
+void			texture_init(t_env *e)
 {
-	if (!(e->textures = ft_memalloc(sizeof(t_texture) * 5)))
-		s_error("Error: Failed allocate host textures data", e);
 	texture_load_from_file(e, "./textures/default/0.bmp", 0);
 	texture_copy_raw_data(e, &e->textures[0]);
 	texture_create_cudarray(e, &e->textures[0]);

@@ -31,7 +31,7 @@ static void		ui_obj_apply(t_env *e, FT_FLOAT3 *target)
 void			ui_obj_limit(t_env *e, t_object *obj)
 {
 	FT_FLOAT3	*target;
-
+	
 	if (KEY_STATE_I || KEY_STATE_J || KEY_STATE_K || KEY_STATE_L \
 	|| KEY_STATE_U || KEY_STATE_O)
 		target = &obj->limit_dir;

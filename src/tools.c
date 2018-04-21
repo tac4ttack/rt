@@ -12,31 +12,13 @@
 
 #include "rt.h"
 
-void						cuda_print_mem(void)
-{
-	int						device_id;
-	size_t 					mem_free;
-	size_t 					mem_total;
-	struct cudaDeviceProp	device_prop;
-	char					*str;
+void						waiting(char *str) {
+	static int				a = 999;
+	int						b;
 
-	device_id = 0;
-	cudaSetDevice(device_id);
-	cudaGetDeviceProperties(&device_prop, device_id);
-	cudaMemGetInfo(&mem_free, &mem_total);
-	ft_putstr("\nDevice ");
-	ft_putnbr(device_id);
-	ft_putstr(" ");
-	ft_putstr(device_prop.name);
-	ft_putstr(" ");
-	str = ft_ftoa((float)mem_free / (1024 * 1024));
-	ft_putstr(str);
-	free(str);
-	ft_putstr(" MB Free of ");
-	str = ft_ftoa((float)mem_total / (1024 * 1024));
-	ft_putstr(str);
-	free(str);
-	ft_putstr(" MB Total\n");
+	printf("// waiting att %i %s\n", a, str);
+	scanf("%i", &b);
+	a++;
 }
 
 void						texture_destroy(t_env *e, t_texture *tex)
@@ -57,13 +39,27 @@ void						texture_destroy(t_env *e, t_texture *tex)
 	}
 }
 
-void						waiting(char *str) {
-	static int				a = 999;
-	int						b;
-
-	printf("// waiting att %i %s\n", a, str);
-	scanf("%i", &b);
-	a++;
+void						flush_scene(t_env *e)
+{
+	if (e->xml)
+	{
+		if (e->xml->nodes)
+			xml_node_clean(&e->xml->nodes);
+		if (e->xml->sub_node)
+			xml_node_clean(&e->xml->sub_node);
+	}
+	ft_memdel((void**)&e->xml);
+	ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
+	ft_memdel((void**)&e->cameras);
+	ft_putendl("\x1b[1;29mFreed cameras array\x1b[0m");
+	ft_memdel((void**)&e->scene);
+	ft_putendl("\x1b[1;29mFreed scene datas\x1b[0m");
+	ft_memdel((void**)&e->pixel_data);
+	ft_putendl("\x1b[1;29mFreed pixel buffer\x1b[0m");
+	ft_memdel((void**)&e->ui);
+	ft_putendl("\x1b[1;29mFreed UI environnement\x1b[0m");
+	ft_memdel((void**)&e);
+	ft_putendl("\x1b[1;29mFreed RT environnement\x1b[0m");
 }
 
 void						flush(t_env *e)
@@ -96,57 +92,7 @@ void						flush(t_env *e)
 		ft_memdel((void**)&e->ui);
 		ft_putendl("\x1b[1;29mFreed UI environnement\x1b[0m");
 	}
-	if (e->xml)
-	{
-		if (e->xml->nodes)
-			xml_node_clean(&e->xml->nodes);
-		if (e->xml->sub_node)
-			xml_node_clean(&e->xml->sub_node);
-		ft_memdel((void**)&e->xml);
-		ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
-	}
-	if (e->cameras)
-	{
-		ft_memdel((void**)&e->cameras);
-		ft_putendl("\x1b[1;29mFreed cameras array\x1b[0m");
-	}
-	if (e->scene)
-	{
-		ft_memdel((void**)&e->scene);
-		ft_putendl("\x1b[1;29mFreed scene datas\x1b[0m");
-	}
-	if (e->pixel_data)
-	{
-		ft_memdel((void**)&e->pixel_data);
-		ft_putendl("\x1b[1;29mFreed pixel buffer\x1b[0m");
-	}
-	ft_memdel((void**)&e);
-	ft_putendl("\x1b[1;29mFreed RT environnement\x1b[0m");
-
-	// debug
-	waiting("flushed the toilet!");
-}
-
-void		s_error(char *str, t_env *e)
-{
-	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
-	ft_putendl(str);
-	if (e)
-		flush(e);
-	cuda_print_mem();
-	cudaDeviceReset();
-	exit(EXIT_FAILURE);
-}
-
-void		p_error(char *str, t_env *e)
-{
-	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
-	perror((const char *)str);
-	if (e)
-		flush(e);
-	cuda_print_mem();
-	cudaDeviceReset();
-	exit(EXIT_FAILURE);
+	flush_scene(e);
 }
 
 int			quit(t_env *e)
