@@ -24,7 +24,7 @@ static void	show_only_cylinder(t_env *e)
 	gtk_widget_show(e->ui->obj_list_limit);
 	gtk_widget_show(e->ui->obj_list_sinwave);
 	gtk_widget_show(e->ui->obj_list_texture_diff);
-	gtk_widget_show(e->ui->obj_list_cut); // WIP
+	gtk_widget_show(e->ui->obj_list_cut);
 	gtk_widget_hide(e->ui->obj_list_kube);
 }
 

@@ -31,7 +31,7 @@ static void		ui_obj_get_id(t_env *e, t_object *obj)
 	else if (obj->type == OBJ_TORUS)
 		obj_label = ft_strjoin_frs1(obj_label, " TORUS");
 	else if (obj->type == OBJ_KUBE)
-		obj_label = ft_strjoin_frs1(obj_label, " KUBE");		
+		obj_label = ft_strjoin_frs1(obj_label, " KUBE");
 	gtk_label_set_text(GTK_LABEL(e->ui->obj_list_id_label), obj_label);
 	free(obj_label);
 }

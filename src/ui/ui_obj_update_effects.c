@@ -14,18 +14,7 @@
 
 void	ui_obj_update_cut(t_env *e, t_object *obj)
 {
-	if (obj->flags & OBJ_FLAG_CUT)
-	{
-		gtk_toggle_button_set_active(GTB(e->ui->obj_cut_check), TRUE);
-		if (!(obj->flags & OBJ_FLAG_CUT))
-			obj->flags |= OBJ_FLAG_CUT;
-	}
-	else
-	{
-		gtk_toggle_button_set_active(GTB(e->ui->obj_cut_check), FALSE);
-		if (obj->flags & OBJ_FLAG_CUT)
-			obj->flags ^= OBJ_FLAG_CUT;
-	}
+	ui_obj_update_cut_norm(e, obj);
 	gtk_spin_button_set_value(\
 						(GtkSpinButton*)e->ui->obj_cut_x_min_spin, \
 						(gdouble)obj->cut_min.x);
@@ -60,10 +49,12 @@ void	ui_obj_update_checkboard(t_env *e, t_object *obj)
 		if (obj->flags & OBJ_FLAG_CHECKERED)
 			obj->flags ^= OBJ_FLAG_CHECKERED;
 	}
-	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_checkboard_width_spin,\
-								(gdouble)obj->check_size.x);
-	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_checkboard_height_spin,\
-								(gdouble)obj->check_size.y);
+	gtk_spin_button_set_value(\
+		(GtkSpinButton*)e->ui->obj_checkboard_width_spin,\
+							(gdouble)obj->check_size.x);
+	gtk_spin_button_set_value(\
+		(GtkSpinButton*)e->ui->obj_checkboard_height_spin,\
+							(gdouble)obj->check_size.y);
 }
 
 void	ui_obj_update_diff_map(t_env *e, t_object *obj)
@@ -76,7 +67,8 @@ void	ui_obj_update_diff_map(t_env *e, t_object *obj)
 	}
 	else
 	{
-		gtk_toggle_button_set_active(GTB(e->ui->obj_texture_diff_button), FALSE);
+		gtk_toggle_button_set_active(GTB(e->ui->obj_texture_diff_button),\
+			FALSE);
 		if (obj->flags & OBJ_FLAG_DIFF_MAP)
 			obj->flags ^= OBJ_FLAG_DIFF_MAP;
 	}
@@ -92,36 +84,11 @@ void	ui_obj_update_diff_map(t_env *e, t_object *obj)
 	gtk_spin_button_set_value(\
 						(GtkSpinButton*)e->ui->obj_texture_diff_ratio_spin_y, \
 						(gdouble)obj->diff_ratio.y);
-//	gtk_combo_box_set_active((GtkComboBox*)e->ui->obj_texture_diff_chooser, \
-//	gen_get_ptr_index(e->gen_objects, obj));	//WIP
 }
 
 void	ui_obj_update_limit(t_env *e, t_object *obj)
 {
-	if (obj->flags & OBJ_FLAG_PLANE_LIMIT)
-	{
-		gtk_toggle_button_set_active(GTB(e->ui->obj_plane_limit_button), TRUE);
-		if (!(obj->flags & OBJ_FLAG_PLANE_LIMIT))
-			obj->flags |= OBJ_FLAG_PLANE_LIMIT;
-	}
-	else
-	{
-		gtk_toggle_button_set_active(GTB(e->ui->obj_plane_limit_button), FALSE);
-		if (obj->flags & OBJ_FLAG_PLANE_LIMIT)
-			obj->flags ^= OBJ_FLAG_PLANE_LIMIT;
-	}
-	if (obj->flags & OBJ_FLAG_PLANE_LIMIT_FIX)
-	{
-		gtk_toggle_button_set_active(GTB(e->ui->obj_plane_limit_fix_button), TRUE);
-		if (!(obj->flags & OBJ_FLAG_PLANE_LIMIT_FIX))
-			obj->flags |= OBJ_FLAG_PLANE_LIMIT_FIX;
-	}
-	else
-	{
-		gtk_toggle_button_set_active(GTB(e->ui->obj_plane_limit_fix_button), FALSE);
-		if (obj->flags & OBJ_FLAG_PLANE_LIMIT_FIX)
-			obj->flags ^= OBJ_FLAG_PLANE_LIMIT_FIX;
-	}
+	ui_obj_update_limit_norm(e, obj);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_limit_dir_spin_x, \
 								(gdouble)obj->limit_dir.x);
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_limit_dir_spin_y, \
@@ -163,4 +130,3 @@ void	ui_obj_update_sinwave(t_env *e, t_object *obj)
 	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_sinwave_param2_spin_z,\
 								(gdouble)obj->waves_p2.z);
 }
-
