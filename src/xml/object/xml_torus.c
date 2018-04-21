@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/15 14:31:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:22:33 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,5 @@ void		xml_node_torus(t_env *e, char *node)
 		XML->node_lst = torus_node;
 	else
 		xml_list_add_first(&XML->node_lst, torus_node);
-	xml_node_clean(tmp);
+	xml_node_clean(&tmp);
 }

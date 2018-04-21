@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:33:45 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 12:28:25 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:17:07 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,7 @@ void		xml_get_file(t_env *e)
 void		xml_init(t_env *e)
 {
 	ft_putendl("\n\x1b[1;32m/\\ Processing XML scene file /\\\n\x1b[0m");
-	if (!(XML = malloc(sizeof(t_xml))))
+	if (!(XML = ft_memalloc(sizeof(t_xml))))
 		s_error("\x1b[1;31mCan't initialize the xml buffer\x1b[0m", e);
-	ft_bzero(XML, sizeof(t_xml));
-	XML->node_lst = NULL;
 	xml_get_file(e);
 }

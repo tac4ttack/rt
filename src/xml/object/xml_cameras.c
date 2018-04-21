@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/14 15:02:15 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:18:17 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		xml_node_cam(t_env *e, char *node)
 		XML->node_lst = cam_node;
 	else
 		xml_list_add_first(&XML->node_lst, cam_node);
-	xml_node_clean(tmp);
+	xml_node_clean(&tmp);
 }
 
 void		xml_allocate_cam(t_env *e)

@@ -6,7 +6,7 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 16:28:57 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/14 18:30:08 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:18:46 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,5 @@ void		xml_node_kube(t_env *e, char *node)
 		XML->node_lst = kube_node;
 	else
 		xml_list_add_first(&XML->node_lst, kube_node);
-	xml_node_clean(tmp);
+	xml_node_clean(&tmp);
 }
