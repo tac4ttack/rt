@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 17:35:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 17:26:21 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 18:04:23 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	xml_node_clean(char ***target)
 		while (s[i])
 			ft_memdel((void**)&s[i++]);
 	ft_memdel((void **)target);
-	//*target = NULL;
 }
 
 int		xml_check_char(char c)

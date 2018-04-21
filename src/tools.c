@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/21 17:25:31 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/21 18:05:23 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void			texture_destroy(t_env *e, t_texture *tex)
 void waiting(char *str) {
 	static int a = 999;
 	int b;
-	printf("Waiting att %i %s\n", a, str);
+	printf("// waiting att %i %s\n", a, str);
 	scanf("%i", &b);
 	a++;
 }
@@ -68,45 +68,45 @@ void	flush(t_env *e)
 			texture_destroy(e, &e->textures[i]);
 			i++;
 		}
-	waiting("1");
+	// waiting("1");
 	ft_memdel((void**)&e->textures);
-	waiting("2");
+	// waiting("2");
 	if (e->cuda)
 		cuda_destruct(&e->cuda);
-	waiting("2.5");
+	// waiting("2.5");
 	gen_destruct(&e->gen_objects);
-	waiting("3");
+	// waiting("3");
 	gen_destruct(&e->gen_lights);
-	waiting("4");
+	// waiting("4");
 	if (e->ui->surface)
 		cairo_surface_destroy(e->ui->surface);
-	waiting("4.5");
+	// waiting("4.5");
 	g_object_unref(e->ui->pixbuf);
-	waiting("5");
+	// waiting("5");
 	if (e->xml->nodes)
 		xml_node_clean(&e->xml->nodes);
-	waiting("7");
+	// waiting("7");
 	if (e->xml->sub_node)
 		xml_node_clean(&e->xml->sub_node);
-	waiting("8");
+	// waiting("8");
 	ft_memdel((void**)&e->xml);
 	ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
-	waiting("9");
+	// waiting("9");
 	ft_memdel((void**)&e->cameras);
 	ft_putendl("\x1b[1;29mFreed cameras array\x1b[0m");
-	waiting("10");
+	// waiting("10");
 	ft_memdel((void**)&e->scene);
 	ft_putendl("\x1b[1;29mFreed scene datas\x1b[0m");
-	waiting("11");
+	// waiting("11");
 	ft_memdel((void**)&e->pixel_data);
 	ft_putendl("\x1b[1;29mFreed pixel buffer\x1b[0m");
-	waiting("12");
+	// waiting("12");
 	ft_memdel((void**)&e->ui);
 	ft_putendl("\x1b[1;29mFreed UI environnement\x1b[0m");
-	waiting("13");
+	// waiting("13");
 	ft_memdel((void**)&e);
 	ft_putendl("\x1b[1;29mFreed RT environnement\x1b[0m");
-	waiting("14");
+	// waiting("14");
 }
 
 void	s_error(char *str, t_env *e)
@@ -147,29 +147,21 @@ int		gtk_quit(GtkApplication *app, gpointer data)
 
 	(void)app;
 	e = data;
-	scanf("%i", &lol);
-	printf("++1\n");
+	// waiting("++1\n");
 	gtk_main_quit();
-	scanf("%i", &lol);
-	printf("++2\n");
+	// waiting("++2\n");
 	gtk_widget_destroy(e->ui->main_window);
-	scanf("%i", &lol);
-	printf("++3\n");
+	// waiting("++3\n");
 	g_object_unref(e->ui->app);
-	scanf("%i", &lol);
-	printf("++4\n");
+	// waiting("++4\n");
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
-	scanf("%i", &lol);
-	printf("++5\n");
+	// waiting("++5\n");
 	flush(e);
-	scanf("%i", &lol);
-	printf("++6\n");
+	// waiting("++6\n");
 	cuda_print_mem();
-	scanf("%i", &lol);
-	printf("++7\n");
+	// waiting("++7\n");
 	cudaDeviceReset();
-	scanf("%i", &lol);
-	printf("++8\n");
+	// waiting("++8\n");
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
 
 	int i = 0;
