@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 18:07:47 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 20:32:30 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static void		ui_obj_apply(t_env *e, FT_FLOAT3 *target)
 
 void			ui_obj_limit(t_env *e, t_object *obj)
 {
+	FT_FLOAT3	*target;
+
 	if (KEY_STATE_I || KEY_STATE_J || KEY_STATE_K || KEY_STATE_L \
 	|| KEY_STATE_U || KEY_STATE_O)
 		target = &obj->limit_dir;
