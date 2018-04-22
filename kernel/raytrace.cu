@@ -980,17 +980,17 @@ __device__ unsigned int		plane_texture(float3 normale, float3 pos, float3 u_axis
 	int2			uv = make_int2(0);
 
 	v_axis = cross(normale, u_axis);
-	uv.x = (int)(floor(dot(pos, u_axis) * ratio.x + offset.x));
-	uv.y = (int)(floor(dot(pos, v_axis) * ratio.y + offset.y));
-	uv.x %= res.x - 1;
-	uv.y %= res.y - 1;
+	uv.x = (int)(floor(dot(pos, v_axis) * ratio.x + offset.x));
+	uv.y = (int)(floor(dot(pos, u_axis) * ratio.y + offset.y));
+	uv.x %= (res.x - 1);
+	uv.y %= (res.y - 1);
 	if (uv.x < 0)
 		uv.x = (uv.x + res.x - 1);
 	if (uv.y < 0)
 		uv.y = (uv.y + res.y - 1);
-	uv.x %= res.x - 1;
-	uv.y %= res.y - 1;
-	return (tex2D<uint>(texture, uv.y, uv.x));
+	uv.x %= (res.x - 1);
+	uv.y %= (res.y - 1);
+	return (tex2D<uint>(texture, uv.x, uv.y));
 }
 
 __device__ bool		solve_quadratic(float a, float b, float c, float *inter0, float *inter1)
