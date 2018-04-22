@@ -1407,12 +1407,14 @@ __device__ t_ret	cylinder_cut(t_cylinder *cyl, float3 ray, float3 origin, float 
 	return (ret);
 }
 
-__device__ unsigned int		sphere_checkerboard(float3 dir, unsigned int color, float3 check_size)
+__device__ unsigned int		sphere_checkerboard(t_object *sphere, float3 pos, unsigned int color, float3 check_size)
 {
 	int2	uv = make_int2(0);
 
-	uv.x = (int)(floor((0.5 + (atan2(dir.z, dir.x) / (2 * 3.1415))) * check_size.x));
-	uv.y = (int)(floor((0.5 - (asin(dir.y) / 3.1415)) * check_size.y));
+	pos = vector_get_rotate(&pos, &sphere->dir);
+
+	uv.x = (int)(floor((0.5 + (atan2(pos.z, pos.x) / (2 * 3.1415))) * check_size.x));
+	uv.y = (int)(floor((0.5 - (asin(pos.y) / 3.1415)) * check_size.y));
 	if (uv.x % 2 == 0)
 	{
 		if (uv.y % 2 == 0)
@@ -2197,7 +2199,7 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 						if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id != -1))
 							new_hit.color = sphere_texture(new_hit.obj, normalize(new_hit.obj->pos - new_hit.pos), scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
 						else if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-							new_hit.color = sphere_checkerboard(normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
+							new_hit.color = sphere_checkerboard(new_hit.obj, normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
 
 						else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id > -1))
 							new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((t_plane *)new_hit.obj)->u_axis, ((t_plane *)new_hit.obj)->diff_ratio, ((t_plane *)new_hit.obj)->diff_offset, scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id]);
@@ -2256,7 +2258,7 @@ __device__ unsigned int	fresnel(t_scene *scene, float3 ray, t_hit old_hit, int d
 				if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id > -1))
 					new_hit.color = sphere_texture(new_hit.obj, normalize(new_hit.obj->pos - new_hit.pos), scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id], ((t_sphere *)new_hit.obj)->diff_ratio, ((t_sphere *)new_hit.obj)->diff_offset);
 				else if ((new_hit.obj->type == OBJ_SPHERE) && (new_hit.obj->flags & OBJ_FLAG_CHECKERED))
-					new_hit.color = sphere_checkerboard(normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
+					new_hit.color = sphere_checkerboard(new_hit.obj, normalize(new_hit.obj->pos - new_hit.pos), new_hit.obj->color, new_hit.obj->check_size);
 
 				else if ((new_hit.obj->type == OBJ_PLANE) && (new_hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (new_hit.obj->diff_map_id > -1))
 					new_hit.color = plane_texture(new_hit.normal, new_hit.pos, ((t_plane *)new_hit.obj)->u_axis, ((t_plane *)new_hit.obj)->diff_ratio, ((t_plane *)new_hit.obj)->diff_offset, scene->tex[new_hit.obj->diff_map_id], scene->tex_res[new_hit.obj->diff_map_id]);
@@ -2318,7 +2320,7 @@ __device__ unsigned int	get_pixel_color(t_scene *scene, float3 ray, int *target,
 		if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (hit.obj->diff_map_id > -1))
 			 hit.color = sphere_texture(hit.obj, normalize(hit.obj->pos - hit.pos), scene->tex[hit.obj->diff_map_id], scene->tex_res[hit.obj->diff_map_id], ((t_sphere *)hit.obj)->diff_ratio, ((t_sphere *)hit.obj)->diff_offset);
 		else if ((hit.obj->type == OBJ_SPHERE) && (hit.obj->flags & OBJ_FLAG_CHECKERED))
-			hit.color = sphere_checkerboard(normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
+			hit.color = sphere_checkerboard(hit.obj, normalize(hit.obj->pos - hit.pos), hit.obj->color, hit.obj->check_size);
 
 		else if ((hit.obj->type == OBJ_PLANE) && (hit.obj->flags & OBJ_FLAG_DIFF_MAP) && (hit.obj->diff_map_id > -1))
 			hit.color = plane_texture(hit.normal, hit.pos, ((t_plane *)hit.obj)->u_axis, ((t_plane *)hit.obj)->diff_ratio, ((t_plane *)hit.obj)->diff_offset, scene->tex[hit.obj->diff_map_id], scene->tex_res[hit.obj->diff_map_id]);
