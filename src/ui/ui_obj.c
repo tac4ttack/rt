@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 20:43:18 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:50:32 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,11 @@ void			ui_obj(t_env *e)
 		if (obj->flags & OBJ_FLAG_PLANE_LIMIT_FIX)
 			ui_obj_limit(e, obj);
 		ui_obj_update(e, obj);
+		obj->cos.x = cosf(obj->dir.x);
+		obj->cos.y = cosf(obj->dir.y);
+		obj->cos.z = cosf(obj->dir.z);
+		obj->sin.x = sinf(obj->dir.x);
+		obj->sin.y = sinf(obj->dir.y);
+		obj->sin.z = sinf(obj->dir.z);
 	}
 }

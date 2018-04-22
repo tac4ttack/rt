@@ -6,7 +6,7 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:26:29 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/21 23:18:01 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:46:00 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ static void	xml_push_ellipsoid_effects(t_ellipsoid *ellipsoid)
 	ellipsoid->diff_offset.y = 0;
 	ellipsoid->diff_ratio.x = 1;
 	ellipsoid->diff_ratio.y = 1;
+	ellipsoid->cos.x = cosf(ellipsoid->dir.x);
+	ellipsoid->cos.y = cosf(ellipsoid->dir.y);
+	ellipsoid->cos.z = cosf(ellipsoid->dir.z);
+	ellipsoid->sin.x = sinf(ellipsoid->dir.x);
+	ellipsoid->sin.y = sinf(ellipsoid->dir.y);
+	ellipsoid->sin.z = sinf(ellipsoid->dir.z);
 }
 
 void		xml_push_ellipsoid(t_env *e, t_node *list)

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 22:45:01 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:18:09 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,8 @@ typedef struct			s_object
 	FT_FLOAT3			diff_ratio;
 	FT_FLOAT3			cut_min;
 	FT_FLOAT3			cut_max;
+	FT_FLOAT3			cos;
+	FT_FLOAT3			sin;
 }						t_object;
 
 typedef struct			s_fps
@@ -196,6 +198,8 @@ typedef struct			s_cone
 	FT_FLOAT3			diff_ratio;
 	FT_FLOAT3			cut_min;
 	FT_FLOAT3			cut_max;
+	FT_FLOAT3			cos;
+	FT_FLOAT3			sin;
 
 	float				angle;
 	FT_FLOAT3			u_axis;
@@ -225,6 +229,8 @@ typedef struct			s_cylinder
 	FT_FLOAT3			diff_ratio;
 	FT_FLOAT3			cut_min;
 	FT_FLOAT3			cut_max;
+	FT_FLOAT3			cos;
+	FT_FLOAT3			sin;
 
 	FT_FLOAT3			base_dir;
 	float				radius;
@@ -255,6 +261,8 @@ typedef struct			s_plane
 	FT_FLOAT3			diff_ratio;
 	FT_FLOAT3			cut_min;
 	FT_FLOAT3			cut_max;
+	FT_FLOAT3			cos;
+	FT_FLOAT3			sin;
 
 	float				radius;
 	FT_FLOAT3			u_axis;
@@ -284,6 +292,8 @@ typedef struct			s_sphere
 	FT_FLOAT3			diff_ratio;
 	FT_FLOAT3			cut_min;
 	FT_FLOAT3			cut_max;
+	FT_FLOAT3			cos;
+	FT_FLOAT3			sin;
 
 	float				radius;
 }						t_sphere;
@@ -312,6 +322,8 @@ typedef struct			s_torus
 	FT_FLOAT3			diff_ratio;
 	FT_FLOAT3			cut_min;
 	FT_FLOAT3			cut_max;
+	FT_FLOAT3			cos;
+	FT_FLOAT3			sin;
 
 	double				lil_radius;
 	double				big_radius;
@@ -341,6 +353,8 @@ typedef struct			s_kube
 	FT_FLOAT3			diff_ratio;
 	FT_FLOAT3			cut_min;
 	FT_FLOAT3			cut_max;
+	FT_FLOAT3			cos;
+	FT_FLOAT3			sin;
 
 	double				option;
 }						t_kube;
@@ -369,6 +383,8 @@ typedef struct			s_ellipsoid
 	FT_FLOAT3			diff_ratio;
 	FT_FLOAT3			cut_min;
 	FT_FLOAT3			cut_max;
+	FT_FLOAT3			cos;
+	FT_FLOAT3			sin;
 
 	float				radius;
 	FT_FLOAT3			axis_size;

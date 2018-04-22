@@ -6,7 +6,7 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:26:57 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/21 23:17:57 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:46:06 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ static void	xml_push_kube_effects(t_kube *kube)
 	kube->diff_offset.y = 0;
 	kube->diff_ratio.x = 1;
 	kube->diff_ratio.y = 1;
+	kube->cos.x = cosf(kube->dir.x);
+	kube->cos.y = cosf(kube->dir.y);
+	kube->cos.z = cosf(kube->dir.z);
+	kube->sin.x = sinf(kube->dir.x);
+	kube->sin.y = sinf(kube->dir.y);
+	kube->sin.z = sinf(kube->dir.z);
 }
 
 void		xml_push_kube(t_env *e, t_node *list)
