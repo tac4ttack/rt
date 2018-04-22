@@ -233,10 +233,6 @@ $(NAME): $(SRC) $(SRC_CUDA) $(INC) $(OBJ_PATH) $(OBJ) $(OBJ_CUDA) $(SRC_CUDA_CU)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
 	/usr/local/cuda/bin/nvcc -o rt -D DCUDA $(OBJ) $(OBJ_CUDA) $(SRC_CUDA_CU) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
 
-opencl: libft $(SRC) $(SRC_CL) $(INC) $(OBJ_PATH) $(OBJ) $(OBJ_CL)
-	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(OBJ_CL)  -D DCL -L $(LIBFT_PATH) $(LIBFTFLAGS) $(GTK_CLIBS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
-
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
 	/usr/local/cuda/bin/nvcc -c $< -o $@ -D DCUDA -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
