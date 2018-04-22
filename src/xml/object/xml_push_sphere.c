@@ -6,7 +6,7 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:26:38 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/21 23:17:44 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:46:21 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ static void	xml_push_sphere_effects(t_sphere *sphere)
 	sphere->diff_offset.y = 0;
 	sphere->diff_ratio.x = 1;
 	sphere->diff_ratio.y = 1;
+	sphere->cos.x = cosf(sphere->dir.x);
+	sphere->cos.y = cosf(sphere->dir.y);
+	sphere->cos.z = cosf(sphere->dir.z);
+	sphere->sin.x = sinf(sphere->dir.x);
+	sphere->sin.y = sinf(sphere->dir.y);
+	sphere->sin.z = sinf(sphere->dir.z);
 }
 
 void		xml_push_sphere(t_env *e, t_node *list)

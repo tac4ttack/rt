@@ -6,7 +6,7 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:27:16 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/21 23:17:53 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:46:16 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ static void	xml_push_torus_effects(t_torus *torus)
 	torus->diff_offset.y = 0;
 	torus->diff_ratio.x = 1;
 	torus->diff_ratio.y = 1;
+	torus->cos.x = cosf(torus->dir.x);
+	torus->cos.y = cosf(torus->dir.y);
+	torus->cos.z = cosf(torus->dir.z);
+	torus->sin.x = sinf(torus->dir.x);
+	torus->sin.y = sinf(torus->dir.y);
+	torus->sin.z = sinf(torus->dir.z);
 }
 
 void		xml_push_torus(t_env *e, t_node *list)

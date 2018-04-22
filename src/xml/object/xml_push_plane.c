@@ -6,7 +6,7 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:28:13 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/21 23:17:50 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:47:15 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ static void	xml_push_plane_effects(t_plane *plane)
 	plane->diff_ratio.x = 100;
 	plane->diff_ratio.y = 100;
 	plane->u_axis = cross_vect(plane->normal);
+	plane->cos.x = cosf(plane->normal.x);
+	plane->cos.y = cosf(plane->normal.y);
+	plane->cos.z = cosf(plane->normal.z);
+	plane->sin.x = sinf(plane->normal.x);
+	plane->sin.y = sinf(plane->normal.y);
+	plane->sin.z = sinf(plane->normal.z);
 }
 
 void		xml_push_plane(t_env *e, t_node *list)

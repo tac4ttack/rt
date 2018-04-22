@@ -162,6 +162,10 @@ typedef struct			s_object
 	float				_align11;
 	float3				cut_max;
 	float				_align12;
+	float3				cos;
+	float				_align13;
+	float3				sin;
+	float				_align14;
 }						t_object;
 
 typedef struct			s_cone
@@ -201,10 +205,14 @@ typedef struct			s_cone
 	float				_align11;
 	float3				cut_max;
 	float				_align12;
+	float3				cos;
+	float				_align13;
+	float3				sin;
+	float				_align14;
 
 	float				angle;
 	float3				u_axis;
-	float				_align13;
+	float				_align15;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -244,12 +252,16 @@ typedef struct			s_cylinder
 	float				_align11;
 	float3				cut_max;
 	float				_align12;
+	float3				cos;
+	float				_align13;
+	float3				sin;
+	float				_align14;
 
 	float3				base_dir;
-	float				_align13;
+	float				_align15;
 	float				radius;
 	float3				u_axis;
-	float				_align14;
+	float				_align16;
 }						t_cylinder;
 
 typedef struct			s_plane
@@ -289,10 +301,14 @@ typedef struct			s_plane
 	float				_align11;
 	float3				cut_max;
 	float				_align12;
+	float3				cos;
+	float				_align13;
+	float3				sin;
+	float				_align14;
 
 	float				radius;
 	float3				u_axis;
-	float				_align13;
+	float				_align15;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -332,6 +348,10 @@ typedef struct			s_sphere
 	float				_align11;
 	float3				cut_max;
 	float				_align12;
+	float3				cos;
+	float				_align13;
+	float3				sin;
+	float				_align14;
 
 	float				radius;
 }						t_sphere;
@@ -373,10 +393,14 @@ typedef struct			s_ellipsoid
 	float				_align11;
 	float3				cut_max;
 	float				_align12;
+	float3				cos;
+	float				_align13;
+	float3				sin;
+	float				_align14;
 
 	float				radius;
 	float3				axis_size;
-	float				_align13;
+	float				_align15;
 }						t_ellipsoid;
 
 typedef struct			s_thor
@@ -416,6 +440,10 @@ typedef struct			s_thor
 	float				_align11;
 	float3				cut_max;
 	float				_align12;
+	float3				cos;
+	float				_align13;
+	float3				sin;
+	float				_align14;
 
 	double				lil_radius;
 	double				big_radius;
@@ -458,6 +486,10 @@ typedef struct			s_kube
 	float				_align11;
 	float3				cut_max;
 	float				_align12;
+	float3				cos;
+	float				_align13;
+	float3				sin;
+	float				_align14;
 
 	double				option;
 }						t_kube;
@@ -564,30 +596,21 @@ inline __device__ float radians(double degree) {
   return (degree * M_PI / 180.f);
 }
 
-__device__ float3	vector_get_rotate(float3 *me, float3 *rot)
+__device__ float3	vector_get_rotate(float3 *me, float3 *cos, float3 *sin)
 {
 	float3		n = make_float3(0.f);
 	float		tmp = 0.f;
 
 	n = *me;
-	if (rot->x)
-	{
-		tmp = n.y * cosf(rot->x) - n.z * sinf(rot->x);
-		n.z = n.y * sinf(rot->x) + n.z * cosf(rot->x);
-		n.y = tmp;
-	}
-	if (rot->y)
-	{
-		tmp = n.x * cosf(rot->y) + n.z * sinf(rot->y);
-		n.z = n.x * -sinf(rot->y) + n.z * cosf(rot->y);
-		n.x = tmp;
-	}
-	if (rot->z)
-	{
-		tmp = n.x * cosf(rot->z) - n.y * sinf(rot->z);
-		n.y = n.x * sinf(rot->z) + n.y * cosf(rot->z);
-		n.x = tmp;
-	}
+	tmp = n.y * cos->x - n.z * sin->x;
+	n.z = n.y * sin->x + n.z * cos->x;
+	n.y = tmp;
+	tmp = n.x * cos->y + n.z * sin->y;
+	n.z = n.x * -sin->y + n.z * cos->y;
+	n.x = tmp;
+	tmp = n.x * cos->z - n.y * sin->z;
+	n.y = n.x * sin->z + n.y * cos->z;
+	n.x = tmp;
 	return (n);
 }
 
@@ -1224,7 +1247,7 @@ __device__ float3 get_thor_normal(t_thor *thor, float3 hitpos)
 	float	r = (float)((thor->big_radius * thor->big_radius));
 
 	float3 pos = hitpos - thor->pos;
-	pos = vector_get_rotate(&pos, &thor->dir);
+	pos = vector_get_rotate(&pos, &thor->cos, &thor->sin);
 
 	c = ((pos.x * pos.x) + (pos.y * pos.y) + (pos.z * pos.z) - r - R);
 
@@ -1269,7 +1292,7 @@ __device__ t_ret		inter_kube(t_kube *kube, float3 ray, float3 origin)
 __device__ float3 get_kube_normal(t_kube *kube, float3 hitpos)
 {
 	float3 pos = hitpos - kube->pos;
-	pos = vector_get_rotate(&pos, &kube->dir);
+	pos = vector_get_rotate(&pos, &kube->cos, &kube->sin);
 	float3  res = make_float3(0.f);
 
      res.x = 4.0f * powf(pos.x, 3.0f) - 10.0 * pos.x;
@@ -1289,7 +1312,7 @@ __device__ unsigned int		sphere_texture(t_object *sphere, float3 pos, cudaTextur
 	size.x = (int)(floor(res.x * ratio.x));
 	size.y = (int)(floor(res.y * ratio.y));
 
-	pos = vector_get_rotate(&pos, &sphere->dir);
+	pos = vector_get_rotate(&pos, &sphere->cos, &sphere->sin);
 
 	uv.x = (int)(floor((0.5 + (atan2(pos.z, pos.x) / (2 * M_PI))) * size.x + offset.x));
 	uv.y = (int)(floor((0.5 - (asin(pos.y) / M_PI)) * size.y + offset.y));
@@ -1411,7 +1434,7 @@ __device__ unsigned int		sphere_checkerboard(t_object *sphere, float3 pos, unsig
 {
 	int2	uv = make_int2(0);
 
-	pos = vector_get_rotate(&pos, &sphere->dir);
+	pos = vector_get_rotate(&pos, &sphere->cos, &sphere->sin);
 
 	uv.x = (int)(floor((0.5 + (atan2(pos.z, pos.x) / (2 * 3.1415))) * check_size.x));
 	uv.y = (int)(floor((0.5 - (asin(pos.y) / 3.1415)) * check_size.y));
@@ -1449,8 +1472,8 @@ __device__ t_ret	mini_inter_sphere(t_sphere *sphere, float3 ray, float3 origin)
 	ret.wall = 0;
 	ret.normal = make_float3(0.f);
 	pos = origin - sphere->pos;
-	pos = vector_get_rotate(&pos, &sphere->dir);
-	ray = vector_get_rotate(&ray, &sphere->dir);
+	pos = vector_get_rotate(&pos, &sphere->cos, &sphere->sin);
+	ray = vector_get_rotate(&ray, &sphere->cos, &sphere->sin);
 
 	abc = get_sphere_abc(sphere->radius, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
@@ -1479,8 +1502,8 @@ __device__ t_ret	inter_sphere(t_sphere *sphere, float3 ray, float3 origin)
 	ret.wall = 0;
 	ret.normal = make_float3(0.f);
 	pos = origin - sphere->pos;
-	pos = vector_get_rotate(&pos, &sphere->dir);
-	ray = vector_get_rotate(&ray, &sphere->dir);
+	pos = vector_get_rotate(&pos, &sphere->cos, &sphere->sin);
+	ray = vector_get_rotate(&ray, &sphere->cos, &sphere->sin);
 
 	abc = get_sphere_abc(sphere->radius, ray, pos);
 	if (!solve_quadratic(abc.x, abc.y, abc.z, &res1, &res2))
@@ -1583,7 +1606,7 @@ __device__ t_ret	inter_plan(t_plane *plane, float3 ray, float3 origin)
 __device__ float3		get_ellipsoid_normal(t_ellipsoid *ellipsoid, t_hit *hit)
 {
 	float3 pos = hit->pos - ellipsoid->pos;
-	pos = vector_get_rotate(&pos, &ellipsoid->dir);
+	pos = vector_get_rotate(&pos, &ellipsoid->cos, &ellipsoid->sin);
 
 	float3 res = make_float3(0.f);
 
@@ -1608,17 +1631,17 @@ __device__ t_ret	inter_ellipsoid(t_ellipsoid *ellipsoid, float3 ray, float3 orig
 	ret.normal = make_float3(0.f);
 	save_ray = ray;
 	pos = origin - ellipsoid->pos;
-	pos = vector_get_rotate(&pos, &ellipsoid->dir);
-	ray = vector_get_rotate(&ray, &ellipsoid->dir);
+	pos = vector_get_rotate(&pos, &ellipsoid->cos, &ellipsoid->sin);
+	ray = vector_get_rotate(&ray, &ellipsoid->cos, &ellipsoid->sin);
 	ray = ray / ellipsoid->axis_size;
 	pos = pos / ellipsoid->axis_size;
 
 	abc.x = (ray.x * ray.x +
-	 	ray.y * ray.y +
-	 	ray.z * ray.z);
+	 		ray.y * ray.y +
+	 		ray.z * ray.z);
 	abc.y = (2 * pos.x * ray.x +
-		 2 * pos.y * ray.y +
-		 2 * pos.z * ray.z);
+		 	2 * pos.y * ray.y +
+		 	2 * pos.z * ray.z);
 	abc.z = (pos.x * pos.x +
 		 pos.y * pos.y +
 		 pos.z * pos.z) - (ellipsoid->radius * ellipsoid->radius);
@@ -1764,7 +1787,7 @@ __device__ t_hit		ray_hit(t_scene *scene, float3 origin, float3 ray, float light
 __device__ float3		get_sphere_normal(t_hit *hit, t_sphere *sphere, t_scene *scene, float3 ray)
 {
 	float3 pos = hit->pos - sphere->pos;
-	pos = vector_get_rotate(&pos, &sphere->dir);
+	pos = vector_get_rotate(&pos, &sphere->cos, &sphere->sin);
 	float3 res = make_float3(0.f);
 
 	if (sphere->flags & OBJ_FLAG_CUT)
