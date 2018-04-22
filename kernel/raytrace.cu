@@ -2493,7 +2493,7 @@ extern "C" void render_cuda(t_cuda			*cuda,
 							cudaTextureObject_t *tex3,
 							cudaTextureObject_t *skybox)
 {
-	dim3					threads_per_block(16, 16);
+	dim3					threads_per_block(8, 8);
 	dim3					grid_size(scene_data->win_w / threads_per_block.x, scene_data->win_h / threads_per_block.y);
 
 	cudaMemcpy(cuda->mem[1], gen_objects->mem, gen_objects->mem_size, cudaMemcpyHostToDevice);
