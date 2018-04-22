@@ -177,7 +177,7 @@ ntoniolo - Noé TONIOLO</property>
     <property name="page_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="cylinder_radius_adjustement">
-    <property name="lower">0.25</property>
+    <property name="lower">0.050000000000000003</property>
     <property name="upper">10000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">1</property>
@@ -230,7 +230,7 @@ ntoniolo - Noé TONIOLO</property>
     <property name="page_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="ellipsoid_radius_adjustement">
-    <property name="lower">0.25</property>
+    <property name="lower">0.050000000000000003</property>
     <property name="upper">10000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">1</property>
@@ -500,18 +500,18 @@ ntoniolo - Noé TONIOLO</property>
   </object>
   <object class="GtkAdjustment" id="res_height_adjustement">
     <property name="lower">5</property>
-    <property name="upper">9999</property>
+    <property name="upper">4096</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="res_width_adjustement">
     <property name="lower">5</property>
-    <property name="upper">9999</property>
+    <property name="upper">4096</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="sphere_radius_adjustement">
-    <property name="lower">0.25</property>
+    <property name="lower">0.050000000000000003</property>
     <property name="upper">10000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">1</property>
@@ -523,13 +523,13 @@ ntoniolo - Noé TONIOLO</property>
     <property name="page_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="torus_bigradius_adjustement">
-    <property name="lower">0.25</property>
+    <property name="lower">0.050000000000000003</property>
     <property name="upper">10000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="torus_lilradius_adjustement">
-    <property name="lower">0.25</property>
+    <property name="lower">0.050000000000000003</property>
     <property name="upper">10000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">1</property>
@@ -1546,7 +1546,7 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="value">1</property>
                                                       </object>
                                                       <packing>
-                                                        <property name="expand">False</property>
+                                                        <property name="expand">True</property>
                                                         <property name="fill">True</property>
                                                         <property name="position">1</property>
                                                       </packing>
@@ -1569,7 +1569,7 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="value">1</property>
                                                       </object>
                                                       <packing>
-                                                        <property name="expand">False</property>
+                                                        <property name="expand">True</property>
                                                         <property name="fill">True</property>
                                                         <property name="position">2</property>
                                                       </packing>
@@ -1592,7 +1592,7 @@ ntoniolo - Noé TONIOLO</property>
                                                         <property name="value">1</property>
                                                       </object>
                                                       <packing>
-                                                        <property name="expand">False</property>
+                                                        <property name="expand">True</property>
                                                         <property name="fill">True</property>
                                                         <property name="position">3</property>
                                                       </packing>

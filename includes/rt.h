@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/22 17:18:09 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 18:58:28 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -509,6 +509,7 @@ FT_FLOAT3				roty(FT_FLOAT3 dir, float yaw);
 FT_FLOAT3				rotx(FT_FLOAT3 dir, float pitch);
 FT_FLOAT3				rotcam(FT_FLOAT3 vect, float rad_pitch, float rad_yaw);
 
+void					calculate_cos_sin_obj(t_object *obj);
 void					init(GtkApplication *app, gpointer data);
 void					init_gtk(GtkApplication *app, gpointer data);
 void					init_cb_cam(t_env *e);
@@ -688,5 +689,4 @@ void					xml_write_sphere(t_sphere *sphere, const int fd);
 void					xml_write_torus(t_torus *torus, const int fd);
 void					xml_write_kube(t_kube *kube, const int fd);
 
-void					waiting(char *str);
 #endif

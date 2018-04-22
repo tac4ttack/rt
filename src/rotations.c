@@ -6,7 +6,7 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:24:52 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/13 16:32:24 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 18:48:56 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,14 @@ FT_FLOAT3			rotcam(FT_FLOAT3 vect, float rad_pitch, float rad_yaw)
 	res.z = vect.x * -sin(rad_yaw) + vect.y * cos(rad_yaw) * sin(rad_pitch) \
 			+ vect.z * cos(rad_yaw) * cos(rad_pitch);
 	return (normalize_vect(res));
+}
+
+void				calculate_cos_sin_obj(t_object *obj)
+{
+	obj->cos.x = cosf(obj->dir.x);
+	obj->cos.y = cosf(obj->dir.y);
+	obj->cos.z = cosf(obj->dir.z);
+	obj->sin.x = sinf(obj->dir.x);
+	obj->sin.y = sinf(obj->dir.y);
+	obj->sin.z = sinf(obj->dir.z);
 }
