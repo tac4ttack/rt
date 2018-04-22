@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/21 21:10:26 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:10:29 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
-void			waiting(char *str)
-{
-	static int	a = 999;
-	int			b;
-
-	printf("// waiting att %i %s\n", a, str);
-	scanf("%i", &b);
-	a++;
-}
 
 void			texture_destroy(t_env *e, t_texture *tex)
 {
@@ -68,7 +58,6 @@ int				gtk_quit(GtkApplication *app, gpointer data)
 	if (e)
 		flush(e);
 	cudaDeviceReset();
-	waiting("This is the end...\n");
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
 	exit(EXIT_SUCCESS);
 	return (0);

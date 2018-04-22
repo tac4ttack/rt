@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 21:09:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 20:05:36 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/22 18:35:15 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,8 @@ int				main(int ac, char **av)
 	cudaDeviceReset();
 	if (ac != 2)
 		print_usage();
-	if (!(e = malloc(sizeof(t_env))))
+	if (!(e = ft_memalloc(sizeof(t_env))))
 		s_error("\x1b[1;31mCan't initialize RT\x1b[0m", NULL);
-	ft_bzero(e, sizeof(t_env));
 	if (!(e->ui = (t_ui *)ft_memalloc(sizeof(t_ui))))
 		s_error("\x1b[1;31mCan't initialize UI data structure\x1b[0m", e);
 	ft_bzero(&e->ui->keys, sizeof(t_keystate));
