@@ -6,7 +6,7 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:26:50 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/21 23:18:12 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:43:10 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ static void	xml_push_cone_effects(t_cone *cone)
 	cone->diff_ratio.x = 1;
 	cone->diff_ratio.y = 1;
 	cone->u_axis = cross_vect(cone->dir);
+	cone->cos.x = cosf(cone->dir.x);
+	cone->cos.y = cosf(cone->dir.y);
+	cone->cos.z = cosf(cone->dir.z);
+	cone->sin.x = sinf(cone->dir.x);
+	cone->sin.y = sinf(cone->dir.y);
+	cone->sin.z = sinf(cone->dir.z);
 }
 
 void		xml_push_cone(t_env *e, t_node *list)

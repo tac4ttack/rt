@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 20:43:18 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 18:48:49 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void		ui_obj_apply(t_env *e, FT_FLOAT3 *target)
 	(KEY_STATE_N9 ? target->z += 0.1 : 0);
 }
 
-void			ui_obj_limit(t_env *e, t_object *obj)
+static void		ui_obj_limit(t_env *e, t_object *obj)
 {
 	FT_FLOAT3	*target;
 
@@ -41,7 +41,7 @@ void			ui_obj_limit(t_env *e, t_object *obj)
 		ui_obj_apply(e, target);
 }
 
-void			ui_obj_uaxis(t_env *e, t_object *obj)
+static void		ui_obj_uaxis(t_env *e, t_object *obj)
 {
 	FT_FLOAT3	*target;
 
@@ -77,5 +77,6 @@ void			ui_obj(t_env *e)
 		if (obj->flags & OBJ_FLAG_PLANE_LIMIT_FIX)
 			ui_obj_limit(e, obj);
 		ui_obj_update(e, obj);
+		calculate_cos_sin_obj(obj);
 	}
 }

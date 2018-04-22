@@ -6,7 +6,7 @@
 /*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 17:56:46 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/04/21 23:07:59 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:45:55 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ static void	xml_push_cylinder_effects(t_cylinder *cylinder)
 	cylinder->diff_ratio.x = 1;
 	cylinder->diff_ratio.y = 1;
 	cylinder->u_axis = cross_vect(cylinder->dir);
+	cylinder->cos.x = cosf(cylinder->dir.x);
+	cylinder->cos.y = cosf(cylinder->dir.y);
+	cylinder->cos.z = cosf(cylinder->dir.z);
+	cylinder->sin.x = sinf(cylinder->dir.x);
+	cylinder->sin.y = sinf(cylinder->dir.y);
+	cylinder->sin.z = sinf(cylinder->dir.z);
 }
 
 void		xml_push_cyl(t_env *e, t_node *list)

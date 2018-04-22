@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:12:43 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/15 15:22:39 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/22 18:49:42 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void			ui_obj_update(t_env *e, t_object *obj)
 		ui_obj_set_base(e, obj);
 		ui_obj_set_aux(e, obj);
 		ui_obj_set_custom(e, obj);
+		calculate_cos_sin_obj(obj);
 	}
 	else
 	{
