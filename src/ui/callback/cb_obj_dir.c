@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/22 02:16:01 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/22 02:34:52 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ gboolean		cb_obj_dir_z(GtkSpinButton *spin, gpointer data)
 		((t_cone*)obj)->u_axis = cross_vect(obj->dir);
 	else if (obj->type == OBJ_PLANE)
 		((t_plane*)obj)->u_axis = cross_vect(obj->dir);
-	obj->dir = normalize_vect(obj->dir);å
+	obj->dir = normalize_vect(obj->dir);
 	return (TRUE);
 }
