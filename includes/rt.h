@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:19:14 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 22:45:01 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:10:39 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -672,5 +672,4 @@ void					xml_write_sphere(t_sphere *sphere, const int fd);
 void					xml_write_torus(t_torus *torus, const int fd);
 void					xml_write_kube(t_kube *kube, const int fd);
 
-void					waiting(char *str);
 #endif
