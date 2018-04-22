@@ -614,30 +614,21 @@ __device__ float3	vector_get_rotate(float3 *me, float3 *cos, float3 *sin)
 	return (n);
 }
 
-__device__ float3	vector_get_inverse(float3 *me, float3 *rot)
+__device__ float3	vector_get_inverse(float3 *me, float3 *cos, float3 *sin)
 {
 	float3		n = make_float3(0.f);
 	float		tmp = 0.f;
 
 	n = *me;
-	if (rot->z)
-	{
-		tmp = n.x * cosf(rot->z) - n.y * -sinf(rot->z);
-		n.y = n.x * -sinf(rot->z) + n.y * cosf(rot->z);
-		n.x = tmp;
-	}
-	if (rot->y)
-	{
-		tmp = n.x * cosf(rot->y) + n.z * -sinf(rot->y);
-		n.z = n.x * sinf(rot->y) + n.z * cosf(rot->y);
-		n.x = tmp;
-	}
-	if (rot->x)
-	{
-		tmp = n.y * cosf(rot->x) - n.z * -sinf(rot->x);
-		n.z = n.y * -sinf(rot->x) + n.z * cosf(rot->x);
-		n.y = tmp;
-	}
+	tmp = n.x * cos->z - n.y * -sin->z;
+	n.y = n.x * -sin->z + n.y * cos->z;
+	n.x = tmp;
+	tmp = n.x * cos->y + n.z * -sin->y;
+	n.z = n.x * sin->y + n.z * cos->y;
+	n.x = tmp;
+	tmp = n.y * cos->x - n.z * -sin->x;
+	n.z = n.y * -sin->x + n.z * cos->x;
+	n.y = tmp;
 	return (n);
 }
 
@@ -1050,30 +1041,21 @@ __device__ bool		solve_quadratic(float a, float b, float c, float *inter0, float
 	return (true);
 }
 
-__device__ double3	thor_get_rotate(double3 *that, float3 *rot)
+__device__ double3	thor_get_rotate(double3 *that, float3 *cos, float3 *sin)
 {
 	double3		n = make_double3(0.f);
 	float		tmp = 0.f;
 
 	n = *that;
-	if (rot->x)
-	{
-		tmp = n.y * cos(rot->x) - n.z * sin(rot->x);
-		n.z = n.y * sin(rot->x) + n.z * cos(rot->x);
-		n.y = tmp;
-	}
-	if (rot->y)
-	{
-		tmp = n.x * cos(rot->y) + n.z * sin(rot->y);
-		n.z = n.x * -sin(rot->y) + n.z * cos(rot->y);
-		n.x = tmp;
-	}
-	if (rot->z)
-	{
-		tmp = n.x * cos(rot->z) - n.y * sin(rot->z);
-		n.y = n.x * sin(rot->z) + n.y * cos(rot->z);
-		n.x = tmp;
-	}
+	tmp = n.y * cos->x - n.z * sin->x;
+	n.z = n.y * sin->x + n.z * cos->x;
+	n.y = tmp;
+	tmp = n.x * cos->y + n.z * sin->y;
+	n.z = n.x * -sin->y + n.z * cos->y;
+	n.x = tmp;
+	tmp = n.x * cos->z - n.y * sin->z;
+	n.y = n.x * sin->z + n.y * cos->z;
+	n.x = tmp;
 	return (n);
 }
 
@@ -1206,13 +1188,13 @@ __device__ t_ret		inter_thor(t_thor *thor, float3 ray, float3 origin)
 	d_ray.x = (double)ray.x;
 	d_ray.y = (double)ray.y;
 	d_ray.z = (double)ray.z;
-	d_ray = thor_get_rotate(&d_ray, &thor->dir);
+	d_ray = thor_get_rotate(&d_ray, &thor->cos, &thor->sin);
 
 	double3		d_dir;
 	d_dir.x = (double)origin.x - (double)thor->pos.x;
 	d_dir.y = (double)origin.y - (double)thor->pos.y;
 	d_dir.z = (double)origin.z - (double)thor->pos.z;
-	d_dir = thor_get_rotate(&d_dir, &thor->dir);
+	d_dir = thor_get_rotate(&d_dir, &thor->cos, &thor->sin);
 
 	double3		k;
 	k.x = (d_ray.x * d_ray.x) + (d_ray.y * d_ray.y) + (d_ray.z * d_ray.z);
@@ -1255,7 +1237,7 @@ __device__ float3 get_thor_normal(t_thor *thor, float3 hitpos)
 	res.y = 4.0f * pos.y * (c + 2 * r);
 	res.z = 4.0f * c * pos.z;
 
-	res = vector_get_inverse(&res, &thor->dir);
+	res = vector_get_inverse(&res, &thor->cos, &thor->sin);
 	return (res);
 }
 
@@ -1270,13 +1252,13 @@ __device__ t_ret		inter_kube(t_kube *kube, float3 ray, float3 origin)
 	d_ray.x = (double)ray.x;
 	d_ray.y = (double)ray.y;
 	d_ray.z = (double)ray.z;
-	d_ray = thor_get_rotate(&d_ray, &kube->dir);
+	d_ray = thor_get_rotate(&d_ray, &kube->cos, &kube->sin);
 
 	double3		d_dir;
 	d_dir.x = (double)origin.x - (double)kube->pos.x;
 	d_dir.y = (double)origin.y - (double)kube->pos.y;
 	d_dir.z = (double)origin.z - (double)kube->pos.z;
-	d_dir = thor_get_rotate(&d_dir, &kube->dir);
+	d_dir = thor_get_rotate(&d_dir, &kube->cos, &kube->sin);
 
 	double		c[5];
 	c[4] = (pow(d_ray.x, 4.0f) + pow(d_ray.y, 4.0f) + pow(d_ray.z, 4.0f));
@@ -1299,7 +1281,7 @@ __device__ float3 get_kube_normal(t_kube *kube, float3 hitpos)
      res.y = 4.0f * powf(pos.y, 3.0f) - 10.0 * pos.y;
      res.z = 4.0f * powf(pos.z, 3.0f) - 10.0 * pos.z;
 
-	 res = vector_get_inverse(&res, &kube->dir);
+	 res = vector_get_inverse(&res, &kube->cos, &kube->sin);
 	 return (res);
 }
 
@@ -1613,7 +1595,7 @@ __device__ float3		get_ellipsoid_normal(t_ellipsoid *ellipsoid, t_hit *hit)
 	res.x = (pos.x) / (ellipsoid->axis_size.x * ellipsoid->axis_size.x);
 	res.y = (pos.y) / (ellipsoid->axis_size.y * ellipsoid->axis_size.y);
 	res.z = (pos.z) / (ellipsoid->axis_size.z * ellipsoid->axis_size.z);
-	res = vector_get_inverse(&res, &ellipsoid->dir);
+	res = vector_get_inverse(&res, &ellipsoid->cos, &ellipsoid->sin);
 	return (res);
 }
 
@@ -1801,7 +1783,7 @@ __device__ float3		get_sphere_normal(t_hit *hit, t_sphere *sphere, t_scene *scen
 	else
 		res = pos;
 
-	res = vector_get_inverse(&res, &sphere->dir);
+	res = vector_get_inverse(&res, &sphere->cos, &sphere->sin);
 	return (normalize(res));
 }
 
@@ -2511,7 +2493,7 @@ extern "C" void render_cuda(t_cuda			*cuda,
 							cudaTextureObject_t *tex3,
 							cudaTextureObject_t *skybox)
 {
-	dim3					threads_per_block(8, 8);
+	dim3					threads_per_block(16, 16);
 	dim3					grid_size(scene_data->win_w / threads_per_block.x, scene_data->win_h / threads_per_block.y);
 
 	cudaMemcpy(cuda->mem[1], gen_objects->mem, gen_objects->mem_size, cudaMemcpyHostToDevice);
