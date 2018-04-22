@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/13 16:43:43 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 19:36:17 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/22 16:36:38 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,7 @@ int				get_next_line(int const fd, char **line)
 	char			*tmp;
 	int				status;
 
-	if (fd < 0 || !line || fd >= FD_MAX)
-		return (-1);
-	if (!(gnl = ft_gnl_init(&lst, fd)))
+	if (fd < 0 || !line || fd >= FD_MAX || !(gnl = ft_gnl_init(&lst, fd)))
 		return (-1);
 	tmp = ft_strnew(0);
 	while (gnl->b_read > 0)

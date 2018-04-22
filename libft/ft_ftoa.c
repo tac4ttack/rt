@@ -6,14 +6,14 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 17:09:09 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/21 22:08:55 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/22 16:35:58 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <float.h>
 
-static char	*ft_ftoa_check_sign(float n)
+static char		*ft_ftoa_check_sign(float n)
 {
 	char	*res;
 
@@ -27,7 +27,7 @@ static char	*ft_ftoa_check_sign(float n)
 	return (res);
 }
 
-char	*ft_ftoa(float n)
+char			*ft_ftoa(float n)
 {
 	char	*res;
 	int		neg;
