@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<scene res="1024, 768" ambient="0.1, 0.1, 0.1">
+<scene res="1024, 768" ambient="0.15, 0.15, 0.15">
 
 <cam                    pos="0, -5, -20"
                         dir="0, 0, 1"
@@ -27,7 +27,9 @@
                         radius="0"
                         p_limit_pos="0, 0, 0"
 			p_limit_dir="0, 0, 1"
-                        flags="000000"
+                        min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+                        flags="00000000"
                         />
 
 <!-- Right Panel -->
@@ -42,7 +44,9 @@
                         radius="0"
                         p_limit_pos="0, 0, 0"
 			p_limit_dir="0, 0, 1"
-                        flags="000000"
+                        min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+                        flags="00000000"
                         />
 
 <!-- Bottom Panel -->
@@ -57,7 +61,9 @@
                         radius="0"
                         p_limit_pos="0, 0, 0"
 			p_limit_dir="0, 0, 1"
-                        flags="000000"
+                        min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+                        flags="00000000"
                         />
 
 <!-- Top Panel -->
@@ -72,7 +78,9 @@
                         radius="0"
                         p_limit_pos="0, 0, 0"
 			p_limit_dir="0, 0, 1"
-                        flags="000000"
+                        min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+                        flags="00000000"
                         />
 
 <!-- Front Panel -->
@@ -87,7 +95,9 @@
                         radius="0"
                         p_limit_pos="0, 0, 0"
 			p_limit_dir="0, 0, 1"
-                        flags="000000"
+                        min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+                        flags="00000000"
                         />
 
 <!-- Rear Panel -->
@@ -102,7 +112,9 @@
                         radius="0"
                         p_limit_pos="0, 0, 0"
 			p_limit_dir="0, 0, 1"
-                        flags="000000"
+                        min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+                        flags="00000000"
                         />
 
 <sphere                 pos="0, -5, 0"
@@ -116,7 +128,9 @@
 			opacity="1"
                         p_limit_pos="0, 0, 0"
 			p_limit_dir="0, 0, 1"
-                        flags="000000"
+                        min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+                        flags="00000000"
                         />
 <sphere                 pos="-14, 5, 4"
                         dir="0, 0, 0"
@@ -129,6 +143,8 @@
 			opacity="1"
                         p_limit_pos="0, 0, 0"
 			p_limit_dir="0, 0, 1"
-                        flags="000000"
+                        min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+                        flags="00000000"
                         />
 </scene>
