@@ -1,4 +1,4 @@
-		NAME = rt
+NAME = rt
 
 CC = 					clang
 CFLAGS +=				-Wall -Wextra -Werror
