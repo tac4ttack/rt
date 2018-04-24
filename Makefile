@@ -1,4 +1,4 @@
-NAME = rt
+		NAME = rt
 
 CC = 					clang
 CFLAGS +=				-Wall -Wextra -Werror
@@ -15,13 +15,10 @@ LIBFTFLAGS := -lft
 
 LIBMATHFLAGS := -lm
 
-GTK_CFLAGS	=	$(shell pkg-config --cflags gtk+-3.0)
-GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
-
-OPENCL :=				-framework OpenCL
+GTK_CFLAGS		=	$(shell pkg-config --cflags gtk+-3.0)
+GTK_CUDALIBS	=	$(shell pkg-config --libs-only-L --libs-only-l gtk+-3.0)
 
 INC_NAMES = 			$(NAME).h \
-						cl.h \
 						ui.h \
 						gen.h
 
@@ -31,12 +28,7 @@ OBJ_NAME =				$(SRC_NAME:.c=.o)
 
 SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 SRC_PATH =				./src
-SRC_NAME =	 			cl/cl_compute.c \
-						cl/cl_construct.c \
-						cl/cl_create_buffer.c \
-						cl/cl_destruct.c \
-						cl/cl_print_error.c \
-						init.c \
+SRC_NAME =	 			init.c \
 						gen/gen_add.c \
 						gen/gen_remove_mem_index.c \
 						gen/gen_remove_index.c \
@@ -46,15 +38,20 @@ SRC_NAME =	 			cl/cl_compute.c \
 						gen/gen_construct.c \
 						gen/gen_destruct.c \
 						main.c \
-						opencl_compute.c \
 						rotations.c \
 						tools.c \
 						ui/add/ui_add_cone.c \
 						ui/add/ui_add_cylinder.c \
 						ui/add/ui_add_ellipsoid.c \
+						ui/add/ui_add_kube.c \
 						ui/add/ui_add_plane.c \
 						ui/add/ui_add_sphere.c \
 						ui/add/ui_add_torus.c \
+						ui/callback/cb_skybox_check.c \
+						ui/callback/cb_obj_cut_check.c \
+						ui/callback/cb_obj_cut_x.c \
+						ui/callback/cb_obj_cut_y.c \
+						ui/callback/cb_obj_cut_z.c \
 						ui/callback/cb_about_dialog.c \
 						ui/callback/cb_ambient_update.c \
 						ui/callback/cb_cam_dir.c \
@@ -62,6 +59,7 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_cam_manager.c \
 						ui/callback/cb_cam_nav.c \
 						ui/callback/cb_cam_pos.c \
+						ui/callback/cb_cartoon_radio.c \
 						ui/callback/cb_cone_angle.c \
 						ui/callback/cb_configure_draw_area.c \
 						ui/callback/cb_cylinder_radius.c \
@@ -69,17 +67,20 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_ellipsoid_axis.c \
 						ui/callback/cb_ellipsoid_radius.c \
 						ui/callback/cb_export_dialog.c \
+						ui/callback/cb_kube_option.c \
 						ui/callback/cb_light_manager.c \
 						ui/callback/cb_light_nav.c \
 						ui/callback/cb_light_params.c \
 						ui/callback/cb_light_pos.c \
-						ui/callback/cb_obj_checkboard_check.c \
+						ui/callback/cb_obj_checkboard.c \
 						ui/callback/cb_obj_color.c \
 						ui/callback/cb_obj_combo_type.c \
-						ui/callback/cb_obj_diff_check.c \
 						ui/callback/cb_obj_diff.c \
 						ui/callback/cb_obj_dir.c \
 						ui/callback/cb_obj_jump.c \
+						ui/callback/cb_obj_plane_limit_btn.c \
+						ui/callback/cb_obj_limit_dir.c \
+						ui/callback/cb_obj_limit_pos.c \
 						ui/callback/cb_obj_nav_add.c \
 						ui/callback/cb_obj_nav_del.c \
 						ui/callback/cb_obj_nav_next.c \
@@ -88,8 +89,13 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_obj_pos.c \
 						ui/callback/cb_obj_reflex.c \
 						ui/callback/cb_obj_refrac.c \
+						ui/callback/cb_obj_sinwave_btn.c \
+						ui/callback/cb_obj_sinwave_param1.c \
+						ui/callback/cb_obj_sinwave_param2.c \
 						ui/callback/cb_obj_spec.c \
-						ui/callback/cb_obj_wave_check.c \
+						ui/callback/cb_obj_texture_diff.c \
+						ui/callback/cb_obj_texture_diff_chooser.c \
+						ui/callback/cb_plane_disk_radius.c \
 						ui/callback/cb_postproc_radio.c \
 						ui/callback/cb_render_btnpress.c \
 						ui/callback/cb_render_btnrelease.c \
@@ -98,29 +104,38 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/callback/cb_render_keyrelease.c \
 						ui/callback/cb_render_update_size.c \
 						ui/callback/cb_resolution_update.c \
+						ui/callback/cb_save_btn.c \
 						ui/callback/cb_sphere_radius.c \
 						ui/callback/cb_supersampling_update.c \
 						ui/callback/cb_tool_bar.c \
 						ui/callback/cb_torus_radius.c \
-						ui/callback/cb_waves_p1.c \
-						ui/callback/cb_waves_p2.c \
 						ui/gdkrgba_to_int.c \
 						ui/gtk_main_loop.c \
 						ui/gtk_render_events.c \
-						ui/init_cb_cam.c \
-						ui/init_cb_light.c \
-						ui/init_cb_main.c \
-						ui/init_cb_object.c \
-						ui/init_cb_scene.c \
-						ui/init_gtk_cam.c \
-						ui/init_gtk_css.c \
-						ui/init_gtk_light.c \
-						ui/init_gtk_object.c \
-						ui/init_gtk_scene.c \
-						ui/init_gtk_texture.c \
-						ui/init_gtk_toolbar.c \
-						ui/init_gtk_win.c \
-						ui/init_gtk.c \
+						ui/init/init_gtk_obj_cut.c \
+						ui/init/init_cb_obj_cut.c \
+						ui/init/init_cb_cam.c \
+						ui/init/init_cb_light.c \
+						ui/init/init_cb_main.c \
+						ui/init/init_cb_object.c \
+						ui/init/init_cb_object_checkboard.c \
+						ui/init/init_cb_object_diffmap.c \
+						ui/init/init_cb_object_limit.c \
+						ui/init/init_cb_object_sinwave.c \
+						ui/init/init_cb_scene.c \
+						ui/init/init_gtk_cam.c \
+						ui/init/init_gtk_css.c \
+						ui/init/init_gtk_light.c \
+						ui/init/init_gtk_object.c \
+						ui/init/init_gtk_object_checkboard.c \
+						ui/init/init_gtk_object_diffmap.c \
+						ui/init/init_gtk_object_effects.c \
+						ui/init/init_gtk_object_limit.c \
+						ui/init/init_gtk_object_sinwave.c \
+						ui/init/init_gtk_scene.c \
+						ui/init/init_gtk_toolbar.c \
+						ui/init/init_gtk_win.c \
+						ui/init/init_gtk.c \
 						ui/ui_cam.c \
 						ui/ui_cam_update.c \
 						ui/ui_light_update.c \
@@ -129,44 +144,84 @@ SRC_NAME =	 			cl/cl_compute.c \
 						ui/ui_obj_set_cone.c \
 						ui/ui_obj_set_cylinder.c \
 						ui/ui_obj_set_ellipsoid.c \
+						ui/ui_obj_set_kube.c \
 						ui/ui_obj_set_plane.c \
 						ui/ui_obj_set_sphere.c \
 						ui/ui_obj_set_torus.c \
 						ui/ui_obj_update.c \
+						ui/ui_obj_update_effects.c \
+						ui/ui_obj_update_limit_check.c \
 						update_fps.c \
+						texture.c \
 						vectors.c \
+						error_handle.c \
+						flush.c \
+						xml/data/xml_data_angle.c \
+						xml/data/xml_data_flag.c \
+						xml/data/xml_data_axis_size.c \
+						xml/data/xml_data_brightness.c \
+						xml/data/xml_data_color.c \
+						xml/data/xml_data_diffuse.c \
+						xml/data/xml_data_dir.c \
+						xml/data/xml_data_min_max.c \
+						xml/data/xml_data_normale.c \
+						xml/data/xml_data_opacity.c \
+						xml/data/xml_data_pos.c \
+						xml/data/xml_data_radius.c \
+						xml/data/xml_data_reflex.c \
+						xml/data/xml_data_refrac.c \
+						xml/data/xml_data_shrink.c \
+						xml/data/xml_data_specular.c \
+						xml/data/xml_data_type.c \
+						xml/object/xml_cameras.c \
+						xml/object/xml_kube.c \
+						xml/object/xml_cones.c \
+						xml/object/xml_cylinders.c \
+						xml/object/xml_ellipsoid.c \
+						xml/object/xml_lights.c \
+						xml/object/xml_planes.c \
+						xml/object/xml_spheres.c \
+						xml/object/xml_torus.c \
+						xml/object/xml_push_ellipsoid.c \
+						xml/object/xml_push_plane.c \
+						xml/object/xml_push_sphere.c \
+						xml/object/xml_push_cone.c \
+						xml/object/xml_push_kube.c \
+						xml/object/xml_push_torus.c \
+						xml/object/xml_push_cylinder.c \
+						xml/save/xml_save_camera.c \
+						xml/save/xml_save_cone.c \
+						xml/save/xml_save_cylinder.c \
+						xml/save/xml_save_data.c \
+						xml/save/xml_save_ellipsoid.c \
+						xml/save/xml_save_kube.c \
+						xml/save/xml_save_light.c \
+						xml/save/xml_save_plane.c \
+						xml/save/xml_save_scene.c \
+						xml/save/xml_save_sphere.c \
+						xml/save/xml_save_torus.c \
 						xml/xml.c \
-						xml/xml_cameras.c \
 						xml/xml_check_attr.c \
-						xml/xml_cones.c \
-						xml/xml_box.c \
-						xml/xml_cylinders.c \
-						xml/xml_data_angle.c \
-						xml/xml_data_axis_size.c \
-						xml/xml_data_brightness.c \
-						xml/xml_data_color.c \
-						xml/xml_data_diffuse.c \
-						xml/xml_data_dir.c \
-						xml/xml_data_height.c \
-						xml/xml_data_normale.c \
-						xml/xml_data_opacity.c \
-						xml/xml_data_pos.c \
-						xml/xml_data_radius.c \
-						xml/xml_data_reflex.c \
-						xml/xml_data_refrac.c \
-						xml/xml_data_shrink.c \
-						xml/xml_data_specular.c \
-						xml/xml_data_type.c \
-						xml/xml_ellipsoid.c \
-						xml/xml_data_min_max.c \
-						xml/xml_lights.c \
 						xml/xml_list.c \
 						xml/xml_nodes.c \
-						xml/xml_planes.c \
 						xml/xml_scene.c \
-						xml/xml_spheres.c \
-						xml/xml_torus.c \
 						xml/xml_tools.c
+
+SRC_CUDA = $(addprefix $(SRC_PATH)/,$(SRC_CUDA_NAME))
+SRC_CUDA_NAME =		cuda/cuda_construct.c \
+					cuda/cuda_destruct.c \
+					cuda/cuda_create_buffer.c \
+					cuda/cuda_update_buffer.c \
+					cuda/cuda_error.c \
+					draw_cuda.c \
+					init_cuda.c
+
+OBJ_CUDA =			$(addprefix $(OBJ_CUDA_PATH)/,$(OBJ_CUDA_NAME))
+OBJ_CUDA_PATH =		./objcuda
+OBJ_CUDA_NAME =		$(SRC_CUDA_NAME:.c=.o)
+
+SRC_CUDA_CU =		kernel/raytrace.cu
+INC_CUDA_CU = 		kernel/includes/ft_maths.hu
 
 default: gpu
 
@@ -174,63 +229,56 @@ all: libft
 	@echo "$(GREEN)Checking for RT$(EOC)"
 	@make $(NAME)
 
-$(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
+$(NAME): $(SRC) $(SRC_CUDA) $(INC) $(OBJ_PATH) $(OBJ) $(OBJ_CUDA) $(SRC_CUDA_CU) $(INC_CUDA_CU)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
-	$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(GTK_CLIBS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
+	/usr/local/cuda/bin/nvcc -o rt -D DCUDA $(OBJ) $(OBJ_CUDA) $(SRC_CUDA_CU) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
-	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+	/usr/local/cuda/bin/nvcc -c $< -o $@ -D DCUDA -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+
+$(OBJ_CUDA_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
+	/usr/local/cuda/bin/nvcc -c $< -o $@ -D DCL -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_PATH):
 	@echo "$(GREEN)Creating ./obj path and making binaries from source files$(EOC)"
 	@mkdir $(OBJ_PATH)
 	@mkdir $(OBJ_PATH)/cl
 	@mkdir $(OBJ_PATH)/xml
+	@mkdir $(OBJ_PATH)/xml/data
+	@mkdir $(OBJ_PATH)/xml/object
+	@mkdir $(OBJ_PATH)/xml/save
 	@mkdir $(OBJ_PATH)/gen
 	@mkdir $(OBJ_PATH)/ui
 	@mkdir $(OBJ_PATH)/ui/add
 	@mkdir $(OBJ_PATH)/ui/callback
+	@mkdir $(OBJ_PATH)/ui/init
 	@mkdir $(OBJ_PATH)/event
-
-CPU:
-	@echo "$(GREEN)Checking for CPU ONLY RT$(EOC)"
-	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make cpu_flags $(NAME)
-
-cpu: libft CPU
-cpu_flags:
-$(eval GPU_MACRO = )
+	@mkdir $(OBJ_PATH)/cuda
+	@mkdir $(OBJ_CUDA_PATH)
+	@mkdir $(OBJ_CUDA_PATH)/cuda
 
 GPU:
 	@echo "$(GREEN)Checking for GPU accelerated RT$(EOC)"
-	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make -j 4 gpu_flags $(NAME)
+	@make gpu_flags $(NAME)
 
 gpu: libft GPU
 gpu_flags:
 	$(eval GPU_MACRO = -DGPU)
 
-debuggpu: fclean debuglibft
+debuggpu: debuglibft
 	@echo "$(GREEN)So you want to compile RT with GPU and DEBUG enabled hu?$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
-	@echo "$(GREEN)Checking for GPU accelerated RT with ASAN debug flags enabled$(EOC)"
+	@echo "$(GREEN)Checking for GPU accelerated RT with debug flags enabled$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
 	@make debug_flag gpu_flags $(NAME)
 
-debugasangpu: fclean debugasanlibft
+debugasangpu: debugasanlibft
 	@echo "$(GREEN)So you want to compile RT with GPU and DEBUG enabled hu?$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
 	@echo "$(GREEN)Checking for GPU accelerated RT with ASAN debug flags enabled$(EOC)"
 	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
 	@make debug_asan_flag gpu_flags $(NAME)
 
-
-debugcpu: fclean debuglibft
-	@echo "$(GREEN)So you want to compile RT with CPU mode forced and DEBUG enabled hu?$(EOC)"
-	@echo "$(YELL)Be sure to do a 'make fclean' when switching back to debug mode disabled$(EOC)"
-	@echo "$(GREEN)Checking for CPU ONLY RT with ASAN debug flags enabled$(EOC)"
-	@echo "$(YELL)Be sure to do a 'make fclean' before switching between normal and CPU forced mode$(EOC)"
-	@make debug_flag cpu_flags $(NAME)
 
 debug_flag:
 	$(eval DEBUG_MACRO = -DDEBUG -g)
@@ -250,7 +298,7 @@ debugasanlibft:
 clean:
 	@echo "$(GREEN)Cleaning...$(EOC)"
 	@echo "$(GREEN)Deleting .obj files$(EOC)"
-	@rm -rf $(OBJ_PATH)
+	@rm -rf $(OBJ_PATH) $(OBJ_CL_PATH) $(OBJ_CUDA_PATH)
 
 fclean: fcleanlibft clean
 	@echo "$(GREEN)Full cleaning...$(EOC)"
@@ -297,9 +345,6 @@ installbrewshit:
 	brew install -f pygtk
 	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)adwaita-icon-theme$(EOC)$(B_GREEN) from brew...$(EOC)"
 	brew install -f adwaita-icon-theme
-	@echo "$(B_GREEN)Installing $(EOC)$(B_RED)glade$(EOC)$(B_GREEN) from brew...$(EOC)"
-	brew install -f glade
-	
 
 norme:
 	norminette $(SRC_PATH)

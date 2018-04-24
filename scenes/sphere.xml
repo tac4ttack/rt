@@ -1,27 +1,35 @@
 <?xml version="1.0"?>
-<scene res="800, 600" ambient="0.1, 0.1, 0.1">
+<scene res="800, 600"
+ambient="0.1, 0.1, 0.1">
 <cam 		pos="0, 0, -30"
 			dir="0, 0, 1"
 			fov="30"
 			/>
+
 <cam 		pos="30, 0, 0"
 			dir="0, 0, 1"
 			fov="90"
 			/>
+
 <cam 		pos="-30, 0, 0"
 			dir="0, 0, 1"
 			fov="60"
-			/> 
+			/>
 
-	<sphere 	pos="-5, 0, 0"
+<sphere 	pos="-5, 0, 0"
 			dir="0, 0, 0"
 			radius="2"
 			color="0, 255, 255, 255"
-			diff="0.5, 0.5, 0.5"
+			diff="0.42, 0.42, 0.42"
 			spec="0.5, 0.5, 0.5"
 			reflex="0.42"
 			refract="0"
 			opacity="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 <sphere 	pos="0, 0, 0"
 			dir="0, 0, 0"
@@ -32,6 +40,11 @@
 			reflex="0.42"
 			refract="0"
 			opacity="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 <sphere		 pos="5, 0, 0"
 			dir="0, 0, 0"
@@ -42,6 +55,11 @@
 			reflex="0.42"
 			refract="0"
 			opacity="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 	<sphere 	pos="-5, 5, 0"
 			dir="0, 0, 0"
@@ -52,7 +70,12 @@
 			reflex="0.42"
 			refract="0"
 			opacity="0"
-			/>						
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
+			/>
 	<sphere 	pos="0, 5, 0"
 			dir="0, 0, 0"
 			radius="2"
@@ -62,6 +85,11 @@
 			reflex="0.42"
 			refract="0"
 			opacity="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 	<sphere 	pos="5, 5, 0"
 			dir="0, 0, 0"
@@ -72,26 +100,32 @@
 			reflex="0.42"
 			refract="0"
 			opacity="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 	<light 		type="0"
 			pos="-2, 0, -10"
 			dir="0, 0, 0"
-			brightness="0.21"
+			brightness="0.5"
 			shrink="21"
 			color="0, 255, 0, 0"
 			/>
 	<light 		type="0"
 			pos="0, 0, -10"
 			dir="0, 0, 0"
-			brightness="0.21"
+			brightness="0.5"
 			shrink="21"
 			color="0, 0, 255, 0"
 			/>
 	<light 		type="0"
 			pos="2, 0, -10"
 			dir="0, 0, 0"
-			brightness="0.21"
+			brightness="0.5"
 			shrink="21"
 			color="0, 0, 0, 255"
 			/>
+
 </scene>

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:27 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:37:47 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/03 17:47:13 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@ void			cb_obj_nav_prev(GtkButton *btn, gpointer data)
 		e->target = (void*)obj - e->gen_objects->mem;
 	}
 	else
-	{
-		e->target = e->target - obj->size;
-		obj = e->gen_objects->mem + e->target;
-	}
+		obj = (t_object*)gen_get_index_ptr(e->gen_objects, obj_index - 1);
 	ui_obj_update(e, obj);
 }

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:04:20 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 19:49:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/08 01:42:53 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,5 @@ void		gtk_render_events(t_env *e)
 			KEY_STATE_D || KEY_STATE_SPC || KEY_STATE_Z || KEY_STATE_UA || \
 			KEY_STATE_DA || KEY_STATE_LA || KEY_STATE_RA)
 			ui_cam(e);
-		opencl_set_args(e, e->cl);
 	}
 }

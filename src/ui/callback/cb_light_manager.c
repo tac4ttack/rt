@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:02 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:41:54 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 19:19:58 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void		cb_light_manage_add(GtkButton *btn, gpointer data)
 	gtk_widget_set_sensitive(e->ui->light_nav_next_btn, TRUE);
 	gtk_widget_set_sensitive(e->ui->light_nav_del_btn, TRUE);
 	e->ui->light_selector = e->gen_lights->length - 1;
-	if (!(cl_replace_buffer(e->cl, e->gen_lights->mem_size, 4)))
+	if (!(e->cuda->update_buffer(e->cuda, e->gen_lights->mem_size, 2)))
 		s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
 	ui_light_set_id(e);
 	ui_light_update(e);
@@ -54,7 +54,7 @@ void		cb_light_manage_del(GtkButton *btn, gpointer data)
 		gtk_widget_set_sensitive(e->ui->light_nav_next_btn, FALSE);
 		gtk_widget_set_sensitive(e->ui->light_nav_del_btn, FALSE);
 	}
-	if (!(cl_replace_buffer(e->cl, e->gen_lights->mem_size, 4)))
+	if (!(e->cuda->update_buffer(e->cuda, e->gen_lights->mem_size, 2)))
 		s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
 	if (e->gen_lights->length == 1)
 		e->ui->light_selector = 0;

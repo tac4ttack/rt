@@ -6,12 +6,14 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 12:46:49 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 22:08:23 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UI_H
 # define UI_H
+
+# define GTB GTK_TOGGLE_BUTTON
 
 # include "gtk/gtk.h"
 
@@ -52,7 +54,8 @@ typedef	struct			s_ui
 	int					gtkstatus;
 	int					redraw;
 	unsigned int		light_selector;
-	cl_int4				render_pos;
+	GError				*error;
+	int					render_pos[4];
 	t_keystate			keys;
 	GtkApplication		*app;
 	GtkBuilder			*builder;
@@ -78,11 +81,8 @@ typedef	struct			s_ui
 	GtkWidget			*obj_list_reflex_spin;
 	GtkWidget			*obj_list_refrac_spin;
 	GtkWidget			*obj_list_opacity_spin;
-	GtkWidget			* obj_list_color_btn;
+	GtkWidget			*obj_list_color_btn;
 	GdkRGBA				obj_color;
-	GtkWidget			*obj_list_flag_waves_check;
-	GtkWidget			*obj_list_flag_diff_check;
-	GtkWidget			*obj_list_flag_checkboard_check;
 	GtkWidget			*obj_list_cone;
 	GtkWidget			*obj_cone_angle_spin;
 	GtkWidget			*obj_list_cylinder;
@@ -100,6 +100,35 @@ typedef	struct			s_ui
 	GtkWidget			*obj_list_torus;
 	GtkWidget			*obj_torus_lilradius_spin;
 	GtkWidget			*obj_torus_bigradius_spin;
+	GtkWidget			*obj_list_limit;
+	GtkWidget			*obj_plane_limit_button;
+	GtkWidget			*obj_plane_limit_fix_button;
+	GtkWidget			*obj_limit_dir_spin_x;
+	GtkWidget			*obj_limit_dir_spin_y;
+	GtkWidget			*obj_limit_dir_spin_z;
+	GtkWidget			*obj_limit_pos_spin_x;
+	GtkWidget			*obj_limit_pos_spin_y;
+	GtkWidget			*obj_limit_pos_spin_z;
+	GtkWidget			*obj_list_sinwave;
+	GtkWidget			*obj_plane_disk_spin;
+	GtkWidget			*obj_sinwave_button;
+	GtkWidget			*obj_sinwave_param1_spin_x;
+	GtkWidget			*obj_sinwave_param1_spin_y;
+	GtkWidget			*obj_sinwave_param1_spin_z;
+	GtkWidget			*obj_sinwave_param2_spin_x;
+	GtkWidget			*obj_sinwave_param2_spin_y;
+	GtkWidget			*obj_sinwave_param2_spin_z;
+	GtkWidget			*obj_list_checkboard;
+	GtkWidget			*obj_checkboard_button;
+	GtkWidget			*obj_checkboard_width_spin;
+	GtkWidget			*obj_checkboard_height_spin;
+	GtkWidget			*obj_list_texture_diff;
+	GtkWidget			*obj_texture_diff_button;
+	GtkWidget			*obj_texture_diff_offset_spin_x;
+	GtkWidget			*obj_texture_diff_offset_spin_y;
+	GtkWidget			*obj_texture_diff_ratio_spin_x;
+	GtkWidget			*obj_texture_diff_ratio_spin_y;
+	GtkWidget			*obj_texture_diff_chooser;
 	GtkWidget			*obj_nav_prev_btn;
 	GtkWidget			*obj_nav_next_btn;
 	GtkWidget			*obj_nav_del_btn;
@@ -117,6 +146,8 @@ typedef	struct			s_ui
 	GtkWidget			*scene_postproc_sepia_radio;
 	GtkWidget			*scene_postproc_none_radio;
 	GtkWidget			*scene_postproc_invert_check;
+	GtkWidget			*scene_cartoon_four_radio;
+	GtkWidget			*scene_cartoon_two_radio;
 	GtkWidget			*cam_list_id_label;
 	GtkWidget			*cam_list_pos_spin_x;
 	GtkWidget			*cam_list_pos_spin_y;
@@ -141,23 +172,33 @@ typedef	struct			s_ui
 	GtkWidget			*light_nav_next_btn;
 	GtkWidget			*light_nav_add_btn;
 	GtkWidget			*light_nav_del_btn;
-	GtkWidget			*texture_wave_par1_spin_x;
-	GtkWidget			*texture_wave_par1_spin_y;
-	GtkWidget			*texture_wave_par1_spin_z;
-	GtkWidget			*texture_wave_par2_spin_x;
-	GtkWidget			*texture_wave_par2_spin_y;
-	GtkWidget			*texture_wave_par2_spin_z;
 	GtkWidget			*tool_play_btn;
 	GtkWidget			*tool_stop_btn;
 	GtkWidget			*tool_render_btn;
+	GtkWidget			*tool_save_btn;
 	GtkWidget			*tool_export_btn;
 	GtkWidget			*tool_about_btn;
 	GtkWidget			*tool_fps_label;
 	GtkWidget			*export_window;
+	GtkWidget			*save_window;
 	GtkWidget			*about_window;
+
+	GtkWidget			*scene_skybox_check;
+	GtkWidget			*obj_cut_check;
+	GtkWidget			*obj_list_cut;
+	GtkWidget			*obj_cut_x_min_spin;
+	GtkWidget			*obj_cut_x_max_spin;
+	GtkWidget			*obj_cut_y_min_spin;
+	GtkWidget			*obj_cut_y_max_spin;
+	GtkWidget			*obj_cut_z_min_spin;
+	GtkWidget			*obj_cut_z_max_spin;
+	GtkWidget			*obj_list_kube;
+	GtkWidget			*obj_kube_option_spin;
+
 }						t_ui;
 
 void					cb_about_btn(GtkButton *btn, gpointer data);
+void					cb_save_btn(GtkButton *btn, gpointer data);
 
 gboolean				cb_ambient_red_update(GtkSpinButton *spin, \
 										gpointer data);
@@ -177,6 +218,9 @@ gboolean				cb_cam_pos_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_cam_pos_z(GtkSpinButton *spin, gpointer data);
 
+void					cb_cartoon_two(GtkToggleButton *button, gpointer data);
+void					cb_cartoon_four(GtkToggleButton *button, gpointer data);
+
 gboolean				cb_cone_angle(GtkSpinButton *spin, gpointer data);
 
 gboolean				cb_configure_draw_area(GtkWidget *widget, \
@@ -193,6 +237,8 @@ gboolean				cb_ellipsoid_radius(GtkSpinButton *spin, gpointer data);
 
 void					cb_export_btn(GtkButton *btn, gpointer data);
 
+gboolean				cb_kube_option(GtkSpinButton *spin, gpointer data);
+
 gboolean				cb_light_brightness(GtkSpinButton *spin, gpointer data);
 void					cb_light_color(GtkColorButton *button, gpointer data);
 void					cb_light_manage_del(GtkButton *btn, gpointer data);
@@ -206,10 +252,24 @@ gboolean				cb_light_pos_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_light_pos_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_light_shrink(GtkSpinButton *spin, gpointer data);
 
-void					cb_obj_checkboard_check(GtkButton *btn, gpointer data);
+void					cb_obj_checkboard_button(GtkButton *btn, \
+												gpointer data);
+gboolean				cb_obj_checkboard_width(GtkSpinButton *spin, \
+												gpointer data);
+gboolean				cb_obj_checkboard_height(GtkSpinButton *spin, \
+												gpointer data);
 void					cb_obj_color(GtkColorButton *button, gpointer data);
 void					cb_obj_combo_type(GtkComboBox *box, gpointer data);
-void					cb_obj_diff_check(GtkButton *btn, gpointer data);
+
+void					cb_obj_cut_check(GtkToggleButton *button, \
+										gpointer data);
+gboolean				cb_obj_cut_x_min(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_cut_x_max(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_cut_y_min(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_cut_y_max(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_cut_z_min(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_cut_z_max(GtkSpinButton *spin, gpointer data);
+
 gboolean				cb_obj_diff_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_diff_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_diff_z(GtkSpinButton *spin, gpointer data);
@@ -217,6 +277,15 @@ gboolean				cb_obj_dir_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_dir_z(GtkSpinButton *spin, gpointer data);
 void					cb_obj_jump_combo(GtkComboBox *box, gpointer data);
+void					cb_obj_plane_limit_btn(GtkButton *btn, gpointer data);
+void					cb_obj_plane_limit_fix_btn(GtkButton *btn, \
+													gpointer data);
+gboolean				cb_obj_limit_dir_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_limit_dir_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_limit_dir_z(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_limit_pos_x(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_limit_pos_y(GtkSpinButton *spin, gpointer data);
+gboolean				cb_obj_limit_pos_z(GtkSpinButton *spin, gpointer data);
 void					cb_obj_nav_add(GtkButton *btn, gpointer data);
 void					cb_obj_nav_del(GtkButton *btn, gpointer data);
 void					cb_obj_nav_next(GtkButton *btn, gpointer data);
@@ -227,11 +296,36 @@ gboolean				cb_obj_pos_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_pos_z(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_reflex(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_refrac(GtkSpinButton *spin, gpointer data);
+void					cb_obj_sinwave_btn(GtkButton *btn, gpointer data);
+gboolean				cb_obj_sinwave_param1_x(GtkSpinButton *spin, \
+												gpointer data);
+gboolean				cb_obj_sinwave_param1_y(GtkSpinButton *spin, \
+												gpointer data);
+gboolean				cb_obj_sinwave_param1_z(GtkSpinButton *spin, \
+												gpointer data);
+gboolean				cb_obj_sinwave_param2_x(GtkSpinButton *spin, \
+												gpointer data);
+gboolean				cb_obj_sinwave_param2_y(GtkSpinButton *spin, \
+												gpointer data);
+gboolean				cb_obj_sinwave_param2_z(GtkSpinButton *spin, \
+												gpointer data);
 gboolean				cb_obj_spec_x(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_y(GtkSpinButton *spin, gpointer data);
 gboolean				cb_obj_spec_z(GtkSpinButton *spin, gpointer data);
-void					cb_obj_wave_check(GtkButton *btn, gpointer data);
-
+void					cb_obj_texture_diff_button(GtkButton *btn, \
+													gpointer data);
+void					cb_obj_texture_diff_chooser(GtkComboBox *box, \
+													gpointer data);
+gboolean				cb_obj_texture_diff_offset_x(GtkSpinButton *spin, \
+													gpointer data);
+gboolean				cb_obj_texture_diff_offset_y(GtkSpinButton *spin, \
+													gpointer data);
+gboolean				cb_obj_texture_diff_ratio_x(GtkSpinButton *spin, \
+													gpointer data);
+gboolean				cb_obj_texture_diff_ratio_y(GtkSpinButton *spin, \
+													gpointer data);
+gboolean				cb_plane_disk_radius(GtkSpinButton *spin, \
+													gpointer data);
 void					cb_play_btn(GtkButton *btn, gpointer data);
 void					cb_postproc_bw(GtkToggleButton *button, gpointer data);
 void					cb_postproc_invert(GtkToggleButton *button, \
@@ -254,6 +348,9 @@ gboolean				cb_render_keyrelease(GtkWidget *widget, \
 void					cb_render_update_size(GtkContainer *box, gpointer data);
 gboolean				cb_res_heigh_update(GtkSpinButton *spin, gpointer data);
 gboolean				cb_res_width_update(GtkSpinButton *spin, gpointer data);
+
+void					cb_skybox_check(GtkToggleButton *button, \
+										gpointer data);
 
 gboolean				cb_sphere_radius(GtkSpinButton *spin, gpointer data);
 

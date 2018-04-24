@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:19 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:43:31 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/15 15:20:25 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static t_object	*obj_nav_create_obj(t_env *e, int t)
 		ui_add_sphere(e);
 	else if (t == 5)
 		ui_add_torus(e);
+	else if (t == 6)
+		ui_add_kube(e);
 	obj = (t_object*)gen_get_index_ptr(e->gen_objects, \
 										e->gen_objects->length - 1);
 	e->target = (void*)obj - e->gen_objects->mem;
@@ -44,7 +46,7 @@ void			cb_obj_nav_add(GtkButton *btn, gpointer data)
 	e = data;
 	t = gtk_combo_box_get_active((GtkComboBox*)e->ui->obj_nav_add_type_combo);
 	obj = obj_nav_create_obj(e, t);
-	if (!(cl_replace_buffer(e->cl, e->gen_objects->mem_size, 1)))
+	if (!(e->cuda->update_buffer(e->cuda, e->gen_objects->mem_size, 1)))
 		s_error("\x1b[2;31mFailed replacing cam buffer\x1b[0m", e);
 	gtk_widget_set_sensitive(e->ui->obj_nav_prev_btn, TRUE);
 	gtk_widget_set_sensitive(e->ui->obj_nav_next_btn, TRUE);

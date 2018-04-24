@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:17:37 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:32:00 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/13 17:49:40 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void		cb_postproc_none(GtkToggleButton *button, gpointer data)
 	e = data;
 	e->scene->flag ^= OPTION_BW;
 	e->scene->flag ^= OPTION_SEPIA;
+	e->scene->flag ^= OPTION_CARTOON_TWO;
+	e->scene->flag ^= OPTION_CARTOON_FOUR;
 }
 
 void		cb_postproc_sepia(GtkToggleButton *button, gpointer data)
@@ -30,6 +32,8 @@ void		cb_postproc_sepia(GtkToggleButton *button, gpointer data)
 	e = data;
 	e->scene->flag ^= OPTION_BW;
 	e->scene->flag |= OPTION_SEPIA;
+	e->scene->flag ^= OPTION_CARTOON_TWO;
+	e->scene->flag ^= OPTION_CARTOON_FOUR;
 }
 
 void		cb_postproc_bw(GtkToggleButton *button, gpointer data)
@@ -40,6 +44,8 @@ void		cb_postproc_bw(GtkToggleButton *button, gpointer data)
 	e = data;
 	e->scene->flag |= OPTION_BW;
 	e->scene->flag ^= OPTION_SEPIA;
+	e->scene->flag ^= OPTION_CARTOON_TWO;
+	e->scene->flag ^= OPTION_CARTOON_FOUR;
 }
 
 void		cb_postproc_invert(GtkToggleButton *button, gpointer data)

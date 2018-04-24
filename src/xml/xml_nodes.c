@@ -6,35 +6,49 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/02 12:22:16 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 23:12:14 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
+/*
+** xml_check_node_format mod details
+** 0 = scene
+** 1 = camera
+** 2 = cone
+** 3 = cylinder
+** 4 = light
+** 5 = plane
+** 6 = sphere
+** 7 = ellipsoid
+** 8 = paraboloid
+** 9 = torus
+** 10 = kube
+*/
+
 int					xml_check_node_format(char **node, int mod)
 {
-	cl_int2			i;
+	int			i[2];
 
-	i.x = 0;
-	i.y = 6;
+	i[0] = 0;
+	i[1] = 6;
 	if (node)
 	{
-		i.y = (mod == 1 ? 9 : i.y);
-		i.y = (mod == 4 ? 15 : i.y);
-		i.y = (mod == 10 ? 27 : i.y);
-		i.y = (mod == 7 ? 25 : i.y);
-		if (mod == 2 || mod == 5 || mod == 6)
-			i.y = 22;
-		if (mod == 3 || mod == 8 || mod == 9)
-			i.y = 23;
-		while (i.x <= i.y)
+		i[1] = (mod == 1 ? 9 : i[1]);
+		i[1] = (mod == 4 ? 15 : i[1]);
+		i[1] = (mod == 7 ? 38 : i[1]);
+		if (mod == 2 || mod == 3 || mod == 5 || mod == 6 || mod == 10)
+			i[1] = 35;
+		if (mod == 8 || mod == 9)
+			i[1] = 36;
+		while (i[0] <= i[1])
 		{
-			if (i.x == i.y && node[i.x] != NULL)
+			if (i[0] == i[1] && node[i[0]] != NULL)
 				return (1);
-			else if (i.x < i.y && node[i.x] == NULL)
+			else if (i[0] < i[1] && node[i[0]] == NULL)
 				return (1);
-			i.x++;
+			i[0]++;
 		}
 		return (0);
 	}
@@ -83,11 +97,10 @@ static void			xml_process_node_obj(t_env *e, char *node)
 		xml_node_ellipsoid(e, node);
 	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "torus") == 0)
 		xml_node_torus(e, node);
-	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "box") == 0)
-		xml_node_box(e, node);
+	else if (XML->is_comm == 0 && ft_strcmp(XMLSUB[0], "kube") == 0)
+		xml_node_kube(e, node);
 	else
 		s_error("\x1b[1;31mError wrong node type\x1b[0m", e);
-	xml_node_clean(XMLSUB);
 }
 
 void				xml_process_node(t_env *e, char *node)
@@ -108,6 +121,7 @@ void				xml_process_node(t_env *e, char *node)
 		xml_node_light(e, node);
 	else
 		xml_process_node_obj(e, node);
+	xml_node_clean(&XMLSUB);
 }
 
 void				xml_parse_nodes(t_env *e)
@@ -126,5 +140,7 @@ void				xml_parse_nodes(t_env *e)
 			xml_process_node(e, XML->nodes[i]);
 		i++;
 	}
+	ft_memdel((void**)&e->scene_file);
+	xml_node_clean(&XML->nodes);
 	ft_putendl("\n\x1b[1;29mFinished processing the scene!\x1b[0m\n");
 }

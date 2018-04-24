@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/04/01 19:58:48 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/21 21:17:17 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void		load_scene_objects(t_env *e)
+static void	load_scene_objects(t_env *e)
 {
 	t_node	*list;
 
@@ -30,17 +30,17 @@ void		load_scene_objects(t_env *e)
 			xml_push_sphere(e, list);
 		if (list->type == OBJ_ELLIPSOID)
 			xml_push_ellipsoid(e, list);
-		if (list->type == OBJ_BOX)
-			xml_push_box(e, list);
 		if (list->type == OBJ_TORUS)
 			xml_push_torus(e, list);
+		if (list->type == OBJ_KUBE)
+			xml_push_kube(e, list);
 		list = list->next;
 	}
 	xml_list_clean(e, &XML->node_lst);
 	ft_putendl("\x1b[1;29mSuccessfully loaded the scene!\n\x1b[0m");
 }
 
-void		load_scene(t_env *e)
+static void	load_scene(t_env *e)
 {
 	t_node	*list;
 
@@ -59,7 +59,7 @@ void		load_scene(t_env *e)
 	load_scene_objects(e);
 }
 
-void		env_init(t_env *e)
+static void	env_init(t_env *e)
 {
 	ft_putendl("\n\x1b[1;32m/\\ Initializing RT environnement /\\\x1b[0m\n");
 	e->scene->depth = 0;
@@ -71,38 +71,16 @@ void		env_init(t_env *e)
 	if (e->gpu == 1)
 		e->scene->flag |= OPTION_GPU;
 	e->ui->redraw = 1;
-	e->scene->check_p1.x = 0;
-	e->scene->check_p1.y = 0;
-	e->scene->check_p1.z = 0;
-	e->scene->check_p2.x = 0;
-	e->scene->check_p2.y = 0;
-	e->scene->check_p2.z = 0;
-	e->scene->waves_p1.x = 0.8;
-	e->scene->waves_p1.y = 0.8;
-	e->scene->waves_p1.z = 0.8;
-	e->scene->waves_p2.x = 10;
-	e->scene->waves_p2.y = 10;
-	e->scene->waves_p2.z = 10;
 	ft_putendl("\x1b[1;29mRT environnement initialized!\n\x1b[0m");
 }
 
-void		cl_init(t_env *e)
+static bool	scene_requirements(t_env *e, t_scene *scene)
 {
-	if (!(e->cl = cl_construct("./kernel/kernel.cl", WIDTH, HEIGHT,
-	(e->scene->flag & OPTION_GPU) ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU)))
-		s_error("\x1b[2;31mError t_cl creation failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, WIDTH * HEIGHT * 4)))
-		s_error("\x1b[2;31mError creation FRAMEBUFFER cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, e->gen_objects->mem_size)))
-		s_error("\x1b[2;31mError creation OBJECTS cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, sizeof(t_scene))))
-		s_error("\x1b[2;31mError creation SCENE cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, sizeof(t_cam) * NCAM)))
-		s_error("\x1b[2;31mError creation CAMERAS cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, e->gen_lights->mem_size)))
-		s_error("\x1b[2;31mError creation LIGHTS cl_mem failed\x1b[0m", e);
-	if (!(e->cl->add_buffer(e->cl, sizeof(int))))
-		s_error("\x1b[2;31mError creation TARGETOBJ cl_mem failed\x1b[0m", e);
+	if (!scene->n_cams || !e->gen_lights->length || !e->gen_objects->length)
+		return (false);
+	if (scene->win_w > 2000 || scene->win_h > 2000)
+		return (false);
+	return (true);
 }
 
 void		init(GtkApplication *app, gpointer data)
@@ -117,14 +95,14 @@ void		init(GtkApplication *app, gpointer data)
 		s_error("\x1b[2;31mCan't initialize objects t_gen\x1b[0m", e);
 	if (!(e->gen_lights = gen_construct()))
 		s_error("\x1b[2;31mCan't initialize lights t_gen\x1b[0m", e);
-	ft_bzero(e->scene, sizeof(t_scene));
 	xml_init(e);
 	env_init(e);
-	if (!(e->pixel_data = malloc(sizeof(int) * WIDTH * HEIGHT)))
-		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
-	ft_bzero(e->pixel_data, sizeof(int) * WIDTH * HEIGHT);
 	load_scene(e);
-	cl_init(e);
-	opencl_set_args(e, e->cl);
-	opencl_draw(e);
+	if (!scene_requirements(e, e->scene))
+		s_error("\x1b[2;31mScene requirements\x1b[0m", e);
+	if (!(e->pixel_data = ft_memalloc(sizeof(int) * WIDTH * HEIGHT)))
+		s_error("\x1b[1;31mCan't initialize pixel buffer\x1b[0m", e);
+	ft_putendl("\n\x1b[1;32m/\\ Loading UI... /\\\x1b[0m\n");
+	init_kernel(e);
+	draw(e);
 }

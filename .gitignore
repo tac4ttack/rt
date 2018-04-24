@@ -52,6 +52,8 @@ Mkfile.old
 dkms.conf
 rtv1
 rt
+cudart
 .vscode/
 .DS_Store
 log
+theme/rt_ui.glade~

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:12:43 by fmessina          #+#    #+#             */
-/*   Updated: 2018/04/01 19:50:01 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/22 18:49:42 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static void		ui_obj_get_id(t_env *e, t_object *obj)
 		obj_label = ft_strjoin_frs1(obj_label, " ELLIPSOID");
 	else if (obj->type == OBJ_TORUS)
 		obj_label = ft_strjoin_frs1(obj_label, " TORUS");
+	else if (obj->type == OBJ_KUBE)
+		obj_label = ft_strjoin_frs1(obj_label, " KUBE");
 	gtk_label_set_text(GTK_LABEL(e->ui->obj_list_id_label), obj_label);
 	free(obj_label);
 }
@@ -73,6 +75,18 @@ static	void	ui_obj_set_aux(t_env *e, t_object *obj)
 	e->ui->obj_color = int_to_gdkrbga((gint)obj->color);
 	gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(e->ui->obj_list_color_btn), \
 	&e->ui->obj_color);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_cut_x_min_spin, \
+	(gdouble)obj->cut_min.x);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_cut_x_max_spin, \
+	(gdouble)obj->cut_max.x);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_cut_y_min_spin, \
+	(gdouble)obj->cut_min.y);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_cut_y_max_spin, \
+	(gdouble)obj->cut_max.y);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_cut_z_min_spin, \
+	(gdouble)obj->cut_min.z);
+	gtk_spin_button_set_value((GtkSpinButton*)e->ui->obj_cut_z_max_spin, \
+	(gdouble)obj->cut_max.z);
 }
 
 static	void	ui_obj_set_custom(t_env *e, t_object *obj)
@@ -89,6 +103,8 @@ static	void	ui_obj_set_custom(t_env *e, t_object *obj)
 		ui_obj_set_ellipsoid(e, (t_ellipsoid*)obj);
 	else if (obj->type == OBJ_TORUS)
 		ui_obj_set_torus(e, (t_torus*)obj);
+	else if (obj->type == OBJ_KUBE)
+		ui_obj_set_kube(e, (t_kube*)obj);
 }
 
 void			ui_obj_update(t_env *e, t_object *obj)
@@ -105,6 +121,7 @@ void			ui_obj_update(t_env *e, t_object *obj)
 		ui_obj_set_base(e, obj);
 		ui_obj_set_aux(e, obj);
 		ui_obj_set_custom(e, obj);
+		calculate_cos_sin_obj(obj);
 	}
 	else
 	{

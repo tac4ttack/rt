@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 20:01:06 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 20:01:29 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/14 14:54:43 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ gboolean	gtk_main_loop(gpointer data)
 			update_fps(&e->fps);
 			fps = ft_strjoin_frs1(ft_itoa(e->fps.ret_fps), " fps");
 			gtk_label_set_text(GTK_LABEL(e->ui->tool_fps_label), (gchar*)fps);
-			opencl_draw(e);
+			draw(e);
 			free(fps);
 		}
 		else if (e->ui->redraw == 0)

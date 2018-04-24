@@ -6,15 +6,15 @@
 /*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:24:52 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/04 23:51:26 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/22 18:48:56 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-cl_float3			rotx(cl_float3 dir, const float pitch)
+FT_FLOAT3			rotx(FT_FLOAT3 dir, const float pitch)
 {
-	cl_float3		newdir;
+	FT_FLOAT3		newdir;
 
 	if (dir.x == 0 && dir.y == 0 && dir.z == 0)
 	{
@@ -29,9 +29,9 @@ cl_float3			rotx(cl_float3 dir, const float pitch)
 	return (normalize_vect(newdir));
 }
 
-cl_float3			roty(cl_float3 dir, const float yaw)
+FT_FLOAT3			roty(FT_FLOAT3 dir, const float yaw)
 {
-	cl_float3		newdir;
+	FT_FLOAT3		newdir;
 
 	if (dir.x == 0 && dir.y == 0 && dir.z == 0)
 	{
@@ -46,9 +46,9 @@ cl_float3			roty(cl_float3 dir, const float yaw)
 	return (normalize_vect(newdir));
 }
 
-cl_float3			rotz(cl_float3 dir, const float roll)
+FT_FLOAT3			rotz(FT_FLOAT3 dir, const float roll)
 {
-	cl_float3		newdir;
+	FT_FLOAT3		newdir;
 
 	if (dir.x == 0 && dir.y == 0 && dir.z == 0)
 	{
@@ -63,9 +63,9 @@ cl_float3			rotz(cl_float3 dir, const float roll)
 	return (normalize_vect(newdir));
 }
 
-cl_float3			rotcam(cl_float3 vect, float rad_pitch, float rad_yaw)
+FT_FLOAT3			rotcam(FT_FLOAT3 vect, float rad_pitch, float rad_yaw)
 {
-	cl_float3		res;
+	FT_FLOAT3		res;
 	float			rad_roll;
 
 	rad_roll = 0;
@@ -81,4 +81,14 @@ cl_float3			rotcam(cl_float3 vect, float rad_pitch, float rad_yaw)
 	res.z = vect.x * -sin(rad_yaw) + vect.y * cos(rad_yaw) * sin(rad_pitch) \
 			+ vect.z * cos(rad_yaw) * cos(rad_pitch);
 	return (normalize_vect(res));
+}
+
+void				calculate_cos_sin_obj(t_object *obj)
+{
+	obj->cos.x = cosf(obj->dir.x);
+	obj->cos.y = cosf(obj->dir.y);
+	obj->cos.z = cosf(obj->dir.z);
+	obj->sin.x = sinf(obj->dir.x);
+	obj->sin.y = sinf(obj->dir.y);
+	obj->sin.z = sinf(obj->dir.z);
 }

@@ -2,11 +2,18 @@
 
 <!-- La scene made in Chaton 1024, 768-->
 
-<scene		res="1024, 768" ambient="0.1, 0.1, 0.1">
+<scene		res="1025, 768" ambient="0.15, 0.15, 0.15">
 
 <cam		pos="0, 0, -80"
 			dir="0, 0, 1"
 			fov="30"
+			/>
+<light		type="1"
+			pos="5, 8, 9"
+			dir="0, 0, 0"
+			brightness="0.51"
+			shrink="42"
+			color="0, 255, 255, 255"
 			/>
 
 <plane		pos="0, 20, 0"
@@ -17,6 +24,29 @@
 			reflex="0"
 			refract="0"
 			opacity="1"
+			radius="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
+			/>
+
+<torus	 	pos="5, 5, 0"
+			dir="0, 0, 0"
+			lil_radius="1"
+			big_radius="10"
+			color="0, 0, 0, 255"
+			diff="0.42, 0.42, 0.42"
+			spec="0.42, 0.42, 0.42"
+			reflex="0.42"
+			refract="0"
+			opacity="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 
 <plane		pos="0, -20, 0"
@@ -27,6 +57,12 @@
 			reflex="0"
 			refract="0"
 			opacity="1"
+			radius="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 
 <plane		pos="0, 0, 40"
@@ -37,16 +73,28 @@
 			reflex="0.8"
 			refract="0"
 			opacity="1"
+			radius="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 
 <plane		pos="0, 0, -140"
-			normale="0, 0, -1"
+			normale="0, 1, -1"
 			color="0, 0, 80, 144"
 			diff="0.42, 0.42, 0.42"
 			spec="0.50, 0.50, 0.50"
 			reflex="0"
 			refract="0"
 			opacity="1"
+			radius="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 
 <plane		pos="20, 0, 0"
@@ -57,6 +105,12 @@
 			reflex="0"
 			refract="0"
 			opacity="1"
+			radius="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 
 <plane		pos="-20, 0, 0"
@@ -67,6 +121,12 @@
 			reflex="0"
 			refract="0"
 			opacity="0"
+			radius="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 
 <sphere		pos="0, -5, -8"
@@ -78,37 +138,31 @@
 			reflex="0"
 			refract="0"
 			opacity="1"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 
 <sphere		pos="0, 0, -50"
 			dir="0, 0, 1"
-			radius="10"
-			color="0, 255, 0, 0"
+			radius="3"
+			color="0, 0, 250, 0"
 			diff="0.42, 0.42, 0.42"
 			spec="0.42, 0.42, 0.42"
 			reflex="0"
 			refract="1.5"
 			opacity="0.2"
-			/>
-
-<light		type="1"
-			pos="5, 8, 9"
-			dir="0, 0, 0"
-			brightness="0.51"
-			shrink="42"
-			color="0, 255, 255, 255"
-			/>
-
-<light		type="1"
-			pos="0, 0, -20"
-			dir="0, 0, 0"
-			brightness="0.51"
-			shrink="42"
-			color="0, 255, 255, 255"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 
 <cone		pos="5, 0, 0"
-			dir="0, 1, 0"
+			dir="1, 1, 0"
 			angle="10"
 			color="0, 255, 80, 0"
 			diff="0.42, 0.42, 0.42"
@@ -116,28 +170,59 @@
 			reflex="0"
 			refract="0"
 			opacity="1"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 
 <cone		pos="-5, -5, 2"
-			dir="1, 0, 0"
-			angle="20"
+			dir="0, 1, 1"
+			angle="10"
 			color="0, 0, 144, 144"
 			diff="0.42, 0.42, 0.42"
 			spec="0.42, 0.42, 0.42"
 			reflex="0"
 			refract="0"
 			opacity="1"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
+			/>
+
+<cone		pos="-5, -5, -8"
+			dir="8, 0, 0"
+			angle="10"
+			color="0, 0, 144, 144"
+			diff="0.42, 0.42, 0.42"
+			spec="0.42, 0.42, 0.42"
+			reflex="0"
+			refract="0"
+			opacity="1"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
 
 <cylinder	pos="-5, 0, 10"
-			dir="0, 1, 0"
+			dir="1, 0, 0"
 			radius="3.0"
 			color="0, 0, 51, 255"
-			height="0"
 			diff="0.42, 0.42, 0.42"
 			spec="0.42, 0.42, 0.42"
 			reflex="0"
 			refract="1.3"
 			opacity="0"
+			p_limit_pos="0, 0, 0"
+			p_limit_dir="0, 0, 1"
+			min="0.0, 0.0, 0.0"
+			max="0.0, 0.0, 0.0"
+			flags="00000000"
 			/>
+
 </scene>

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 19:26:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/25 15:22:46 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/04/06 19:29:54 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void				*ft_memmove(void *dst, void const *src, size_t len);
 void				*ft_memnew(void *ptr, size_t mem_size);
 
 void				ft_putnbr(int n);
+void				ft_putnbr_fd(int n, int fd);
 void				ft_putchar(char c);
 void				ft_putchar_fd(char c, int fd);
 int					ft_putwchar(wchar_t c);

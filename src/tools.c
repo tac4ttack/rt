@@ -6,67 +6,58 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:31:06 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/23 18:54:43 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:10:29 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	flush(t_env *e)
+void			texture_destroy(t_env *e, t_texture *tex)
 {
-	if (e)
+	if (tex && e->cuda)
 	{
-		if (e->cl)
-		{
-			cl_destruct(&e->cl);
-			gen_destruct(&e->gen_objects);
-			gen_destruct(&e->gen_lights);
-		}
-		if (e->ui->surface)
-			cairo_surface_destroy(e->ui->surface);
-		if (XML)
-			free(XML);
-		ft_putendl("\x1b[1;29mFreed XML ressources\x1b[0m");
-		if (e)
-			free(e);
-		ft_putendl("\x1b[1;29mFreed RT environnement\x1b[0m");
+		if ((e->cuda->err = cudaDestroyTextureObject(tex->tex)) != cudaSuccess)
+			cuda_error(e->cuda->err);
+		if ((e->cuda->err = cudaFreeArray(tex->cu_array)) != cudaSuccess)
+			cuda_error(e->cuda->err);
+	}
+	if (tex)
+	{
+		if (tex->pixbuf)
+			g_object_unref(tex->pixbuf);
+		if (tex->i_pixels)
+			ft_memdel((void**)&tex->i_pixels);
 	}
 }
 
-void	s_error(char *str, t_env *e)
+int				quit(t_env *e)
 {
-	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
-	ft_putendl(str);
-	flush(e);
-	exit(EXIT_FAILURE);
-}
-
-void	p_error(char *str, t_env *e)
-{
-	ft_putendl("\n\x1b[1;31mOh no I just crashed!\x1b[0m");
-	perror((const char *)str);
-	flush(e);
-	exit(EXIT_FAILURE);
-}
-
-int		quit(t_env *e)
-{
-	flush(e);
+	if (e)
+		flush(e);
+	cudaDeviceReset();
 	ft_putendl("Exiting");
 	exit(EXIT_SUCCESS);
 	return (0);
 }
 
-int		gtk_quit(GtkApplication *app, gpointer data)
+int				gtk_quit(GtkApplication *app, gpointer data)
 {
-	t_env *e;
+	t_env	*e;
 
 	(void)app;
 	e = data;
 	gtk_main_quit();
-	g_object_unref(e->ui->app);
+	if (e->ui)
+	{
+		if (e->ui->main_window)
+			gtk_widget_destroy(e->ui->main_window);
+		if (e->ui->app)
+			g_object_unref(e->ui->app);
+	}
 	ft_putendl("\n\x1b[1;32mExiting...\x1b[0m");
-	flush(e);
+	if (e)
+		flush(e);
+	cudaDeviceReset();
 	ft_putendl("\x1b[1;41mSee you space clodo!\x1b[0m");
 	exit(EXIT_SUCCESS);
 	return (0);

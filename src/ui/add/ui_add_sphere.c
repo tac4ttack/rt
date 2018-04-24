@@ -6,13 +6,36 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:42 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 19:59:43 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/19 15:09:05 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	ui_add_sphere(t_env *e)
+static void		ui_add_sphere_effects(t_sphere *sphere)
+{
+	sphere->limit_pos.x = 0;
+	sphere->limit_pos.y = 0;
+	sphere->limit_pos.z = 0;
+	sphere->limit_dir.x = 0;
+	sphere->limit_dir.y = 0;
+	sphere->limit_dir.z = 0;
+	sphere->waves_p1.x = 0.8;
+	sphere->waves_p1.y = 0.8;
+	sphere->waves_p1.z = 0.8;
+	sphere->waves_p2.x = 5;
+	sphere->waves_p2.y = 5;
+	sphere->waves_p2.z = 5;
+	sphere->check_size.x = 20;
+	sphere->check_size.y = 10;
+	sphere->diff_map_id = -1;
+	sphere->diff_offset.x = 0;
+	sphere->diff_offset.y = 0;
+	sphere->diff_ratio.x = 1;
+	sphere->diff_ratio.y = 1;
+}
+
+void			ui_add_sphere(t_env *e)
 {
 	t_sphere sphere;
 
@@ -21,6 +44,7 @@ void	ui_add_sphere(t_env *e)
 	sphere.type = OBJ_SPHERE;
 	sphere.pos.x = 0;
 	sphere.pos.y = 0;
+	sphere.flags = 0;
 	sphere.pos.z = 0;
 	sphere.dir = sphere.pos;
 	sphere.dir.z = 1;
@@ -33,5 +57,6 @@ void	ui_add_sphere(t_env *e)
 	sphere.reflex = 0;
 	sphere.refract = 0;
 	sphere.opacity = 1;
+	ui_add_sphere_effects(&sphere);
 	e->gen_objects->add(e->gen_objects, (void*)&sphere);
 }

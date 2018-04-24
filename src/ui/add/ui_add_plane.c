@@ -6,13 +6,37 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 19:59:52 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/30 19:59:53 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/04/19 15:09:05 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	ui_add_plane(t_env *e)
+static void		ui_add_plane_effects(t_plane *plane)
+{
+	plane->limit_pos.x = 0;
+	plane->limit_pos.y = 0;
+	plane->limit_pos.z = 0;
+	plane->limit_dir.x = 0;
+	plane->limit_dir.y = 0;
+	plane->limit_dir.z = 0;
+	plane->waves_p1.x = 0.8;
+	plane->waves_p1.y = 0.8;
+	plane->waves_p1.z = 0.8;
+	plane->waves_p2.x = 5;
+	plane->waves_p2.y = 5;
+	plane->waves_p2.z = 5;
+	plane->check_size.x = 10;
+	plane->check_size.y = 10;
+	plane->diff_map_id = -1;
+	plane->diff_offset.x = 0;
+	plane->diff_offset.y = 0;
+	plane->diff_ratio.x = 100;
+	plane->diff_ratio.y = 100;
+	plane->u_axis = cross_vect(plane->normal);
+}
+
+void			ui_add_plane(t_env *e)
 {
 	t_plane plane;
 
@@ -22,6 +46,7 @@ void	ui_add_plane(t_env *e)
 	plane.pos.x = 0;
 	plane.pos.y = 0;
 	plane.pos.z = 0;
+	plane.flags = 0;
 	plane.normal = plane.pos;
 	plane.normal.z = 1;
 	plane.color = rand();
@@ -32,5 +57,7 @@ void	ui_add_plane(t_env *e)
 	plane.reflex = 0;
 	plane.refract = 0;
 	plane.opacity = 1;
+	plane.radius = 0;
+	ui_add_plane_effects(&plane);
 	e->gen_objects->add(e->gen_objects, (void*)&plane);
 }
