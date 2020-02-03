@@ -13,8 +13,8 @@
 
 NAME = libft.a
 
-CC =		clang
-CFLAGS +=	-Wall -Wextra -Werror $(ASANFLAGS) $(DEBUGFLAGS)
+CC =		gcc
+CFLAGS +=	-Wall -Wextra $(ASANFLAGS) $(DEBUGFLAGS)
 
 SRC =		ft_abs.c \
 			ft_ahtoi.c \

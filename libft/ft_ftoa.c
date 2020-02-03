@@ -30,11 +30,9 @@ static char		*ft_ftoa_check_sign(float n)
 char			*ft_ftoa(float n)
 {
 	char	*res;
-	int		neg;
 	int		tmp;
 	int		i;
 
-	neg = 0;
 	if (n == FLT_MAX)
 		return ("3.402823e+38");
 	if (n == FLT_MIN)

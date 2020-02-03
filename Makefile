@@ -1,6 +1,6 @@
 NAME = rt
 
-CC = 					clang
+CC = 					gcc
 CFLAGS +=				-Wall -Wextra -Werror
 OFLAGS := 				-O2
 RM := 					rm -rf
@@ -15,7 +15,8 @@ LIBFTFLAGS := -lft
 
 LIBMATHFLAGS := -lm
 
-GTK_CFLAGS		=	$(shell pkg-config --cflags gtk+-3.0)
+#GTK_CFLAGS		=	$(shell pkg-config --cflags gtk+-3.0)
+GTK_CFLAGS = -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0/ -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng16 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
 GTK_CUDALIBS	=	$(shell pkg-config --libs-only-L --libs-only-l gtk+-3.0)
 
 INC_NAMES = 			$(NAME).h \
@@ -223,21 +224,19 @@ OBJ_CUDA_NAME =		$(SRC_CUDA_NAME:.c=.o)
 SRC_CUDA_CU =		kernel/raytrace.cu
 INC_CUDA_CU = 		kernel/includes/ft_maths.hu
 
-default: gpu
-
 all: libft
 	@echo "$(GREEN)Checking for RT$(EOC)"
 	@make $(NAME)
 
 $(NAME): $(SRC) $(SRC_CUDA) $(INC) $(OBJ_PATH) $(OBJ) $(OBJ_CUDA) $(SRC_CUDA_CU) $(INC_CUDA_CU)
 	@echo "$(GREEN)Compiling $(NAME)$(EOC)"
-	/usr/local/cuda/bin/nvcc -o rt -D DCUDA $(OBJ) $(OBJ_CUDA) $(SRC_CUDA_CU) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
+	nvcc -o rt -D DCUDA $(OBJ) $(OBJ_CUDA) $(SRC_CUDA_CU) -I kernel/includes/ -L$(LIBFT_PATH) $(LIBFTFLAGS) $(LIBMATHFLAGS) $(GTK_CUDALIBS) $(ASANFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
-	/usr/local/cuda/bin/nvcc -c $< -o $@ -D DCUDA -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+	nvcc -c $< -o $@ -D DCUDA -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) -DGPU $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_CUDA_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
-	/usr/local/cuda/bin/nvcc -c $< -o $@ -D DCL -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+	nvcc -c $< -o $@ -D DCL -I $(INC_PATH) -I $(LIBFT_INC_PATH) $(GTK_CFLAGS) -DGPU $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_PATH):
 	@echo "$(GREEN)Creating ./obj path and making binaries from source files$(EOC)"
@@ -259,11 +258,7 @@ $(OBJ_PATH):
 
 GPU:
 	@echo "$(GREEN)Checking for GPU accelerated RT$(EOC)"
-	@make gpu_flags $(NAME)
-
 gpu: libft GPU
-gpu_flags:
-	$(eval GPU_MACRO = -DGPU)
 
 debuggpu: debuglibft
 	@echo "$(GREEN)So you want to compile RT with GPU and DEBUG enabled hu?$(EOC)"
@@ -308,9 +303,7 @@ fclean: fcleanlibft clean
 libft:
 	@echo "$(GREEN)Checking for Libft library$(EOC)"
 	make -C $(LIBFT_PATH)/ libft.a
-	@echo ""
-	@read -p "Please press enter to continue..."
-	@echo ""
+	@echo "K"
 
 cleanlibft:
 	@echo "$(GREEN)Cleaning Libft folder$(EOC)"

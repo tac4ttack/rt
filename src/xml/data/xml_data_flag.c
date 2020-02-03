@@ -16,6 +16,7 @@ void		xml_data_flag(t_env *e, char **attributes, int *i, t_node *node)
 {
 	int		j;
 
+	j = 0;
 	if (node && attributes && e)
 	{
 		if (attributes[(*i)] == NULL)
